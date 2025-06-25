@@ -48,7 +48,7 @@ export interface LanguageConfig {
 }
 
 // Tipos de API
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
@@ -92,7 +92,7 @@ export interface InputProps extends BaseComponentProps {
 export interface NavigationItem {
   label: string;
   href: string;
-  icon?: React.ComponentType<any>;
+  icon?: React.ComponentType<Record<string, unknown>>;
   badge?: string | number;
   children?: NavigationItem[];
 }

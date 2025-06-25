@@ -7,19 +7,26 @@ import { revalidatePath } from "next/cache";
 interface DashboardStats {
   totalUsers: number;
   activeUsers: number;
-  revenue: number;
-  growth: number;
-  conversionRate: number;
-  averageTime: string;
+  totalSessions: number;
+  avgSessionDuration: number;
+  totalRevenue: number;
+  monthlyGrowth: number;
 }
 
-interface ActivityLog {
+interface UserActivity {
   id: string;
   userId: string;
   action: string;
-  description: string;
   timestamp: Date;
-  ip?: string;
+  details?: Record<string, unknown>;
+}
+
+interface SystemMetrics {
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+  networkTraffic: number;
+  uptime: number;
 }
 
 interface NotificationData {
@@ -30,56 +37,28 @@ interface NotificationData {
   type: "info" | "success" | "warning" | "error";
   read: boolean;
   createdAt: Date;
+  timestamp: Date;
 }
 
 // Simulação de dados - substitua pela sua implementação real
-let dashboardData = {
+const dashboardData = {
   stats: {
-    totalUsers: 2543,
-    activeUsers: 1876,
-    revenue: 45200,
-    growth: 12.5,
-    conversionRate: 89.3,
-    averageTime: "2m 30s",
-  },
-  activityLogs: [
-    {
-      id: "1",
-      userId: "1",
-      action: "login",
-      description: "Usuário fez login no sistema",
-      timestamp: new Date(),
-      ip: "192.168.1.1",
-    },
-    {
-      id: "2",
-      userId: "2",
-      action: "profile_update",
-      description: "Usuário atualizou o perfil",
-      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 min atrás
-      ip: "192.168.1.2",
-    },
-  ] as ActivityLog[],
-  notifications: [
-    {
-      id: "1",
-      userId: "1",
-      title: "Bem-vindo!",
-      message: "Sua conta foi criada com sucesso.",
-      type: "success" as const,
-      read: false,
-      createdAt: new Date(),
-    },
-    {
-      id: "2",
-      userId: "1",
-      title: "Nova funcionalidade",
-      message: "Confira as novas funcionalidades do dashboard.",
-      type: "info" as const,
-      read: false,
-      createdAt: new Date(Date.now() - 1000 * 60 * 60), // 1 hora atrás
-    },
-  ] as NotificationData[],
+    totalUsers: 1250,
+    activeUsers: 890,
+    totalSessions: 5420,
+    avgSessionDuration: 1800, // 30 minutos em segundos
+    totalRevenue: 45000,
+    monthlyGrowth: 15.8,
+  } as DashboardStats,
+  recentActivity: [] as UserActivity[],
+  systemMetrics: {
+    cpuUsage: 45,
+    memoryUsage: 68,
+    diskUsage: 32,
+    networkTraffic: 1250,
+    uptime: 99.98,
+  } as SystemMetrics,
+  notifications: [] as NotificationData[],
 };
 
 export async function getDashboardStats(
@@ -104,7 +83,7 @@ export async function getRecentActivity(userId: string, limit: number = 10) {
     await new Promise((resolve) => setTimeout(resolve, 50));
 
     // Filtrar atividades por usuário ou retornar todas se for admin
-    let activities = dashboardData.activityLogs;
+    let activities = dashboardData.recentActivity;
 
     // Se não for admin, mostrar apenas atividades do próprio usuário
     if (userId !== "1") {
@@ -201,6 +180,7 @@ export async function createNotification(
       type,
       read: false,
       createdAt: new Date(),
+      timestamp: new Date(),
     };
 
     dashboardData.notifications.push(newNotification);
@@ -222,24 +202,21 @@ export async function createNotification(
 export async function logActivity(
   userId: string,
   action: string,
-  description: string,
-  ip?: string
+  _ip?: string
 ) {
   try {
-    const newActivity: ActivityLog = {
-      id: (dashboardData.activityLogs.length + 1).toString(),
+    const newActivity: UserActivity = {
+      id: (dashboardData.recentActivity.length + 1).toString(),
       userId,
       action,
-      description,
       timestamp: new Date(),
-      ip,
     };
 
-    dashboardData.activityLogs.push(newActivity);
+    dashboardData.recentActivity.push(newActivity);
 
     // Manter apenas os últimos 100 logs para não sobrecarregar a memória
-    if (dashboardData.activityLogs.length > 100) {
-      dashboardData.activityLogs = dashboardData.activityLogs.slice(-100);
+    if (dashboardData.recentActivity.length > 100) {
+      dashboardData.recentActivity = dashboardData.recentActivity.slice(-100);
     }
 
     return {
@@ -306,18 +283,14 @@ export async function exportDashboardData(
 
     const exportData = {
       stats: dashboardData.stats,
-      totalActivities: dashboardData.activityLogs.length,
+      totalActivities: dashboardData.recentActivity.length,
       totalNotifications: dashboardData.notifications.length,
       exportedAt: new Date().toISOString(),
       exportedBy: userId,
     };
 
     // Log da atividade de exportação
-    await logActivity(
-      userId,
-      "export_data",
-      `Dados exportados em formato ${format}`
-    );
+    await logActivity(userId, "export_data");
 
     return {
       success: true,

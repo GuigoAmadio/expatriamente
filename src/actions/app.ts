@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 // Schemas de validação
@@ -24,7 +23,7 @@ const subscriptionSchema = z.object({
 });
 
 // Simulação de dados - substitua pela sua implementação real
-let appData = {
+const appData = {
   contacts: [] as Array<{
     id: string;
     name: string;

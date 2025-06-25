@@ -682,7 +682,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const t = (key: string, namespace?: string): string => {
     // Garante que language existe e tem um fallback
     const currentLang = language || "pt";
-    let langTranslations: any = translations[currentLang];
+    let langTranslations = translations[currentLang] as Record<string, any>;
 
     if (!langTranslations) {
       return key; // Retorna a chave como fallback se não há traduções
@@ -690,7 +690,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     // Se namespace foi fornecido, navega para ele primeiro
     if (namespace) {
-      langTranslations = langTranslations[namespace];
+      langTranslations = langTranslations[namespace] as Record<string, any>;
       if (!langTranslations) {
         return key;
       }

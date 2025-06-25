@@ -45,7 +45,7 @@ export default function PsychologistCard({ data, onClick }: Props) {
 
     const spaceRight = viewport.width - rect.right;
     const spaceLeft = rect.left;
-    const spaceTop = rect.top;
+    // const spaceTop = rect.top;
     const spaceBottom = viewport.height - rect.bottom;
 
     // Prioriza direita, depois esquerda, depois baixo, por último cima

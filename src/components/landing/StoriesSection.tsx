@@ -2,13 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
-import { useColors } from "@/hooks/useColors";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 
 export default function StoriesSection() {
   const { t } = useLanguage();
-  const colors = useColors();
+  // const colors = useColors();
   const { darkMode } = useTheme();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 

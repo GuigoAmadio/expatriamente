@@ -2,8 +2,9 @@
 
 import { compare, hash } from "bcryptjs";
 import { z } from "zod";
-import { signIn, signOut } from "@/auth";
-import { AuthError } from "next-auth";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { signIn } from "@/auth";
 
 // Schemas de validação
 const loginSchema = z.object({
@@ -37,7 +38,7 @@ const changePasswordSchema = z
   });
 
 // Simulação de banco de dados - substitua pela sua implementação real
-let users = [
+const users = [
   {
     id: "1",
     email: "admin@expatriamente.com",
@@ -181,11 +182,18 @@ export async function updateUserProfile(userId: string, formData: FormData) {
       email: formData.get("email") as string,
     };
 
-    // Validação simples
-    if (!rawFormData.name || !rawFormData.email) {
+    // Validação básica
+    if (!rawFormData.name || rawFormData.name.length < 2) {
       return {
         success: false,
-        error: "Nome e email são obrigatórios",
+        error: "Nome deve ter pelo menos 2 caracteres",
+      };
+    }
+
+    if (!rawFormData.email || !rawFormData.email.includes("@")) {
+      return {
+        success: false,
+        error: "Email inválido",
       };
     }
 
@@ -199,16 +207,17 @@ export async function updateUserProfile(userId: string, formData: FormData) {
       };
     }
 
-    // Verificar se email já está em uso por outro usuário
-    const existingUser = users.find(
-      (u) => u.email === rawFormData.email && u.id !== userId
-    );
-
-    if (existingUser) {
-      return {
-        success: false,
-        error: "Email já está em uso",
-      };
+    // Verificar se novo email já está em uso (se foi alterado)
+    if (rawFormData.email !== users[userIndex].email) {
+      const emailExists = users.some(
+        (u) => u.email === rawFormData.email && u.id !== userId
+      );
+      if (emailExists) {
+        return {
+          success: false,
+          error: "Email já está em uso",
+        };
+      }
     }
 
     // Atualizar usuário
@@ -219,8 +228,10 @@ export async function updateUserProfile(userId: string, formData: FormData) {
       updatedAt: new Date(),
     };
 
-    // Retornar dados do usuário (sem senha)
+    // Retornar dados atualizados (sem senha)
     const { password, ...userWithoutPassword } = users[userIndex];
+
+    revalidatePath("/dashboard");
 
     return {
       success: true,
@@ -300,7 +311,11 @@ export async function changeUserPassword(userId: string, formData: FormData) {
 
 export async function logoutUser() {
   try {
-    await signOut({ redirectTo: "/" });
+    // O logout é gerenciado pelo NextAuth
+    // Aqui você pode adicionar lógica adicional como logs
+
+    // Redirecionar para página inicial
+    redirect("/");
   } catch (error) {
     return {
       success: false,
@@ -362,19 +377,7 @@ export async function getUserById(id: string) {
 }
 
 export async function signInWithProvider(provider: string) {
-  try {
-    await signIn(provider, { redirectTo: "/dashboard" });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Credenciais inválidas." };
-        default:
-          return { error: "Algo deu errado." };
-      }
-    }
-    throw error;
-  }
+  await signIn(provider, { redirectTo: "/dashboard" });
 }
 
 export async function signInWithCredentials(
@@ -387,15 +390,10 @@ export async function signInWithCredentials(
       password: formData.get("password") as string,
       redirectTo: "/dashboard",
     });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { message: "Email ou senha inválidos." };
-        default:
-          return { message: "Algo deu errado." };
-      }
+  } catch (error: any) {
+    if (error.type === "CredentialsSignin") {
+      return { message: "Email ou senha inválidos." };
     }
-    throw error;
+    return { message: "Ocorreu um erro. Tente novamente." };
   }
 }

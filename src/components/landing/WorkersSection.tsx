@@ -2,13 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
-import { useColors } from "@/hooks/useColors";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 
 export default function WorkersSection() {
   const { t } = useLanguage();
-  const colors = useColors();
+  // const colors = useColors();
   const { darkMode } = useTheme();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -258,9 +257,10 @@ export default function WorkersSection() {
                   darkMode === "dark" ? "text-gray-300" : "text-gray-700"
                 }`}
               >
-                "Viver no exterior trouxe desafios que eu não esperava. A
+                &ldquo;Viver no exterior trouxe desafios que eu não esperava. A
                 terapia me ajudou a entender que é normal sentir saudade e que
-                posso criar minha nova identidade sem perder minhas raízes."
+                posso criar minha nova identidade sem perder minhas
+                raízes.&rdquo;"
               </blockquote>
               <div
                 className={`font-semibold ${

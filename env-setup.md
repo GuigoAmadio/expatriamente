@@ -1,12 +1,13 @@
-# Configuração de Variáveis de Ambiente - NextAuth v5
+# Configuração de Variáveis de Ambiente
 
-Para que a aplicação funcione corretamente com NextAuth v5, você precisa criar um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
+Para que a aplicação funcione corretamente, você precisa criar um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
 
 ## Variáveis Obrigatórias
 
 ```env
-# NextAuth v5 Configuration
-AUTH_SECRET=seu-secret-super-seguro-aqui-mude-em-producao
+# NextAuth Configuration
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=seu-secret-super-seguro-aqui-mude-em-producao
 ```
 
 ## Variáveis Opcionais (para OAuth com Google)
@@ -27,18 +28,13 @@ GOOGLE_CLIENT_SECRET=seu-google-client-secret
 ## Exemplo Completo do .env.local
 
 ```env
-AUTH_SECRET=expatriamente-dev-secret-change-in-production
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=expatriamente-dev-secret-change-in-production
 
 # Opcional - apenas se quiser testar login com Google
 # GOOGLE_CLIENT_ID=your-google-client-id.googleusercontent.com
 # GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
-
-## ⚠️ IMPORTANTE PARA VERCEL
-
-**NÃO defina AUTH_URL ou NEXTAUTH_URL na Vercel!**
-
-A Vercel define automaticamente essas variáveis. Definir manualmente pode causar problemas de autenticação.
 
 ## Obter Credenciais do Google (Opcional)
 
@@ -47,16 +43,8 @@ A Vercel define automaticamente essas variáveis. Definir manualmente pode causa
 3. Ative a Google+ API
 4. Vá para "Credenciais" → "Criar credenciais" → "ID do cliente OAuth"
 5. Configure os URIs de redirecionamento:
-   - `http://localhost:3000/api/auth/callback/google` (desenvolvimento)
-   - `https://seu-dominio.vercel.app/api/auth/callback/google` (produção)
+   - `http://localhost:3000/api/auth/callback/google`
 6. Copie o Client ID e Client Secret para o arquivo .env.local
-
-## Mudanças do NextAuth v4 para v5
-
-- `NEXTAUTH_SECRET` → `AUTH_SECRET`
-- `NEXTAUTH_URL` → **Não usar no Vercel** (definido automaticamente)
-- Middleware simplificado
-- Route handlers automáticos
 
 ## Nota Importante
 

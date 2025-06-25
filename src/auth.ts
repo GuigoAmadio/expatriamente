@@ -10,14 +10,14 @@ const users = [
     email: "admin@expatriamente.com",
     password: "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewgHDOGiHGzOLlly", // password123
     name: "Administrador",
-    role: "admin",
+    role: "admin" as const,
   },
   {
     id: "2",
     email: "user@expatriamente.com",
     password: "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewgHDOGiHGzOLlly", // password123
     name: "Usuário Teste",
-    role: "user",
+    role: "user" as const,
   },
 ];
 
@@ -29,21 +29,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
-        const user = users.find((u) => u.email === credentials.email);
-        if (!user) {
-          return null;
+        const { email, password } = credentials;
+
+        const user = users.find((u) => u.email === email);
+        if (!user || !user.password) {
+          throw new Error("Usuário não encontrado ou senha não configurada.");
         }
 
         const isPasswordValid = await compare(
-          credentials.password as string,
+          password as string,
           user.password
         );
         if (!isPasswordValid) {
-          return null;
+          throw new Error("Senha inválida.");
         }
 
         return {
@@ -64,33 +64,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     jwt({ token, user }) {
-      if (user) {
+      if (user?.role) {
         token.role = user.role;
       }
       return token;
     },
     session({ session, token }) {
-      if (session.user) {
+      if (session?.user) {
         session.user.id = token.sub!;
-        session.user.role = token.role as string;
+        session.user.role = token.role as "admin" | "user";
       }
       return session;
     },
   },
-  trustHost: true, // Importante para Vercel
+  session: {
+    strategy: "jwt",
+  },
 });
 
+// Tipos para NextAuth v5
 declare module "next-auth" {
   interface User {
-    role?: string;
+    role?: "admin" | "user";
   }
   interface Session {
     user: {
       id: string;
-      name?: string | null;
       email?: string | null;
+      name?: string | null;
       image?: string | null;
-      role?: string;
+      role?: "admin" | "user";
     };
   }
 }

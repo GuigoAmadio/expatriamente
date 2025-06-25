@@ -7,7 +7,6 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import {
   FaFacebook,
-  FaTwitter,
   FaInstagram,
   FaLinkedin,
   FaYoutube,
@@ -19,7 +18,6 @@ export default function FAQSection() {
   const { darkMode } = useTheme();
 
   // Recupera as FAQs das traduções de forma correta
-  const { language } = useLanguage();
 
   // Busca diretamente no contexto
   const getFaqTranslation = (index: number, field: string) => {

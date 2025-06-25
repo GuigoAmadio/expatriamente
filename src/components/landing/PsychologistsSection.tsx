@@ -45,8 +45,8 @@ export default function PsychologistsSection() {
   const [selectedPsychologist, setSelectedPsychologist] =
     useState<Psychologist | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [expandLeft, setExpandLeft] = useState(false);
+  // const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // const [expandLeft, setExpandLeft] = useState(false);
 
   const psychologists: Psychologist[] = [
     {
