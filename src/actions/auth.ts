@@ -2,9 +2,8 @@
 
 import { compare, hash } from "bcryptjs";
 import { z } from "zod";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
+import { AuthError } from "next-auth";
 
 // Schemas de validação
 const loginSchema = z.object({
@@ -182,18 +181,11 @@ export async function updateUserProfile(userId: string, formData: FormData) {
       email: formData.get("email") as string,
     };
 
-    // Validação básica
-    if (!rawFormData.name || rawFormData.name.length < 2) {
+    // Validação simples
+    if (!rawFormData.name || !rawFormData.email) {
       return {
         success: false,
-        error: "Nome deve ter pelo menos 2 caracteres",
-      };
-    }
-
-    if (!rawFormData.email || !rawFormData.email.includes("@")) {
-      return {
-        success: false,
-        error: "Email inválido",
+        error: "Nome e email são obrigatórios",
       };
     }
 
@@ -207,17 +199,16 @@ export async function updateUserProfile(userId: string, formData: FormData) {
       };
     }
 
-    // Verificar se novo email já está em uso (se foi alterado)
-    if (rawFormData.email !== users[userIndex].email) {
-      const emailExists = users.some(
-        (u) => u.email === rawFormData.email && u.id !== userId
-      );
-      if (emailExists) {
-        return {
-          success: false,
-          error: "Email já está em uso",
-        };
-      }
+    // Verificar se email já está em uso por outro usuário
+    const existingUser = users.find(
+      (u) => u.email === rawFormData.email && u.id !== userId
+    );
+
+    if (existingUser) {
+      return {
+        success: false,
+        error: "Email já está em uso",
+      };
     }
 
     // Atualizar usuário
@@ -228,10 +219,8 @@ export async function updateUserProfile(userId: string, formData: FormData) {
       updatedAt: new Date(),
     };
 
-    // Retornar dados atualizados (sem senha)
+    // Retornar dados do usuário (sem senha)
     const { password, ...userWithoutPassword } = users[userIndex];
-
-    revalidatePath("/dashboard");
 
     return {
       success: true,
@@ -311,11 +300,7 @@ export async function changeUserPassword(userId: string, formData: FormData) {
 
 export async function logoutUser() {
   try {
-    // O logout é gerenciado pelo NextAuth
-    // Aqui você pode adicionar lógica adicional como logs
-
-    // Redirecionar para página inicial
-    redirect("/");
+    await signOut({ redirectTo: "/" });
   } catch (error) {
     return {
       success: false,
@@ -377,7 +362,19 @@ export async function getUserById(id: string) {
 }
 
 export async function signInWithProvider(provider: string) {
-  await signIn(provider, { redirectTo: "/dashboard" });
+  try {
+    await signIn(provider, { redirectTo: "/dashboard" });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Credenciais inválidas." };
+        default:
+          return { error: "Algo deu errado." };
+      }
+    }
+    throw error;
+  }
 }
 
 export async function signInWithCredentials(
@@ -385,16 +382,20 @@ export async function signInWithCredentials(
   formData: FormData
 ) {
   try {
-    await signIn("credentials", formData);
-    // Se o login for bem-sucedido, o middleware fará o redirecionamento.
-    // Esta linha não será alcançada em caso de sucesso.
-    return { message: "" }; // Retorno para estado inicial
-  } catch (error: any) {
-    // O erro de login (ex: senha incorreta) será lançado aqui
-    if (error.type === "CredentialsSignin") {
-      return { message: "Email ou senha inválidos." };
+    await signIn("credentials", {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      redirectTo: "/dashboard",
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { message: "Email ou senha inválidos." };
+        default:
+          return { message: "Algo deu errado." };
+      }
     }
-    // Para outros tipos de erro
-    return { message: "Ocorreu um erro. Tente novamente." };
+    throw error;
   }
 }

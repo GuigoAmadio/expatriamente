@@ -2,10 +2,9 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { compare } from "bcryptjs";
-import type { User } from "next-auth";
 
 // Simulação de banco de dados
-const users: User[] = [
+const users = [
   {
     id: "1",
     email: "admin@expatriamente.com",
@@ -25,35 +24,39 @@ const users: User[] = [
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      // Você pode adicionar um formulário personalizado aqui, ou deixar em branco para usar o padrão
       credentials: {
-        email: { label: "Email" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
-        const { email, password } = credentials;
-
-        if (typeof email !== "string" || typeof password !== "string") {
+        if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        const user = users.find((u) => u.email === email);
-        if (!user || !user.password) {
-          throw new Error("Usuário não encontrado ou senha não configurada.");
+        const user = users.find((u) => u.email === credentials.email);
+        if (!user) {
+          return null;
         }
 
-        const isPasswordValid = await compare(password, user.password);
+        const isPasswordValid = await compare(
+          credentials.password as string,
+          user.password
+        );
         if (!isPasswordValid) {
-          throw new Error("Senha inválida.");
+          return null;
         }
 
-        return user;
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+        };
       },
     }),
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   pages: {
@@ -62,32 +65,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },
     session({ session, token }) {
-      if (session?.user) {
-        session.user.id = token.sub ?? "no-id";
-        session.user.role = (token as any).role;
+      if (session.user) {
+        session.user.id = token.sub!;
+        session.user.role = token.role as string;
       }
       return session;
     },
   },
+  trustHost: true, // Importante para Vercel
 });
 
 declare module "next-auth" {
   interface User {
-    role?: "admin" | "user";
-    password?: string;
+    role?: string;
   }
   interface Session {
-    user?: User;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    role?: "admin" | "user";
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      role?: string;
+    };
   }
 }
