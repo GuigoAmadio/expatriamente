@@ -27,10 +27,10 @@ const Loading: React.FC<LoadingProps> = ({
   };
 
   const colorClasses = {
-    primary: "text-primary-500",
-    secondary: "text-secondary-500",
-    white: "text-white",
-    gray: "text-gray-500",
+    primary: "text-primary",
+    secondary: "text-secondary",
+    white: "text-surface",
+    gray: "text-primary/60",
   };
 
   if (variant === "spinner") {

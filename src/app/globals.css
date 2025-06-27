@@ -83,3 +83,646 @@ html {
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+:root {
+  /* Cores Principais - Serão definidas dinamicamente pelo ThemeContext */
+  --color-primary: #5f6f52;
+  --color-secondary: #3a4332;
+  --color-accent: #c4661f;
+  --color-background: #fefae0;
+  --color-surface: #f5f1e8;
+  --color-surface-elevated: #ffffff;
+  --color-surface-subtle: #f9f6f0;
+  --color-text-primary: #2d3748;
+  --color-text-secondary: #4a5568;
+  --color-text-muted: #718096;
+  --color-text-on-primary: #ffffff;
+
+  /* Bordas e Separadores - Fixos */
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e0;
+  --color-divider: #edf2f7;
+
+  /* Estados Interativos - Fixos */
+  --color-hover: #f7fafc;
+  --color-pressed: #edf2f7;
+  --color-focus: #4299e1;
+
+  /* Cores de Status - Fixos */
+  --color-success: #48bb78;
+  --color-warning: #ed8936;
+  --color-error: #f56565;
+  --color-info: #4299e1;
+
+  /* Sombras - Fixas */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Fontes - Serão definidas dinamicamente */
+  --font-heading: "Mikela", serif;
+  --font-body: "Montserrat", sans-serif;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--color-text-primary);
+}
+
+/* Classes de Hierarquia Visual */
+.section-bg-primary {
+  background: var(--color-background);
+}
+
+.section-bg-secondary {
+  background: var(--color-surface);
+}
+
+.section-bg-elevated {
+  background: var(--color-surface-elevated);
+}
+
+.section-bg-subtle {
+  background: var(--color-surface-subtle);
+}
+
+/* Cards com melhor hierarquia */
+.card-elevated {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  border-radius: 1rem;
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.card-subtle {
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  border-radius: 0.75rem;
+}
+
+/* Botões com hierarquia */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border: none;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary);
+  opacity: 0.9;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--color-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Textos com melhor contraste */
+.text-heading {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.text-body {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-accent {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Classes de Texto Principais - Correspondentes ao Tailwind Config */
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-on-primary {
+  color: var(--color-text-on-primary);
+}
+
+/* Classes de Background - Correspondentes ao Tailwind Config */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.bg-background {
+  background-color: var(--color-background);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+.bg-surface-elevated {
+  background-color: var(--color-surface-elevated);
+}
+
+.bg-surface-subtle {
+  background-color: var(--color-surface-subtle);
+}
+
+.bg-hover {
+  background-color: var(--color-hover);
+}
+
+.bg-pressed {
+  background-color: var(--color-pressed);
+}
+
+/* Classes de Border - Correspondentes ao Tailwind Config */
+.border-border {
+  border-color: var(--color-border);
+}
+
+.border-border-strong {
+  border-color: var(--color-border-strong);
+}
+
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.border-secondary {
+  border-color: var(--color-secondary);
+}
+
+.border-accent {
+  border-color: var(--color-accent);
+}
+
+.border-divider {
+  border-color: var(--color-divider);
+}
+
+/* Classes de Status */
+.text-success {
+  color: var(--color-success);
+}
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-error {
+  color: var(--color-error);
+}
+
+.text-info {
+  color: var(--color-info);
+}
+
+.bg-success {
+  background-color: var(--color-success);
+}
+
+.bg-warning {
+  background-color: var(--color-warning);
+}
+
+.bg-error {
+  background-color: var(--color-error);
+}
+
+.bg-info {
+  background-color: var(--color-info);
+}
+
+/* Ring/Focus colors */
+.ring-primary {
+  --tw-ring-color: var(--color-primary);
+}
+
+.ring-secondary {
+  --tw-ring-color: var(--color-secondary);
+}
+
+.ring-accent {
+  --tw-ring-color: var(--color-accent);
+}
+
+.ring-focus {
+  --tw-ring-color: var(--color-focus);
+}
+
+/* Border colors para status */
+.border-success {
+  border-color: var(--color-success);
+}
+
+.border-warning {
+  border-color: var(--color-warning);
+}
+
+.border-error {
+  border-color: var(--color-error);
+}
+
+.border-info {
+  border-color: var(--color-info);
+}
+
+/* Modo escuro para as novas classes */
+.dark .bg-surface {
+  background-color: hsl(222, 84%, 5%);
+}
+
+.dark .bg-surface-elevated {
+  background-color: hsl(222, 84%, 7%);
+}
+
+.dark .bg-surface-subtle {
+  background-color: hsl(222, 84%, 3%);
+}
+
+/* Separadores de seção */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-divider);
+  margin: 3rem 0;
+}
+
+/* Modo escuro */
+.dark .section-bg-primary {
+  background: var(--color-secondary);
+}
+
+.dark .section-bg-secondary {
+  background: hsl(222, 84%, 4%); /* Mais escuro que secondary */
+}
+
+.dark .section-bg-elevated {
+  background: hsl(222, 84%, 6%); /* Cards em dark mode */
+}
+
+.dark .section-bg-subtle {
+  background: hsl(222, 84%, 8%); /* Seções alternadas em dark mode */
+}
+
+.dark .text-heading {
+  color: var(--color-text-on-primary);
+}
+
+.dark .text-body {
+  color: hsl(210, 40%, 80%);
+}
+
+.dark .text-muted {
+  color: hsl(210, 40%, 60%);
+}
+
+/* HIERARQUIA VISUAL APRIMORADA - Baseada na regra 60/30/10 */
+
+/* Botões de Destaque Principal - 10% do design (CTAs importantes) */
+.btn-cta-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary),
+    var(--color-secondary)
+  );
+  color: var(--color-text-on-primary);
+  border: none;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 25px rgba(212, 118, 26, 0.3);
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.btn-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(212, 118, 26, 0.4);
+  background: linear-gradient(135deg, #b8611a, #b8611a);
+}
+
+.btn-cta-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(212, 118, 26, 0.3);
+}
+
+/* Botões Secundários - Destaque médio */
+.btn-cta-secondary {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border: 2px solid var(--color-primary);
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(47, 82, 51, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-cta-secondary:hover {
+  background: transparent;
+  color: var(--color-primary);
+  box-shadow: 0 6px 20px rgba(47, 82, 51, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Botões Terciários - Sutil */
+.btn-cta-tertiary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-border-strong);
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-cta-tertiary:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface-elevated);
+  box-shadow: 0 4px 12px rgba(47, 82, 51, 0.1);
+}
+
+/* Cards dos Psicólogos - Destaque médio (30% do design) */
+.card-psychologist {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-psychologist::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-psychologist:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-accent);
+}
+
+.card-psychologist:hover::before {
+  opacity: 1;
+}
+
+/* Cards de destaque especial */
+.card-featured {
+  background: linear-gradient(
+    135deg,
+    var(--color-surface-elevated),
+    var(--color-surface-subtle)
+  );
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 8px 25px rgba(123, 160, 91, 0.15);
+}
+
+.card-featured::before {
+  opacity: 1;
+  height: 6px;
+}
+
+/* Seções com hierarquia de fundo - 60% do design */
+.section-primary {
+  background: var(--color-background);
+}
+
+.section-secondary {
+  background: var(--color-surface);
+}
+
+.section-accent {
+  background: linear-gradient(
+    135deg,
+    var(--color-surface-subtle),
+    var(--color-surface)
+  );
+}
+
+/* Tags e badges */
+.badge-primary {
+  background: var(--color-secondary);
+  color: var(--color-text-on-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.badge-secondary {
+  background: var(--color-accent);
+  color: var(--color-text-on-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Elementos de destaque */
+.highlight-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary),
+    var(--color-secondary)
+  );
+  color: var(--color-text-on-primary);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+}
+
+.highlight-secondary {
+  background: var(--color-accent);
+  color: var(--color-text-on-primary);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+}
+
+/* Prevenção de overflow horizontal - Solução definitiva */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/* Containers principais seguros */
+.container,
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Flexbox seguro - sem expansão desnecessária */
+.flex {
+  min-width: 0; /* Permite que flex items encolham */
+}
+
+.flex-1 {
+  min-width: 0; /* Previne overflow em flex-grow */
+}
+
+/* Grid seguro - apenas quando necessário */
+.grid {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Prevenção para elementos que podem causar overflow */
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Texto que não deve quebrar layout */
+.whitespace-nowrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Classes utilitárias para containers seguros */
+.safe-container {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.safe-flex {
+  display: flex;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.safe-grid {
+  display: grid;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Responsividade segura */
+@media (max-width: 768px) {
+  .responsive-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .responsive-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Animações seguras - sem overflow */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+  overflow: hidden;
+}
+
+/* Debug - para identificar elementos problemáticos */
+.debug-overflow * {
+  outline: 1px solid red !important;
+}
+
+/* Garantir que dropdowns fiquem sempre por cima */
+.dropdown-menu,
+[role="listbox"],
+[role="menu"] {
+  z-index: 9999 !important;
+}
+
+/* Correções específicas para componentes */
+.theme-selector-dropdown,
+.language-selector-dropdown {
+  z-index: 9999 !important;
+  position: relative;
+}
+
+/* Estilos base do Tailwind */

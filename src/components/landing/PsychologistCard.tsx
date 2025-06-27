@@ -80,11 +80,9 @@ export default function PsychologistCard({ data, onClick }: Props) {
   return (
     <div
       ref={cardRef}
-      className={`relative rounded-xl shadow-sm hover:shadow-md cursor-pointer transition-all duration-300 ${
-        darkMode === "dark"
-          ? "bg-gray-800 border-gray-700 hover:border-teal-600"
-          : "bg-white border-gray-100 hover:border-orange-200"
-      } border`}
+      className={`relative card-elevated cursor-pointer transition-all duration-300 hover:transform hover:scale-105 ${
+        darkMode === "dark" ? "dark" : ""
+      }`}
       onMouseEnter={() => {
         if (window.innerWidth > 768) handleShowDetails();
       }}
@@ -106,35 +104,21 @@ export default function PsychologistCard({ data, onClick }: Props) {
           src={data.image}
           alt={data.name}
           className={`w-16 h-16 rounded-full object-cover border-2 mb-2 shadow-sm ${
-            darkMode === "dark" ? "border-teal-400" : "border-orange-500"
+            darkMode === "dark" ? "border-accent" : "border-primary"
           }`}
         />
-        <div
-          className={`font-semibold text-lg text-center ${
-            darkMode === "dark" ? "text-white" : "text-gray-900"
-          }`}
-        >
+        <div className="font-semibold text-lg text-center text-heading">
           {data.name}
         </div>
-        <div
-          className={`text-sm text-center ${
-            darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-          }`}
-        >
-          {data.specialty}
-        </div>
+        <div className="text-sm text-center text-accent">{data.specialty}</div>
       </div>
 
       {/* Painel de detalhes absoluto */}
       <div
         className={`
-          absolute z-50 w-[340px] shadow-xl rounded-xl p-6 border
+          absolute z-50 w-[340px] card-elevated p-6
           transition-all duration-300 ease-in-out
-          ${
-            darkMode === "dark"
-              ? "bg-gray-800 border-gray-700"
-              : "bg-white border-gray-200"
-          }
+          ${darkMode === "dark" ? "dark" : ""}
           ${
             showDetails
               ? "opacity-100 scale-100"
@@ -164,8 +148,8 @@ export default function PsychologistCard({ data, onClick }: Props) {
             absolute w-3 h-3 border transform rotate-45
             ${
               darkMode === "dark"
-                ? "bg-gray-800 border-gray-700"
-                : "bg-white border-gray-200"
+                ? "bg-secondary border-primary"
+                : "bg-background border-primary/20"
             }
             ${position === "right" ? "-left-1.5 top-6" : ""}
             ${position === "left" ? "-right-1.5 top-6" : ""}
@@ -184,10 +168,8 @@ export default function PsychologistCard({ data, onClick }: Props) {
 
         {/* Botão de fechar para mobile */}
         <button
-          className={`absolute top-2 right-2 text-gray-400 text-xl font-bold md:hidden transition-colors ${
-            darkMode === "dark"
-              ? "hover:text-teal-400"
-              : "hover:text-orange-500"
+          className={`absolute top-2 right-2 text-primary text-xl font-bold md:hidden transition-colors ${
+            darkMode === "dark" ? "hover:text-accent" : "hover:text-accent"
           }`}
           onClick={() => setShowDetails(false)}
           aria-label={t("close", "common")}
@@ -197,14 +179,14 @@ export default function PsychologistCard({ data, onClick }: Props) {
 
         <div
           className={`font-bold text-lg mb-1 ${
-            darkMode === "dark" ? "text-white" : "text-gray-900"
+            darkMode === "dark" ? "text-surface" : "text-primary"
           }`}
         >
           {data.name}
         </div>
         <div
           className={`mb-3 ${
-            darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+            darkMode === "dark" ? "text-accent" : "text-primary"
           }`}
         >
           {data.specialty}
@@ -212,14 +194,12 @@ export default function PsychologistCard({ data, onClick }: Props) {
 
         <div
           className={`space-y-2 text-sm ${
-            darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+            darkMode === "dark" ? "text-surface" : "text-primary"
           }`}
         >
           <div className="flex items-center gap-2">
             <span
-              className={
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }
+              className={darkMode === "dark" ? "text-accent" : "text-primary"}
             >
               ⭐
             </span>
@@ -230,9 +210,7 @@ export default function PsychologistCard({ data, onClick }: Props) {
           </div>
           <div className="flex items-center gap-2">
             <span
-              className={
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }
+              className={darkMode === "dark" ? "text-accent" : "text-primary"}
             >
               📍
             </span>
@@ -240,9 +218,7 @@ export default function PsychologistCard({ data, onClick }: Props) {
           </div>
           <div className="flex items-center gap-2">
             <span
-              className={
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }
+              className={darkMode === "dark" ? "text-accent" : "text-primary"}
             >
               💰
             </span>
@@ -252,9 +228,7 @@ export default function PsychologistCard({ data, onClick }: Props) {
           </div>
           <div className="flex items-center gap-2">
             <span
-              className={
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }
+              className={darkMode === "dark" ? "text-accent" : "text-primary"}
             >
               🗣️
             </span>
@@ -266,21 +240,21 @@ export default function PsychologistCard({ data, onClick }: Props) {
 
         <div
           className={`mt-4 pt-4 border-t ${
-            darkMode === "dark" ? "border-gray-700" : "border-gray-200"
+            darkMode === "dark" ? "border-primary" : "border-primary/20"
           }`}
         >
           <p
             className={`text-sm mb-3 line-clamp-3 ${
-              darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+              darkMode === "dark" ? "text-surface" : "text-primary"
             }`}
           >
             {data.bio}
           </p>
           <button
-            className={`w-full px-4 py-2 rounded-lg transition-colors font-medium text-sm shadow-sm hover:shadow-md text-white ${
+            className={`w-full px-4 py-2 rounded-lg transition-colors font-medium text-sm shadow-sm hover:shadow-md text-surface ${
               darkMode === "dark"
-                ? "bg-teal-500 hover:bg-teal-600"
-                : "bg-orange-500 hover:bg-orange-600"
+                ? "bg-accent hover:bg-accent"
+                : "bg-primary hover:bg-primary"
             }`}
           >
             {t("bookConsultation", "psychologists")}

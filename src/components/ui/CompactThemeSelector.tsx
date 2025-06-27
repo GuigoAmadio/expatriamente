@@ -2,34 +2,25 @@
 
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { useLanguage } from "@/context/LanguageContext";
+import { useTheme } from "@/context/ThemeContext";
+import { themes } from "@/config/design/themes";
 
-type Language = "pt" | "en" | "es";
+const themeOptions = [
+  { key: "theme1", name: "Opção 1 - Terroso", preview: "#5F6F52" },
+  { key: "theme2", name: "Opção 2 - Azul/Cinza", preview: "#071739" },
+  { key: "theme3", name: "Opção 3 - Marrom/Azul", preview: "#75564d" },
+] as const;
 
-interface LanguageOption {
-  code: Language;
-  name: string;
-  flag: string;
-  nativeName: string;
-}
-
-const languages: LanguageOption[] = [
-  { code: "pt", name: "Português", flag: "🇧🇷", nativeName: "Português" },
-  { code: "en", name: "English", flag: "🇺🇸", nativeName: "English" },
-  { code: "es", name: "Español", flag: "🇪🇸", nativeName: "Español" },
-];
-
-export default function LanguageSelector() {
-  const { language, setLanguage } = useLanguage();
+export default function CompactThemeSelector() {
+  const { colorTheme, setColorTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [mounted, setMounted] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const currentLanguage =
-    languages.find((lang) => lang.code === language) || languages[0];
+  const currentOption =
+    themeOptions.find((option) => option.key === colorTheme) || themeOptions[0];
 
   // Garantir que está montado no cliente
   useEffect(() => {
@@ -42,7 +33,7 @@ export default function LanguageSelector() {
       const rect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
         top: rect.bottom + window.scrollY + 8,
-        left: rect.right - 160 + window.scrollX, // Alinha à direita
+        left: rect.left + window.scrollX, // Alinha à esquerda para mobile
       });
     }
   };
@@ -91,8 +82,8 @@ export default function LanguageSelector() {
     };
   }, [isOpen]);
 
-  const handleLanguageChange = (langCode: Language) => {
-    setLanguage(langCode);
+  const handleThemeChange = (themeKey: typeof colorTheme) => {
+    setColorTheme(themeKey);
     setIsOpen(false);
   };
 
@@ -114,34 +105,32 @@ export default function LanguageSelector() {
             handleToggle();
           }
         }}
-        aria-label={`Idioma atual: ${currentLanguage.nativeName}. Clique para alterar`}
+        aria-label={`Tema atual: ${currentOption.name}. Clique para alterar`}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-surface
-          ${
-            language === "pt" || language === "en" || language === "es"
-              ? document.documentElement.classList.contains("dark")
-                ? "bg-accent/90 hover:bg-accent"
-                : "bg-primary/90 hover:bg-primary"
-              : ""
-          }
-        `}
+        className="p-2 rounded-lg transition-all duration-200 hover:bg-surface-elevated flex-shrink-0"
       >
-        <span
-          className="text-lg"
-          role="img"
-          aria-label={`Bandeira ${currentLanguage.name}`}
-        >
-          {currentLanguage.flag}
-        </span>
-        <span className="text-sm font-medium min-w-[3rem] text-left">
-          {currentLanguage.code.toUpperCase()}
-        </span>
-        <ChevronDownIcon
-          className={`w-4 h-4 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
+        {/* Ícone de paleta de cores com preview da cor atual */}
+        <div className="relative">
+          <svg
+            className="w-5 h-5 text-primary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v6a2 2 0 002 2h4a2 2 0 002-2V5z"
+            />
+          </svg>
+          {/* Pequeno preview da cor atual */}
+          <div
+            className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
+            style={{ backgroundColor: currentOption.preview }}
+          />
+        </div>
       </button>
 
       {/* Dropdown renderizado via portal */}
@@ -151,48 +140,47 @@ export default function LanguageSelector() {
           <div
             ref={dropdownRef}
             role="listbox"
-            aria-label="Selecionar idioma"
-            className="fixed bg-background dark:bg-secondary border border-tertiary dark:border-secondary rounded-lg shadow-xl min-w-[160px] py-1 animate-in fade-in-0 zoom-in-95 duration-200"
+            aria-label="Selecionar tema de cores"
+            className="fixed bg-surface-elevated border border-border rounded-lg shadow-xl min-w-[200px] py-1 animate-in fade-in-0 zoom-in-95 duration-200"
             style={{
               top: dropdownPosition.top,
               left: dropdownPosition.left,
               zIndex: 99999,
             }}
           >
-            {languages.map((lang) => (
+            {themeOptions.map((option) => (
               <button
-                key={lang.code}
-                onClick={() => handleLanguageChange(lang.code)}
+                key={option.key}
+                onClick={() =>
+                  handleThemeChange(option.key as typeof colorTheme)
+                }
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    handleLanguageChange(lang.code);
+                    handleThemeChange(option.key as typeof colorTheme);
                   }
                 }}
                 role="option"
-                aria-selected={lang.code === language}
-                className={`w-full flex items-center gap-3 px-4 py-2 text-left text-sm transition-colors duration-200 ${
-                  lang.code === language
-                    ? "bg-primary/10 dark:bg-accent/20 text-primary dark:text-accent"
-                    : "text-primary dark:text-surface hover:bg-surface dark:hover:bg-secondary"
+                aria-selected={option.key === colorTheme}
+                className={`w-full flex items-center gap-3 px-4 py-3 text-left text-sm transition-colors duration-200 ${
+                  option.key === colorTheme
+                    ? "bg-primary/10 text-primary border-l-4 border-primary"
+                    : "text-primary hover:bg-hover"
                 }`}
               >
-                <span
-                  className="text-lg"
-                  role="img"
-                  aria-label={`Bandeira ${lang.name}`}
-                >
-                  {lang.flag}
-                </span>
-                <div className="flex flex-col">
-                  <span className="font-medium">{lang.nativeName}</span>
-                  {lang.name !== lang.nativeName && (
-                    <span className="text-xs text-primary/60 dark:text-surface/60">
-                      {lang.name}
-                    </span>
-                  )}
+                {/* Preview da cor */}
+                <div
+                  className="w-5 h-5 rounded-full border border-border-strong flex-shrink-0"
+                  style={{ backgroundColor: option.preview }}
+                />
+
+                {/* Nome do tema */}
+                <div className="flex flex-col flex-1">
+                  <span className="font-medium">{option.name}</span>
                 </div>
-                {lang.code === language && (
+
+                {/* Indicador de seleção */}
+                {option.key === colorTheme && (
                   <div className="ml-auto">
                     <svg
                       className="w-4 h-4 text-primary"

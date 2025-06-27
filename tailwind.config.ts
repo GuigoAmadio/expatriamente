@@ -10,75 +10,135 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Cores Principais com melhor hierarquia
         primary: {
-          DEFAULT: "#f97316",
-          50: "#fff7ed",
-          100: "#ffedd5",
-          200: "#fed7aa",
-          300: "#fdba74",
-          400: "#fb923c",
-          500: "#f97316",
-          600: "#ea580c",
-          700: "#c2410c",
-          800: "#9a3412",
-          900: "#7c2d12",
+          DEFAULT: "var(--color-primary)",
+          50: "#f0f9ff",
+          100: "#e0f2fe",
+          200: "#bae6fd",
+          300: "#7dd3fc",
+          400: "#38bdf8",
+          500: "var(--color-primary)",
+          600: "#0284c7",
+          700: "#0369a1",
+          800: "#075985",
+          900: "#0c4a6e",
         },
         secondary: {
-          DEFAULT: "#3b82f6",
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-        },
-        background: {
-          light: "#ffffff",
-          dark: "#0f172a",
-        },
-        foreground: {
-          light: "#000000",
-          dark: "#ffffff",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--color-secondary)",
+          50: "#f8fafc",
+          100: "#f1f5f9",
+          200: "#e2e8f0",
+          300: "#cbd5e0",
+          400: "#94a3b8",
+          500: "var(--color-secondary)",
+          600: "#475569",
+          700: "#334155",
+          800: "#1e293b",
+          900: "#0f172a",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--color-accent)",
+          50: "#fefce8",
+          100: "#fef9c3",
+          200: "#fef08a",
+          300: "#fde047",
+          400: "#facc15",
+          500: "var(--color-accent)",
+          600: "#ca8a04",
+          700: "#a16207",
+          800: "#854d0e",
+          900: "#713f12",
+        },
+
+        // Sistema de Fundos Hierárquico
+        background: {
+          DEFAULT: "var(--color-background)",
+          elevated: "var(--color-surface-elevated)",
+          subtle: "var(--color-surface-subtle)",
+        },
+        surface: {
+          DEFAULT: "var(--color-surface)",
+          elevated: "var(--color-surface-elevated)",
+          subtle: "var(--color-surface-subtle)",
+        },
+
+        // Sistema de Textos
+        text: {
+          DEFAULT: "var(--color-text-primary)",
+          primary: "var(--color-text-primary)",
+          secondary: "var(--color-text-secondary)",
+          muted: "var(--color-text-muted)",
+          "on-primary": "var(--color-text-on-primary)",
+        },
+
+        // Bordas e Divisores
+        border: {
+          DEFAULT: "var(--color-border)",
+          strong: "var(--color-border-strong)",
+        },
+        divider: "var(--color-divider)",
+
+        // Estados Interativos
+        hover: "var(--color-hover)",
+        pressed: "var(--color-pressed)",
+        focus: "var(--color-focus)",
+
+        // Cores de Status
+        success: "var(--color-success)",
+        warning: "var(--color-warning)",
+        error: "var(--color-error)",
+        info: "var(--color-info)",
+
+        // Compatibilidade com Shadcn/UI
+        card: {
+          DEFAULT: "var(--color-surface-elevated)",
+          foreground: "var(--color-text-primary)",
+        },
+        popover: {
+          DEFAULT: "var(--color-surface-elevated)",
+          foreground: "var(--color-text-primary)",
+        },
+        muted: {
+          DEFAULT: "var(--color-surface)",
+          foreground: "var(--color-text-muted)",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--color-error)",
+          foreground: "var(--color-text-on-primary)",
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        input: "var(--color-surface-elevated)",
+        ring: "var(--color-focus)",
+
+        // Charts
         chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
+          "1": "var(--color-primary)",
+          "2": "var(--color-accent)",
+          "3": "var(--color-secondary)",
+          "4": "var(--color-info)",
+          "5": "var(--color-success)",
         },
+
+        // Compatibilidade (cores antigas - deprecated)
+        tertiary: "var(--color-border)",
+      },
+      fontFamily: {
+        heading: ["var(--font-heading)"],
+        body: ["var(--font-body)"],
       },
       borderRadius: {
         lg: "0.5rem",
         md: "0.375rem",
         sm: "0.25rem",
+      },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+        card: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        elevated:
+          "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
       },
       animation: {
         "fade-in-up": "fadeInUp 0.6s ease-out",

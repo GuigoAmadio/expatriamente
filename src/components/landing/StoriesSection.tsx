@@ -90,7 +90,7 @@ export default function StoriesSection() {
   return (
     <section
       className={`py-20 transition-colors duration-300 ${
-        darkMode === "dark" ? "bg-gray-900" : "bg-gray-50"
+        darkMode === "dark" ? "bg-secondary" : "bg-surface"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,7 +105,7 @@ export default function StoriesSection() {
           >
             <span
               className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+                darkMode === "dark" ? "text-accent" : "text-primary"
               }`}
             >
               {t("stories.tag")}
@@ -118,7 +118,7 @@ export default function StoriesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className={`text-3xl md:text-4xl font-bold mb-4 ${
-              darkMode === "dark" ? "text-white" : "text-gray-900"
+              darkMode === "dark" ? "text-surface" : "text-primary"
             }`}
           >
             {t("stories.title")}
@@ -130,7 +130,7 @@ export default function StoriesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className={`max-w-3xl mx-auto text-lg leading-relaxed ${
-              darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+              darkMode === "dark" ? "text-surface" : "text-primary"
             }`}
           >
             {t("stories.subtitle")}
@@ -165,7 +165,7 @@ export default function StoriesSection() {
                   <div
                     className={`absolute inset-0 bg-gradient-to-t ${video.gradient} opacity-60`}
                   ></div>
-                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute inset-0 bg-secondary/20"></div>
                 </div>
 
                 {/* Content quando expandido */}
@@ -174,14 +174,14 @@ export default function StoriesSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3, delay: 0.2 }}
-                    className="absolute inset-0 p-6 flex flex-col justify-between text-white z-10"
+                    className="absolute inset-0 p-6 flex flex-col justify-between text-surface z-10"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-xs font-medium bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                        <span className="text-xs font-medium bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1">
                           {video.category}
                         </span>
-                        <span className="text-xs font-medium bg-black/30 backdrop-blur-sm rounded px-2 py-1">
+                        <span className="text-xs font-medium bg-secondary/30 backdrop-blur-sm rounded px-2 py-1">
                           {video.duration}
                         </span>
                       </div>
@@ -189,7 +189,7 @@ export default function StoriesSection() {
 
                     {/* Play button centralizado */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors group-hover:scale-110 duration-300">
+                      <div className="w-16 h-16 bg-surface/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-surface/30 transition-colors group-hover:scale-110 duration-300">
                         <svg
                           className="w-8 h-8 ml-1"
                           fill="currentColor"
@@ -212,8 +212,8 @@ export default function StoriesSection() {
                 {/* Categoria label quando não expandido */}
                 {hoveredIndex !== index && (
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
-                      <span className="text-white text-xs font-medium whitespace-nowrap">
+                    <div className="bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1">
+                      <span className="text-surface text-xs font-medium whitespace-nowrap">
                         {video.category}
                       </span>
                     </div>
@@ -223,9 +223,9 @@ export default function StoriesSection() {
                 {/* Play button pequeno quando não expandido */}
                 {hoveredIndex !== index && (
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-surface/20 backdrop-blur-sm rounded-full flex items-center justify-center">
                       <svg
-                        className="w-5 h-5 ml-0.5 text-white"
+                        className="w-5 h-5 ml-0.5 text-surface"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -247,8 +247,8 @@ export default function StoriesSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className={`rounded-2xl p-8 shadow-lg mb-16 ${
             darkMode === "dark"
-              ? "bg-gray-800"
-              : "bg-white border border-gray-100"
+              ? "bg-secondary"
+              : "bg-background border border-tertiary"
           }`}
         >
           <div className="flex flex-col lg:flex-row items-center gap-8">
@@ -264,28 +264,28 @@ export default function StoriesSection() {
             <div className="flex-1 text-center lg:text-left">
               <blockquote
                 className={`text-xl italic mb-4 ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-700"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 {t("stories.testimonial.text")}
               </blockquote>
               <div
                 className={`font-semibold ${
-                  darkMode === "dark" ? "text-white" : "text-gray-900"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 {t("stories.testimonial.name")}
               </div>
               <div
                 className={`text-sm ${
-                  darkMode === "dark" ? "text-gray-400" : "text-gray-500"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 {t("stories.testimonial.info")}
               </div>
             </div>
             <div className="flex-shrink-0">
-              <div className="flex text-yellow-400">
+              <div className="flex text-primary">
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
@@ -312,8 +312,8 @@ export default function StoriesSection() {
           <button
             className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl ${
               darkMode === "dark"
-                ? "bg-teal-500 hover:bg-teal-600 text-white"
-                : "bg-orange-500 hover:bg-orange-600 text-white"
+                ? "bg-accent hover:bg-accent text-surface"
+                : "bg-primary hover:bg-primary text-surface"
             }`}
           >
             {t("stories.tellMyStory")}
@@ -321,8 +321,8 @@ export default function StoriesSection() {
           <button
             className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-md border ${
               darkMode === "dark"
-                ? "bg-gray-700 hover:bg-gray-600 text-white border-gray-600"
-                : "bg-gray-700 hover:bg-gray-800 text-white border-gray-700"
+                ? "bg-secondary hover:bg-secondary text-surface border-secondary"
+                : "bg-secondary hover:bg-secondary text-surface border-secondary"
             }`}
           >
             {t("stories.seeAllStories")}

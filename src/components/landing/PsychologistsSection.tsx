@@ -262,8 +262,8 @@ export default function PsychologistsSection() {
 
   return (
     <section
-      className={`py-20 transition-colors duration-300 ${
-        darkMode === "dark" ? "bg-gray-900" : "bg-gray-50"
+      className={`py-20 transition-colors duration-300 section-bg-primary ${
+        darkMode === "dark" ? "dark" : ""
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -278,7 +278,7 @@ export default function PsychologistsSection() {
           >
             <span
               className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+                darkMode === "dark" ? "text-accent" : "text-primary"
               }`}
             >
               {t("tag", "stories")}
@@ -290,9 +290,7 @@ export default function PsychologistsSection() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className={`text-3xl md:text-4xl font-bold mb-4 ${
-              darkMode === "dark" ? "text-white" : "text-gray-900"
-            }`}
+            className="text-3xl md:text-4xl font-bold mb-4 text-heading"
           >
             {t("title", "psychologists")}
           </motion.h2>
@@ -302,9 +300,7 @@ export default function PsychologistsSection() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className={`max-w-4xl mx-auto text-xl leading-relaxed ${
-              darkMode === "dark" ? "text-gray-300" : "text-gray-600"
-            }`}
+            className="max-w-4xl mx-auto text-xl leading-relaxed text-body"
           >
             {t("subtitle", "psychologists")}
           </motion.p>
@@ -326,11 +322,11 @@ export default function PsychologistsSection() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 ${
                   selectedCategory === category.key
                     ? darkMode === "dark"
-                      ? "bg-teal-500 text-white shadow-lg"
-                      : "bg-orange-500 text-white shadow-lg"
+                      ? "bg-accent text-surface shadow-lg"
+                      : "bg-primary text-surface shadow-lg"
                     : darkMode === "dark"
-                    ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                    ? "bg-primary text-surface hover:bg-secondary"
+                    : "bg-background text-primary hover:bg-surface border border-primary/20"
                 }`}
               >
                 {t(category.label, "psychologists")}
@@ -368,8 +364,8 @@ export default function PsychologistsSection() {
           <button
             className={`rounded-xl mt-10 px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl ${
               darkMode === "dark"
-                ? "bg-teal-500 hover:bg-teal-600 text-white"
-                : "bg-orange-500 hover:bg-orange-600 text-white"
+                ? "bg-accent hover:bg-accent text-surface"
+                : "bg-primary hover:bg-primary text-surface"
             }`}
           >
             {t("viewProfile", "psychologists")}
@@ -384,7 +380,7 @@ export default function PsychologistsSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-secondary/50 z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedPsychologist(null)}
           >
             <motion.div
@@ -393,7 +389,7 @@ export default function PsychologistsSection() {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
               className={`rounded-3xl max-w-4xl w-full max-h-[70vh] overflow-y-auto ${
-                darkMode === "dark" ? "bg-gray-800" : "bg-white"
+                darkMode === "dark" ? "bg-secondary" : "bg-background"
               }`}
               onClick={(e) => e.stopPropagation()}
             >
@@ -407,19 +403,19 @@ export default function PsychologistsSection() {
                 <div
                   className={`absolute inset-0 ${
                     darkMode === "dark"
-                      ? "bg-gradient-to-t from-teal-600/80 to-teal-400/40"
-                      : "bg-gradient-to-t from-orange-600/80 to-orange-400/40"
+                      ? "bg-gradient-to-t from-accent/80 to-accent/40"
+                      : "bg-gradient-to-t from-primary/80 to-primary/40"
                   }`}
                 ></div>
 
                 <button
                   onClick={() => setSelectedPsychologist(null)}
-                  className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+                  className="absolute top-4 right-4 w-10 h-10 bg-surface/20 backdrop-blur-sm rounded-full flex items-center justify-center text-surface hover:bg-surface/30 transition-colors"
                 >
                   ✕
                 </button>
 
-                <div className="absolute bottom-6 left-6 text-white">
+                <div className="absolute bottom-6 left-6 text-surface">
                   <h3 className="text-3xl font-bold mb-2">
                     {selectedPsychologist.name}
                   </h3>
@@ -427,10 +423,10 @@ export default function PsychologistsSection() {
                     {selectedPsychologist.specialty}
                   </p>
                   <div className="flex items-center gap-4 mt-2">
-                    <span className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm">
+                    <span className="bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm">
                       ⭐ {selectedPsychologist.rating}
                     </span>
-                    <span className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm">
+                    <span className="bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1 text-sm">
                       {selectedPsychologist.experience}{" "}
                       {t("yearsExperience", "psychologists")}
                     </span>
@@ -460,9 +456,7 @@ export default function PsychologistsSection() {
                       >
                         <span
                           className={
-                            darkMode === "dark"
-                              ? "text-teal-400"
-                              : "text-orange-500"
+                            darkMode === "dark" ? "text-accent" : "text-primary"
                           }
                         >
                           🎓
@@ -478,9 +472,7 @@ export default function PsychologistsSection() {
                       >
                         <span
                           className={
-                            darkMode === "dark"
-                              ? "text-teal-400"
-                              : "text-orange-500"
+                            darkMode === "dark" ? "text-accent" : "text-primary"
                           }
                         >
                           🧠
@@ -496,9 +488,7 @@ export default function PsychologistsSection() {
                       >
                         <span
                           className={
-                            darkMode === "dark"
-                              ? "text-teal-400"
-                              : "text-orange-500"
+                            darkMode === "dark" ? "text-accent" : "text-primary"
                           }
                         >
                           📍
@@ -511,7 +501,7 @@ export default function PsychologistsSection() {
                   <div className="space-y-4">
                     <h4
                       className={`text-lg font-semibold ${
-                        darkMode === "dark" ? "text-white" : "text-gray-900"
+                        darkMode === "dark" ? "text-surface" : "text-primary"
                       }`}
                     >
                       {t("availability", "psychologists")}
@@ -526,9 +516,7 @@ export default function PsychologistsSection() {
                       >
                         <span
                           className={
-                            darkMode === "dark"
-                              ? "text-teal-400"
-                              : "text-orange-500"
+                            darkMode === "dark" ? "text-accent" : "text-primary"
                           }
                         >
                           💰
@@ -547,9 +535,7 @@ export default function PsychologistsSection() {
                       >
                         <span
                           className={
-                            darkMode === "dark"
-                              ? "text-teal-400"
-                              : "text-orange-500"
+                            darkMode === "dark" ? "text-accent" : "text-primary"
                           }
                         >
                           🗣️
@@ -568,9 +554,7 @@ export default function PsychologistsSection() {
                       >
                         <span
                           className={
-                            darkMode === "dark"
-                              ? "text-teal-400"
-                              : "text-orange-500"
+                            darkMode === "dark" ? "text-accent" : "text-primary"
                           }
                         >
                           ⏰
@@ -585,14 +569,14 @@ export default function PsychologistsSection() {
                 <div className="space-y-4">
                   <h4
                     className={`text-lg font-semibold ${
-                      darkMode === "dark" ? "text-white" : "text-gray-900"
+                      darkMode === "dark" ? "text-surface" : "text-primary"
                     }`}
                   >
                     {t("about", "psychologists")}
                   </h4>
                   <p
                     className={`leading-relaxed ${
-                      darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+                      darkMode === "dark" ? "text-surface" : "text-primary"
                     }`}
                   >
                     {selectedPsychologist.bio}
@@ -603,7 +587,7 @@ export default function PsychologistsSection() {
                 <div className="space-y-4">
                   <h4
                     className={`text-lg font-semibold ${
-                      darkMode === "dark" ? "text-white" : "text-gray-900"
+                      darkMode === "dark" ? "text-surface" : "text-primary"
                     }`}
                   >
                     {t("specialties", "psychologists")}
@@ -614,8 +598,8 @@ export default function PsychologistsSection() {
                         key={category}
                         className={`px-3 py-1 rounded-full text-sm font-medium ${
                           darkMode === "dark"
-                            ? "bg-teal-500/20 text-teal-300"
-                            : "bg-orange-500/20 text-orange-700"
+                            ? "bg-accent/20 text-accent"
+                            : "bg-primary/20 text-primary"
                         }`}
                       >
                         {category}
@@ -627,14 +611,14 @@ export default function PsychologistsSection() {
                 {/* CTA */}
                 <div
                   className={`flex flex-col sm:flex-row gap-4 pt-6 border-t ${
-                    darkMode === "dark" ? "border-gray-700" : "border-gray-200"
+                    darkMode === "dark" ? "border-primary" : "border-primary/20"
                   }`}
                 >
                   <button
                     className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 ${
                       darkMode === "dark"
-                        ? "bg-teal-500 hover:bg-teal-600 text-white"
-                        : "bg-orange-500 hover:bg-orange-600 text-white"
+                        ? "bg-accent hover:bg-accent text-surface"
+                        : "bg-primary hover:bg-primary text-surface"
                     }`}
                   >
                     {t("bookConsultation", "psychologists")}
@@ -642,8 +626,8 @@ export default function PsychologistsSection() {
                   <button
                     className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all border-2 ${
                       darkMode === "dark"
-                        ? "border-teal-500 text-teal-400 hover:bg-teal-500 hover:text-white"
-                        : "border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
+                        ? "border-accent text-accent hover:bg-accent hover:text-surface"
+                        : "border-primary text-primary hover:bg-primary hover:text-surface"
                     }`}
                   >
                     {t("chat", "psychologists")}

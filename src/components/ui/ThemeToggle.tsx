@@ -25,7 +25,7 @@ export default function ThemeToggle() {
             rotate: darkMode === "light" ? 0 : 180,
           }}
           transition={{ duration: 0.3 }}
-          className="absolute inset-0 flex items-center justify-center text-orange-500"
+          className="absolute inset-0 flex items-center justify-center text-primary"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path
@@ -44,7 +44,7 @@ export default function ThemeToggle() {
             rotate: darkMode === "dark" ? 0 : -180,
           }}
           transition={{ duration: 0.3 }}
-          className="absolute inset-0 flex items-center justify-center text-teal-400"
+          className="absolute inset-0 flex items-center justify-center text-accent"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />

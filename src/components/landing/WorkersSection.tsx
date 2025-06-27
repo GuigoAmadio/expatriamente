@@ -73,7 +73,7 @@ export default function WorkersSection() {
   return (
     <section
       className={`py-20 transition-colors duration-300 ${
-        darkMode === "dark" ? "bg-gray-900" : "bg-gray-50"
+        darkMode === "dark" ? "bg-secondary" : "bg-surface"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -88,7 +88,7 @@ export default function WorkersSection() {
           >
             <span
               className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+                darkMode === "dark" ? "text-accent" : "text-primary"
               }`}
             >
               {t("tag", "stories")}
@@ -101,14 +101,12 @@ export default function WorkersSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className={`text-3xl md:text-4xl font-bold mb-4 ${
-              darkMode === "dark" ? "text-white" : "text-gray-900"
+              darkMode === "dark" ? "text-surface" : "text-primary"
             }`}
           >
             HERE OUR{" "}
             <span
-              className={
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }
+              className={darkMode === "dark" ? "text-accent" : "text-primary"}
             >
               STORIES
             </span>
@@ -120,7 +118,7 @@ export default function WorkersSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className={`max-w-3xl mx-auto text-lg leading-relaxed ${
-              darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+              darkMode === "dark" ? "text-surface" : "text-primary"
             }`}
           >
             Real voices from the front lines of change. These are
@@ -132,7 +130,7 @@ export default function WorkersSection() {
         {/* Interactive Stories */}
         <div className="relative mb-16">
           {/* Linha de conexão */}
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 transform -translate-y-1/2"></div>
+          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-tertiary dark:bg-secondary transform -translate-y-1/2"></div>
 
           {/* Stories Cards */}
           <div className="relative flex flex-wrap justify-center md:justify-between items-center gap-8">
@@ -177,15 +175,15 @@ export default function WorkersSection() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.2 }}
-                      className="absolute inset-0 p-6 flex flex-col justify-between text-white z-10"
+                      className="absolute inset-0 p-6 flex flex-col justify-between text-surface z-10"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm font-medium bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                          <span className="text-sm font-medium bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1">
                             {story.category}
                           </span>
                           {/* Play button */}
-                          <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors">
+                          <div className="w-10 h-10 bg-surface/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-surface/30 transition-colors">
                             <svg
                               className="w-5 h-5 ml-0.5"
                               fill="currentColor"
@@ -214,9 +212,7 @@ export default function WorkersSection() {
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-8">
                       <p
                         className={`text-sm font-medium text-center whitespace-nowrap ${
-                          darkMode === "dark"
-                            ? "text-gray-300"
-                            : "text-gray-700"
+                          darkMode === "dark" ? "text-surface" : "text-primary"
                         }`}
                       >
                         {story.name.split(" ")[0]}
@@ -237,8 +233,8 @@ export default function WorkersSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className={`rounded-2xl p-8 shadow-lg mb-16 ${
             darkMode === "dark"
-              ? "bg-gray-800"
-              : "bg-white border border-gray-100"
+              ? "bg-secondary"
+              : "bg-background border border-tertiary"
           }`}
         >
           <div className="flex flex-col lg:flex-row items-center gap-8">
@@ -254,7 +250,7 @@ export default function WorkersSection() {
             <div className="flex-1 text-center lg:text-left">
               <blockquote
                 className={`text-xl italic mb-4 ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-700"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 &ldquo;Viver no exterior trouxe desafios que eu não esperava. A
@@ -264,21 +260,21 @@ export default function WorkersSection() {
               </blockquote>
               <div
                 className={`font-semibold ${
-                  darkMode === "dark" ? "text-white" : "text-gray-900"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 Marina S.
               </div>
               <div
                 className={`text-sm ${
-                  darkMode === "dark" ? "text-gray-400" : "text-gray-500"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 Brasileira em Londres • 2 anos de terapia
               </div>
             </div>
             <div className="flex-shrink-0">
-              <div className="flex text-yellow-400">
+              <div className="flex text-primary">
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
@@ -305,8 +301,8 @@ export default function WorkersSection() {
           <button
             className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl ${
               darkMode === "dark"
-                ? "bg-teal-500 hover:bg-teal-600 text-white"
-                : "bg-orange-500 hover:bg-orange-600 text-white"
+                ? "bg-accent hover:bg-accent text-surface"
+                : "bg-primary hover:bg-primary text-surface"
             }`}
           >
             Compartilhar Minha História
@@ -314,8 +310,8 @@ export default function WorkersSection() {
           <button
             className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-md border ${
               darkMode === "dark"
-                ? "bg-gray-700 hover:bg-gray-600 text-white border-gray-600"
-                : "bg-gray-700 hover:bg-gray-800 text-white border-gray-700"
+                ? "bg-secondary hover:bg-secondary text-surface border-secondary"
+                : "bg-secondary hover:bg-secondary text-surface border-secondary"
             }`}
           >
             Ver Mais Histórias

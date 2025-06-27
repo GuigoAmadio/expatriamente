@@ -55,8 +55,8 @@ export default function FAQSection() {
     <>
       {/* FAQ Section */}
       <section
-        className={`py-24 transition-colors duration-300 ${
-          darkMode === "dark" ? "bg-gray-800" : "bg-gray-50"
+        className={`py-24 transition-colors duration-300 section-bg-subtle ${
+          darkMode === "dark" ? "dark" : ""
         }`}
       >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,7 +70,7 @@ export default function FAQSection() {
             >
               <span
                 className={`font-semibold text-sm uppercase tracking-wide ${
-                  darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+                  darkMode === "dark" ? "text-accent" : "text-primary"
                 }`}
               >
                 {t("tag", "faq")}
@@ -82,9 +82,7 @@ export default function FAQSection() {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className={`text-3xl md:text-4xl font-bold mb-4 ${
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }`}
+              className="text-3xl md:text-4xl font-bold mb-4 text-heading"
             >
               {t("title", "faq")}
             </motion.h2>
@@ -93,9 +91,7 @@ export default function FAQSection() {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className={`text-lg ${
-                darkMode === "dark" ? "text-gray-300" : "text-gray-600"
-              }`}
+              className="text-lg text-body"
             >
               {t("subtitle", "faq")}
             </motion.p>
@@ -114,12 +110,12 @@ export default function FAQSection() {
                   {({ open }) => (
                     <div
                       className={`relative rounded-xl shadow-sm overflow-hidden group hover:shadow-md transition-all duration-300 ${
-                        darkMode === "dark" ? "bg-gray-700" : "bg-white"
+                        darkMode === "dark" ? "bg-primary" : "bg-background"
                       } ${
                         open
                           ? darkMode === "dark"
-                            ? "border-2 border-teal-400"
-                            : "border-2 border-orange-500"
+                            ? "border-2 border-accent"
+                            : "border-2 border-primary"
                           : "border border-transparent"
                       }`}
                     >
@@ -128,15 +124,15 @@ export default function FAQSection() {
                         className={`absolute inset-0 transition-opacity duration-300 pointer-events-none ${
                           open
                             ? darkMode === "dark"
-                              ? "border-2 border-teal-400"
-                              : "border-2 border-orange-500"
+                              ? "border-2 border-accent"
+                              : "border-2 border-primary"
                             : "border border-transparent"
                         }`}
                         style={{ padding: "2px" }}
                       >
                         <div
                           className={`w-full h-full rounded-xl ${
-                            darkMode === "dark" ? "bg-gray-700" : "bg-white"
+                            darkMode === "dark" ? "bg-primary" : "bg-background"
                           }`}
                         ></div>
                       </div>
@@ -147,11 +143,11 @@ export default function FAQSection() {
                             ${
                               open
                                 ? darkMode === "dark"
-                                  ? "text-teal-400"
-                                  : "text-orange-500"
+                                  ? "text-accent"
+                                  : "text-primary"
                                 : darkMode === "dark"
-                                ? "text-white hover:bg-gray-600"
-                                : "text-gray-900 hover:bg-gray-50"
+                                ? "text-surface hover:bg-secondary"
+                                : "text-primary hover:bg-surface"
                             }`}
                         >
                           <span
@@ -159,11 +155,11 @@ export default function FAQSection() {
                               ${
                                 open
                                   ? darkMode === "dark"
-                                    ? "text-teal-400"
-                                    : "text-orange-500"
+                                    ? "text-accent"
+                                    : "text-primary"
                                   : darkMode === "dark"
-                                  ? "text-white group-hover:text-teal-400"
-                                  : "text-gray-900 group-hover:text-orange-600"
+                                  ? "text-surface group-hover:text-accent"
+                                  : "text-primary group-hover:text-accent"
                               }`}
                           >
                             {faq.question}
@@ -173,11 +169,11 @@ export default function FAQSection() {
                               ${
                                 open
                                   ? darkMode === "dark"
-                                    ? "text-teal-400"
-                                    : "text-orange-500"
+                                    ? "text-accent"
+                                    : "text-primary"
                                   : darkMode === "dark"
-                                  ? "text-gray-400 group-hover:text-teal-400"
-                                  : "text-gray-500 group-hover:text-orange-500"
+                                  ? "text-surface group-hover:text-accent"
+                                  : "text-primary group-hover:text-accent"
                               }
                               ${open ? "rotate-180 transform" : ""}`}
                           />
@@ -205,8 +201,8 @@ export default function FAQSection() {
                             static
                             className={`px-6 pb-5 leading-relaxed ${
                               darkMode === "dark"
-                                ? "text-gray-300"
-                                : "text-gray-600"
+                                ? "text-surface"
+                                : "text-primary"
                             }`}
                           >
                             <motion.div
@@ -215,8 +211,8 @@ export default function FAQSection() {
                               transition={{ duration: 0.3, delay: 0.2 }}
                               className={`border-t pt-4 ${
                                 darkMode === "dark"
-                                  ? "border-gray-600"
-                                  : "border-gray-100"
+                                  ? "border-primary"
+                                  : "border-primary/10"
                               }`}
                             >
                               {faq.answer}
@@ -239,18 +235,15 @@ export default function FAQSection() {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="text-center mt-12"
           >
-            <p
-              className="text-gray-600 dark:text-gray-300 mb-6"
-              style={{ color: darkMode === "dark" ? "#d1d5db" : "#000000" }}
-            >
+            <p className="text-primary dark:text-surface mb-6">
               {t("cta.text", "faq")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
-                className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg text-white ${
+                className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg text-surface ${
                   darkMode === "dark"
-                    ? "bg-teal-500 hover:bg-teal-600"
-                    : "bg-orange-500 hover:bg-orange-600"
+                    ? "bg-accent hover:bg-accent"
+                    : "bg-primary hover:bg-primary"
                 }`}
               >
                 {t("cta.whatsapp", "faq")}
@@ -258,8 +251,8 @@ export default function FAQSection() {
               <button
                 className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 border ${
                   darkMode === "dark"
-                    ? "bg-gray-700 text-white border-teal-500 hover:bg-teal-600"
-                    : "bg-white text-gray-900 border-orange-500 hover:bg-orange-50"
+                    ? "bg-primary text-surface border-accent hover:bg-accent"
+                    : "bg-background text-primary border-primary hover:bg-surface"
                 }`}
               >
                 {t("cta.schedule", "faq")}
@@ -273,8 +266,8 @@ export default function FAQSection() {
       <footer
         className={`py-16 transition-colors duration-300 ${
           darkMode === "dark"
-            ? "bg-gray-900 text-white hover:text-teal-500"
-            : "bg-neutral-200 text-gray-900 hover:text-orange-500"
+            ? "bg-secondary text-surface hover:text-accent"
+            : "bg-surface text-primary hover:text-accent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -288,24 +281,24 @@ export default function FAQSection() {
             >
               <h3
                 className={`text-2xl md:text-3xl font-bold mb-4 ${
-                  darkMode === "dark" ? "text-white" : "text-gray-800"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 {t("cta", "footer")}
               </h3>
               <p
-                className={`text-gray-300 mb-8 max-w-2xl mx-auto text-lg ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+                className={`mb-8 max-w-2xl mx-auto text-lg ${
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 {t("ctaDesc", "footer")}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button
-                  className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg text-white ${
+                  className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg text-surface ${
                     darkMode === "dark"
-                      ? "bg-teal-500 hover:bg-teal-600"
-                      : "bg-orange-500 hover:bg-orange-600"
+                      ? "bg-accent hover:bg-accent"
+                      : "bg-primary hover:bg-primary"
                   }`}
                 >
                   {t("getStarted", "footer")}
@@ -313,8 +306,8 @@ export default function FAQSection() {
                 <button
                   className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 border ${
                     darkMode === "dark"
-                      ? "bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border-teal-500/20"
-                      : "bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 border-orange-500/20"
+                      ? "bg-accent/10 hover:bg-accent/20 text-accent border-accent/20"
+                      : "bg-primary/10 hover:bg-primary/20 text-primary border-primary/20"
                   }`}
                 >
                   {t("freeConsultation", "footer")}
@@ -327,27 +320,27 @@ export default function FAQSection() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             {/* Company Info */}
             <div className="md:col-span-2">
-              <h4 className="text-2xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+              <h4 className="text-2xl font-bold mb-4">
                 <span
                   className={
                     darkMode === "dark"
-                      ? "bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent"
-                      : "bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent"
+                      ? "bg-gradient-to-r from-accent to-accent bg-clip-text text-transparent"
+                      : "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
                   }
                 >
                   {t("company", "footer")}
                 </span>
               </h4>
               <p
-                className={`text-gray-300 text-sm mb-6 max-w-md ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+                className={`text-sm mb-6 max-w-md ${
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 {t("companyDesc", "footer")}
               </p>
               <div
-                className={`text-gray-300 text-sm space-y-2 ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+                className={`text-sm space-y-2 ${
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -386,14 +379,14 @@ export default function FAQSection() {
             <div>
               <h4
                 className={`text-lg font-semibold mb-4 ${
-                  darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+                  darkMode === "dark" ? "text-accent" : "text-primary"
                 }`}
               >
                 {t("quickLinks", "footer")}
               </h4>
               <ul
                 className={`space-y-3 text-sm ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 <li>
@@ -463,14 +456,14 @@ export default function FAQSection() {
             <div>
               <h4
                 className={`text-lg font-semibold mb-4 ${
-                  darkMode === "dark" ? "text-teal-400" : "text-orange-500"
+                  darkMode === "dark" ? "text-accent" : "text-primary"
                 }`}
               >
                 {t("support", "footer")}
               </h4>
               <ul
                 className={`space-y-3 text-sm ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-600"
+                  darkMode === "dark" ? "text-surface" : "text-primary"
                 }`}
               >
                 <li>
@@ -538,12 +531,12 @@ export default function FAQSection() {
           </div>
 
           {/* Social Media & Copyright */}
-          <div className="border-t border-gray-700 pt-8">
+          <div className="border-t border-primary pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
                 <p
                   className={`text-sm ${
-                    darkMode === "dark" ? "text-gray-400" : "text-gray-600"
+                    darkMode === "dark" ? "text-surface" : "text-primary"
                   }`}
                 >
                   © 2024 {t("company", "footer")}. {t("allRights", "footer")}
@@ -553,9 +546,7 @@ export default function FAQSection() {
               <div className="flex items-center space-x-6">
                 <span
                   className={`text-sm ${
-                    darkMode === "dark"
-                      ? "text-neutral-100"
-                      : "text-neutral-800"
+                    darkMode === "dark" ? "text-surface" : "text-primary"
                   }`}
                 >
                   {t("followUs", "footer")}:
@@ -565,8 +556,8 @@ export default function FAQSection() {
                     href="#"
                     className={`transition-colors duration-300 ${
                       darkMode === "dark"
-                        ? "text-neutral-100 hover:text-teal-300"
-                        : "text-neutral-800 hover:text-orange-600"
+                        ? "text-surface hover:text-accent"
+                        : "text-primary hover:text-accent"
                     }`}
                     aria-label="Facebook"
                   >
@@ -576,8 +567,8 @@ export default function FAQSection() {
                     href="#"
                     className={`transition-colors duration-300 ${
                       darkMode === "dark"
-                        ? "text-neutral-100 hover:text-teal-300"
-                        : "text-neutral-800 hover:text-orange-600"
+                        ? "text-surface hover:text-accent"
+                        : "text-primary hover:text-accent"
                     }`}
                     aria-label="Instagram"
                   >
@@ -587,8 +578,8 @@ export default function FAQSection() {
                     href="#"
                     className={`transition-colors duration-300 ${
                       darkMode === "dark"
-                        ? "text-neutral-100 hover:text-teal-300"
-                        : "text-neutral-800 hover:text-orange-600"
+                        ? "text-surface hover:text-accent"
+                        : "text-primary hover:text-accent"
                     }`}
                     aria-label="LinkedIn"
                   >
@@ -598,8 +589,8 @@ export default function FAQSection() {
                     href="#"
                     className={`transition-colors duration-300 ${
                       darkMode === "dark"
-                        ? "text-neutral-100 hover:text-teal-300"
-                        : "text-neutral-800 hover:text-orange-600"
+                        ? "text-surface hover:text-accent"
+                        : "text-primary hover:text-accent"
                     }`}
                     aria-label="WhatsApp"
                   >
@@ -609,8 +600,8 @@ export default function FAQSection() {
                     href="#"
                     className={`transition-colors duration-300 ${
                       darkMode === "dark"
-                        ? "text-neutral-100 hover:text-teal-300"
-                        : "text-neutral-800 hover:text-orange-600"
+                        ? "text-surface hover:text-accent"
+                        : "text-primary hover:text-accent"
                     }`}
                     aria-label="YouTube"
                   >

@@ -29,8 +29,8 @@ export default function MetricsSection() {
 
   return (
     <section
-      className={`py-16 transition-colors duration-300 ${
-        darkMode === "dark" ? "bg-gray-900" : "bg-white"
+      className={`py-16 transition-colors duration-300 section-bg-secondary ${
+        darkMode === "dark" ? "dark" : ""
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,11 +42,7 @@ export default function MetricsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2
-            className={`text-3xl md:text-4xl font-bold mb-4 ${
-              darkMode === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-heading">
             {t("title", "metrics")}
           </h2>
         </motion.div>
@@ -63,20 +59,12 @@ export default function MetricsSection() {
               className="text-center"
             >
               {/* Número */}
-              <div
-                className={`text-4xl md:text-5xl font-bold mb-2 ${
-                  darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-                }`}
-              >
+              <div className="text-4xl md:text-5xl font-bold mb-2 text-accent">
                 {metric.number}
               </div>
 
               {/* Label */}
-              <div
-                className={`text-sm font-medium ${
-                  darkMode === "dark" ? "text-gray-300" : "text-gray-600"
-                }`}
-              >
+              <div className="text-sm font-medium text-body">
                 {metric.label}
               </div>
             </motion.div>
@@ -92,30 +80,22 @@ export default function MetricsSection() {
           className="text-center"
         >
           <h2
-            className={`text-3xl md:text-4xl font-bold mb-6 ${
-              darkMode === "dark" ? "text-white" : "text-gray-900"
-            }`}
+            className="text-3xl md:text-4xl font-bold mb-6 text-heading"
             dangerouslySetInnerHTML={{ __html: t("servicesTitle", "metrics") }}
           />
 
-          <p
-            className={`text-lg max-w-3xl mx-auto mb-8 ${
-              darkMode === "dark" ? "text-gray-300" : "text-gray-600"
-            }`}
-          >
+          <p className="text-lg max-w-3xl mx-auto mb-8 text-body">
             {t("servicesDescription", "metrics")}
           </p>
 
           {/* Ícone de cuidado/coração */}
           <div
             className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
-              darkMode === "dark" ? "bg-teal-500/20" : "bg-orange-500/10"
+              darkMode === "dark" ? "bg-accent/20" : "bg-primary/10"
             }`}
           >
             <svg
-              className={`w-10 h-10 ${
-                darkMode === "dark" ? "text-teal-400" : "text-orange-500"
-              }`}
+              className="w-10 h-10 text-accent"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
