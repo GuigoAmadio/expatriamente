@@ -52,225 +52,212 @@ export default function FAQSection() {
   ];
 
   return (
-    <>
+    <section className="bg-background w-full py-16 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
       {/* FAQ Section */}
-      <section
-        className={`py-24 transition-colors duration-300 section-bg-subtle ${
-          darkMode === "dark" ? "dark" : ""
-        }`}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-6"
+          >
+            <span
+              className={`font-semibold text-sm uppercase tracking-wide ${
+                darkMode === "dark" ? "text-accent" : "text-primary"
+              }`}
+            >
+              {t("tag", "faq")}
+            </span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold mb-4 text-heading"
+          >
+            {t("title", "faq")}
+          </motion.h2>
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-lg text-body"
+          >
+            {t("subtitle", "faq")}
+          </motion.p>
+        </div>
+
+        <div className="space-y-6">
+          {faqs.map((faq, index) => (
             <motion.div
+              key={index}
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-6"
+              transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <span
-                className={`font-semibold text-sm uppercase tracking-wide ${
-                  darkMode === "dark" ? "text-accent" : "text-primary"
-                }`}
-              >
-                {t("tag", "faq")}
-              </span>
-            </motion.div>
-
-            <motion.h2
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl md:text-4xl font-bold mb-4 text-heading"
-            >
-              {t("title", "faq")}
-            </motion.h2>
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-body"
-            >
-              {t("subtitle", "faq")}
-            </motion.p>
-          </div>
-
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ y: 30, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Disclosure>
-                  {({ open }) => (
+              <Disclosure>
+                {({ open }) => (
+                  <div
+                    className={`relative rounded-xl shadow-sm group hover:shadow-md transition-all duration-300 ${
+                      darkMode === "dark" ? "bg-primary" : "bg-white"
+                    } ${
+                      open
+                        ? darkMode === "dark"
+                          ? "border-2 border-accent"
+                          : "border-2 border-primary"
+                        : "border border-transparent"
+                    }`}
+                  >
+                    {/* Borda gradiente no hover */}
                     <div
-                      className={`relative rounded-xl shadow-sm overflow-hidden group hover:shadow-md transition-all duration-300 ${
-                        darkMode === "dark" ? "bg-primary" : "bg-background"
-                      } ${
+                      className={`absolute inset-0 transition-opacity duration-300 pointer-events-none ${
                         open
                           ? darkMode === "dark"
                             ? "border-2 border-accent"
                             : "border-2 border-primary"
                           : "border border-transparent"
                       }`}
+                      style={{ padding: "2px" }}
                     >
-                      {/* Borda gradiente no hover */}
                       <div
-                        className={`absolute inset-0 transition-opacity duration-300 pointer-events-none ${
-                          open
-                            ? darkMode === "dark"
-                              ? "border-2 border-accent"
-                              : "border-2 border-primary"
-                            : "border border-transparent"
+                        className={`w-full h-full rounded-xl ${
+                          darkMode === "dark" ? "bg-primary" : "bg-white"
                         }`}
-                        style={{ padding: "2px" }}
-                      >
-                        <div
-                          className={`w-full h-full rounded-xl ${
-                            darkMode === "dark" ? "bg-primary" : "bg-background"
-                          }`}
-                        ></div>
-                      </div>
+                      ></div>
+                    </div>
 
-                      <div className="relative z-10">
-                        <Disclosure.Button
-                          className={`flex w-full justify-between items-center px-6 py-5 text-left transition-all duration-300 group
+                    <div className="relative z-10">
+                      <Disclosure.Button
+                        className={`flex w-full justify-between items-center px-6 py-5 text-left transition-all duration-300 group
+                          ${
+                            open
+                              ? darkMode === "dark"
+                                ? "text-accent"
+                                : "text-primary"
+                              : darkMode === "dark"
+                              ? "text-surface hover:bg-secondary"
+                              : "text-primary hover:bg-surface"
+                          }`}
+                      >
+                        <span
+                          className={`font-medium text-lg transition-colors duration-300
                             ${
                               open
                                 ? darkMode === "dark"
                                   ? "text-accent"
                                   : "text-primary"
                                 : darkMode === "dark"
-                                ? "text-surface hover:bg-secondary"
-                                : "text-primary hover:bg-surface"
+                                ? "text-surface group-hover:text-accent"
+                                : "text-primary group-hover:text-accent"
                             }`}
                         >
-                          <span
-                            className={`font-medium text-lg transition-colors duration-300
-                              ${
-                                open
-                                  ? darkMode === "dark"
-                                    ? "text-accent"
-                                    : "text-primary"
-                                  : darkMode === "dark"
-                                  ? "text-surface group-hover:text-accent"
-                                  : "text-primary group-hover:text-accent"
-                              }`}
-                          >
-                            {faq.question}
-                          </span>
-                          <ChevronDownIcon
-                            className={`h-5 w-5 transition-all duration-500 ease-in-out ml-4 flex-shrink-0
-                              ${
-                                open
-                                  ? darkMode === "dark"
-                                    ? "text-accent"
-                                    : "text-primary"
-                                  : darkMode === "dark"
-                                  ? "text-surface group-hover:text-accent"
-                                  : "text-primary group-hover:text-accent"
-                              }
-                              ${open ? "rotate-180 transform" : ""}`}
-                          />
-                        </Disclosure.Button>
+                          {faq.question}
+                        </span>
+                        <ChevronDownIcon
+                          className={`h-5 w-5 transition-all duration-500 ease-in-out ml-4 flex-shrink-0
+                            ${
+                              open
+                                ? darkMode === "dark"
+                                  ? "text-accent"
+                                  : "text-primary"
+                                : darkMode === "dark"
+                                ? "text-surface group-hover:text-accent"
+                                : "text-primary group-hover:text-accent"
+                            }
+                            ${open ? "rotate-180 transform" : ""}`}
+                        />
+                      </Disclosure.Button>
 
-                        <motion.div
-                          initial={false}
-                          animate={{
-                            height: open ? "auto" : 0,
-                            opacity: open ? 1 : 0,
-                          }}
-                          transition={{
-                            height: {
-                              duration: 0.6,
-                              ease: [0.04, 0.62, 0.23, 0.98],
-                            },
-                            opacity: {
-                              duration: 0.4,
-                              delay: open ? 0.1 : 0,
-                            },
-                          }}
-                          style={{ overflow: "hidden" }}
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          height: open ? "auto" : 0,
+                          opacity: open ? 1 : 0,
+                        }}
+                        transition={{
+                          height: {
+                            duration: 0.6,
+                            ease: [0.04, 0.62, 0.23, 0.98],
+                          },
+                          opacity: {
+                            duration: 0.4,
+                            delay: open ? 0.1 : 0,
+                          },
+                        }}
+                      >
+                        <Disclosure.Panel
+                          static
+                          className={`px-6 pb-5 leading-relaxed ${
+                            darkMode === "dark"
+                              ? "text-surface"
+                              : "text-primary"
+                          }`}
                         >
-                          <Disclosure.Panel
-                            static
-                            className={`px-6 pb-5 leading-relaxed ${
+                          <motion.div
+                            initial={{ y: -10 }}
+                            animate={{ y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.2 }}
+                            className={`border-t pt-4 ${
                               darkMode === "dark"
-                                ? "text-surface"
-                                : "text-primary"
+                                ? "border-primary"
+                                : "border-primary/10"
                             }`}
                           >
-                            <motion.div
-                              initial={{ y: -10 }}
-                              animate={{ y: 0 }}
-                              transition={{ duration: 0.3, delay: 0.2 }}
-                              className={`border-t pt-4 ${
-                                darkMode === "dark"
-                                  ? "border-primary"
-                                  : "border-primary/10"
-                              }`}
-                            >
-                              {faq.answer}
-                            </motion.div>
-                          </Disclosure.Panel>
-                        </motion.div>
-                      </div>
+                            {faq.answer}
+                          </motion.div>
+                        </Disclosure.Panel>
+                      </motion.div>
                     </div>
-                  )}
-                </Disclosure>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* CTA adicional */}
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-center mt-12"
-          >
-            <p className="text-primary dark:text-surface mb-6">
-              {t("cta.text", "faq")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg text-surface ${
-                  darkMode === "dark"
-                    ? "bg-accent hover:bg-accent"
-                    : "bg-primary hover:bg-primary"
-                }`}
-              >
-                {t("cta.whatsapp", "faq")}
-              </button>
-              <button
-                className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 border ${
-                  darkMode === "dark"
-                    ? "bg-primary text-surface border-accent hover:bg-accent"
-                    : "bg-background text-primary border-primary hover:bg-surface"
-                }`}
-              >
-                {t("cta.schedule", "faq")}
-              </button>
-            </div>
-          </motion.div>
+                  </div>
+                )}
+              </Disclosure>
+            </motion.div>
+          ))}
         </div>
-      </section>
+
+        {/* CTA adicional */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-12"
+        >
+          <p className="text-primary dark:text-surface mb-6">
+            {t("cta.text", "faq")}
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg text-surface ${
+                darkMode === "dark"
+                  ? "bg-accent hover:bg-accent"
+                  : "bg-primary hover:bg-primary"
+              }`}
+            >
+              {t("cta.whatsapp", "faq")}
+            </button>
+            <button
+              className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 border ${
+                darkMode === "dark"
+                  ? "bg-primary text-surface border-accent hover:bg-accent"
+                  : "bg-background text-primary border-primary hover:bg-surface"
+              }`}
+            >
+              {t("cta.schedule", "faq")}
+            </button>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Footer */}
-      <footer
-        className={`py-16 transition-colors duration-300 ${
-          darkMode === "dark"
-            ? "bg-secondary text-surface hover:text-accent"
-            : "bg-surface text-primary hover:text-accent"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="w-full bg-primary-900 text-white py-8 mt-16">
+        <div className="flex flex-col items-center justify-center">
           {/* CTA Section */}
           <div className="text-center mb-16">
             <motion.div
@@ -613,6 +600,6 @@ export default function FAQSection() {
           </div>
         </div>
       </footer>
-    </>
+    </section>
   );
 }

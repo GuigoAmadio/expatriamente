@@ -44,36 +44,36 @@ export type Theme = {
 };
 
 export const themes: Theme[] = [
-  // Tema 1  – Terroso Renovado (Natural, profissional, com mais contraste)
+  // Tema 1 – Paleta Verde Oliva (baseada na imagem "Expatriamente")
   {
     name: "theme1",
     colors: {
-      primary: "#2F5233", // Verde escuro mais profundo - para CTAs importantes
-      secondary: "#D4761A", // Laranja vibrante - para botões de ação
-      accent: "#7BA05B", // Verde médio - para destaques
+      primary: "#5f6f52", // Marrom escuro
+      secondary: "#a9b388", // Bege claro
+      accent: "#ffae00", // Laranja vibrante
 
-      background: "#F8F6F1", // Bege muito claro - fundo principal (60%)
-      surface: "#EFEBE2", // Bege médio - cartões e seções (30%)
-      surfaceElevated: "#FFFFFF", // Branco puro - cartões importantes
-      surfaceSubtle: "#F2EFE7", // Bege sutil - áreas alternadas
+      background: "#f9ebc7", // Bege médio
+      surface: "#A79057", // Marrom claro
+      surfaceElevated: "#F5CD62", // Amarelo vibrante
+      surfaceSubtle: "#fefae0", // Bege muito claro
 
-      textPrimary: "#1A2E1D", // Verde escuro quase preto - texto principal
-      textSecondary: "#4A5D4E", // Verde médio - texto secundário
-      textMuted: "#6B7B6F", // Verde acinzentado - texto terciário
-      textOnPrimary: "#FFFFFF", // Branco em cima de primário
+      textPrimary: "#5f6f52", // Marrom oliva escuro
+      textSecondary: "#fefae0", // Marrom claro
+      textMuted: "#c4661f", // Marrom acinzentado
+      textOnPrimary: "#783d19", // Branco
 
-      border: "#D6D3C4", // Bege médio para bordas
-      borderStrong: "#B8B3A1", // Bege escuro para bordas fortes
-      divider: "#E8E4D9", // Bege claro para divisores
+      border: "#A79057", // Marrom claro
+      borderStrong: "#5A5427", // Marrom oliva escuro
+      divider: "#D3BD99", // Bege médio
 
-      hover: "#D4761A", // Laranja para hover (mesma cor secondary)
-      pressed: "#B8611A", // Laranja escuro para pressed
-      focus: "#2F5233", // Verde escuro para focus
+      hover: "#D16708", // Laranja queimado
+      pressed: "#A04E07", // Marrom avermelhado escuro
+      focus: "#5A5427", // Marrom oliva escuro
 
-      success: "#2D7A2D",
-      warning: "#E8A317",
-      error: "#C53030",
-      info: "#3182CE",
+      success: "#6B8E23", // Verde oliva
+      warning: "#D16708", // Laranja queimado
+      error: "#B22222", // Vermelho escuro
+      info: "#F5CD62", // Amarelo vibrante
     },
     fonts: {
       heading: "Mikela, serif",
@@ -81,36 +81,36 @@ export const themes: Theme[] = [
     },
   },
 
-  // Tema 2 – Azul Corporativo + Âmbar (Versão Clara)
+  // Tema 2 – Paleta Azul Corporativo (baseada na primeira imagem - tons azuis)
   {
     name: "theme2",
     colors: {
-      primary: "#1E40AF", // Azul escuro para CTAs
-      secondary: "#F59E0B", // Âmbar vibrante para botões de ação
-      accent: "#3B82F6", // Azul médio para destaques
+      primary: "#203A58", // Azul petróleo escuro
+      secondary: "#C4661F", // Laranja queimado
+      accent: "#6F8CA4", // Azul acinzentado
 
-      background: "#F8FAFC", // Azul muito claro - fundo principal (60%)
-      surface: "#F1F5F9", // Azul claro - cartões e seções (30%)
-      surfaceElevated: "#FFFFFF", // Branco puro - cartões importantes
-      surfaceSubtle: "#E2E8F0", // Azul sutil - áreas alternadas
+      background: "#F8F9FA", // Cinza muito claro
+      surface: "#F1F3F5", // Cinza claro
+      surfaceElevated: "#FFFFFF", // Branco
+      surfaceSubtle: "#E9ECEF", // Cinza claríssimo
 
-      textPrimary: "#0F172A", // Azul navy escuro - texto principal
-      textSecondary: "#334155", // Azul médio - texto secundário
-      textMuted: "#64748B", // Azul acinzentado - texto terciário
-      textOnPrimary: "#FFFFFF", // Branco sobre botões escuros
+      textPrimary: "#203A58", // Azul petróleo escuro
+      textSecondary: "#495057", // Cinza escuro
+      textMuted: "#6C757D", // Cinza médio
+      textOnPrimary: "#FFFFFF", // Branco
 
-      border: "#CBD5E1", // Azul claro para bordas
-      borderStrong: "#94A3B8", // Azul médio para bordas fortes
-      divider: "#E2E8F0", // Azul sutil para divisores
+      border: "#DEE2E6", // Cinza claro
+      borderStrong: "#ADB5BD", // Cinza médio
+      divider: "#E9ECEF", // Cinza claríssimo
 
-      hover: "#F59E0B", // Âmbar para hover
-      pressed: "#D97706", // Âmbar escuro para pressed
-      focus: "#1E40AF", // Azul escuro para focus
+      hover: "#C4661F", // Laranja queimado
+      pressed: "#A0541A", // Marrom alaranjado escuro
+      focus: "#203A58", // Azul petróleo escuro
 
-      success: "#059669",
-      warning: "#D97706",
-      error: "#DC2626",
-      info: "#2563EB",
+      success: "#28A745", // Verde médio
+      warning: "#FFC107", // Amarelo
+      error: "#DC3545", // Vermelho
+      info: "#17A2B8", // Azul piscina
     },
     fonts: {
       heading: "Inter, sans-serif",
@@ -118,36 +118,36 @@ export const themes: Theme[] = [
     },
   },
 
-  // Tema 3 – Marrom Âmbar + Azul (Versão Clara)
+  // Tema 3 – Paleta Terrosa Camel (baseada nas cores camel e russet)
   {
     name: "theme3",
     colors: {
-      primary: "#7C2D12", // Marrom escuro para CTAs
-      secondary: "#3B82F6", // Azul vivo para botões de ação
-      accent: "#D97706", // Dourado/âmbar para destaques
+      primary: "#75564D", // Marrom médio
+      secondary: "#016708", // Verde escuro
+      accent: "#DBAF8A", // Bege rosado
 
-      background: "#FEF7ED", // Bege muito claro - fundo principal (60%)
-      surface: "#FED7AA", // Bege dourado claro - cartões e seções (30%)
-      surfaceElevated: "#FFFFFF", // Branco puro - cartões importantes
-      surfaceSubtle: "#FDBA74", // Bege médio sutil - áreas alternadas
+      background: "#FAF7F3", // Bege muito claro
+      surface: "#F2EDE6", // Bege claro
+      surfaceElevated: "#FFFFFF", // Branco
+      surfaceSubtle: "#EBE4DC", // Bege médio
 
-      textPrimary: "#451A03", // Marrom muito escuro - texto principal
-      textSecondary: "#7C2D12", // Marrom escuro - texto secundário
-      textMuted: "#A16207", // Marrom médio - texto terciário
-      textOnPrimary: "#FFFFFF", // Branco sobre botões escuros
+      textPrimary: "#783D19", // Marrom avermelhado escuro
+      textSecondary: "#75564D", // Marrom médio
+      textMuted: "#9A8B7A", // Marrom acinzentado
+      textOnPrimary: "#FFFFFF", // Branco
 
-      border: "#FDBA74", // Bege médio para bordas
-      borderStrong: "#F59E0B", // Âmbar para bordas fortes
-      divider: "#FED7AA", // Bege claro para divisores
+      border: "#E0D5C7", // Bege médio
+      borderStrong: "#B99470", // Bege amarelado
+      divider: "#EBE4DC", // Bege médio
 
-      hover: "#3B82F6", // Azul para hover
-      pressed: "#2563EB", // Azul escuro para pressed
-      focus: "#7C2D12", // Marrom escuro para focus
+      hover: "#016708", // Verde escuro
+      pressed: "#014506", // Verde muito escuro
+      focus: "#75564D", // Marrom médio
 
-      success: "#059669",
-      warning: "#D97706",
-      error: "#DC2626",
-      info: "#2563EB",
+      success: "#016708", // Verde escuro
+      warning: "#F59E0B", // Amarelo alaranjado
+      error: "#DC2626", // Vermelho escuro
+      info: "#6366F1", // Azul violeta
     },
     fonts: {
       heading: "Playfair Display, serif",
@@ -155,38 +155,38 @@ export const themes: Theme[] = [
     },
   },
 
-  // ==================== VERSÕES ESCURAS ====================
+  // ==================== VERSÕES ESCURAS (INVERTIDAS) ====================
 
-  // Tema 1 Dark – Terroso Renovado (Versão Escura)
+  // Tema 1 Dark – Paleta Verde Oliva (Versão Escura Invertida)
   {
     name: "theme1Dark",
     colors: {
-      primary: "#7BA05B", // Verde médio mais claro para CTAs no escuro
-      secondary: "#F59E0B", // Laranja mais vibrante para contraste
-      accent: "#9BB86F", // Verde claro para destaques
+      primary: "#A9B388", // Verde claro acinzentado
+      secondary: "#F59E0B", // Amarelo alaranjado
+      accent: "#C4D1AD", // Verde amarelado claro
 
-      background: "#1A2E1D", // Verde escuro quase preto - fundo principal
-      surface: "#2A3F2D", // Verde escuro médio - cartões e seções
-      surfaceElevated: "#354039", // Verde médio - cartões importantes
-      surfaceSubtle: "#243529", // Verde escuro sutil - áreas alternadas
+      background: "#783D19", // Marrom avermelhado escuro
+      surface: "#5F6F52", // Verde oliva escuro
+      surfaceElevated: "#6B7A5E", // Verde oliva médio
+      surfaceSubtle: "#4A5544", // Verde oliva muito escuro
 
-      textPrimary: "#F8F6F1", // Bege claro - texto principal
-      textSecondary: "#D6D3C4", // Bege médio - texto secundário
-      textMuted: "#B8B3A1", // Bege escuro - texto terciário
-      textOnPrimary: "#1A2E1D", // Verde escuro sobre botões claros
+      textPrimary: "#FEFAE0", // Amarelo claríssimo
+      textSecondary: "#F9EBC7", // Amarelo claro
+      textMuted: "#E8DCC9", // Bege claro
+      textOnPrimary: "#783D19", // Marrom avermelhado escuro
 
-      border: "#4A5D4E", // Verde médio para bordas
-      borderStrong: "#6B7B6F", // Verde claro para bordas fortes
-      divider: "#354039", // Verde médio para divisores
+      border: "#6B7A5E", // Verde oliva médio
+      borderStrong: "#A9B388", // Verde claro acinzentado
+      divider: "#5F6F52", // Verde oliva escuro
 
-      hover: "#F59E0B", // Laranja para hover
-      pressed: "#D4761A", // Laranja escuro para pressed
-      focus: "#7BA05B", // Verde médio para focus
+      hover: "#F59E0B", // Amarelo alaranjado
+      pressed: "#C4661F", // Laranja queimado
+      focus: "#A9B388", // Verde claro acinzentado
 
-      success: "#22C55E",
-      warning: "#F59E0B",
-      error: "#EF4444",
-      info: "#3B82F6",
+      success: "#22C55E", // Verde claro
+      warning: "#F59E0B", // Amarelo alaranjado
+      error: "#EF4444", // Vermelho vivo
+      info: "#A9B388", // Verde claro acinzentado
     },
     fonts: {
       heading: "Mikela, serif",
@@ -194,36 +194,36 @@ export const themes: Theme[] = [
     },
   },
 
-  // Tema 2 Dark – Azul Corporativo + Âmbar (Versão Escura)
+  // Tema 2 Dark – Paleta Azul Corporativo (Versão Escura Invertida)
   {
     name: "theme2Dark",
     colors: {
-      primary: "#FFB300", // Âmbar mais claro para CTAs no escuro
-      secondary: "#0F172A", // Azul navy muito escuro
-      accent: "#60A5FA", // Azul claro para destaques
+      primary: "#A2AEB3", // Cinza azulado claro
+      secondary: "#F59E0B", // Amarelo alaranjado
+      accent: "#6F8CA4", // Azul acinzentado
 
-      background: "#0F172A", // Azul navy muito escuro - fundo principal
-      surface: "#1E293B", // Azul navy escuro - cartões e seções
-      surfaceElevated: "#334155", // Azul médio - cartões importantes
-      surfaceSubtle: "#1A2332", // Azul escuro sutil
+      background: "#203A58", // Azul petróleo escuro
+      surface: "#2A4A68", // Azul escuro
+      surfaceElevated: "#3A5A78", // Azul médio
+      surfaceSubtle: "#1A3048", // Azul muito escuro
 
-      textPrimary: "#F8FAFC", // Branco puro - texto principal
-      textSecondary: "#CBD5E1", // Cinza azulado claro - texto secundário
-      textMuted: "#94A3B8", // Cinza azulado médio - texto terciário
-      textOnPrimary: "#0F172A", // Azul navy escuro sobre botões claros
+      textPrimary: "#F8F9FA", // Cinza muito claro
+      textSecondary: "#E9ECEF", // Cinza claríssimo
+      textMuted: "#DEE2E6", // Cinza claro
+      textOnPrimary: "#203A58", // Azul petróleo escuro
 
-      border: "#334155", // Azul médio para bordas
-      borderStrong: "#475569", // Azul claro para bordas fortes
-      divider: "#1E293B", // Azul navy escuro para divisores
+      border: "#3A5A78", // Azul médio
+      borderStrong: "#6F8CA4", // Azul acinzentado
+      divider: "#2A4A68", // Azul escuro
 
-      hover: "#FCD34D", // Âmbar claro para hover
-      pressed: "#D97706", // Âmbar escuro para pressed
-      focus: "#60A5FA", // Azul claro para focus
+      hover: "#FCD34D", // Amarelo claro
+      pressed: "#D97706", // Laranja escuro
+      focus: "#A2AEB3", // Cinza azulado claro
 
-      success: "#10B981",
-      warning: "#F59E0B",
-      error: "#EF4444",
-      info: "#3B82F6",
+      success: "#10B981", // Verde claro
+      warning: "#F59E0B", // Amarelo alaranjado
+      error: "#EF4444", // Vermelho vivo
+      info: "#6F8CA4", // Azul acinzentado
     },
     fonts: {
       heading: "Inter, sans-serif",
@@ -231,36 +231,36 @@ export const themes: Theme[] = [
     },
   },
 
-  // Tema 3 Dark – Marrom Âmbar + Azul (Versão Escura)
+  // Tema 3 Dark – Paleta Terrosa Camel (Versão Escura Invertida)
   {
     name: "theme3Dark",
     colors: {
-      primary: "#60A5FA", // Azul claro para CTAs no escuro
-      secondary: "#451A03", // Marrom muito escuro
-      accent: "#FCD34D", // Dourado claro para destaques
+      primary: "#DBAF8A", // Bege rosado claro
+      secondary: "#22C55E", // Verde claro
+      accent: "#E8C4A0", // Bege claro
 
-      background: "#451A03", // Marrom muito escuro - fundo principal
-      surface: "#7C2D12", // Marrom escuro - cartões e seções
-      surfaceElevated: "#A16207", // Marrom médio - cartões importantes
-      surfaceSubtle: "#5C1A0B", // Marrom escuro sutil
+      background: "#783D19", // Marrom avermelhado escuro
+      surface: "#75564D", // Marrom médio
+      surfaceElevated: "#8B6B62", // Marrom médio escuro
+      surfaceSubtle: "#5D4037", // Marrom escuro
 
-      textPrimary: "#FEF7ED", // Bege muito claro - texto principal
-      textSecondary: "#FED7AA", // Bege dourado - texto secundário
-      textMuted: "#FDBA74", // Bege médio - texto terciário
-      textOnPrimary: "#451A03", // Marrom escuro sobre botões claros
+      textPrimary: "#FAF7F3", // Bege muito claro
+      textSecondary: "#F2EDE6", // Bege claro
+      textMuted: "#E0D5C7", // Bege médio
+      textOnPrimary: "#783D19", // Marrom avermelhado escuro
 
-      border: "#7C2D12", // Marrom escuro para bordas
-      borderStrong: "#A16207", // Marrom médio para bordas fortes
-      divider: "#5C1A0B", // Marrom escuro sutil para divisores
+      border: "#8B6B62", // Marrom médio escuro
+      borderStrong: "#DBAF8A", // Bege rosado claro
+      divider: "#75564D", // Marrom médio
 
-      hover: "#93C5FD", // Azul claro para hover
-      pressed: "#3B82F6", // Azul médio para pressed
-      focus: "#FCD34D", // Dourado para focus
+      hover: "#34D399", // Verde claro
+      pressed: "#16A34A", // Verde médio
+      focus: "#DBAF8A", // Bege rosado claro
 
-      success: "#10B981",
-      warning: "#F59E0B",
-      error: "#EF4444",
-      info: "#60A5FA",
+      success: "#22C55E", // Verde claro
+      warning: "#F59E0B", // Amarelo alaranjado
+      error: "#EF4444", // Vermelho vivo
+      info: "#DBAF8A", // Bege rosado claro
     },
     fonts: {
       heading: "Playfair Display, serif",

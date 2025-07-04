@@ -1,0 +1,29 @@
+<svg width="299" height="140" viewBox="0 0 299 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="bolasMobileFinal">
+<g id="etapas">
+<text id="Etapa 1" fill="#606060" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="20.0322" y="5.68182">Etapa 1</tspan></text>
+<text id="Etapa 2" fill="#606060" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="61.1104" y="68.6818">Etapa 2</tspan></text>
+<text id="Etapa 3" fill="#606060" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="141.02" y="95.6818">Etapa 3</tspan></text>
+<text id="Etapa 4" fill="#606060" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="221.476" y="68.6818">Etapa 4</tspan></text>
+<text id="Etapa 5" fill="#606060" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="262.075" y="5.68182">Etapa 5</tspan></text>
+</g>
+<g id="bolas">
+<path id="linha2" d="M82.5 89C102 97.5 123.5 97 139.5 111.5" stroke="#ACACAC"/>
+<path id="linha3" d="M221 90.5C191.5 110.789 177.5 97.5001 163 110.789" stroke="#ACACAC"/>
+<path id="linha1" d="M41.4998 22.5C86.5 36.5 37 61.5 60.5 79.5" stroke="#ACACAC"/>
+<path id="linha4" d="M262 25C224 39.5 257 60 241 76.5" stroke="#ACACAC"/>
+<circle id="bola1" cx="29.5" cy="21.5" r="12" stroke="#ACACAC"/>
+<circle id="bola2" cx="71.5" cy="84.5" r="12" stroke="#ACACAC"/>
+<circle id="bola3" cx="151.5" cy="111.5" r="12" stroke="#ACACAC"/>
+<circle id="bola4" cx="231.5" cy="84.5" r="12" stroke="#ACACAC"/>
+<circle id="bola5" cx="273.5" cy="21.5" r="12" stroke="#ACACAC"/>
+</g>
+<g id="textos">
+<text id="texto5" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="258.498" y="42.6818">Comece a </tspan><tspan x="247.204" y="49.6818">melhorar sua vida</tspan></text>
+<text id="texto3" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="bold" letter-spacing="0em"><tspan x="122.048" y="130.682">Crie uma conta para </tspan><tspan x="115.986" y="137.682">concluir o agendamento</tspan></text>
+<text id="texto2" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="bold" letter-spacing="0em"><tspan x="53.5312" y="102.682">Agende pelo </tspan><tspan x="48.3984" y="109.682">site uma sess&#xe3;o</tspan></text>
+<text id="texto1" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="bold" letter-spacing="0em"><tspan x="16.6094" y="39.6818">Ache um </tspan><tspan x="1.22852" y="46.6818">psicanalista no site</tspan></text>
+<text id="texto4" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="6" font-weight="600" letter-spacing="0em"><tspan x="212.483" y="104.682">Volte na data </tspan><tspan x="201.541" y="111.682">marcada e fa&#xe7;a login</tspan></text>
+</g>
+</g>
+</svg>

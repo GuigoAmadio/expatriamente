@@ -155,7 +155,7 @@ export default function WorkersSection() {
                 >
                   {/* Imagem de fundo */}
                   <div
-                    className={`absolute inset-0 overflow-hidden transition-all duration-500 ${
+                    className={`absolute inset-0 transition-all duration-500 ${
                       hoveredIndex === index ? "rounded-2xl" : "rounded-full"
                     }`}
                   >
@@ -239,7 +239,7 @@ export default function WorkersSection() {
         >
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="flex-shrink-0">
-              <div className="w-20 h-20 rounded-full overflow-hidden">
+              <div className="w-20 h-20 rounded-full ">
                 <img
                   src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face"
                   alt="Marina S."

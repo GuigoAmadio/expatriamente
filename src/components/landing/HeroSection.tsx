@@ -30,7 +30,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background text-primary transition-colors duration-300">
+    <section className="relative min-h-screen flex items-center justify-center bg-background text-primary transition-colors duration-300">
       {/* Header fixo - Estrutura otimizada com Flexbox */}
       <motion.header
         initial={{ y: -100, opacity: 0 }}
@@ -259,9 +259,9 @@ export default function HeroSection() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="inline-flex items-center gap-2 bg-surface backdrop-blur-sm rounded-full px-4 py-2 text-sm text-primary border border-divider mb-8 mt-8"
+            className="inline-flex items-center gap-2 bg-secondary backdrop-blur-sm rounded-full px-4 py-2 text-sm text-secondary border-2 border-secondary  mb-8 mt-8"
           >
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
             {t("trustBadge", "hero")}
           </motion.div>
 
@@ -271,7 +271,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 w-3/4 sm:w-1/2 text-center"
           >
-            <span className="text-secondary">{t("title", "hero")}</span>
+            <span className="text-primary">{t("title", "hero")}</span>
           </motion.h1>
 
           <motion.p
@@ -292,13 +292,13 @@ export default function HeroSection() {
           >
             <Link
               href="/auth/signin"
-              className="bg-accent hover:bg-accent/90 text-surface px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl border border-accent"
+              className="bg-secondary hover:bg-secondary/70 text-primary px-8 py-4 rounded-xl text-lg font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105 duration-500"
             >
               {t("cta", "hero")}
             </Link>
             <Link
               href="#psychologists"
-              className="bg-surface hover:bg-surface/80 text-primary backdrop-blur-sm px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 shadow-md border border-accent"
+              className="bg-accent hover:bg-accent/70 text-primary backdrop-blur-sm px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 shadow-md border border-accent"
             >
               {t("ctaSecondary", "hero")}
             </Link>
@@ -311,7 +311,7 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 max-w-4xl mx-auto my-14"
           >
-            <div className="flex items-center justify-center gap-3 bg-surface backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
+            <div className="flex items-center justify-center gap-3 bg-primary backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
               <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
                 <svg
                   className="w-4 h-4 text-accent"
@@ -321,15 +321,15 @@ export default function HeroSection() {
                   <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-primary">
+              <span className="text-sm font-medium text-secondary">
                 Sessões Online Seguras
               </span>
             </div>
 
-            <div className="flex items-center justify-center gap-3 bg-surface backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
+            <div className="flex items-center justify-center gap-3 bg-primary backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
               <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
                 <svg
-                  className="w-4 h-4 text-primary"
+                  className="w-4 h-4 text-accent"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -340,12 +340,12 @@ export default function HeroSection() {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-primary">
+              <span className="text-sm font-medium text-secondary">
                 Especialistas em Expatriação
               </span>
             </div>
 
-            <div className="flex items-center justify-center gap-3 bg-surface backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
+            <div className="flex items-center justify-center gap-3 bg-primary backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
               <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
                 <svg
                   className="w-4 h-4 text-accent"
@@ -359,7 +359,7 @@ export default function HeroSection() {
                   />
                 </svg>
               </div>
-              <span className="text-sm font-medium text-primary">
+              <span className="text-sm font-medium text-secondary">
                 Primera Consulta Grátis
               </span>
             </div>
@@ -372,7 +372,7 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-72 sm:bottom-32 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-72 sm:bottom-36 left-1/2 transform -translate-x-1/2"
       >
         <div className="flex flex-col items-center gap-2">
           <span className="text-sm text-primary">Deslize para saber mais</span>

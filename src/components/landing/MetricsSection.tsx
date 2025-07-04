@@ -64,7 +64,7 @@ export default function MetricsSection() {
               </div>
 
               {/* Label */}
-              <div className="text-sm font-medium text-body">
+              <div className="text-sm font-medium text-body text-primary">
                 {metric.label}
               </div>
             </motion.div>
@@ -80,15 +80,9 @@ export default function MetricsSection() {
           className="text-center"
         >
           <h2
-            className="text-3xl md:text-4xl font-bold mb-6 text-heading"
+            className="text-3xl md:text-4xl font-bold mb-6 text-heading whitespace-nowrap text-nowrap"
             dangerouslySetInnerHTML={{ __html: t("servicesTitle", "metrics") }}
           />
-
-          <p className="text-lg max-w-3xl mx-auto mb-8 text-body">
-            {t("servicesDescription", "metrics")}
-          </p>
-
-          {/* Ícone de cuidado/coração */}
           <div
             className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
               darkMode === "dark" ? "bg-accent/20" : "bg-primary/10"
@@ -106,6 +100,12 @@ export default function MetricsSection() {
               />
             </svg>
           </div>
+
+          <p className="text-lg max-w-3xl mx-auto mb-8 text-body text-primary">
+            {t("servicesDescription", "metrics")}
+          </p>
+
+          {/* Ícone de cuidado/coração */}
         </motion.div>
       </div>
     </section>

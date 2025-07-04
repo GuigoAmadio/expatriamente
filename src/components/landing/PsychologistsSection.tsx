@@ -388,13 +388,13 @@ export default function PsychologistsSection() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className={`rounded-3xl max-w-4xl w-full max-h-[70vh] overflow-y-auto ${
+              className={`rounded-3xl max-w-4xl w-full max-h-[70vh] ${
                 darkMode === "dark" ? "bg-secondary" : "bg-background"
               }`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header do Modal */}
-              <div className="relative h-60 overflow-hidden rounded-t-3xl">
+              <div className="relative h-60 rounded-t-3xl">
                 <img
                   src={selectedPsychologist.image}
                   alt={selectedPsychologist.name}

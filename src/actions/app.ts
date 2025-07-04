@@ -83,14 +83,25 @@ export async function submitContactForm(formData: FormData) {
 
     appData.contacts.push(newContact);
 
-    // Simular envio de email (substitua pela sua implementação)
-    console.log("Email de contato enviado:", newContact);
+    // Simulação de envio de email
+    await simulateEmailSend(newContact);
+
+    // Log da mensagem para demonstração
+    console.log("Nova mensagem de contato recebida:", {
+      id: newContact.id,
+      name: newContact.name,
+      email: newContact.email,
+      subject: newContact.subject,
+      timestamp: newContact.createdAt.toISOString(),
+    });
 
     return {
       success: true,
       message: "Mensagem enviada com sucesso! Entraremos em contato em breve.",
     };
   } catch (error) {
+    console.error("Erro ao processar formulário de contato:", error);
+
     if (error instanceof z.ZodError) {
       return {
         success: false,
@@ -100,9 +111,93 @@ export async function submitContactForm(formData: FormData) {
 
     return {
       success: false,
-      error: "Erro interno do servidor",
+      error: "Erro interno do servidor. Tente novamente em alguns minutos.",
     };
   }
+}
+
+// Função auxiliar para simular envio de email
+async function simulateEmailSend(contact: any) {
+  // Simular delay de rede
+  await new Promise((resolve) =>
+    setTimeout(resolve, Math.random() * 1000 + 500)
+  );
+
+  // Aqui você pode integrar com um serviço real de email como:
+  // - Nodemailer + SMTP
+  // - SendGrid
+  // - Mailgun
+  // - AWS SES
+  // - Resend
+
+  const emailContent = {
+    to: "contato@expatriamente.com",
+    replyTo: contact.email,
+    subject: `[Expatriamente] Nova mensagem de contato: ${contact.subject}`,
+    text: `
+Nova mensagem de contato recebida:
+
+Nome: ${contact.name}
+Email: ${contact.email}
+Assunto: ${contact.subject}
+
+Mensagem:
+${contact.message}
+
+---
+Recebido em: ${contact.createdAt.toLocaleString("pt-BR")}
+ID da mensagem: ${contact.id}
+    `,
+    html: `
+<h2>Nova mensagem de contato</h2>
+<div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+  <p><strong>Nome:</strong> ${contact.name}</p>
+  <p><strong>Email:</strong> <a href="mailto:${contact.email}">${
+      contact.email
+    }</a></p>
+  <p><strong>Assunto:</strong> ${contact.subject}</p>
+</div>
+
+<h3>Mensagem:</h3>
+<div style="background: white; padding: 20px; border-left: 4px solid #5A5427; margin: 20px 0;">
+  ${contact.message.replace(/\n/g, "<br>")}
+</div>
+
+<hr style="margin: 30px 0;">
+<p style="color: #666; font-size: 12px;">
+  Recebido em: ${contact.createdAt.toLocaleString("pt-BR")}<br>
+  ID da mensagem: ${contact.id}
+</p>
+    `,
+  };
+
+  // Log simulando envio
+  console.log("📧 Email seria enviado:", emailContent);
+
+  // Para implementação real, descomente e configure:
+  /*
+  try {
+    // Exemplo com Nodemailer
+    const transporter = nodemailer.createTransporter({
+      host: process.env.SMTP_HOST,
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    await transporter.sendMail(emailContent);
+    
+    // Ou exemplo com SendGrid
+    await sgMail.send(emailContent);
+    
+  } catch (emailError) {
+    console.error("Erro ao enviar email:", emailError);
+    // Mesmo que o email falhe, salvamos a mensagem
+  }
+  */
 }
 
 export async function submitFeedback(formData: FormData, userId?: string) {

@@ -138,7 +138,7 @@ export default function StoriesSection() {
         </div>
 
         {/* Videos Inline */}
-        <div className="relative mb-16 overflow-hidden">
+        <div className="relative mb-16 ">
           <div className="flex items-center justify-center gap-2 h-80">
             {videos.map((video, index) => (
               <motion.div
@@ -147,7 +147,7 @@ export default function StoriesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative h-full cursor-pointer group overflow-hidden rounded-2xl"
+                className="relative h-full cursor-pointer group rounded-2xl"
                 style={{
                   width: hoveredIndex === index ? "400px" : "120px",
                   transition: "width 0.5s ease-in-out",
@@ -253,7 +253,7 @@ export default function StoriesSection() {
         >
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="flex-shrink-0">
-              <div className="w-20 h-20 rounded-full overflow-hidden">
+              <div className="w-20 h-20 rounded-full ">
                 <img
                   src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face"
                   alt="Marina S."

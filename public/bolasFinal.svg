@@ -1,0 +1,29 @@
+<svg width="1231" height="253" viewBox="0 0 1231 253" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="bolasFinal">
+<g id="bolas">
+<path id="linha4" d="M951.5 128C1052 111 1065.5 190.5 1135.5 202.5" stroke="#ACACAC"/>
+<path id="linha3" d="M641.5 82.5C737 149 819.5 56 900.5 108.5" stroke="#ACACAC"/>
+<path id="linha2" d="M335 126.5C372.855 145.98 418.5 119.5 463 101C507.5 82.5003 554.145 41.5198 592 61" stroke="#ACACAC"/>
+<circle id="bola1" cx="74" cy="210" r="27.5" stroke="#ACACAC"/>
+<circle id="bola2" cx="309" cy="116" r="27.5" stroke="#ACACAC"/>
+<circle id="bola3" cx="927" cy="116" r="27.5" stroke="#ACACAC"/>
+<circle id="bola4" cx="1162" cy="210" r="27.5" stroke="#ACACAC"/>
+<circle id="bola5" cx="618" cy="69" r="27.5" stroke="#ACACAC"/>
+<path id="linha1" d="M101.5 210.5C205.5 178 185.5 127.5 283 107" stroke="#ACACAC"/>
+</g>
+<g id="textos">
+<text id="texto3" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="15" font-weight="bold" letter-spacing="0em"><tspan x="544.37" y="14.4545">Crie uma conta para </tspan><tspan x="529.216" y="32.4545">concluir o agendamento</tspan></text>
+<text id="texto5" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="15" font-weight="600" letter-spacing="0em"><tspan x="1125.75" y="152.455">Comece a </tspan><tspan x="1097.51" y="170.455">melhorar sua vida</tspan></text>
+<text id="texto2" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="15" font-weight="bold" letter-spacing="0em"><tspan x="262.828" y="62.4545">Agende pelo </tspan><tspan x="249.996" y="80.4545">site uma sess&#xe3;o</tspan></text>
+<text id="texto1" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="15" font-weight="bold" letter-spacing="0em"><tspan x="41.7734" y="154.455">Ache um </tspan><tspan x="3.32129" y="172.455">psicanalista no site</tspan></text>
+<text id="texto4" fill="#343434" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="15" font-weight="600" letter-spacing="0em"><tspan x="878.958" y="61.4545">Volte na data </tspan><tspan x="851.603" y="79.4545">marcada e fa&#xe7;a login</tspan></text>
+</g>
+<g id="etapas">
+<text id="Etapa 1" fill="#424242" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="53" y="249.864">Etapa 1</tspan></text>
+<text id="Etapa 3" fill="#424242" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="597" y="108.864">Etapa 3</tspan></text>
+<text id="Etapa 4" fill="#424242" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="905" y="155.864">Etapa 4</tspan></text>
+<text id="Etapa 5" fill="#424242" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="1140" y="249.864">Etapa 5</tspan></text>
+<text id="Etapa 2" fill="#424242" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0em"><tspan x="288" y="155.864">Etapa 2</tspan></text>
+</g>
+</g>
+</svg>
