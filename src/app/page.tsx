@@ -1,5 +1,6 @@
 import ContactSection from "@/components/landing/ContactSection";
 import FAQSection from "@/components/landing/FAQSection";
+import FooterSection from "@/components/landing/FooterSection";
 import HeroSection from "@/components/landing/HeroSection";
 import HowToUseSection from "@/components/landing/HowToUseSection";
 import MetricsSection from "@/components/landing/MetricsSection";
@@ -14,11 +15,11 @@ export default function Home() {
       <HeroSection />
       <HowToUseSection />
       <MetricsSection />
-      <WorkersSection />
       <PsychologistsSection />
       <StoriesSection />
       <ContactSection />
       <FAQSection />
+      <FooterSection />
     </main>
   );
 }

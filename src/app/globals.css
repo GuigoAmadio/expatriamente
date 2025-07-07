@@ -85,34 +85,29 @@ html {
 }
 
 :root {
-  /* Cores Principais - Serão definidas dinamicamente pelo ThemeContext */
-  --color-primary: #5f6f52;
-  --color-secondary: #3a4332;
-  --color-accent: #c4661f;
-  --color-background: #fefae0;
-  --color-surface: #f5f1e8;
-  --color-surface-elevated: #ffffff;
-  --color-surface-subtle: #f9f6f0;
-  --color-text-primary: #2d3748;
-  --color-text-secondary: #4a5568;
-  --color-text-muted: #718096;
-  --color-text-on-primary: #ffffff;
-
-  /* Bordas e Separadores - Fixos */
-  --color-border: #e2e8f0;
-  --color-border-strong: #cbd5e0;
-  --color-divider: #edf2f7;
-
-  /* Estados Interativos - Fixos */
-  --color-hover: #f7fafc;
-  --color-pressed: #edf2f7;
-  --color-focus: #4299e1;
-
-  /* Cores de Status - Fixos */
-  --color-success: #48bb78;
-  --color-warning: #ed8936;
-  --color-error: #f56565;
-  --color-info: #4299e1;
+  /* Cores Principais - Tema 1 padrão */
+  --color-background: #f9ebc7;
+  --color-background-secondary: #fefae0;
+  --color-background-oposite: #5f6f52;
+  --color-background-weak: #fffbe6;
+  --color-text-primary: #5f6f52;
+  --color-text-secondary: #fefae0;
+  --color-text-claro: #fff;
+  --color-text-escuro: #5a5427;
+  --color-text-strong: #783d19;
+  --color-botao-primary: #ffae00;
+  --color-botao-secondary: #a79057;
+  --color-botao-sublime: #f5cd62;
+  --color-border: #a79057;
+  --color-border-strong: #5a5427;
+  --color-divider: #d3bd99;
+  --color-hover: #d16708;
+  --color-pressed: #a04e07;
+  --color-focus: #5a5427;
+  --color-success: #6b8e23;
+  --color-warning: #d16708;
+  --color-error: #b22222;
+  --color-info: #f5cd62;
 
   /* Sombras - Fixas */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -123,9 +118,11 @@ html {
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  /* Fontes - Serão definidas dinamicamente */
-  --font-heading: "Mikela", serif;
-  --font-body: "Montserrat", sans-serif;
+  /* Fontes - Configuradas via Google Fonts */
+  --font-heading: var(--font-playfair), serif;
+  --font-body: var(--font-montserrat), sans-serif;
+
+  --hero-bg: url("/fundo.jpg");
 }
 
 body {
@@ -134,36 +131,26 @@ body {
   font-family: var(--font-body);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
-  color: var(--color-text-primary);
-}
-
 /* Classes de Hierarquia Visual */
 .section-bg-primary {
   background: var(--color-background);
 }
 
 .section-bg-secondary {
-  background: var(--color-surface);
+  background: var(--color-background-secondary);
 }
 
 .section-bg-elevated {
-  background: var(--color-surface-elevated);
+  background: var(--color-background-secondary);
 }
 
 .section-bg-subtle {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-secondary);
 }
 
 /* Cards com melhor hierarquia */
 .card-elevated {
-  background: var(--color-surface-elevated);
+  background: var(--color-background-secondary);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-md);
   border-radius: 1rem;
@@ -176,7 +163,7 @@ h6 {
 }
 
 .card-subtle {
-  background: var(--color-surface-subtle);
+  background: var(--color-background-secondary);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   border-radius: 0.75rem;
@@ -184,32 +171,34 @@ h6 {
 
 /* Botões com hierarquia */
 .btn-primary {
-  background: var(--color-primary);
-  color: var(--color-text-on-primary);
+  background: var(--color-botao-primary);
+  color: var(--color-text-claro);
   border: none;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-  background: var(--color-primary);
+  background: var(--color-botao-primary);
   opacity: 0.9;
   box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: var(--color-surface-elevated);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-strong);
-  box-shadow: var(--shadow-sm);
+  background: var(--color-botao-secondary);
+  color: var(--color-text-claro);
+  border: none;
+  box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
 }
 
-.btn-secondary:hover {
-  background: var(--color-hover);
+.btn-sublime {
+  background: var(--color-botao-sublime);
+  color: var(--color-text-escuro);
+  border: none;
   box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  transition: all 0.3s ease;
 }
 
 /* Textos com melhor contraste */
@@ -224,11 +213,11 @@ h6 {
 }
 
 .text-muted {
-  color: var(--color-text-muted);
+  color: var(--color-text-claro);
 }
 
 .text-accent {
-  color: var(--color-accent);
+  color: var(--color-botao-primary);
   font-weight: 600;
 }
 
@@ -242,20 +231,29 @@ h6 {
 }
 
 .text-on-primary {
-  color: var(--color-text-on-primary);
+  color: var(--color-text-claro);
 }
 
 /* Classes de Background - Correspondentes ao Tailwind Config */
 .bg-primary {
-  background-color: var(--color-primary);
+  background-color: var(--color-background);
 }
 
 .bg-secondary {
-  background-color: var(--color-secondary);
+  background-color: var(--color-background-secondary);
+}
+.bg-claro {
+  background-color: var(--color-text-claro);
 }
 
-.bg-accent {
-  background-color: var(--color-accent);
+.bg-botao-primary {
+  background-color: var(--color-botao-primary);
+}
+.bg-botao-secondary {
+  background-color: var(--color-botao-secondary);
+}
+.bg-botao-sublime {
+  background-color: var(--color-botao-sublime);
 }
 
 .bg-background {
@@ -263,15 +261,15 @@ h6 {
 }
 
 .bg-surface {
-  background-color: var(--color-surface);
+  background-color: var(--color-background-secondary);
 }
 
 .bg-surface-elevated {
-  background-color: var(--color-surface-elevated);
+  background-color: var(--color-background-secondary);
 }
 
 .bg-surface-subtle {
-  background-color: var(--color-surface-subtle);
+  background-color: var(--color-background-secondary);
 }
 
 .bg-hover {
@@ -282,29 +280,32 @@ h6 {
   background-color: var(--color-pressed);
 }
 
+.bg-background-oposite {
+  background: var(--color-background-oposite);
+}
+
+.bg-background-weak {
+  background: var(--color-background-weak);
+}
+
 /* Classes de Border - Correspondentes ao Tailwind Config */
 .border-border {
   border-color: var(--color-border);
 }
 
-.border-border-strong {
+.border-strong {
   border-color: var(--color-border-strong);
 }
 
 .border-primary {
-  border-color: var(--color-primary);
+  border-color: var(--color-background);
 }
 
+.border-oposite {
+  border-color: var(--color-background-oposite);
+}
 .border-secondary {
-  border-color: var(--color-secondary);
-}
-
-.border-accent {
-  border-color: var(--color-accent);
-}
-
-.border-divider {
-  border-color: var(--color-divider);
+  border-color: var(--color-background-secondary);
 }
 
 /* Classes de Status */
@@ -342,15 +343,15 @@ h6 {
 
 /* Ring/Focus colors */
 .ring-primary {
-  --tw-ring-color: var(--color-primary);
+  --tw-ring-color: var(--color-background);
 }
 
 .ring-secondary {
-  --tw-ring-color: var(--color-secondary);
+  --tw-ring-color: var(--color-background-secondary);
 }
 
 .ring-accent {
-  --tw-ring-color: var(--color-accent);
+  --tw-ring-color: var(--color-botao-primary);
 }
 
 .ring-focus {
@@ -397,7 +398,7 @@ h6 {
 
 /* Modo escuro */
 .dark .section-bg-primary {
-  background: var(--color-secondary);
+  background: var(--color-background-secondary);
 }
 
 .dark .section-bg-secondary {
@@ -413,7 +414,7 @@ h6 {
 }
 
 .dark .text-heading {
-  color: var(--color-text-on-primary);
+  color: var(--color-text-claro);
 }
 
 .dark .text-body {
@@ -430,10 +431,10 @@ h6 {
 .btn-cta-primary {
   background: linear-gradient(
     135deg,
-    var(--color-secondary),
-    var(--color-secondary)
+    var(--color-background-secondary),
+    var(--color-background-secondary)
   );
-  color: var(--color-text-on-primary);
+  color: var(--color-text-claro);
   border: none;
   padding: 0.875rem 2rem;
   font-weight: 600;
@@ -457,9 +458,9 @@ h6 {
 
 /* Botões Secundários - Destaque médio */
 .btn-cta-secondary {
-  background: var(--color-primary);
-  color: var(--color-text-on-primary);
-  border: 2px solid var(--color-primary);
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-background);
   padding: 0.75rem 1.5rem;
   font-weight: 500;
   border-radius: 0.5rem;
@@ -469,7 +470,7 @@ h6 {
 
 .btn-cta-secondary:hover {
   background: transparent;
-  color: var(--color-primary);
+  color: var(--color-background);
   box-shadow: 0 6px 20px rgba(47, 82, 51, 0.3);
   transform: translateY(-1px);
 }
@@ -477,7 +478,7 @@ h6 {
 /* Botões Terciários - Sutil */
 .btn-cta-tertiary {
   background: transparent;
-  color: var(--color-primary);
+  color: var(--color-background);
   border: 2px solid var(--color-border-strong);
   padding: 0.625rem 1.25rem;
   font-weight: 500;
@@ -486,14 +487,14 @@ h6 {
 }
 
 .btn-cta-tertiary:hover {
-  border-color: var(--color-primary);
-  background: var(--color-surface-elevated);
+  border-color: var(--color-background);
+  background: var(--color-background-secondary);
   box-shadow: 0 4px 12px rgba(47, 82, 51, 0.1);
 }
 
 /* Cards dos Psicólogos - Destaque médio (30% do design) */
 .card-psychologist {
-  background: var(--color-surface-elevated);
+  background: var(--color-background-secondary);
   border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
@@ -512,8 +513,8 @@ h6 {
   height: 4px;
   background: linear-gradient(
     90deg,
-    var(--color-accent),
-    var(--color-secondary)
+    var(--color-botao-primary),
+    var(--color-background-secondary)
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -522,7 +523,7 @@ h6 {
 .card-psychologist:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  border-color: var(--color-accent);
+  border-color: var(--color-botao-primary);
 }
 
 .card-psychologist:hover::before {
@@ -533,10 +534,10 @@ h6 {
 .card-featured {
   background: linear-gradient(
     135deg,
-    var(--color-surface-elevated),
-    var(--color-surface-subtle)
+    var(--color-background-secondary),
+    var(--color-background-secondary)
   );
-  border: 2px solid var(--color-accent);
+  border: 2px solid var(--color-botao-primary);
   box-shadow: 0 8px 25px rgba(123, 160, 91, 0.15);
 }
 
@@ -551,21 +552,21 @@ h6 {
 }
 
 .section-secondary {
-  background: var(--color-surface);
+  background: var(--color-background-secondary);
 }
 
 .section-accent {
   background: linear-gradient(
     135deg,
-    var(--color-surface-subtle),
-    var(--color-surface)
+    var(--color-background-secondary),
+    var(--color-background)
   );
 }
 
 /* Tags e badges */
 .badge-primary {
-  background: var(--color-secondary);
-  color: var(--color-text-on-primary);
+  background: var(--color-background-secondary);
+  color: var(--color-text-claro);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.875rem;
@@ -573,8 +574,8 @@ h6 {
 }
 
 .badge-secondary {
-  background: var(--color-accent);
-  color: var(--color-text-on-primary);
+  background: var(--color-botao-primary);
+  color: var(--color-text-claro);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.875rem;
@@ -585,18 +586,18 @@ h6 {
 .highlight-primary {
   background: linear-gradient(
     135deg,
-    var(--color-secondary),
-    var(--color-secondary)
+    var(--color-background-secondary),
+    var(--color-background-secondary)
   );
-  color: var(--color-text-on-primary);
+  color: var(--color-text-claro);
   padding: 0.5rem;
   border-radius: 0.5rem;
   display: inline-block;
 }
 
 .highlight-secondary {
-  background: var(--color-accent);
-  color: var(--color-text-on-primary);
+  background: var(--color-botao-primary);
+  color: var(--color-text-claro);
   padding: 0.5rem;
   border-radius: 0.5rem;
   display: inline-block;
@@ -605,7 +606,6 @@ h6 {
 /* Prevenção de overflow horizontal - Solução definitiva */
 html,
 body {
-  overflow-x: hidden;
   max-width: 100vw;
   box-sizing: border-box;
 }
@@ -614,7 +614,6 @@ body {
 *::before,
 *::after {
   box-sizing: border-box;
-  max-width: 100%;
 }
 
 /* Containers principais seguros */
@@ -623,7 +622,6 @@ body {
 .max-w-6xl,
 .max-w-5xl,
 .max-w-4xl {
-  overflow-x: hidden;
   width: 100%;
 }
 
@@ -638,7 +636,6 @@ body {
 
 /* Grid seguro - apenas quando necessário */
 .grid {
-  overflow-x: hidden;
   width: 100%;
 }
 
@@ -661,20 +658,17 @@ svg {
 .safe-container {
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
   box-sizing: border-box;
 }
 
 .safe-flex {
   display: flex;
   min-width: 0;
-  overflow-x: hidden;
 }
 
 .safe-grid {
   display: grid;
   width: 100%;
-  overflow-x: hidden;
   box-sizing: border-box;
 }
 
@@ -726,3 +720,23 @@ svg {
 }
 
 /* Estilos base do Tailwind */
+
+.bg-background-secondary {
+  background: var(--color-background-secondary);
+}
+.text-claro {
+  color: var(--color-text-claro);
+}
+.text-escuro {
+  color: var(--color-text-escuro);
+}
+.text-strong {
+  color: var(--color-text-strong);
+}
+
+.hero-bg {
+  background-image: var(--hero-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

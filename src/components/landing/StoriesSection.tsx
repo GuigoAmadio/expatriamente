@@ -1,15 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function StoriesSection() {
   const { t } = useLanguage();
   // const colors = useColors();
   const { darkMode } = useTheme();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  // Novo estado para paginação
+  const [page, setPage] = useState(0);
+  const commentsPerPage = 6;
 
   // Vídeos mockados para a seção
   const videos = [
@@ -87,10 +91,91 @@ export default function StoriesSection() {
     },
   ];
 
+  // Novo estado para paginação
+  const comments = [
+    {
+      text: "Acolhimento incrível! Me senti compreendida desde o primeiro contato.",
+      name: "Marina Souza Lima",
+      photo: "https://randomuser.me/api/portraits/women/44.jpg",
+      location: "Lisboa, Portugal",
+    },
+    {
+      text: "A equipe realmente entende os desafios de morar fora.",
+      name: "Carlos Tadeu Silva",
+      photo: "https://randomuser.me/api/portraits/men/32.jpg",
+      location: "Toronto, Canadá",
+    },
+    {
+      text: "O atendimento foi rápido e muito humano. Recomendo!",
+      name: "Juliana Pereira Dias",
+      photo: "https://randomuser.me/api/portraits/women/65.jpg",
+      location: "Berlim, Alemanha",
+    },
+    {
+      text: "Me ajudaram a superar a saudade e a ansiedade da adaptação.",
+      name: "Fernanda Lopes Cruz",
+      photo: "https://randomuser.me/api/portraits/women/68.jpg",
+      location: "Sydney, Austrália",
+    },
+    {
+      text: "Profissionais atenciosos e preparados para cada situação.",
+      name: "Ricardo Martins Alves",
+      photo: "https://randomuser.me/api/portraits/men/41.jpg",
+      location: "Miami, EUA",
+    },
+    {
+      text: "Senti confiança e privacidade em todo o processo.",
+      name: "Ana Paula Gonçalves",
+      photo: "https://randomuser.me/api/portraits/women/22.jpg",
+      location: "Dublin, Irlanda",
+    },
+    {
+      text: "A plataforma facilitou muito minha adaptação.",
+      name: "Lucas Ferreira Pinto",
+      photo: "https://randomuser.me/api/portraits/men/23.jpg",
+      location: "Paris, França",
+    },
+    {
+      text: "Atendimento acolhedor e eficiente.",
+      name: "Patrícia Souza Ramos",
+      photo: "https://randomuser.me/api/portraits/women/33.jpg",
+      location: "Madri, Espanha",
+    },
+    {
+      text: "Me senti em casa mesmo longe do Brasil.",
+      name: "João Pedro Almeida",
+      photo: "https://randomuser.me/api/portraits/men/55.jpg",
+      location: "Londres, Reino Unido",
+    },
+    {
+      text: "Equipe muito profissional e humana.",
+      name: "Beatriz Costa Lima",
+      photo: "https://randomuser.me/api/portraits/women/77.jpg",
+      location: "Roma, Itália",
+    },
+    {
+      text: "Recomendo para todos que estão começando a vida fora.",
+      name: "Gabriel Martins Rocha",
+      photo: "https://randomuser.me/api/portraits/men/61.jpg",
+      location: "Zurique, Suíça",
+    },
+    {
+      text: "Apoio fundamental para minha família.",
+      name: "Renata Oliveira Dias",
+      photo: "https://randomuser.me/api/portraits/women/12.jpg",
+      location: "Boston, EUA",
+    },
+  ];
+  const totalPages = Math.ceil(comments.length / commentsPerPage);
+  const paginatedComments = comments.slice(
+    page * commentsPerPage,
+    (page + 1) * commentsPerPage
+  );
+
   return (
     <section
-      className={`py-20 transition-colors duration-300 ${
-        darkMode === "dark" ? "bg-secondary" : "bg-surface"
+      className={`py-20 transition-colors duration-300 text-primary ${
+        darkMode === "dark" ? "bg-background-secondary" : "bg-surface"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,11 +188,7 @@ export default function StoriesSection() {
             transition={{ duration: 0.6 }}
             className="mb-6"
           >
-            <span
-              className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-accent" : "text-primary"
-              }`}
-            >
+            <span className={`font-semibold text-sm uppercase tracking-wide`}>
               {t("stories.tag")}
             </span>
           </motion.div>
@@ -117,9 +198,7 @@ export default function StoriesSection() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className={`text-3xl md:text-4xl font-bold mb-4 ${
-              darkMode === "dark" ? "text-surface" : "text-primary"
-            }`}
+            className={`text-3xl md:text-4xl font-bold mb-4`}
           >
             {t("stories.title")}
           </motion.h2>
@@ -129,9 +208,7 @@ export default function StoriesSection() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className={`max-w-3xl mx-auto text-lg leading-relaxed ${
-              darkMode === "dark" ? "text-surface" : "text-primary"
-            }`}
+            className={`max-w-3xl mx-auto text-lg leading-relaxed`}
           >
             {t("stories.subtitle")}
           </motion.p>
@@ -147,7 +224,7 @@ export default function StoriesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative h-full cursor-pointer group rounded-2xl"
+                className="relative h-full cursor-pointer group rounded-xl"
                 style={{
                   width: hoveredIndex === index ? "400px" : "120px",
                   transition: "width 0.5s ease-in-out",
@@ -160,11 +237,10 @@ export default function StoriesSection() {
                   <img
                     src={video.thumbnail}
                     alt={video.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-xl"
                   />
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-t ${video.gradient} opacity-60`}
-                  ></div>
+                  {/* Overlay neutro */}
+                  <div className="absolute inset-0 bg-neutral-900 opacity-50"></div>
                   <div className="absolute inset-0 bg-secondary/20"></div>
                 </div>
 
@@ -209,17 +285,6 @@ export default function StoriesSection() {
                   </motion.div>
                 )}
 
-                {/* Categoria label quando não expandido */}
-                {hoveredIndex !== index && (
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1">
-                      <span className="text-surface text-xs font-medium whitespace-nowrap">
-                        {video.category}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
                 {/* Play button pequeno quando não expandido */}
                 {hoveredIndex !== index && (
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -239,95 +304,98 @@ export default function StoriesSection() {
           </div>
         </div>
 
-        {/* Testimonial destacado com fundo mais claro */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className={`rounded-2xl p-8 shadow-lg mb-16 ${
-            darkMode === "dark"
-              ? "bg-secondary"
-              : "bg-background border border-tertiary"
-          }`}
-        >
-          <div className="flex flex-col lg:flex-row items-center gap-8">
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 rounded-full ">
-                <img
-                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face"
-                  alt="Marina S."
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="flex-1 text-center lg:text-left">
-              <blockquote
-                className={`text-xl italic mb-4 ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                {t("stories.testimonial.text")}
-              </blockquote>
-              <div
-                className={`font-semibold ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                {t("stories.testimonial.name")}
-              </div>
-              <div
-                className={`text-sm ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                {t("stories.testimonial.info")}
-              </div>
-            </div>
-            <div className="flex-shrink-0">
-              <div className="flex text-primary">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
+        {/* Grid de comentários com paginação e animação */}
+        <div className="relative">
+          {/* Setas laterais com looping infinito */}
+          <button
+            onClick={() => setPage((p) => (p === 0 ? totalPages - 1 : p - 1))}
+            className="hidden md:flex items-center justify-center absolute left-[-60px] top-60 -translate-y-1/2 bg-background-weak rounded-full shadow p-2 z-10"
+            aria-label="Página anterior"
+          >
+            <ChevronLeftIcon className="w-6 h-6 text-primary" />
+          </button>
+          <button
+            onClick={() => setPage((p) => (p === totalPages - 1 ? 0 : p + 1))}
+            className="hidden md:flex items-center justify-center absolute right-[-60px] top-60 -translate-y-1/2 bg-background-weak rounded-full shadow p-2 z-10"
+            aria-label="Próxima página"
+          >
+            <ChevronRightIcon className="w-6 h-6 text-primary" />
+          </button>
+          <div className="overflow-hidden">
+            <div
+              style={{
+                height: "500px",
+                overflowY: "hidden",
+                overflowX: "hidden",
+              }}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={page}
+                  initial={{ x: 80, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -80, opacity: 0 }}
+                  transition={{ duration: 0.45, ease: "easeInOut" }}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+                >
+                  {paginatedComments.map((comment, idx) => (
+                    <div
+                      key={comment.name + comment.location}
+                      className="rounded-2xl bg-white/40 shadow-md p-6 flex flex-col items-start gap-4"
+                    >
+                      {/* Foto e nome */}
+                      <div className="flex items-center gap-3 mb-1">
+                        <img
+                          src={comment.photo}
+                          alt={comment.name}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <span className="font-semibold text-primary/90 text-base">
+                          {comment.name}
+                        </span>
+                      </div>
+                      {/* Texto com aspas */}
+                      <p className="text-base text-primary/90 italic flex items-start gap-2">
+                        <span className="text-2xl text-primary select-none">
+                          “
+                        </span>
+                        {comment.text}
+                      </p>
+                      {/* Localização */}
+                      <div className="text-strong font-bold text-sm mt-2">
+                        {comment.location}
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
-        </motion.div>
-
-        {/* Action Buttons */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <button
-            className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl ${
-              darkMode === "dark"
-                ? "bg-accent hover:bg-accent text-surface"
-                : "bg-primary hover:bg-primary text-surface"
-            }`}
-          >
-            {t("stories.tellMyStory")}
-          </button>
-          <button
-            className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-md border ${
-              darkMode === "dark"
-                ? "bg-secondary hover:bg-secondary text-surface border-secondary"
-                : "bg-secondary hover:bg-secondary text-surface border-secondary"
-            }`}
-          >
-            {t("stories.seeAllStories")}
-          </button>
-        </motion.div>
+          {/* Linha de bolinhas de página com destaque */}
+          <div className="flex items-center justify-center gap-2 mb-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(i)}
+                aria-current={page === i ? "page" : undefined}
+                className={`w-4 h-4 rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40
+                  ${
+                    page === i
+                      ? "bg-botao-primary"
+                      : "bg-background-weak border-primary/20 opacity-60"
+                  }
+                `}
+                aria-label={`Ir para página ${i + 1}`}
+              />
+            ))}
+          </div>
+          {/* Botão Escrever um comentário */}
+          <div className="absolute right-0 -bottom-12">
+            <button className="bg-botao-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition-all">
+              Escrever um comentário
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

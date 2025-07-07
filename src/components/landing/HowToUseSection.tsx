@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { FaRegHandPointer, FaHandPointer } from "react-icons/fa";
 import { FiMousePointer } from "react-icons/fi";
+import Image from "next/image";
 
 // Hook para detectar se é mobile
 const useIsMobile = () => {
@@ -12,6 +13,23 @@ const useIsMobile = () => {
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
+
+  return isMobile;
+};
+
+// Hook para detectar se é mobile específico para calendário (728px)
+const useIsCalendarMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 728);
     };
 
     checkIsMobile();
@@ -71,12 +89,10 @@ const StepRow = ({
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: step * 0.2 }}
         viewport={{ once: true }}
-        className="w-full mb-16 "
+        className="w-full mb-40 md:mb-16 "
       >
         <div className="mb-6 text-left">
-          <span className="text-3xl font-extrabold text-primary-900 mr-2">
-            {step} -
-          </span>
+          <span className="text-3xl font-extrabold mr-2">{step} -</span>
           <span
             className={`text-2xl lg:text-3xl font-extrabold ${gradientClass}`}
           >
@@ -98,11 +114,17 @@ const StepRow = ({
       `}
     >
       <div className={`text-center flex w-1/2 justify-center`}>
-        <span className={`text-xl md:text-3xl font-extrabold text-accent w-96`}>
+        <span
+          className={`text-xl md:text-3xl font-extrabold text-pink-700 w-96`}
+        >
           {step} - {title}
         </span>
       </div>
-      <div className="relative w-1/2 flex justify-center items-center">
+      <div
+        className={`relative w-full flex ${
+          isEven ? "justify-end" : "justify-start"
+        } items-center`}
+      >
         {children}
       </div>
     </div>
@@ -247,7 +269,7 @@ const ProfessionalCard = () => {
         </div>
       </div>
       {/* Painel enxuto ao lado */}
-      <div className="top-6 right-10 absolute flex flex-col justify-center rounded-2xl shadow-lg bg-white p-5 w-1/3 border border-accent z-20">
+      <div className="top-6 right-10 absolute flex flex-col justify-center rounded-2xl shadow-lg bg-white p-5 w-48 md:w-1/3 border border-accent z-20">
         <h5 className="font-bold text-primary-900 text-sm mb-3 flex items-center gap-2">
           <span>👤</span> Dr Fernando Alves
         </h5>
@@ -299,6 +321,7 @@ const ProfessionalCard = () => {
 
 // Passo 3: CalendarStep
 const CalendarStep = () => {
+  const isCalendarMobile = useIsCalendarMobile();
   const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"] as const;
   const times = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
   const available: Record<(typeof weekDays)[number], string[]> = {
@@ -311,19 +334,83 @@ const CalendarStep = () => {
     Dom: [],
   };
   const selected = { day: "Qua", time: "14:00" };
+
+  // Versão mobile simples (abaixo de 728px)
+  if (isCalendarMobile) {
+    return (
+      <div className="relative rounded-2xl bg-white p-6 flex flex-col items-center shadow-lg max-w-sm mx-auto">
+        <div className="w-full">
+          {/* Grid simples com quadrados arredondados */}
+          <div className="grid grid-cols-7 gap-2 mb-4">
+            {weekDays.map((day) => (
+              <div
+                key={day}
+                className="text-center text-xs font-medium text-primary-700 mb-2"
+              >
+                {day}
+              </div>
+            ))}
+          </div>
+
+          {/* Horários como quadrados simples */}
+          <div className="space-y-3">
+            {times.map((time) => (
+              <div key={time} className="grid grid-cols-7 gap-2">
+                {weekDays.map((day) => {
+                  const isAvailable = available[day].includes(time);
+                  const isSelected =
+                    selected.day === day && selected.time === time;
+
+                  return (
+                    <div
+                      key={day}
+                      className={`
+                        w-8 h-8 rounded-lg transition-all duration-200
+                        ${
+                          isSelected
+                            ? "bg-accent border-2 border-accent shadow-lg"
+                            : isAvailable
+                            ? "bg-green-100 border border-green-300"
+                            : "bg-gray-100 border border-gray-200 opacity-50"
+                        }
+                      `}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+
+          {/* Legenda simples */}
+          <div className="flex justify-center gap-4 mt-4 text-xs">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-accent rounded"></div>
+              <span className="text-primary-700">Selecionado</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-green-100 border border-green-300 rounded"></div>
+              <span className="text-primary-700">Disponível</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Versão desktop e intermediária
   return (
-    <div className="relative rounded-2xl bg-white p-10 flex flex-col items-center shadow-lg">
+    <div className="relative rounded-2xl bg-white p-6 md:p-8 lg:p-10 flex flex-col items-center shadow-lg max-w-[95vw] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
       <div className="w-full">
-        <table className="w-full border-separate border-spacing-2">
+        <table className="w-full border-separate border-spacing-1 md:border-spacing-2">
           <thead>
             <tr>
-              <th className="text-xs text-primary-700 font-bold text-center">
+              <th className="text-xs md:text-xs lg:text-sm text-primary-700 font-bold text-center">
                 {" "}
               </th>
               {weekDays.map((d) => (
                 <th
                   key={d}
-                  className="text-xs text-primary-700 font-bold text-center"
+                  className="text-xs md:text-xs lg:text-sm text-primary-700 font-bold text-center"
                 >
                   {d}
                 </th>
@@ -341,7 +428,7 @@ const CalendarStep = () => {
                 return (
                   <td key={d}>
                     <div
-                      className={`h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all w-full min-w-[90px]
+                      className={`h-6 md:h-7 lg:h-8 rounded-lg flex items-center justify-center text-xs md:text-xs lg:text-sm font-medium transition-all w-full min-w-[60px] md:min-w-[70px] lg:min-w-[90px]
                         ${
                           isAvailable
                             ? "bg-green-50 text-green-800 border border-green-200"
@@ -357,7 +444,7 @@ const CalendarStep = () => {
             </tr>
             {times.map((time) => (
               <tr key={time}>
-                <td className="text-xs text-primary-700 font-bold text-right pr-2">
+                <td className="text-xs md:text-xs lg:text-sm text-primary-700 font-bold text-right pr-2">
                   {time}
                 </td>
                 {weekDays.map((d) => {
@@ -367,7 +454,7 @@ const CalendarStep = () => {
                   return (
                     <td key={d}>
                       <div
-                        className={`h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all w-full min-w-[90px]
+                        className={`h-6 md:h-7 lg:h-8 rounded-lg flex items-center justify-center text-xs md:text-xs lg:text-sm font-medium transition-all w-full min-w-[60px] md:min-w-[70px] lg:min-w-[90px]
                           ${
                             isSelected
                               ? "bg-white text-accent border-2 border-accent shadow-lg font-bold"
@@ -397,6 +484,7 @@ const CalendarStep = () => {
 
 // Passo 4: LoginForm
 const LoginForm = () => {
+  const isCalendarMobile = useIsCalendarMobile();
   const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"] as const;
   const times = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
   const available: Record<(typeof weekDays)[number], string[]> = {
@@ -410,18 +498,89 @@ const LoginForm = () => {
   };
   const selected = { day: "Qua", time: "14:00" };
 
+  // Versão mobile simples (abaixo de 728px)
+  if (isCalendarMobile) {
+    return (
+      <div className="relative max-w-sm mx-auto flex flex-col items-center bg-white rounded-2xl shadow-md px-6 py-4">
+        {/* Calendário mobile simples no topo */}
+        <div className="w-full mb-6">
+          <div className="space-y-2">
+            {["14:00", "15:00"].map((time) => (
+              <div key={time} className="grid grid-cols-7 gap-2">
+                {weekDays.map((day) => {
+                  const isAvailable = available[day].includes(time);
+                  const isSelected =
+                    selected.day === day && selected.time === time;
+
+                  return (
+                    <div
+                      key={day}
+                      className={`
+                        w-6 h-6 rounded-lg transition-all duration-200
+                        ${
+                          isSelected
+                            ? "bg-accent border-2 border-accent shadow-lg"
+                            : isAvailable
+                            ? "bg-green-100 border border-green-300"
+                            : "bg-gray-100 border border-gray-200 opacity-50"
+                        }
+                      `}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Formulário mobile */}
+        <div className="flex flex-col gap-3 w-full mb-6">
+          <div
+            className="px-3 py-2 border border-accent rounded-lg text-sm text-gray-400 bg-white flex items-center justify-start h-8 select-none cursor-default"
+            style={{ fontStyle: "italic" }}
+          >
+            Nome completo
+          </div>
+          <div
+            className="px-3 py-2 border border-accent rounded-lg text-sm text-gray-400 bg-white flex items-center justify-start h-8 select-none cursor-default"
+            style={{ fontStyle: "italic" }}
+          >
+            Email
+          </div>
+          <div
+            className="px-3 py-2 border border-accent rounded-lg text-sm text-gray-400 bg-white flex items-center justify-start h-8 select-none cursor-default"
+            style={{ fontStyle: "italic" }}
+          >
+            Senha
+          </div>
+        </div>
+
+        {/* Botão confirmar mobile */}
+        <div className="relative w-full flex justify-center">
+          <button className="px-6 py-2 w-full text-center bg-accent text-white rounded-lg font-bold text-base shadow-lg flex items-center justify-center gap-2 relative">
+            Confirmar
+            <span className="absolute top-8 left-1/2 -translate-x-1/2 animate-bounce text-2xl select-none pointer-events-none">
+              👆
+            </span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Versão desktop e intermediária
   return (
-    <div className="relative w-[700px] mx-auto flex flex-col items-center bg-white rounded-2xl shadow-md px-8 pb-4">
+    <div className="relative overflow-hidden w-full max-w-[95vw] md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto flex flex-col items-center bg-white rounded-2xl shadow-md px-4 md:px-8 lg:px-12 pb-4">
       {/* Simulação do overflow do calendário */}
       <div
         className="w-full relative mb-8 "
-        style={{ maxHeight: 112, marginTop: "-20px" }}
+        style={{ maxHeight: 90, marginTop: "-10px" }}
       >
-        <table className="w-full border-separate border-spacing-2">
+        <table className="w-full border-separate border-spacing-1 md:border-spacing-2">
           <tbody>
             {["14:00", "15:00", "16:00"].map((time, idx) => (
               <tr key={time} className={idx === 0 ? "z-0 relative" : ""}>
-                <td className="text-xs text-primary-700 font-bold text-right pr-2">
+                <td className="text-xs md:text-xs lg:text-sm text-primary-700 font-bold text-right pr-2">
                   {time}
                 </td>
                 {weekDays.map((d) => {
@@ -431,7 +590,7 @@ const LoginForm = () => {
                   return (
                     <td key={d}>
                       <div
-                        className={`h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all w-full min-w-[90px]
+                        className={`h-6 md:h-7 lg:h-8 rounded-lg flex items-center justify-center text-xs md:text-xs lg:text-sm font-medium transition-all w-full min-w-[60px] md:min-w-[70px] lg:min-w-[90px]
                           ${
                             isSelected
                               ? "bg-white text-accent border-2 border-accent shadow-lg font-bold"
@@ -440,7 +599,7 @@ const LoginForm = () => {
                               : "bg-gray-100 text-gray-400 border border-gray-200 opacity-60 select-none"
                           }
                         `}
-                        style={idx === 0 ? { marginTop: "-8px" } : {}}
+                        style={idx === 0 ? { marginTop: "-6px" } : {}}
                       >
                         {isSelected
                           ? `${d} ${time}`
@@ -456,24 +615,24 @@ const LoginForm = () => {
           </tbody>
         </table>
         {/* Gradiente para simular overflow no topo */}
-        <div className="absolute left-0 right-0 top-0 h-8 bg-gradient-to-b from-white/90 to-transparent pointer-events-none z-10" />
+        <div className="absolute left-0 right-0 top-0 h-6 bg-gradient-to-b from-white/90 to-transparent pointer-events-none z-10" />
       </div>
       {/* Formulário principal */}
-      <div className="flex flex-row gap-4 w-full mb-8">
+      <div className="flex flex-row gap-2 md:gap-4 w-full mb-8">
         <div
-          className="flex-1 px-2 py-1 border border-accent rounded-lg text-xs text-gray-400 bg-white flex items-center justify-start h-7 select-none cursor-default"
+          className="flex-1 px-1 md:px-2 py-1 border border-accent rounded-lg text-xs md:text-xs lg:text-sm text-gray-400 bg-white flex items-center justify-start h-6 md:h-7 lg:h-8 select-none cursor-default"
           style={{ fontStyle: "italic" }}
         >
           Nome completo
         </div>
         <div
-          className="flex-1 px-2 py-1 border border-accent rounded-lg text-xs text-gray-400 bg-white flex items-center justify-start h-7 select-none cursor-default"
+          className="flex-1 px-1 md:px-2 py-1 border border-accent rounded-lg text-xs md:text-xs lg:text-sm text-gray-400 bg-white flex items-center justify-start h-6 md:h-7 lg:h-8 select-none cursor-default"
           style={{ fontStyle: "italic" }}
         >
           Email
         </div>
         <div
-          className="flex-1 px-2 py-1 border border-accent rounded-lg text-xs text-gray-400 bg-white flex items-center justify-start h-7 select-none cursor-default"
+          className="flex-1 px-1 md:px-2 py-1 border border-accent rounded-lg text-xs md:text-xs lg:text-sm text-gray-400 bg-white flex items-center justify-start h-6 md:h-7 lg:h-8 select-none cursor-default"
           style={{ fontStyle: "italic" }}
         >
           Senha
@@ -481,9 +640,9 @@ const LoginForm = () => {
       </div>
       {/* Botão confirmar */}
       <div className="relative w-full flex justify-center mt-2">
-        <button className="px-6 py-2 w-40 text-center bg-accent text-white rounded-lg font-bold text-base shadow-lg flex items-center justify-center gap-2 relative">
+        <button className="px-4 md:px-6 py-2 w-32 md:w-40 text-center bg-accent text-white rounded-lg font-bold text-sm md:text-base shadow-lg flex items-center justify-center gap-2 relative">
           Confirmar
-          <span className="absolute top-8 left-1/2 -translate-x-1/2 animate-bounce text-2xl select-none pointer-events-none">
+          <span className="absolute top-8 left-1/2 -translate-x-1/2 animate-bounce text-xl md:text-2xl select-none pointer-events-none">
             👆
           </span>
         </button>
@@ -516,8 +675,8 @@ const HowToUseSection = () => {
   ];
 
   return (
-    <section className="w-full py-24 bg-surface-subtle">
-      <div className="mx-auto px-4 flex flex-col items-center">
+    <section className="w-full py-24 relative overflow-hidden bg-[#344d0e] z-30">
+      <div className="mx-auto px-4 flex flex-col items-center relative z-10">
         {/* Bolas com blur */}
         <BlurBalls position="top-left" />
         <BlurBalls position="bottom-right" />
@@ -529,8 +688,8 @@ const HowToUseSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-primary mb-6">
-            Como Usar a <span className="gradient-text">Plataforma</span>
+          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-pink-700 mb-6">
+            Como Usar a <span className="">Plataforma</span>
           </h2>
           <p className="font-medium text-lg text-primary-700 max-w-3xl mx-auto leading-relaxed">
             Em apenas 4 passos simples, você estará pronto para começar sua

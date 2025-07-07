@@ -46,7 +46,7 @@ const translations = {
       averageRating: "Avaliação Média",
       savedPerWeek: "Economizados por Semana",
       responseTime: "Tempo de Resposta",
-      servicesTitle: "Serviços de Psicoterapia<br/>Online",
+      servicesTitle: "Serviços de Psicoterapia Online",
       servicesDescription:
         "Oferecemos atendimento psicológico especializado para brasileiros no exterior, desde consultas individuais até terapia de casal. Nossa equipe garante que você se sinta acolhido com profissionais qualificados e compreensão cultural.",
       cta: {
@@ -206,6 +206,15 @@ const translations = {
       legal: "Legal",
       followUs: "Nos Siga",
       allRights: "Todos os direitos reservados.",
+      newsletter: "Newsletter",
+      newsletterDescription:
+        "Receba novidades, dicas e conteúdos exclusivos sobre saúde mental no exterior.",
+      emailPlaceholder: "Seu email",
+      subscribeButton: "Inscrever-se",
+      madeWithLove: "Feito com ❤️ para brasileiros no exterior",
+      address: "Endereço:",
+      generalAreas: "Áreas Gerais",
+      institutional: "Institucional",
       links: {
         aboutUs: "Sobre Nós",
         psychologists: "Psicanalistas",
@@ -416,6 +425,15 @@ const translations = {
       legal: "Legal",
       followUs: "Follow Us",
       allRights: "All rights reserved.",
+      newsletter: "Newsletter",
+      newsletterDescription:
+        "Receive updates, tips, and exclusive content about mental health abroad.",
+      emailPlaceholder: "Your email",
+      subscribeButton: "Subscribe",
+      madeWithLove: "Made with ❤️ for Brazilians abroad",
+      address: "Address:",
+      generalAreas: "General Areas",
+      institutional: "Institutional",
       links: {
         aboutUs: "About Us",
         psychologists: "Psychoanalysts",
@@ -627,6 +645,15 @@ const translations = {
       legal: "Legal",
       followUs: "Síguenos",
       allRights: "Todos los derechos reservados.",
+      newsletter: "Newsletter",
+      newsletterDescription:
+        "Recibe actualizaciones, consejos y contenido exclusivo sobre salud mental en el exterior.",
+      emailPlaceholder: "Tu correo electrónico",
+      subscribeButton: "Suscríbete",
+      madeWithLove: "Hecho con ❤️ para brasileños en el exterior",
+      address: "Dirección:",
+      generalAreas: "Áreas Generales",
+      institutional: "Institucional",
       links: {
         aboutUs: "Sobre Nosotros",
         psychologists: "Psicoanalistas",

@@ -10,121 +10,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Cores Principais com melhor hierarquia
-        primary: {
-          DEFAULT: "var(--color-primary)",
-          50: "#f0f9ff",
-          100: "#e0f2fe",
-          200: "#bae6fd",
-          300: "#7dd3fc",
-          400: "#38bdf8",
-          500: "var(--color-primary)",
-          600: "#0284c7",
-          700: "#0369a1",
-          800: "#075985",
-          900: "#0c4a6e",
-        },
-        secondary: {
-          DEFAULT: "var(--color-secondary)",
-          50: "#f8fafc",
-          100: "#f1f5f9",
-          200: "#e2e8f0",
-          300: "#cbd5e0",
-          400: "#94a3b8",
-          500: "var(--color-secondary)",
-          600: "#475569",
-          700: "#334155",
-          800: "#1e293b",
-          900: "#0f172a",
-        },
-        accent: {
-          DEFAULT: "var(--color-accent)",
-          50: "#fefce8",
-          100: "#fef9c3",
-          200: "#fef08a",
-          300: "#fde047",
-          400: "#facc15",
-          500: "var(--color-accent)",
-          600: "#ca8a04",
-          700: "#a16207",
-          800: "#854d0e",
-          900: "#713f12",
-        },
-
-        // Sistema de Fundos Hierárquico
         background: {
           DEFAULT: "var(--color-background)",
-          elevated: "var(--color-surface-elevated)",
-          subtle: "var(--color-surface-subtle)",
+          secondary: "var(--color-background-secondary)",
+          oposite: "var(--color-background-oposite)",
+          weak: "var(--color-background-weak)",
         },
-        surface: {
-          DEFAULT: "var(--color-surface)",
-          elevated: "var(--color-surface-elevated)",
-          subtle: "var(--color-surface-subtle)",
-        },
-
-        // Sistema de Textos
-        text: {
-          DEFAULT: "var(--color-text-primary)",
-          primary: "var(--color-text-primary)",
-          secondary: "var(--color-text-secondary)",
-          muted: "var(--color-text-muted)",
-          "on-primary": "var(--color-text-on-primary)",
-        },
-
-        // Bordas e Divisores
+        textPrimary: "var(--color-text-primary)",
+        textSecondary: "var(--color-text-secondary)",
+        textClaro: "var(--color-text-claro)",
+        textEscuro: "var(--color-text-escuro)",
+        textStrong: "var(--color-text-strong)",
+        botaoPrimary: "var(--color-botao-primary)",
+        botaoSecondary: "var(--color-botao-secondary)",
+        botaoSublime: "var(--color-botao-sublime)",
         border: {
           DEFAULT: "var(--color-border)",
           strong: "var(--color-border-strong)",
         },
         divider: "var(--color-divider)",
-
-        // Estados Interativos
         hover: "var(--color-hover)",
         pressed: "var(--color-pressed)",
         focus: "var(--color-focus)",
-
-        // Cores de Status
         success: "var(--color-success)",
         warning: "var(--color-warning)",
         error: "var(--color-error)",
         info: "var(--color-info)",
-
-        // Compatibilidade com Shadcn/UI
-        card: {
-          DEFAULT: "var(--color-surface-elevated)",
-          foreground: "var(--color-text-primary)",
-        },
-        popover: {
-          DEFAULT: "var(--color-surface-elevated)",
-          foreground: "var(--color-text-primary)",
-        },
-        muted: {
-          DEFAULT: "var(--color-surface)",
-          foreground: "var(--color-text-muted)",
-        },
-        destructive: {
-          DEFAULT: "var(--color-error)",
-          foreground: "var(--color-text-on-primary)",
-        },
-        input: "var(--color-surface-elevated)",
-        ring: "var(--color-focus)",
-
-        // Charts
-        chart: {
-          "1": "var(--color-primary)",
-          "2": "var(--color-accent)",
-          "3": "var(--color-secondary)",
-          "4": "var(--color-info)",
-          "5": "var(--color-success)",
-        },
-
-        // Compatibilidade (cores antigas - deprecated)
-        tertiary: "var(--color-border)",
       },
       fontFamily: {
         heading: ["var(--font-heading)"],
         body: ["var(--font-body)"],
+        playfair: ["var(--font-playfair)", "serif"],
       },
       borderRadius: {
         lg: "0.5rem",

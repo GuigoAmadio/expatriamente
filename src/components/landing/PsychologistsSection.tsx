@@ -262,7 +262,7 @@ export default function PsychologistsSection() {
 
   return (
     <section
-      className={`py-20 transition-colors duration-300 section-bg-primary ${
+      className={`py-20 transition-colors duration-300 bg-background text-primary ${
         darkMode === "dark" ? "dark" : ""
       }`}
     >
@@ -278,7 +278,7 @@ export default function PsychologistsSection() {
           >
             <span
               className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-accent" : "text-primary"
+                darkMode === "dark" ? "text-strong" : ""
               }`}
             >
               {t("tag", "stories")}
@@ -300,7 +300,7 @@ export default function PsychologistsSection() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="max-w-4xl mx-auto text-xl leading-relaxed text-body"
+            className="max-w-4xl mx-auto text-xl leading-relaxed"
           >
             {t("subtitle", "psychologists")}
           </motion.p>
@@ -323,10 +323,10 @@ export default function PsychologistsSection() {
                   selectedCategory === category.key
                     ? darkMode === "dark"
                       ? "bg-accent text-surface shadow-lg"
-                      : "bg-primary text-surface shadow-lg"
+                      : "bg-botao-primary text-secondary shadow-lg"
                     : darkMode === "dark"
                     ? "bg-primary text-surface hover:bg-secondary"
-                    : "bg-background text-primary hover:bg-surface border border-primary/20"
+                    : "bg-background-weak text-primary hover:bg-botao-primary"
                 }`}
               >
                 {t(category.label, "psychologists")}
@@ -336,14 +336,7 @@ export default function PsychologistsSection() {
         </motion.div>
 
         {/* Grid de Psicanalistas - VERSÃO COM SOBREPOSIÇÃO */}
-        <div
-          className="grid gap-6 mb-12 w-full max-w-7xl mx-auto justify-items-center"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            maxWidth: "1200px",
-            margin: "0 auto",
-          }}
-        >
+        <div className="flex flex-wrap gap-6 mb-12 w-full mx-auto justify-center">
           {filteredPsychologists.map((psychologist) => (
             <PsychologistCard
               key={psychologist.id}
@@ -365,7 +358,7 @@ export default function PsychologistsSection() {
             className={`rounded-xl mt-10 px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl ${
               darkMode === "dark"
                 ? "bg-accent hover:bg-accent text-surface"
-                : "bg-primary hover:bg-primary text-surface"
+                : "bg-botao-primary hover:bg-botao-primary/80 text-secondary"
             }`}
           >
             {t("viewProfile", "psychologists")}

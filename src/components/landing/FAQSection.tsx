@@ -3,6 +3,14 @@
 import { motion } from "framer-motion";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import {
+  ShieldCheckIcon,
+  ClockIcon,
+  GlobeAltIcon,
+  ChatBubbleLeftRightIcon,
+  CalendarDaysIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import {
@@ -52,7 +60,7 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="bg-background w-full py-16 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
+    <section className="bg-background text-primary w-full py-16 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -63,11 +71,7 @@ export default function FAQSection() {
             transition={{ duration: 0.6 }}
             className="mb-6"
           >
-            <span
-              className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-accent" : "text-primary"
-              }`}
-            >
+            <span className={`font-semibold text-sm uppercase tracking-wide`}>
               {t("tag", "faq")}
             </span>
           </motion.div>
@@ -86,7 +90,7 @@ export default function FAQSection() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-body"
+            className="text-lg"
           >
             {t("subtitle", "faq")}
           </motion.p>
@@ -103,35 +107,23 @@ export default function FAQSection() {
             >
               <Disclosure>
                 {({ open }) => (
-                  <div
-                    className={`relative rounded-xl shadow-sm group hover:shadow-md transition-all duration-300 ${
-                      darkMode === "dark" ? "bg-primary" : "bg-white"
-                    } ${
-                      open
-                        ? darkMode === "dark"
-                          ? "border-2 border-accent"
-                          : "border-2 border-primary"
-                        : "border border-transparent"
+                  <motion.div
+                    className={`relative rounded-xl shadow-sm group hover:shadow-md transition-all duration-300 bg-claro overflow-hidden border-2 ${
+                      open ? "border-orange-400" : "border-transparent"
                     }`}
+                    style={{ background: "white" }}
                   >
-                    {/* Borda gradiente no hover */}
-                    <div
-                      className={`absolute inset-0 transition-opacity duration-300 pointer-events-none ${
-                        open
-                          ? darkMode === "dark"
-                            ? "border-2 border-accent"
-                            : "border-2 border-primary"
-                          : "border border-transparent"
-                      }`}
-                      style={{ padding: "2px" }}
-                    >
-                      <div
-                        className={`w-full h-full rounded-xl ${
-                          darkMode === "dark" ? "bg-primary" : "bg-white"
-                        }`}
-                      ></div>
-                    </div>
-
+                    {/* Borda gradiente animada */}
+                    {open && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="absolute inset-0 pointer-events-none z-0 rounded-xl border-2 border-transparent bg-white"
+                        style={{ WebkitMaskImage: "linear-gradient(#fff 0 0)" }}
+                      />
+                    )}
                     <div className="relative z-10">
                       <Disclosure.Button
                         className={`flex w-full justify-between items-center px-6 py-5 text-left transition-all duration-300 group
@@ -146,7 +138,7 @@ export default function FAQSection() {
                           }`}
                       >
                         <span
-                          className={`font-medium text-lg transition-colors duration-300
+                          className={`font-medium text-sm md:text-lg transition-colors duration-300
                             ${
                               open
                                 ? darkMode === "dark"
@@ -160,7 +152,7 @@ export default function FAQSection() {
                           {faq.question}
                         </span>
                         <ChevronDownIcon
-                          className={`h-5 w-5 transition-all duration-500 ease-in-out ml-4 flex-shrink-0
+                          className={`h-3 w-3 md:h-5 md:w-5 transition-all duration-500 ease-in-out ml-4 flex-shrink-0
                             ${
                               open
                                 ? darkMode === "dark"
@@ -173,7 +165,6 @@ export default function FAQSection() {
                             ${open ? "rotate-180 transform" : ""}`}
                         />
                       </Disclosure.Button>
-
                       <motion.div
                         initial={false}
                         animate={{
@@ -214,7 +205,7 @@ export default function FAQSection() {
                         </Disclosure.Panel>
                       </motion.div>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
               </Disclosure>
             </motion.div>
@@ -227,379 +218,44 @@ export default function FAQSection() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-12"
+          className="text-center mt-20 flex flex-col items-center justify-center bg-white/70 rounded-xl px-12 py-7 shadow-sm text-claro"
         >
-          <p className="text-primary dark:text-surface mb-6">
-            {t("cta.text", "faq")}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg text-surface ${
-                darkMode === "dark"
-                  ? "bg-accent hover:bg-accent"
-                  : "bg-primary hover:bg-primary"
-              }`}
-            >
-              {t("cta.whatsapp", "faq")}
+          <h3 className="text-3xl md:text-4xl font-extrabold mb-4 mt-10">
+            Ainda tem dúvidas?
+            <br />
+            <span className="bg-gradient-to-r from-orange-400 via-orange-00 to-orange-600 bg-clip-text text-transparent">
+              Nossa equipe está aqui para ajudar
+            </span>
+            .
+          </h3>
+
+          {/* Linha de 3 textos pequenos com ícones */}
+          <div className="flex flex-row flex-wrap items-center justify-center gap-6 text-lg text-primary my-8">
+            <span className="flex items-center gap-2">
+              <StarIcon className="h-5 w-5 text-primary" />
+              Privacidade garantida
+            </span>
+            <span className="flex items-center gap-2">
+              <ClockIcon className="h-5 w-5 text-primary" />
+              Resposta rápida
+            </span>
+            <span className="flex items-center gap-2">
+              <GlobeAltIcon className="h-5 w-5 text-primary" />
+              Atendimento internacional
+            </span>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 my-10 w-full max-w-2xl">
+            <button className="flex-1 min-w-[220px] px-4 py-4 rounded-2xl font-bold text-base shadow-xl bg-background-oposite text-white flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300">
+              <ChatBubbleLeftRightIcon className="h-5 w-5" />
+              Conversar no WhatsApp
             </button>
-            <button
-              className={`px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 border ${
-                darkMode === "dark"
-                  ? "bg-primary text-surface border-accent hover:bg-accent"
-                  : "bg-background text-primary border-primary hover:bg-surface"
-              }`}
-            >
-              {t("cta.schedule", "faq")}
+            <button className="flex-1 min-w-[220px] px-4 py-4 rounded-2xl font-bold text-base shadow-xl bg-orange-400 text-white flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300">
+              <CalendarDaysIcon className="h-5 w-5" />
+              Agendar Consulta Gratuita
             </button>
           </div>
         </motion.div>
       </div>
-
-      {/* Footer */}
-      <footer className="w-full bg-primary-900 text-white py-8 mt-16">
-        <div className="flex flex-col items-center justify-center">
-          {/* CTA Section */}
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h3
-                className={`text-2xl md:text-3xl font-bold mb-4 ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                {t("cta", "footer")}
-              </h3>
-              <p
-                className={`mb-8 max-w-2xl mx-auto text-lg ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                {t("ctaDesc", "footer")}
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button
-                  className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 shadow-lg text-surface ${
-                    darkMode === "dark"
-                      ? "bg-accent hover:bg-accent"
-                      : "bg-primary hover:bg-primary"
-                  }`}
-                >
-                  {t("getStarted", "footer")}
-                </button>
-                <button
-                  className={`rounded-xl px-8 py-3 font-semibold transition-all hover:scale-105 border ${
-                    darkMode === "dark"
-                      ? "bg-accent/10 hover:bg-accent/20 text-accent border-accent/20"
-                      : "bg-primary/10 hover:bg-primary/20 text-primary border-primary/20"
-                  }`}
-                >
-                  {t("freeConsultation", "footer")}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Footer Links */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Company Info */}
-            <div className="md:col-span-2">
-              <h4 className="text-2xl font-bold mb-4">
-                <span
-                  className={
-                    darkMode === "dark"
-                      ? "bg-gradient-to-r from-accent to-accent bg-clip-text text-transparent"
-                      : "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-                  }
-                >
-                  {t("company", "footer")}
-                </span>
-              </h4>
-              <p
-                className={`text-sm mb-6 max-w-md ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                {t("companyDesc", "footer")}
-              </p>
-              <div
-                className={`text-sm space-y-2 ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                  contato@expatriamente.com
-                </div>
-                <div className="flex items-center gap-2">
-                  <FaWhatsapp className="w-4 h-4" />
-                  +55 (11) 9 8765-4321
-                </div>
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Atendimento global • Fuso flexível
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h4
-                className={`text-lg font-semibold mb-4 ${
-                  darkMode === "dark" ? "text-accent" : "text-primary"
-                }`}
-              >
-                {t("quickLinks", "footer")}
-              </h4>
-              <ul
-                className={`space-y-3 text-sm ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.aboutUs", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.psychologists", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.stories", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.blog", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.faq", "footer")}
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4
-                className={`text-lg font-semibold mb-4 ${
-                  darkMode === "dark" ? "text-accent" : "text-primary"
-                }`}
-              >
-                {t("support", "footer")}
-              </h4>
-              <ul
-                className={`space-y-3 text-sm ${
-                  darkMode === "dark" ? "text-surface" : "text-primary"
-                }`}
-              >
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.contact", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.help", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.pricing", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.privacy", "footer")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "hover:text-teal-400"
-                        : "hover:text-orange-500"
-                    }`}
-                  >
-                    {t("links.terms", "footer")}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Social Media & Copyright */}
-          <div className="border-t border-primary pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0">
-                <p
-                  className={`text-sm ${
-                    darkMode === "dark" ? "text-surface" : "text-primary"
-                  }`}
-                >
-                  © 2024 {t("company", "footer")}. {t("allRights", "footer")}
-                </p>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <span
-                  className={`text-sm ${
-                    darkMode === "dark" ? "text-surface" : "text-primary"
-                  }`}
-                >
-                  {t("followUs", "footer")}:
-                </span>
-                <div className="flex space-x-4">
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "text-surface hover:text-accent"
-                        : "text-primary hover:text-accent"
-                    }`}
-                    aria-label="Facebook"
-                  >
-                    <FaFacebook className="h-5 w-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "text-surface hover:text-accent"
-                        : "text-primary hover:text-accent"
-                    }`}
-                    aria-label="Instagram"
-                  >
-                    <FaInstagram className="h-5 w-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "text-surface hover:text-accent"
-                        : "text-primary hover:text-accent"
-                    }`}
-                    aria-label="LinkedIn"
-                  >
-                    <FaLinkedin className="h-5 w-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "text-surface hover:text-accent"
-                        : "text-primary hover:text-accent"
-                    }`}
-                    aria-label="WhatsApp"
-                  >
-                    <FaWhatsapp className="h-5 w-5" />
-                  </a>
-                  <a
-                    href="#"
-                    className={`transition-colors duration-300 ${
-                      darkMode === "dark"
-                        ? "text-surface hover:text-accent"
-                        : "text-primary hover:text-accent"
-                    }`}
-                    aria-label="YouTube"
-                  >
-                    <FaYoutube className="h-5 w-5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </section>
   );
 }

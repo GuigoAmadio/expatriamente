@@ -29,7 +29,7 @@ export default function MetricsSection() {
 
   return (
     <section
-      className={`py-16 transition-colors duration-300 section-bg-secondary ${
+      className={`py-16 transition-colors duration-300 bg-background-secondary text-primary ${
         darkMode === "dark" ? "dark" : ""
       }`}
     >
@@ -59,14 +59,12 @@ export default function MetricsSection() {
               className="text-center"
             >
               {/* Número */}
-              <div className="text-4xl md:text-5xl font-bold mb-2 text-accent">
+              <div className="text-4xl md:text-5xl font-bold mb-2 text-strong">
                 {metric.number}
               </div>
 
               {/* Label */}
-              <div className="text-sm font-medium text-body text-primary">
-                {metric.label}
-              </div>
+              <div className="text-sm font-medium">{metric.label}</div>
             </motion.div>
           ))}
         </div>
@@ -77,10 +75,10 @@ export default function MetricsSection() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center"
+          className="text-center mt-40 flex flex-col items-center"
         >
           <h2
-            className="text-3xl md:text-4xl font-bold mb-6 text-heading whitespace-nowrap text-nowrap"
+            className="text-3xl md:text-4xl font-bold mb-6"
             dangerouslySetInnerHTML={{ __html: t("servicesTitle", "metrics") }}
           />
           <div
@@ -101,9 +99,7 @@ export default function MetricsSection() {
             </svg>
           </div>
 
-          <p className="text-lg max-w-3xl mx-auto mb-8 text-body text-primary">
-            {t("servicesDescription", "metrics")}
-          </p>
+          <p className="text-lg w-1/2">{t("servicesDescription", "metrics")}</p>
 
           {/* Ícone de cuidado/coração */}
         </motion.div>

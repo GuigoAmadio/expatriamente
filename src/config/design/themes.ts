@@ -3,23 +3,25 @@
 
 export type Theme = {
   name: string;
+  isDefault?: boolean;
   colors: {
-    // Paleta principal
-    primary: string;
-    secondary: string;
-    accent: string;
-
     // Fundos
     background: string;
-    surface: string;
-    surfaceElevated: string;
-    surfaceSubtle: string;
+    backgroundSecondary: string;
+    backgroundOposite: string;
+    backgroundWeak: string;
 
-    // Texto
+    // Textos
     textPrimary: string;
     textSecondary: string;
-    textMuted: string;
-    textOnPrimary: string;
+    textClaro: string;
+    textEscuro: string;
+    textStrong: string;
+
+    // Botões
+    botaoPrimary: string;
+    botaoSecondary: string;
+    botaoSublime: string;
 
     // Bordas, divisores e estados
     border: string;
@@ -47,33 +49,30 @@ export const themes: Theme[] = [
   // Tema 1 – Paleta Verde Oliva (baseada na imagem "Expatriamente")
   {
     name: "theme1",
+    isDefault: true,
     colors: {
-      primary: "#5f6f52", // Marrom escuro
-      secondary: "#a9b388", // Bege claro
-      accent: "#ffae00", // Laranja vibrante
-
-      background: "#f9ebc7", // Bege médio
-      surface: "#A79057", // Marrom claro
-      surfaceElevated: "#F5CD62", // Amarelo vibrante
-      surfaceSubtle: "#fefae0", // Bege muito claro
-
-      textPrimary: "#5f6f52", // Marrom oliva escuro
-      textSecondary: "#fefae0", // Marrom claro
-      textMuted: "#c4661f", // Marrom acinzentado
-      textOnPrimary: "#783d19", // Branco
-
-      border: "#A79057", // Marrom claro
-      borderStrong: "#5A5427", // Marrom oliva escuro
-      divider: "#D3BD99", // Bege médio
-
-      hover: "#D16708", // Laranja queimado
-      pressed: "#A04E07", // Marrom avermelhado escuro
-      focus: "#5A5427", // Marrom oliva escuro
-
-      success: "#6B8E23", // Verde oliva
-      warning: "#D16708", // Laranja queimado
-      error: "#B22222", // Vermelho escuro
-      info: "#F5CD62", // Amarelo vibrante
+      background: "#f9ebc7", // bege médio
+      backgroundSecondary: "#fefae0", // bege muito claro
+      backgroundOposite: "#5f6f52", // marrom oliva escuro
+      backgroundWeak: "#fffbe6", // bege claríssimo
+      textPrimary: "#5f6f52", // marrom oliva escuro
+      textSecondary: "#fefae0", // bege muito claro
+      textClaro: "#fff", // branco
+      textEscuro: "#5A5427", // marrom oliva escuro
+      textStrong: "#ffae00", // marrom avermelhado escuro
+      botaoPrimary: "#ffae00", // laranja vibrante
+      botaoSecondary: "#5f6f52", // marrom claro
+      botaoSublime: "#F5CD62", // amarelo vibrante
+      border: "#A79057", // marrom claro
+      borderStrong: "#ffae00", // marrom oliva escuro
+      divider: "#D3BD99", // bege médio
+      hover: "#D16708", // laranja queimado
+      pressed: "#A04E07", // marrom avermelhado escuro
+      focus: "#5A5427", // marrom oliva escuro
+      success: "#6B8E23", // verde oliva
+      warning: "#D16708", // laranja queimado
+      error: "#B22222", // vermelho escuro
+      info: "#F5CD62", // amarelo vibrante
     },
     fonts: {
       heading: "Mikela, serif",
@@ -85,32 +84,28 @@ export const themes: Theme[] = [
   {
     name: "theme2",
     colors: {
-      primary: "#203A58", // Azul petróleo escuro
-      secondary: "#C4661F", // Laranja queimado
-      accent: "#6F8CA4", // Azul acinzentado
-
-      background: "#F8F9FA", // Cinza muito claro
-      surface: "#F1F3F5", // Cinza claro
-      surfaceElevated: "#FFFFFF", // Branco
-      surfaceSubtle: "#E9ECEF", // Cinza claríssimo
-
-      textPrimary: "#203A58", // Azul petróleo escuro
-      textSecondary: "#495057", // Cinza escuro
-      textMuted: "#6C757D", // Cinza médio
-      textOnPrimary: "#FFFFFF", // Branco
-
-      border: "#DEE2E6", // Cinza claro
-      borderStrong: "#ADB5BD", // Cinza médio
-      divider: "#E9ECEF", // Cinza claríssimo
-
-      hover: "#C4661F", // Laranja queimado
-      pressed: "#A0541A", // Marrom alaranjado escuro
-      focus: "#203A58", // Azul petróleo escuro
-
-      success: "#28A745", // Verde médio
-      warning: "#FFC107", // Amarelo
-      error: "#DC3545", // Vermelho
-      info: "#17A2B8", // Azul piscina
+      background: "#F8F9FA", // cinza muito claro
+      backgroundSecondary: "#E9ECEF", // cinza claríssimo
+      backgroundOposite: "#203A58", // azul petróleo escuro
+      backgroundWeak: "#ffffff", // branco
+      textPrimary: "#203A58", // azul petróleo escuro
+      textSecondary: "#495057", // cinza escuro
+      textClaro: "#FFFFFF", // branco
+      textEscuro: "#203A58", // azul petróleo escuro
+      textStrong: "#071739", // azul marinho profundo
+      botaoPrimary: "#203A58", // azul petróleo escuro
+      botaoSecondary: "#C4661F", // laranja queimado
+      botaoSublime: "#6F8CA4", // azul acinzentado
+      border: "#DEE2E6", // cinza claro
+      borderStrong: "#ADB5BD", // cinza médio
+      divider: "#E9ECEF", // cinza claríssimo
+      hover: "#C4661F", // laranja queimado
+      pressed: "#A0541A", // marrom alaranjado escuro
+      focus: "#203A58", // azul petróleo escuro
+      success: "#28A745", // verde médio
+      warning: "#FFC107", // amarelo
+      error: "#DC3545", // vermelho
+      info: "#17A2B8", // azul piscina
     },
     fonts: {
       heading: "Inter, sans-serif",
@@ -122,32 +117,28 @@ export const themes: Theme[] = [
   {
     name: "theme3",
     colors: {
-      primary: "#75564D", // Marrom médio
-      secondary: "#016708", // Verde escuro
-      accent: "#DBAF8A", // Bege rosado
-
-      background: "#FAF7F3", // Bege muito claro
-      surface: "#F2EDE6", // Bege claro
-      surfaceElevated: "#FFFFFF", // Branco
-      surfaceSubtle: "#EBE4DC", // Bege médio
-
-      textPrimary: "#783D19", // Marrom avermelhado escuro
-      textSecondary: "#75564D", // Marrom médio
-      textMuted: "#9A8B7A", // Marrom acinzentado
-      textOnPrimary: "#FFFFFF", // Branco
-
-      border: "#E0D5C7", // Bege médio
-      borderStrong: "#B99470", // Bege amarelado
-      divider: "#EBE4DC", // Bege médio
-
-      hover: "#016708", // Verde escuro
-      pressed: "#014506", // Verde muito escuro
-      focus: "#75564D", // Marrom médio
-
-      success: "#016708", // Verde escuro
-      warning: "#F59E0B", // Amarelo alaranjado
-      error: "#DC2626", // Vermelho escuro
-      info: "#6366F1", // Azul violeta
+      background: "#FAF7F3", // bege muito claro
+      backgroundSecondary: "#EBE4DC", // bege médio
+      backgroundOposite: "#783D19", // marrom avermelhado escuro
+      backgroundWeak: "#FFFFFF", // branco
+      textPrimary: "#783D19", // marrom avermelhado escuro
+      textSecondary: "#75564D", // marrom médio
+      textClaro: "#FFFFFF", // branco
+      textEscuro: "#75564D", // marrom médio
+      textStrong: "#783D19", // marrom avermelhado escuro
+      botaoPrimary: "#75564D", // marrom médio
+      botaoSecondary: "#016708", // verde escuro
+      botaoSublime: "#DBAF8A", // bege rosado
+      border: "#E0D5C7", // bege médio
+      borderStrong: "#B99470", // bege amarelado
+      divider: "#EBE4DC", // bege médio
+      hover: "#016708", // verde escuro
+      pressed: "#014506", // verde muito escuro
+      focus: "#75564D", // marrom médio
+      success: "#016708", // verde escuro
+      warning: "#F59E0B", // amarelo alaranjado
+      error: "#DC2626", // vermelho escuro
+      info: "#6366F1", // azul violeta
     },
     fonts: {
       heading: "Playfair Display, serif",
@@ -161,32 +152,28 @@ export const themes: Theme[] = [
   {
     name: "theme1Dark",
     colors: {
-      primary: "#A9B388", // Verde claro acinzentado
-      secondary: "#F59E0B", // Amarelo alaranjado
-      accent: "#C4D1AD", // Verde amarelado claro
-
-      background: "#783D19", // Marrom avermelhado escuro
-      surface: "#5F6F52", // Verde oliva escuro
-      surfaceElevated: "#6B7A5E", // Verde oliva médio
-      surfaceSubtle: "#4A5544", // Verde oliva muito escuro
-
-      textPrimary: "#FEFAE0", // Amarelo claríssimo
-      textSecondary: "#F9EBC7", // Amarelo claro
-      textMuted: "#E8DCC9", // Bege claro
-      textOnPrimary: "#783D19", // Marrom avermelhado escuro
-
-      border: "#6B7A5E", // Verde oliva médio
-      borderStrong: "#A9B388", // Verde claro acinzentado
-      divider: "#5F6F52", // Verde oliva escuro
-
-      hover: "#F59E0B", // Amarelo alaranjado
-      pressed: "#C4661F", // Laranja queimado
-      focus: "#A9B388", // Verde claro acinzentado
-
-      success: "#22C55E", // Verde claro
-      warning: "#F59E0B", // Amarelo alaranjado
-      error: "#EF4444", // Vermelho vivo
-      info: "#A9B388", // Verde claro acinzentado
+      background: "#783D19", // marrom avermelhado escuro
+      backgroundSecondary: "#4A5544", // verde oliva muito escuro
+      backgroundOposite: "#f9ebc7", // bege médio
+      backgroundWeak: "#A9B388", // verde claro acinzentado
+      textPrimary: "#FEFAE0", // amarelo claríssimo
+      textSecondary: "#F9EBC7", // amarelo claro
+      textClaro: "#FEFAE0", // amarelo claríssimo
+      textEscuro: "#783D19", // marrom avermelhado escuro
+      textStrong: "#A9B388", // verde claro acinzentado
+      botaoPrimary: "#A9B388", // verde claro acinzentado
+      botaoSecondary: "#F59E0B", // amarelo alaranjado
+      botaoSublime: "#C4D1AD", // verde amarelado claro
+      border: "#6B7A5E", // verde oliva médio
+      borderStrong: "#A9B388", // verde claro acinzentado
+      divider: "#5F6F52", // verde oliva escuro
+      hover: "#F59E0B", // amarelo alaranjado
+      pressed: "#C4661F", // laranja queimado
+      focus: "#A9B388", // verde claro acinzentado
+      success: "#22C55E", // verde claro
+      warning: "#F59E0B", // amarelo alaranjado
+      error: "#EF4444", // vermelho vivo
+      info: "#A9B388", // verde claro acinzentado
     },
     fonts: {
       heading: "Mikela, serif",
@@ -198,32 +185,28 @@ export const themes: Theme[] = [
   {
     name: "theme2Dark",
     colors: {
-      primary: "#A2AEB3", // Cinza azulado claro
-      secondary: "#F59E0B", // Amarelo alaranjado
-      accent: "#6F8CA4", // Azul acinzentado
-
-      background: "#203A58", // Azul petróleo escuro
-      surface: "#2A4A68", // Azul escuro
-      surfaceElevated: "#3A5A78", // Azul médio
-      surfaceSubtle: "#1A3048", // Azul muito escuro
-
-      textPrimary: "#F8F9FA", // Cinza muito claro
-      textSecondary: "#E9ECEF", // Cinza claríssimo
-      textMuted: "#DEE2E6", // Cinza claro
-      textOnPrimary: "#203A58", // Azul petróleo escuro
-
-      border: "#3A5A78", // Azul médio
-      borderStrong: "#6F8CA4", // Azul acinzentado
-      divider: "#2A4A68", // Azul escuro
-
-      hover: "#FCD34D", // Amarelo claro
-      pressed: "#D97706", // Laranja escuro
-      focus: "#A2AEB3", // Cinza azulado claro
-
-      success: "#10B981", // Verde claro
-      warning: "#F59E0B", // Amarelo alaranjado
-      error: "#EF4444", // Vermelho vivo
-      info: "#6F8CA4", // Azul acinzentado
+      background: "#071739", // azul marinho profundo
+      backgroundSecondary: "#203A58", // azul petróleo escuro
+      backgroundOposite: "#F8F9FA", // cinza muito claro
+      backgroundWeak: "#334155", // cinza azulado escuro
+      textPrimary: "#F8F9FA", // cinza muito claro
+      textSecondary: "#ADB5BD", // cinza médio
+      textClaro: "#FFFFFF", // branco
+      textEscuro: "#071739", // azul marinho profundo
+      textStrong: "#203A58", // azul petróleo escuro
+      botaoPrimary: "#C4661F", // laranja queimado
+      botaoSecondary: "#203A58", // azul petróleo escuro
+      botaoSublime: "#6F8CA4", // azul acinzentado
+      border: "#203A58", // azul petróleo escuro
+      borderStrong: "#6F8CA4", // azul acinzentado
+      divider: "#203A58", // azul petróleo escuro
+      hover: "#C4661F", // laranja queimado
+      pressed: "#A0541A", // marrom alaranjado escuro
+      focus: "#203A58", // azul petróleo escuro
+      success: "#28A745", // verde médio
+      warning: "#FFC107", // amarelo
+      error: "#DC3545", // vermelho
+      info: "#17A2B8", // azul piscina
     },
     fonts: {
       heading: "Inter, sans-serif",
@@ -235,32 +218,28 @@ export const themes: Theme[] = [
   {
     name: "theme3Dark",
     colors: {
-      primary: "#DBAF8A", // Bege rosado claro
-      secondary: "#22C55E", // Verde claro
-      accent: "#E8C4A0", // Bege claro
-
-      background: "#783D19", // Marrom avermelhado escuro
-      surface: "#75564D", // Marrom médio
-      surfaceElevated: "#8B6B62", // Marrom médio escuro
-      surfaceSubtle: "#5D4037", // Marrom escuro
-
-      textPrimary: "#FAF7F3", // Bege muito claro
-      textSecondary: "#F2EDE6", // Bege claro
-      textMuted: "#E0D5C7", // Bege médio
-      textOnPrimary: "#783D19", // Marrom avermelhado escuro
-
-      border: "#8B6B62", // Marrom médio escuro
-      borderStrong: "#DBAF8A", // Bege rosado claro
-      divider: "#75564D", // Marrom médio
-
-      hover: "#34D399", // Verde claro
-      pressed: "#16A34A", // Verde médio
-      focus: "#DBAF8A", // Bege rosado claro
-
-      success: "#22C55E", // Verde claro
-      warning: "#F59E0B", // Amarelo alaranjado
-      error: "#EF4444", // Vermelho vivo
-      info: "#DBAF8A", // Bege rosado claro
+      background: "#2D1B0E", // marrom escuro
+      backgroundSecondary: "#3E2723", // marrom muito escuro
+      backgroundOposite: "#FAF7F3", // bege muito claro
+      backgroundWeak: "#3E2723", // marrom muito escuro
+      textPrimary: "#FFFFFF", // branco
+      textSecondary: "#BCAAA4", // bege acinzentado
+      textClaro: "#FFFFFF", // branco
+      textEscuro: "#2D1B0E", // marrom escuro
+      textStrong: "#BCAAA4", // bege acinzentado
+      botaoPrimary: "#DBAF8A", // bege rosado
+      botaoSecondary: "#016708", // verde escuro
+      botaoSublime: "#75564D", // marrom médio
+      border: "#6D4C41", // marrom médio escuro
+      borderStrong: "#BCAAA4", // bege acinzentado
+      divider: "#3E2723", // marrom muito escuro
+      hover: "#016708", // verde escuro
+      pressed: "#014506", // verde muito escuro
+      focus: "#75564D", // marrom médio
+      success: "#016708", // verde escuro
+      warning: "#F59E0B", // amarelo alaranjado
+      error: "#DC2626", // vermelho escuro
+      info: "#6366F1", // azul violeta
     },
     fonts: {
       heading: "Playfair Display, serif",
