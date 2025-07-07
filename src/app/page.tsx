@@ -11,7 +11,7 @@ import WorkersSection from "@/components/landing/WorkersSection";
 
 export default function Home() {
   return (
-    <main className="bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
+    <main className="bg-background min-h-screen transition-colors duration-300">
       <HeroSection />
       <HowToUseSection />
       <MetricsSection />

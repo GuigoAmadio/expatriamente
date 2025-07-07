@@ -25,18 +25,18 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative h-screen flex items-center justify-center text-primary transition-colors duration-300">
+    <section className="relative h-screen flex items-center justify-center transition-colors duration-300">
       {/* Header fixo */}
       <Header />
 
       {/* Background com imagem de fundo */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 top-10">
         <Image
           src="/fundo.png"
           alt="Background"
           width={800}
           height={600}
-          className="w-screen h-auto"
+          className="w-screen mx-auto"
           priority
         />
       </div>
@@ -55,7 +55,7 @@ export default function HeroSection() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl sm:text-5xl lg:text-6xl text-claro font-bold text-heading leading-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl max-w-4xl mx-auto text-orange-400 font-bold"
             >
               {t("title", "hero")}
             </motion.h1>
@@ -63,7 +63,7 @@ export default function HeroSection() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg sm:text-xl lg:text-2xl text-muted max-w-4xl mx-auto leading-relaxed pt-4"
+              className="text-lg sm:text-xl lg:text-2xl text-white max-w-4xl mx-auto leading-relaxed pt-4"
             >
               {t("subtitle", "hero")}
             </motion.p>
@@ -78,7 +78,7 @@ export default function HeroSection() {
           >
             <Link
               href="/auth/signin"
-              className="inline-flex items-center border-2 border-accent gap-2 px-8 py-4 bg-pink-800 hover:bg-accent/90 text-yellow-400 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 px-8 py-4 text-black bg-background hover:bg-accent/90 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               <svg
                 className="w-5 h-5"
@@ -97,7 +97,7 @@ export default function HeroSection() {
             </Link>
             <Link
               href="#psychologists"
-              className="inline-flex items-center bg-lime-900 gap-2 px-8 py-4 text-accent hover:bg-accent hover:text-surface font-semibold rounded-lg transition-all duration-200"
+              className="inline-flex items-center bg-orange-400 gap-2 px-8 py-4 text-primary hover:scale-105 hover:text-white font-semibold rounded-lg transition-all duration-200"
             >
               <svg
                 className="w-5 h-5"
@@ -124,7 +124,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="flex justify-center"
             >
-              <div className="flex items-center gap-2 bg-surface-elevated backdrop-blur-sm rounded-lg px-4 py-2 border border-divider">
+              <div className="flex items-center gap-2 bg-background-secondary backdrop-blur-sm rounded-lg px-4 py-2">
                 <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
                   <svg
                     className="w-4 h-4 text-accent"
@@ -138,7 +138,7 @@ export default function HeroSection() {
                     />
                   </svg>
                 </div>
-                <span className="text-sm font-medium text-muted">
+                <span className="text-sm font-medium text-black">
                   {t("trustBadge", "hero")}
                 </span>
               </div>
@@ -151,7 +151,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 1.0 }}
               className="flex justify-center"
             >
-              <div className="flex items-center justify-center gap-3 bg-botao-secondary backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
+              <div className="flex items-center justify-center gap-3 bg-background-secondary rounded-lg px-4 py-2">
                 <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
                   <svg
                     className="w-4 h-4 text-strong"
@@ -165,7 +165,7 @@ export default function HeroSection() {
                     />
                   </svg>
                 </div>
-                <span className="text-sm font-medium text-secondary">
+                <span className="text-sm font-medium text-black">
                   Primera Consulta Grátis
                 </span>
               </div>
@@ -176,7 +176,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 1.0 }}
               className="flex justify-center"
             >
-              <div className="flex items-center justify-center gap-3 bg-botao-secondary backdrop-blur-sm rounded-lg px-4 py-3 border border-divider">
+              <div className="flex items-center justify-center gap-3 bg-background-secondary rounded-lg px-4 py-2">
                 <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
                   <svg
                     className="w-4 h-4 text-strong"
@@ -190,8 +190,8 @@ export default function HeroSection() {
                     />
                   </svg>
                 </div>
-                <span className="text-sm font-medium text-secondary">
-                  Primera Consulta Grátis
+                <span className="text-sm font-medium text-black">
+                  Atendimento 100% Online
                 </span>
               </div>
             </motion.div>
@@ -207,7 +207,7 @@ export default function HeroSection() {
         className="absolute bottom-72 sm:bottom-36 left-1/2 transform -translate-x-1/2"
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-sm">Deslize para saber mais</span>
+          <span className="text-sm text-claro">Deslize para saber mais</span>
           <div className="w-6 h-10 border-2 border-strong rounded-full flex justify-center">
             <div className="w-1 h-3 bg-botao-primary rounded-full mt-2 animate-bounce"></div>
           </div>

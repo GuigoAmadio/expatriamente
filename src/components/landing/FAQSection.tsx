@@ -220,7 +220,7 @@ export default function FAQSection() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-center mt-20 flex flex-col items-center justify-center bg-white/70 rounded-xl px-12 py-7 shadow-sm text-claro"
         >
-          <h3 className="text-3xl md:text-4xl font-extrabold mb-4 mt-10">
+          <h3 className="text-3xl md:text-4xl font-extrabold mb-4 mt-10 text-black">
             Ainda tem dúvidas?
             <br />
             <span className="bg-gradient-to-r from-orange-400 via-orange-00 to-orange-600 bg-clip-text text-transparent">

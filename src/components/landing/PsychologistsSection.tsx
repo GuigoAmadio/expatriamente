@@ -269,22 +269,6 @@ export default function PsychologistsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
-          >
-            <span
-              className={`font-semibold text-sm uppercase tracking-wide ${
-                darkMode === "dark" ? "text-strong" : ""
-              }`}
-            >
-              {t("tag", "stories")}
-            </span>
-          </motion.div>
-
           <motion.h2
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
