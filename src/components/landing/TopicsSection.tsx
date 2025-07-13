@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const topics = [
   {
@@ -59,16 +60,34 @@ export default function TopicsSection() {
 
   return (
     <section className="w-full py-24 px-2 flex flex-col items-center justify-center bg-white">
-      <h2 className="text-4xl font-akzidens font-bold text-[#11486b] mb-2 text-center">
+      <motion.h2
+        className="text-4xl font-akzidens font-bold text-[#11486b] mb-2 text-center"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
         Vamos falar sobre…
-      </h2>
-      <p className="text-xl italic text-[#11486b] mb-10 text-center">
+      </motion.h2>
+      <motion.p
+        className="text-xl italic text-[#11486b] mb-10 text-center"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        viewport={{ once: true }}
+      >
         Como a escuta atenta e o diálogo promovem autoconhecimento e
         transformação pessoal.
-      </p>
-      <div className="w-full flex flex-row overflow-x-hidden justify-center gap-10 max-w-6xl">
+      </motion.p>
+      <motion.div
+        className="w-full flex flex-row overflow-x-hidden justify-center gap-10 max-w-6xl"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+        viewport={{ once: true }}
+      >
         {topics.map((topic, idx) => (
-          <div
+          <motion.div
             key={topic.label}
             className={`flex flex-col items-center justify-between rounded-2xl transition-all duration-300 cursor-pointer shadow-md relative overflow-hidden ${
               hovered === idx ? "z-20" : "z-10"
@@ -85,6 +104,11 @@ export default function TopicsSection() {
             }}
             onMouseEnter={() => setHovered(idx)}
             onMouseLeave={() => setHovered(null)}
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.1 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.05 }}
           >
             <div className="flex-1 flex items-center justify-center w-full h-full">
               {hovered === idx ? (
@@ -107,9 +131,9 @@ export default function TopicsSection() {
             >
               {topic.label}
             </span>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

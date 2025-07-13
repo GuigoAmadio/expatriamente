@@ -264,31 +264,64 @@ export default function PsychologistsSection() {
   return (
     <section className="py-20 bg-[#9EB7AA] text-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="font-akzidens text-3xl md:text-4xl font-bold mb-4 text-[#01386F]">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
+          <motion.h2
+            className="font-akzidens text-3xl md:text-4xl font-bold mb-4 text-[#01386F]"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
             Conheça nossos Psicanalistas e veja horários disponíveis
-          </h2>
-          <p className="text-lg text-white font-medium mb-8">
+          </motion.h2>
+          <motion.p
+            className="text-lg text-white font-medium mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: true }}
+          >
             Profissionais qualificados que entendem as particularidades da
             experiência brasileira no exterior
-          </p>
-          <input
+          </motion.p>
+          <motion.input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nome ou horário disponível..."
             className="w-full max-w-md mx-auto rounded-lg bg-white border border-[#01386F] px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#01386F]"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+            viewport={{ once: true }}
           />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {filteredPsychologists.map((p) => (
-            <div
+        </motion.div>
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
+          viewport={{ once: true }}
+        >
+          {filteredPsychologists.map((p, idx) => (
+            <motion.div
               key={p.id}
               className="bg-white rounded-2xl shadow p-6 flex flex-col items-center text-center relative cursor-pointer group"
               onMouseEnter={() => setHovered(p.id)}
               onMouseLeave={() => setHovered(null)}
               onClick={() => router.push(`/psicanalistas/${p.id}`)}
               style={{ minHeight: 260 }}
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.1 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.05, y: -5 }}
             >
               <img
                 src={p.image}
@@ -367,9 +400,9 @@ export default function PsychologistsSection() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

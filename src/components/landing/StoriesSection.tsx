@@ -102,22 +102,33 @@ export default function StoriesSection() {
   return (
     <section className="w-full py-20 px-4 md:px-0 flex flex-col items-center justify-center bg-[#d6cfae]">
       <div className="max-w-6xl w-full mx-auto flex flex-col items-center">
-        <h2 className="font-akzidens text-3xl my-16 text-white italic text-start">
+        <motion.h2
+          className="font-akzidens text-3xl my-16 text-white italic text-start"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           Conheça histórias reais de brasileiros que encontraram acolhimento e
           crescimento pessoal através da psicanálise, mesmo estando longe de
           casa.
-        </h2>
+        </motion.h2>
         <div className="grid grid-cols-1 gap-10 w-full">
           {depoimentos.map((texto, idx) => (
-            <div
+            <motion.div
               key={idx}
               className="bg-white rounded-2xl shadow p-8 text-lg text-[#5a5427] font-medium leading-relaxed mx-auto"
               style={{ maxHeight: "320px", overflow: "auto" }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: idx * 0.2 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02, y: -5 }}
             >
               <span className="italic">
                 "{texto.length > 350 ? texto.slice(0, 350) + "…" : texto}"
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

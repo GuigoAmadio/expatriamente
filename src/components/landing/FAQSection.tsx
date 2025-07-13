@@ -62,54 +62,84 @@ export default function FAQSection() {
   return (
     <section className="bg-[#d6cfae] w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
       <div className="max-w-4xl w-full mx-auto">
-        <h2 className="font-akzidens text-3xl md:text-4xl font-bold mb-8 text-[#01386F] text-center">
+        <motion.h2
+          className="font-akzidens text-3xl md:text-4xl font-bold mb-8 text-[#01386F] text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           Dúvidas Frequentes
-        </h2>
-        <p className="text-lg text-[#5a5427] font-medium mb-10 text-center">
+        </motion.h2>
+        <motion.p
+          className="text-lg text-[#5a5427] font-medium mb-10 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          viewport={{ once: true }}
+        >
           Esclarecemos suas principais dúvidas sobre nossos serviços de
           psicanálise online
-        </p>
-        <div className="space-y-6">
+        </motion.p>
+        <motion.div
+          className="space-y-6"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+          viewport={{ once: true }}
+        >
           {faqs.map((faq, index) => (
-            <Disclosure key={index}>
-              {({ open }) => (
-                <div
-                  className={`rounded-xl shadow group transition-all duration-300 bg-white border-2 ${
-                    open ? "border-[#01386F]" : "border-transparent"
-                  }`}
-                >
-                  <Disclosure.Button className="flex w-full justify-between items-center px-6 py-5 text-left font-akzidens text-lg text-[#01386F] font-bold focus:outline-none">
-                    <span>{faq.question}</span>
-                    <ChevronDownIcon
-                      className={`h-5 w-5 ml-4 transition-transform duration-300 ${
-                        open ? "rotate-180" : ""
-                      } text-[#01386F]`}
-                    />
-                  </Disclosure.Button>
-                  <AnimatePresence initial={false}>
-                    {open && (
-                      <motion.div
-                        key="panel"
-                        initial={{ opacity: 0, height: 0, y: -10 }}
-                        animate={{ opacity: 1, height: "auto", y: 0 }}
-                        exit={{ opacity: 0, height: 0, y: -10 }}
-                        transition={{
-                          duration: 0.35,
-                          ease: [0.4, 0.0, 0.2, 1],
-                        }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-6 pb-5 text-[#5a5427] text-base border-t border-[#d6cfae]">
-                          {faq.answer}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-            </Disclosure>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                ease: "easeOut",
+                delay: index * 0.1,
+              }}
+              viewport={{ once: true }}
+            >
+              <Disclosure>
+                {({ open }) => (
+                  <div
+                    className={`rounded-xl shadow group transition-all duration-300 bg-white border-2 ${
+                      open ? "border-[#01386F]" : "border-transparent"
+                    }`}
+                  >
+                    <Disclosure.Button className="flex w-full justify-between items-center px-6 py-5 text-left font-akzidens text-lg text-[#01386F] font-bold focus:outline-none">
+                      <span>{faq.question}</span>
+                      <ChevronDownIcon
+                        className={`h-5 w-5 ml-4 transition-transform duration-300 ${
+                          open ? "rotate-180" : ""
+                        } text-[#01386F]`}
+                      />
+                    </Disclosure.Button>
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <motion.div
+                          key="panel"
+                          initial={{ opacity: 0, height: 0, y: -10 }}
+                          animate={{ opacity: 1, height: "auto", y: 0 }}
+                          exit={{ opacity: 0, height: 0, y: -10 }}
+                          transition={{
+                            duration: 0.35,
+                            ease: [0.4, 0.0, 0.2, 1],
+                          }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-6 pb-5 text-[#5a5427] text-base border-t border-[#d6cfae]">
+                            {faq.answer}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+              </Disclosure>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
