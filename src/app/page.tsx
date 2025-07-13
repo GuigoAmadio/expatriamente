@@ -8,16 +8,15 @@ import ProcessStepsSection from "@/components/landing/ProcessStepsSection";
 import PsychologistsSection from "@/components/landing/PsychologistsSection";
 import StoriesSection from "@/components/landing/StoriesSection";
 import WorkersSection from "@/components/landing/WorkersSection";
+import TopicsSection from "@/components/landing/TopicsSection";
 
 export default function Home() {
   return (
     <main className="bg-background min-h-screen transition-colors duration-300">
       <HeroSection />
-      <HowToUseSection />
-      <MetricsSection />
-      <PsychologistsSection />
       <StoriesSection />
-      <ContactSection />
+      <TopicsSection />
+      <PsychologistsSection />
       <FAQSection />
       <FooterSection />
     </main>

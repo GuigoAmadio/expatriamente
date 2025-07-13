@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Playfair_Display, Montserrat } from "next/font/google";
 
 // Configuração da fonte Playfair Display para títulos
@@ -34,9 +35,11 @@ export default function RootLayout({
       <body
         className={`antialiased ${playfair.variable} ${montserrat.variable}`}
       >
-        <ThemeProvider>
-          <LanguageProvider>{children}</LanguageProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <LanguageProvider>{children}</LanguageProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,30 +1,43 @@
-// Exportar todas as Server Actions organizadas por categoria
-
-// Autenticação
+// Auth actions
 export {
-  authenticateUser,
-  registerUser,
-  updateUserProfile,
-  changeUserPassword,
-  logoutUser,
-  getUserByEmail,
-  getUserById,
+  loginAction,
+  logoutAction,
+  getAuthUser,
+  requireAuth,
+  getCurrentClient,
+  refreshTokenAction,
+  clearAuthCookiesAction,
 } from "./auth";
 
-// Dashboard
+// Dashboard actions
 export {
   getDashboardStats,
-  getRecentActivity,
-  getUserNotifications,
-  markNotificationAsRead,
-  createNotification,
-  logActivity,
-  getChartData,
-  exportDashboardData,
-  updateDashboardSettings,
+  getProductStats,
+  getTopSellingProducts,
+  getAppointmentStats,
+  getTodayAppointments,
+  getAppointments,
 } from "./dashboard";
 
-// Aplicação Geral
+// Employee actions
+export {
+  createEmployee,
+  getEmployees,
+  getEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from "./employees";
+
+// Service actions
+export {
+  createService,
+  getServices,
+  getService,
+  updateService,
+  deleteService,
+} from "./services";
+
+// App actions
 export {
   submitContactForm,
   submitFeedback,
@@ -38,7 +51,3 @@ export {
   reportIssue,
   searchApp,
 } from "./app";
-
-// Tipos para melhor IntelliSense
-export type {} from // Pode adicionar tipos exportados das Server Actions aqui
-"./auth";

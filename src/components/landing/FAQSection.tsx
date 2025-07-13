@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import {
@@ -25,236 +25,91 @@ export default function FAQSection() {
   const { t } = useLanguage();
   const { darkMode } = useTheme();
 
-  // Recupera as FAQs das traduções de forma correta
-
-  // Busca diretamente no contexto
-  const getFaqTranslation = (index: number, field: string) => {
-    return t(`items.${index}.${field}`, "faq");
-  };
-
+  // Perguntas e respostas da imagem de referência
   const faqs = [
     {
-      question: getFaqTranslation(0, "question"),
-      answer: getFaqTranslation(0, "answer"),
+      question: "Como funcionam as sessões online?",
+      answer:
+        "Nossas sessões são realizadas por videochamada em plataforma segura e confidencial. Você pode se conectar de qualquer lugar do mundo, precisando apenas de internet estável. Garantimos total privacidade e sigilo profissional.",
     },
     {
-      question: getFaqTranslation(1, "question"),
-      answer: getFaqTranslation(1, "answer"),
+      question: "Os psicanalistas entendem a realidade de viver no exterior?",
+      answer:
+        "Sim! Todos nossos profissionais são especializados no atendimento a brasileiros expatriados. Muitos atendem pacientes que vivem no exterior, viveram ou ainda vivem no exterior, compreendendo profundamente os desafios únicos dessa experiência. Nossos valores são acessíveis e pensados para brasileiros no exterior. Oferecemos primeira consulta gratuita e planos mensais flexíveis.",
     },
     {
-      question: getFaqTranslation(2, "question"),
-      answer: getFaqTranslation(2, "answer"),
+      question: "Qual o valor das consultas?",
+      answer:
+        "Entre em contato para conhecer nossas opções de pagamento internacional.",
     },
     {
-      question: getFaqTranslation(3, "question"),
-      answer: getFaqTranslation(3, "answer"),
+      question: "Posso escolher meu psicanalista?",
+      answer:
+        "Absolutamente! Contanto que o psicanalista atenda sua demanda de dia e horário, pode conhecer o perfil de todos nossos profissionais e escolher aquele com quem se identifica mais. Também oferecemos um primeiro encontro sem custos.",
     },
     {
-      question: getFaqTranslation(4, "question"),
-      answer: getFaqTranslation(4, "answer"),
+      question: "Que tipo de questões vocês atendem?",
+      answer:
+        "Atendemos desde adaptação cultural, saudade de casa, questões de identidade, até ansiedade, depressão, relacionamentos e crescimento pessoal. Cada brasileiro no exterior tem sua jornada única.",
     },
     {
-      question: getFaqTranslation(5, "question"),
-      answer: getFaqTranslation(5, "answer"),
+      question: "Como mantenho a privacidade morando com outras pessoas?",
+      answer:
+        "Oferecemos orientações sobre como criar um espaço privado para suas sessões. Muitos clientes usam fones de ouvido e escolhem horários específicos. Também temos flexibilidade de horários para diferentes fusos.",
     },
   ];
 
   return (
-    <section className="bg-background text-primary w-full py-16 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
-      {/* FAQ Section */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
-          >
-            <span className={`font-semibold text-sm uppercase tracking-wide`}>
-              {t("tag", "faq")}
-            </span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold mb-4 text-heading"
-          >
-            {t("title", "faq")}
-          </motion.h2>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg"
-          >
-            {t("subtitle", "faq")}
-          </motion.p>
-        </div>
-
+    <section className="bg-[#d6cfae] w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
+      <div className="max-w-4xl w-full mx-auto">
+        <h2 className="font-akzidens text-3xl md:text-4xl font-bold mb-8 text-[#01386F] text-center">
+          Dúvidas Frequentes
+        </h2>
+        <p className="text-lg text-[#5a5427] font-medium mb-10 text-center">
+          Esclarecemos suas principais dúvidas sobre nossos serviços de
+          psicanálise online
+        </p>
         <div className="space-y-6">
           {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Disclosure>
-                {({ open }) => (
-                  <motion.div
-                    className={`relative rounded-xl shadow-sm group hover:shadow-md transition-all duration-300 bg-claro overflow-hidden border-2 ${
-                      open ? "border-orange-400" : "border-transparent"
-                    }`}
-                    style={{ background: "white" }}
-                  >
-                    {/* Borda gradiente animada */}
+            <Disclosure key={index}>
+              {({ open }) => (
+                <div
+                  className={`rounded-xl shadow group transition-all duration-300 bg-white border-2 ${
+                    open ? "border-[#01386F]" : "border-transparent"
+                  }`}
+                >
+                  <Disclosure.Button className="flex w-full justify-between items-center px-6 py-5 text-left font-akzidens text-lg text-[#01386F] font-bold focus:outline-none">
+                    <span>{faq.question}</span>
+                    <ChevronDownIcon
+                      className={`h-5 w-5 ml-4 transition-transform duration-300 ${
+                        open ? "rotate-180" : ""
+                      } text-[#01386F]`}
+                    />
+                  </Disclosure.Button>
+                  <AnimatePresence initial={false}>
                     {open && (
                       <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.4 }}
-                        className="absolute inset-0 pointer-events-none z-0 rounded-xl border-2 border-transparent bg-white"
-                        style={{ WebkitMaskImage: "linear-gradient(#fff 0 0)" }}
-                      />
-                    )}
-                    <div className="relative z-10">
-                      <Disclosure.Button
-                        className={`flex w-full justify-between items-center px-6 py-5 text-left transition-all duration-300 group
-                          ${
-                            open
-                              ? darkMode === "dark"
-                                ? "text-accent"
-                                : "text-primary"
-                              : darkMode === "dark"
-                              ? "text-surface hover:bg-secondary"
-                              : "text-primary hover:bg-surface"
-                          }`}
-                      >
-                        <span
-                          className={`font-medium text-sm md:text-lg transition-colors duration-300
-                            ${
-                              open
-                                ? darkMode === "dark"
-                                  ? "text-accent"
-                                  : "text-primary"
-                                : darkMode === "dark"
-                                ? "text-surface group-hover:text-accent"
-                                : "text-primary group-hover:text-accent"
-                            }`}
-                        >
-                          {faq.question}
-                        </span>
-                        <ChevronDownIcon
-                          className={`h-3 w-3 md:h-5 md:w-5 transition-all duration-500 ease-in-out ml-4 flex-shrink-0
-                            ${
-                              open
-                                ? darkMode === "dark"
-                                  ? "text-accent"
-                                  : "text-primary"
-                                : darkMode === "dark"
-                                ? "text-surface group-hover:text-accent"
-                                : "text-primary group-hover:text-accent"
-                            }
-                            ${open ? "rotate-180 transform" : ""}`}
-                        />
-                      </Disclosure.Button>
-                      <motion.div
-                        initial={false}
-                        animate={{
-                          height: open ? "auto" : 0,
-                          opacity: open ? 1 : 0,
-                        }}
+                        key="panel"
+                        initial={{ opacity: 0, height: 0, y: -10 }}
+                        animate={{ opacity: 1, height: "auto", y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -10 }}
                         transition={{
-                          height: {
-                            duration: 0.6,
-                            ease: [0.04, 0.62, 0.23, 0.98],
-                          },
-                          opacity: {
-                            duration: 0.4,
-                            delay: open ? 0.1 : 0,
-                          },
+                          duration: 0.35,
+                          ease: [0.4, 0.0, 0.2, 1],
                         }}
+                        className="overflow-hidden"
                       >
-                        <Disclosure.Panel
-                          static
-                          className={`px-6 pb-5 leading-relaxed ${
-                            darkMode === "dark"
-                              ? "text-surface"
-                              : "text-primary"
-                          }`}
-                        >
-                          <motion.div
-                            initial={{ y: -10 }}
-                            animate={{ y: 0 }}
-                            transition={{ duration: 0.3, delay: 0.2 }}
-                            className={`border-t pt-4 ${
-                              darkMode === "dark"
-                                ? "border-primary"
-                                : "border-primary/10"
-                            }`}
-                          >
-                            {faq.answer}
-                          </motion.div>
-                        </Disclosure.Panel>
+                        <div className="px-6 pb-5 text-[#5a5427] text-base border-t border-[#d6cfae]">
+                          {faq.answer}
+                        </div>
                       </motion.div>
-                    </div>
-                  </motion.div>
-                )}
-              </Disclosure>
-            </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
+            </Disclosure>
           ))}
         </div>
-
-        {/* CTA adicional */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-20 flex flex-col items-center justify-center bg-white/70 rounded-xl px-12 py-7 shadow-sm text-claro"
-        >
-          <h3 className="text-3xl md:text-4xl font-extrabold mb-4 mt-10 text-black">
-            Ainda tem dúvidas?
-            <br />
-            <span className="bg-gradient-to-r from-orange-400 via-orange-00 to-orange-600 bg-clip-text text-transparent">
-              Nossa equipe está aqui para ajudar
-            </span>
-            .
-          </h3>
-
-          {/* Linha de 3 textos pequenos com ícones */}
-          <div className="flex flex-row flex-wrap items-center justify-center gap-6 text-lg text-primary my-8">
-            <span className="flex items-center gap-2">
-              <StarIcon className="h-5 w-5 text-primary" />
-              Privacidade garantida
-            </span>
-            <span className="flex items-center gap-2">
-              <ClockIcon className="h-5 w-5 text-primary" />
-              Resposta rápida
-            </span>
-            <span className="flex items-center gap-2">
-              <GlobeAltIcon className="h-5 w-5 text-primary" />
-              Atendimento internacional
-            </span>
-          </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 my-10 w-full max-w-2xl">
-            <button className="flex-1 min-w-[220px] px-4 py-4 rounded-2xl font-bold text-base shadow-xl bg-background-oposite text-white flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300">
-              <ChatBubbleLeftRightIcon className="h-5 w-5" />
-              Conversar no WhatsApp
-            </button>
-            <button className="flex-1 min-w-[220px] px-4 py-4 rounded-2xl font-bold text-base shadow-xl bg-orange-400 text-white flex items-center justify-center gap-2 hover:scale-105 transition-all duration-300">
-              <CalendarDaysIcon className="h-5 w-5" />
-              Agendar Consulta Gratuita
-            </button>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

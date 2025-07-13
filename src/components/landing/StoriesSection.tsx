@@ -91,310 +91,34 @@ export default function StoriesSection() {
     },
   ];
 
-  // Novo estado para paginação
-  const comments = [
-    {
-      text: "Acolhimento incrível! Me senti compreendida desde o primeiro contato.",
-      name: "Marina Souza Lima",
-      photo: "https://randomuser.me/api/portraits/women/44.jpg",
-      location: "Lisboa, Portugal",
-    },
-    {
-      text: "A equipe realmente entende os desafios de morar fora.",
-      name: "Carlos Tadeu Silva",
-      photo: "https://randomuser.me/api/portraits/men/32.jpg",
-      location: "Toronto, Canadá",
-    },
-    {
-      text: "O atendimento foi rápido e muito humano. Recomendo!",
-      name: "Juliana Pereira Dias",
-      photo: "https://randomuser.me/api/portraits/women/65.jpg",
-      location: "Berlim, Alemanha",
-    },
-    {
-      text: "Me ajudaram a superar a saudade e a ansiedade da adaptação.",
-      name: "Fernanda Lopes Cruz",
-      photo: "https://randomuser.me/api/portraits/women/68.jpg",
-      location: "Sydney, Austrália",
-    },
-    {
-      text: "Profissionais atenciosos e preparados para cada situação.",
-      name: "Ricardo Martins Alves",
-      photo: "https://randomuser.me/api/portraits/men/41.jpg",
-      location: "Miami, EUA",
-    },
-    {
-      text: "Senti confiança e privacidade em todo o processo.",
-      name: "Ana Paula Gonçalves",
-      photo: "https://randomuser.me/api/portraits/women/22.jpg",
-      location: "Dublin, Irlanda",
-    },
-    {
-      text: "A plataforma facilitou muito minha adaptação.",
-      name: "Lucas Ferreira Pinto",
-      photo: "https://randomuser.me/api/portraits/men/23.jpg",
-      location: "Paris, França",
-    },
-    {
-      text: "Atendimento acolhedor e eficiente.",
-      name: "Patrícia Souza Ramos",
-      photo: "https://randomuser.me/api/portraits/women/33.jpg",
-      location: "Madri, Espanha",
-    },
-    {
-      text: "Me senti em casa mesmo longe do Brasil.",
-      name: "João Pedro Almeida",
-      photo: "https://randomuser.me/api/portraits/men/55.jpg",
-      location: "Londres, Reino Unido",
-    },
-    {
-      text: "Equipe muito profissional e humana.",
-      name: "Beatriz Costa Lima",
-      photo: "https://randomuser.me/api/portraits/women/77.jpg",
-      location: "Roma, Itália",
-    },
-    {
-      text: "Recomendo para todos que estão começando a vida fora.",
-      name: "Gabriel Martins Rocha",
-      photo: "https://randomuser.me/api/portraits/men/61.jpg",
-      location: "Zurique, Suíça",
-    },
-    {
-      text: "Apoio fundamental para minha família.",
-      name: "Renata Oliveira Dias",
-      photo: "https://randomuser.me/api/portraits/women/12.jpg",
-      location: "Boston, EUA",
-    },
+  // Depoimentos da imagem de referência
+  const depoimentos = [
+    "Viver no exterior trouxe desafios que eu não esperava. A terapia me ajudou a entender que é normal sentir saudades e que posso criar minha nova identidade sem perder minhas raízes.",
+    "Adaptação parecia só uma questão de tempo, mas me peguei sobrecarregado entre costumes diferentes, exigências acadêmicas e saudade de casa. Conversar na terapia foi essencial para organizar meus sentimentos, respeitar meus limites e perceber que me reinventar em outro país também é um ato de coragem.",
+    "Antes de me mudar, minha maior preocupação era encaixar as malas no avião. Depois que cheguei, percebi que o medo e a ansiedade estavam em cada pequena decisão do dia a dia — desde pedir um café até socializar no trabalho. As sessões de terapia me ajudaram a respirar, priorizar o presente e entender que errar faz parte do processo.",
+    "Quando cheguei no exterior, achava que só precisava me adaptar ao idioma e à rotina. Mas, aos poucos, comecei a sentir um peso, uma tristeza constante que não conseguia explicar. A terapia me fez compreender que depressão não é fraqueza e que pedir ajuda foi o primeiro passo para resgatar meu bem-estar e minha autoestima no novo país.",
   ];
-  const totalPages = Math.ceil(comments.length / commentsPerPage);
-  const paginatedComments = comments.slice(
-    page * commentsPerPage,
-    (page + 1) * commentsPerPage
-  );
 
   return (
-    <section
-      className={`py-20 transition-colors duration-300 text-primary ${
-        darkMode === "dark" ? "bg-background-secondary" : "bg-surface"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
-          >
-            <span className={`font-semibold text-sm uppercase tracking-wide`}>
-              {t("stories.tag")}
-            </span>
-          </motion.div>
-
-          <motion.h2
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className={`text-3xl md:text-4xl font-bold mb-4`}
-          >
-            {t("stories.title")}
-          </motion.h2>
-
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className={`max-w-3xl mx-auto text-lg leading-relaxed`}
-          >
-            {t("stories.subtitle")}
-          </motion.p>
-        </div>
-
-        {/* Videos Inline */}
-        <div className="relative mb-16 ">
-          <div className="flex items-center justify-center gap-2 h-80">
-            {videos.map((video, index) => (
-              <motion.div
-                key={video.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative h-full cursor-pointer group rounded-xl"
-                style={{
-                  width: hoveredIndex === index ? "400px" : "120px",
-                  transition: "width 0.5s ease-in-out",
-                }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {/* Background Image */}
-                <div className="absolute inset-0">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                  {/* Overlay neutro */}
-                  <div className="absolute inset-0 bg-neutral-900 opacity-50"></div>
-                  <div className="absolute inset-0 bg-secondary/20"></div>
-                </div>
-
-                {/* Content quando expandido */}
-                {hoveredIndex === index && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
-                    className="absolute inset-0 p-6 flex flex-col justify-between text-surface z-10"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-xs font-medium bg-surface/20 backdrop-blur-sm rounded-full px-3 py-1">
-                          {video.category}
-                        </span>
-                        <span className="text-xs font-medium bg-secondary/30 backdrop-blur-sm rounded px-2 py-1">
-                          {video.duration}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Play button centralizado */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-surface/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-surface/30 transition-colors group-hover:scale-110 duration-300">
-                        <svg
-                          className="w-8 h-8 ml-1"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Título na parte inferior */}
-                    <div className="mt-auto">
-                      <h3 className="text-lg font-bold leading-tight">
-                        {video.title}
-                      </h3>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Play button pequeno quando não expandido */}
-                {hoveredIndex !== index && (
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-10 h-10 bg-surface/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 ml-0.5 text-surface"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Grid de comentários com paginação e animação */}
-        <div className="relative">
-          {/* Setas laterais com looping infinito */}
-          <button
-            onClick={() => setPage((p) => (p === 0 ? totalPages - 1 : p - 1))}
-            className="hidden md:flex items-center justify-center absolute left-[-60px] top-60 -translate-y-1/2 bg-background-weak rounded-full shadow p-2 z-10"
-            aria-label="Página anterior"
-          >
-            <ChevronLeftIcon className="w-6 h-6 text-primary" />
-          </button>
-          <button
-            onClick={() => setPage((p) => (p === totalPages - 1 ? 0 : p + 1))}
-            className="hidden md:flex items-center justify-center absolute right-[-60px] top-60 -translate-y-1/2 bg-background-weak rounded-full shadow p-2 z-10"
-            aria-label="Próxima página"
-          >
-            <ChevronRightIcon className="w-6 h-6 text-primary" />
-          </button>
-          <div className="overflow-hidden">
+    <section className="w-full py-20 px-4 md:px-0 flex flex-col items-center justify-center bg-[#d6cfae]">
+      <div className="max-w-6xl w-full mx-auto flex flex-col items-center">
+        <h2 className="font-akzidens text-3xl my-16 text-white italic text-start">
+          Conheça histórias reais de brasileiros que encontraram acolhimento e
+          crescimento pessoal através da psicanálise, mesmo estando longe de
+          casa.
+        </h2>
+        <div className="grid grid-cols-1 gap-10 w-full">
+          {depoimentos.map((texto, idx) => (
             <div
-              style={{
-                height: "500px",
-                overflowY: "hidden",
-                overflowX: "hidden",
-              }}
+              key={idx}
+              className="bg-white rounded-2xl shadow p-8 text-lg text-[#5a5427] font-medium leading-relaxed mx-auto"
+              style={{ maxHeight: "320px", overflow: "auto" }}
             >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={page}
-                  initial={{ x: 80, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -80, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: "easeInOut" }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
-                >
-                  {paginatedComments.map((comment, idx) => (
-                    <div
-                      key={comment.name + comment.location}
-                      className="rounded-2xl bg-white/40 shadow-md p-6 flex flex-col items-start gap-4"
-                    >
-                      {/* Foto e nome */}
-                      <div className="flex items-center gap-3 mb-1">
-                        <img
-                          src={comment.photo}
-                          alt={comment.name}
-                          className="w-12 h-12 rounded-full object-cover"
-                        />
-                        <span className="font-semibold text-primary/90 text-base">
-                          {comment.name}
-                        </span>
-                      </div>
-                      {/* Texto com aspas */}
-                      <p className="text-base text-primary/90 italic flex items-start gap-2">
-                        <span className="text-2xl text-primary select-none">
-                          “
-                        </span>
-                        {comment.text}
-                      </p>
-                      {/* Localização */}
-                      <div className="text-strong font-bold text-sm mt-2">
-                        {comment.location}
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+              <span className="italic">
+                "{texto.length > 350 ? texto.slice(0, 350) + "…" : texto}"
+              </span>
             </div>
-          </div>
-          {/* Linha de bolinhas de página com destaque */}
-          <div className="flex items-center justify-center gap-2 mb-2">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i)}
-                aria-current={page === i ? "page" : undefined}
-                className={`w-4 h-4 rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/40
-                  ${
-                    page === i
-                      ? "bg-botao-primary"
-                      : "bg-background-weak border-primary/20 opacity-60"
-                  }
-                `}
-                aria-label={`Ir para página ${i + 1}`}
-              />
-            ))}
-          </div>
-          {/* Botão Escrever um comentário */}
-          <div className="absolute right-0 -bottom-12">
-            <button className="bg-botao-primary text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:scale-105 transition-all">
-              Escrever um comentário
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>

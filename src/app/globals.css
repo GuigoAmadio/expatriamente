@@ -84,6 +84,16 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+@font-face {
+  font-family: "Akzidens-Grotesk-BQ-Extended";
+  src: local("Akzidens-Grotesk BQ Extended"),
+    url("/fonts/Akzidens-Grotesk-BQ-Extended.woff2") format("woff2"),
+    url("/fonts/Akzidens-Grotesk-BQ-Extended.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Cores Principais - Tema 1 padrão */
   --color-background: #f9ebc7;
@@ -121,8 +131,14 @@ html {
   /* Fontes - Configuradas via Google Fonts */
   --font-heading: var(--font-playfair), serif;
   --font-body: var(--font-montserrat), sans-serif;
+  --font-akzidens: "Akzidens-Grotesk-BQ-Extended", Arial, Helvetica, sans-serif;
 
   --hero-bg: url("/fundo.jpg");
+}
+
+.font-akzidens {
+  font-family: var(--font-akzidens) !important;
+  letter-spacing: 0.01em;
 }
 
 body {

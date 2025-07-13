@@ -1,16 +1,38 @@
 "use client";
 
-import { useFormState } from "react-dom";
-import { signInWithProvider, signInWithCredentials } from "@/actions/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
-
-const initialState = {
-  message: "",
-};
+import { loginAction } from "@/actions/auth";
 
 export default function SignInPage() {
-  const [state, formAction] = useFormState(signInWithCredentials, initialState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (formData: FormData) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
+
+      const result = await loginAction({ email, password });
+
+      if (!result.success) {
+        setError(result.message || "Erro ao fazer login");
+      } else {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch (error) {
+      setError("Erro interno do servidor");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -19,45 +41,39 @@ export default function SignInPage() {
           Login
         </h1>
 
-        {/* Login com Google */}
-        <form
-          action={async () => {
-            await signInWithProvider("google");
-          }}
-          className="mb-4"
-        >
-          <Button type="submit" variant="outline" className="w-full">
-            Entrar com Google
-          </Button>
-        </form>
-
-        <div className="my-6 flex items-center">
-          <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
-          <span className="px-4 text-sm text-gray-500">ou</span>
-          <div className="flex-1 border-t border-gray-300 dark:border-gray-600"></div>
-        </div>
-
         {/* Login com Credenciais */}
-        <form action={formAction} className="space-y-4">
+        <form action={handleSubmit} className="space-y-4">
           <Input
             name="email"
             type="email"
             placeholder="admin@expatriamente.com"
             required
+            disabled={isLoading}
           />
           <Input
             name="password"
             type="password"
             placeholder="password123"
             required
+            disabled={isLoading}
           />
-          {state?.message && (
-            <p className="text-sm text-red-500">{state.message}</p>
-          )}
-          <Button type="submit" className="w-full">
-            Entrar com Email e Senha
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Entrando..." : "Entrar com Email e Senha"}
           </Button>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Não tem uma conta?{" "}
+            <a
+              href="/auth/signup"
+              className="text-blue-600 hover:text-blue-500"
+            >
+              Cadastre-se
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

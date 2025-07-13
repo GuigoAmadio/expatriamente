@@ -1,399 +1,281 @@
 "use server";
 
-import { compare, hash } from "bcryptjs";
-import { z } from "zod";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { signIn } from "@/auth";
+import type { LoginInput, User } from "@/types";
+import { serverPost, serverGet } from "@/lib/server-api";
 
-// Schemas de validação
-const loginSchema = z.object({
-  email: z.string().email("Email inválido"),
-  password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-});
+// Interfaces para tipar os dados da API
+interface LoginApiResponse {
+  data?: {
+    token: string;
+    client_id: string;
+    refresh_token?: string;
+    user: User;
+  };
+  token?: string;
+  client_id?: string;
+  refresh_token?: string;
+  user?: User;
+}
 
-const registerSchema = z
-  .object({
-    email: z.string().email("Email inválido"),
-    password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Senhas não coincidem",
-    path: ["confirmPassword"],
-  });
+interface AuthMeResponse {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  avatar?: string;
+  role: string;
+  client_id?: string;
+  clientId?: string;
+  client?: {
+    id: string;
+    name: string;
+    status: string;
+  };
+}
 
-const changePasswordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Senha atual é obrigatória"),
-    newPassword: z
-      .string()
-      .min(6, "Nova senha deve ter pelo menos 6 caracteres"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Senhas não coincidem",
-    path: ["confirmPassword"],
-  });
-
-// Simulação de banco de dados - substitua pela sua implementação real
-const users = [
-  {
-    id: "1",
-    email: "admin@expatriamente.com",
-    password: "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewgHDOGiHGzOLlly", // password123
-    name: "Administrador",
-    role: "admin",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: "2",
-    email: "user@expatriamente.com",
-    password: "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewgHDOGiHGzOLlly", // password123
-    name: "Usuário Teste",
-    role: "user",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
-export async function authenticateUser(formData: FormData) {
+// Login do usuário
+export async function loginAction(data: LoginInput) {
   try {
-    const rawFormData = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
+    console.log("🔐 Expatriamente - Iniciando login...");
+    console.log("📧 Email:", data.email);
 
-    // Validar dados
-    const validatedData = loginSchema.parse(rawFormData);
+    const result = await serverPost<LoginApiResponse>("/auth/login", data);
+    console.log("📋 result.data:", JSON.stringify(result.data, null, 2));
 
-    // Buscar usuário
-    const user = users.find((u) => u.email === validatedData.email);
+    // A API retorna uma estrutura aninhada: result.data.data contém os dados reais
+    const nestedResult = result.data as LoginApiResponse;
+    const responseData = nestedResult?.data || result.data || result;
 
-    if (!user) {
-      return {
-        success: false,
-        error: "Usuário não encontrado",
-      };
-    }
-
-    // Verificar senha
-    const isPasswordValid = await compare(
-      validatedData.password,
-      user.password
+    console.log("✅ Expatriamente - Login bem-sucedido!");
+    console.log("- Token recebido:", !!(responseData as any)?.token);
+    console.log("- Client ID recebido:", (responseData as any)?.client_id);
+    console.log(
+      "- Refresh token recebido:",
+      !!(responseData as any)?.refresh_token
     );
+    console.log("- User recebido:", !!(responseData as any)?.user);
 
-    if (!isPasswordValid) {
+    // Verificar se temos os dados necessários
+    if (!(responseData as any)?.token) {
+      console.error("❌ Token não encontrado na resposta!");
+      console.error("📋 Dados encontrados:", Object.keys(responseData || {}));
       return {
         success: false,
-        error: "Senha inválida",
+        message: "Token não recebido do servidor",
       };
     }
 
-    // Retornar dados do usuário (sem senha)
-    const { password, ...userWithoutPassword } = user;
-
-    return {
-      success: true,
-      user: userWithoutPassword,
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (!(responseData as any)?.client_id) {
+      console.error("❌ Client ID não encontrado na resposta!");
+      console.error("📋 Dados encontrados:", Object.keys(responseData || {}));
       return {
         success: false,
-        error: error.errors[0].message,
+        message: "Client ID não recebido do servidor",
       };
     }
 
-    return {
-      success: false,
-      error: "Erro interno do servidor",
-    };
-  }
-}
+    // Salvar tokens e client_id nos cookies httpOnly
+    const cookieStore = await cookies();
 
-export async function registerUser(formData: FormData) {
-  try {
-    const rawFormData = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      name: formData.get("name") as string,
-      confirmPassword: formData.get("confirmPassword") as string,
-    };
-
-    // Validar dados
-    const validatedData = registerSchema.parse(rawFormData);
-
-    // Verificar se usuário já existe
-    const existingUser = users.find((u) => u.email === validatedData.email);
-
-    if (existingUser) {
-      return {
-        success: false,
-        error: "Email já está em uso",
-      };
-    }
-
-    // Hash da senha
-    const hashedPassword = await hash(validatedData.password, 12);
-
-    // Criar novo usuário
-    const newUser = {
-      id: (users.length + 1).toString(),
-      email: validatedData.email,
-      password: hashedPassword,
-      name: validatedData.name,
-      role: "user" as const,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    users.push(newUser);
-
-    // Retornar dados do usuário (sem senha)
-    const { password, ...userWithoutPassword } = newUser;
-
-    return {
-      success: true,
-      user: userWithoutPassword,
-      message: "Usuário criado com sucesso!",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        error: error.errors[0].message,
-      };
-    }
-
-    return {
-      success: false,
-      error: "Erro interno do servidor",
-    };
-  }
-}
-
-export async function updateUserProfile(userId: string, formData: FormData) {
-  try {
-    const rawFormData = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-    };
-
-    // Validação básica
-    if (!rawFormData.name || rawFormData.name.length < 2) {
-      return {
-        success: false,
-        error: "Nome deve ter pelo menos 2 caracteres",
-      };
-    }
-
-    if (!rawFormData.email || !rawFormData.email.includes("@")) {
-      return {
-        success: false,
-        error: "Email inválido",
-      };
-    }
-
-    // Buscar usuário
-    const userIndex = users.findIndex((u) => u.id === userId);
-
-    if (userIndex === -1) {
-      return {
-        success: false,
-        error: "Usuário não encontrado",
-      };
-    }
-
-    // Verificar se novo email já está em uso (se foi alterado)
-    if (rawFormData.email !== users[userIndex].email) {
-      const emailExists = users.some(
-        (u) => u.email === rawFormData.email && u.id !== userId
-      );
-      if (emailExists) {
-        return {
-          success: false,
-          error: "Email já está em uso",
-        };
-      }
-    }
-
-    // Atualizar usuário
-    users[userIndex] = {
-      ...users[userIndex],
-      name: rawFormData.name,
-      email: rawFormData.email,
-      updatedAt: new Date(),
-    };
-
-    // Retornar dados atualizados (sem senha)
-    const { password, ...userWithoutPassword } = users[userIndex];
-
-    revalidatePath("/dashboard");
-
-    return {
-      success: true,
-      user: userWithoutPassword,
-      message: "Perfil atualizado com sucesso!",
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: "Erro interno do servidor",
-    };
-  }
-}
-
-export async function changeUserPassword(userId: string, formData: FormData) {
-  try {
-    const rawFormData = {
-      currentPassword: formData.get("currentPassword") as string,
-      newPassword: formData.get("newPassword") as string,
-      confirmPassword: formData.get("confirmPassword") as string,
-    };
-
-    // Validar dados
-    const validatedData = changePasswordSchema.parse(rawFormData);
-
-    // Buscar usuário
-    const userIndex = users.findIndex((u) => u.id === userId);
-
-    if (userIndex === -1) {
-      return {
-        success: false,
-        error: "Usuário não encontrado",
-      };
-    }
-
-    // Verificar senha atual
-    const isCurrentPasswordValid = await compare(
-      validatedData.currentPassword,
-      users[userIndex].password
-    );
-
-    if (!isCurrentPasswordValid) {
-      return {
-        success: false,
-        error: "Senha atual incorreta",
-      };
-    }
-
-    // Hash da nova senha
-    const hashedNewPassword = await hash(validatedData.newPassword, 12);
-
-    // Atualizar senha
-    users[userIndex] = {
-      ...users[userIndex],
-      password: hashedNewPassword,
-      updatedAt: new Date(),
-    };
-
-    return {
-      success: true,
-      message: "Senha alterada com sucesso!",
-    };
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        error: error.errors[0].message,
-      };
-    }
-
-    return {
-      success: false,
-      error: "Erro interno do servidor",
-    };
-  }
-}
-
-export async function logoutUser() {
-  try {
-    // O logout é gerenciado pelo NextAuth
-    // Aqui você pode adicionar lógica adicional como logs
-
-    // Redirecionar para página inicial
-    redirect("/");
-  } catch (error) {
-    return {
-      success: false,
-      error: "Erro ao fazer logout",
-    };
-  }
-}
-
-export async function getUserByEmail(email: string) {
-  try {
-    const user = users.find((u) => u.email === email);
-
-    if (!user) {
-      return {
-        success: false,
-        error: "Usuário não encontrado",
-      };
-    }
-
-    // Retornar dados do usuário (sem senha)
-    const { password, ...userWithoutPassword } = user;
-
-    return {
-      success: true,
-      user: userWithoutPassword,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: "Erro interno do servidor",
-    };
-  }
-}
-
-export async function getUserById(id: string) {
-  try {
-    const user = users.find((u) => u.id === id);
-
-    if (!user) {
-      return {
-        success: false,
-        error: "Usuário não encontrado",
-      };
-    }
-
-    // Retornar dados do usuário (sem senha)
-    const { password, ...userWithoutPassword } = user;
-
-    return {
-      success: true,
-      user: userWithoutPassword,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: "Erro interno do servidor",
-    };
-  }
-}
-
-export async function signInWithProvider(provider: string) {
-  await signIn(provider, { redirectTo: "/dashboard" });
-}
-
-export async function signInWithCredentials(
-  prevState: { message: string } | undefined,
-  formData: FormData
-) {
-  try {
-    await signIn("credentials", {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      redirectTo: "/dashboard",
+    cookieStore.set("auth_token", (responseData as any).token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
     });
-  } catch (error: any) {
-    if (error.type === "CredentialsSignin") {
-      return { message: "Email ou senha inválidos." };
+
+    // Salvar client_id do usuário autenticado
+    cookieStore.set("client_id", (responseData as any).client_id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 dias
+    });
+
+    // Salvar refresh token se fornecido
+    if ((responseData as any).refresh_token) {
+      cookieStore.set("refresh_token", (responseData as any).refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 dias
+      });
     }
-    return { message: "Ocorreu um erro. Tente novamente." };
+
+    console.log("🍪 Expatriamente - Cookies salvos com sucesso!");
+    console.log(
+      "- auth_token:",
+      cookieStore.get("auth_token") ? "Salvo" : "ERRO"
+    );
+    console.log("- client_id:", cookieStore.get("client_id")?.value);
+    console.log(
+      "- refresh_token:",
+      cookieStore.get("refresh_token") ? "Salvo" : "N/A"
+    );
+
+    return {
+      success: true,
+      message: "Login realizado com sucesso",
+      user: (responseData as any).user,
+      clientId: (responseData as any).client_id,
+    };
+  } catch (error: unknown) {
+    console.error("❌ Expatriamente - Erro no login:", error);
+    console.error("❌ Erro completo:", JSON.stringify(error, null, 2));
+    const errorMessage =
+      error instanceof Error ? error.message : "Erro interno do servidor";
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+}
+
+// Logout do usuário
+export async function logoutAction() {
+  try {
+    const cookieStore = await cookies();
+
+    // Tentar fazer logout no backend
+    try {
+      await serverPost("/auth/logout");
+    } catch (error) {
+      console.error("Erro ao fazer logout no backend:", error);
+      // Continuar com logout local mesmo se der erro no backend
+    }
+
+    // Limpar todos os cookies
+    cookieStore.delete("auth_token");
+    cookieStore.delete("refresh_token");
+    cookieStore.delete("client_id");
+
+    redirect("/login");
+  } catch (error) {
+    console.error("Erro no logout:", error);
+    redirect("/login");
+  }
+}
+
+// Verificar se o usuário está autenticado
+export async function getAuthUser(): Promise<User | null> {
+  try {
+    const result = await serverGet<AuthMeResponse>("/auth/me");
+
+    // Verificar wrapper duplo
+    const userData = (result.data as any)?.data || result.data;
+
+    if (!userData) {
+      return null;
+    }
+
+    // Transformar client_id em clientId para compatibilidade
+    const user: User = {
+      ...userData,
+      clientId: userData.client_id || userData.clientId || "",
+    };
+
+    return user;
+  } catch (error: unknown) {
+    console.error("Erro ao verificar autenticação:", error);
+
+    // NÃO deletar cookies aqui - apenas retornar null
+    // A limpeza deve ser feita em uma Server Action separada
+    return null;
+  }
+}
+
+// Middleware para verificar autenticação
+export async function requireAuth() {
+  const user = await getAuthUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  return user;
+}
+
+// Obter informações do tenant/cliente atual
+export async function getCurrentClient() {
+  const cookieStore = await cookies();
+  return {
+    clientId: cookieStore.get("client_id")?.value || null,
+    token: cookieStore.get("auth_token")?.value || null,
+  };
+}
+
+// Refresh do token (para uso em caso de erro 401)
+export async function refreshTokenAction() {
+  try {
+    const cookieStore = await cookies();
+    const refreshToken = cookieStore.get("refresh_token")?.value;
+
+    if (!refreshToken) {
+      throw new Error("Refresh token não encontrado");
+    }
+
+    const result = await serverPost<{ token: string; refresh_token: string }>(
+      "/auth/refresh",
+      {
+        refresh_token: refreshToken,
+      }
+    );
+
+    // Verificar wrapper duplo
+    const tokenData = (result.data as any)?.data || result.data;
+
+    if (!tokenData) {
+      throw new Error("Dados não recebidos do servidor");
+    }
+
+    // Atualizar cookies com novos tokens
+    cookieStore.set("auth_token", tokenData.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+    });
+
+    cookieStore.set("refresh_token", tokenData.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 dias
+    });
+
+    return {
+      success: true,
+      message: "Token atualizado com sucesso",
+    };
+  } catch (error: unknown) {
+    console.error("Erro ao atualizar token:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Erro ao atualizar token",
+    };
+  }
+}
+
+// Limpar cookies de autenticação
+export async function clearAuthCookiesAction() {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete("auth_token");
+    cookieStore.delete("refresh_token");
+    cookieStore.delete("client_id");
+
+    return {
+      success: true,
+      message: "Cookies de autenticação limpos",
+    };
+  } catch (error: unknown) {
+    console.error("Erro ao limpar cookies:", error);
+    return {
+      success: false,
+      message: "Erro ao limpar cookies de autenticação",
+    };
   }
 }

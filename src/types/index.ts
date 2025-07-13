@@ -20,6 +20,11 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
 export interface RegisterData {
   email: string;
   password: string;
@@ -53,6 +58,12 @@ export interface ApiResponse<T = unknown> {
   data?: T;
   message?: string;
   error?: string;
+}
+
+export interface ApiError {
+  message: string;
+  code: string;
+  details?: unknown;
 }
 
 export interface PaginatedResponse<T> {

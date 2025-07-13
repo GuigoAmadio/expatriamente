@@ -1,34 +1,42 @@
-import { auth, signOut } from "@/auth";
+"use client";
 import { Button } from "@/components/ui";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 function LogoutButton() {
+  const { logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = useCallback(async () => {
+    await logout();
+    router.push("/");
+    router.refresh();
+  }, [logout, router]);
+
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut({ redirectTo: "/" });
-      }}
-    >
-      <Button type="submit" variant="outline">
-        Sair
-      </Button>
-    </form>
+    <Button type="button" variant="outline" onClick={handleLogout}>
+      Sair
+    </Button>
   );
 }
 
-export default async function DashboardPage() {
-  const session = await auth();
+export default function DashboardPage() {
+  const { user, isLoading } = useAuth();
+  const router = useRouter();
 
-  if (!session?.user) {
-    // O middleware já deve ter redirecionado, mas é uma boa prática ter um fallback
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p>Você precisa estar logado para ver esta página.</p>
+        <p>Carregando...</p>
       </div>
     );
   }
 
-  const { user } = session;
+  if (!user) {
+    router.push("/auth/signin");
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">

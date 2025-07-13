@@ -25,194 +25,66 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative h-screen flex items-center justify-center transition-colors duration-300">
-      {/* Header fixo */}
+    <>
       <Header />
-
-      {/* Background com imagem de fundo */}
-      <div className="absolute inset-0 z-0 top-10">
-        <Image
-          src="/fundo.png"
-          alt="Background"
-          width={800}
-          height={600}
-          className="w-screen mx-auto"
-          priority
+      <section className="relative h-screen flex items-center transition-colors duration-300 bg-[#b7c8b1] overflow-hidden">
+        {/* Fundo contínuo */}
+        <div className="absolute inset-0 w-full h-full bg-[#9EB7AA] z-0" />
+        {/* Gradiente para próxima seção */}
+        <div
+          className="absolute left-0 bottom-0 w-full h-32 z-10 pointer-events-none"
+          style={{
+            background: "linear-gradient(to bottom, #9EB7AA 0%, #d6cfae 100%)",
+          }}
         />
-      </div>
-
-      {/* Conteúdo principal */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col items-center justify-center gap-14 mt-10"
-        >
-          {/* Título principal */}
-          <div className="">
-            <motion.h1
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl sm:text-5xl lg:text-6xl max-w-4xl mx-auto text-orange-400 font-bold"
+        {/* Imagem da mulher sem fundo */}
+        <div className="flex-1 flex items-center justify-start relative z-20 h-full">
+          <Image
+            src="/heroMulher.png"
+            alt="Hero Mulher"
+            width={900}
+            height={1200}
+            className="object-contain object-left-bottom w-full h-full pointer-events-none select-none"
+            priority
+          />
+        </div>
+        {/* Conteúdo à direita */}
+        <div className="flex-1 flex flex-col justify-start items-start pr-8 md:pr-16 z-20 h-full">
+          <div className="max-w-xl text-left flex flex-col justify-start pt-20 h-full">
+            <h1 className="font-akzidens text-5xl leading-tight mb-8 font-medium tracking-tight">
+              <span className="text-white">CUIDADO </span>
+              <span className="text-[#01386F]">EMOCIONAL</span>
+              <br />
+              <span className="text-white">PARA </span>
+              <span className="text-[#01386F]">BRASILEIROS</span>
+              <br />
+              <span className="text-white">NO EXTERIOR</span>
+            </h1>
+            <p
+              className="text-white text-lg md:text-2xl font-normal mb-12"
+              style={{ textShadow: "2px 2px 8px #0008" }}
             >
-              {t("title", "hero")}
-            </motion.h1>
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg sm:text-xl lg:text-2xl text-white max-w-4xl mx-auto leading-relaxed pt-4"
-            >
-              {t("subtitle", "hero")}
-            </motion.p>
-          </div>
-
-          {/* Botões de ação */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <Link
-              href="/auth/signin"
-              className="inline-flex items-center gap-2 px-8 py-4 text-black bg-background hover:bg-accent/90 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              Encontre acolhimento e compreensão em sua jornada como expatriado.
+              Sessões de psicanálise online com profissionais que entendem sua
+              realidade.
+            </p>
+            <div className="flex flex-row gap-6 justify-center w-full items-center">
+              <a
+                href="#"
+                className="px-5 py-4 rounded-lg bg-[#01386F] text-white font-akzidens font-bold shadow-lg hover:scale-105 hover:bg-[#012a52] focus:ring-4 focus:ring-[#01386F]/30 transition-all duration-200 outline-none border-none min-w-[220px] text-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              {t("cta", "hero")}
-            </Link>
-            <Link
-              href="#psychologists"
-              className="inline-flex items-center bg-orange-400 gap-2 px-8 py-4 text-primary hover:scale-105 hover:text-white font-semibold rounded-lg transition-all duration-200"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                Agendar Consulta
+              </a>
+              <a
+                href="#"
+                className="px-5 py-4 rounded-lg bg-white text-[#01386F] font-akzidens font-bold border-2 border-[#01386F] shadow-lg hover:scale-105 hover:bg-[#f3f7fa] focus:ring-4 focus:ring-[#01386F]/20 transition-all duration-200 outline-none text-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              {t("ctaSecondary", "hero")}
-            </Link>
-          </motion.div>
-
-          <div className="flex items-center justify-center gap-4 mt-20">
-            {/* Badge de confiança */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex justify-center"
-            >
-              <div className="flex items-center gap-2 bg-background-secondary backdrop-blur-sm rounded-lg px-4 py-2">
-                <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-accent"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium text-black">
-                  {t("trustBadge", "hero")}
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Destaque da primeira consulta */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="flex justify-center"
-            >
-              <div className="flex items-center justify-center gap-3 bg-background-secondary rounded-lg px-4 py-2">
-                <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-strong"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium text-black">
-                  Primera Consulta Grátis
-                </span>
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="flex justify-center"
-            >
-              <div className="flex items-center justify-center gap-3 bg-background-secondary rounded-lg px-4 py-2">
-                <div className="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-strong"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium text-black">
-                  Atendimento 100% Online
-                </span>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-72 sm:bottom-36 left-1/2 transform -translate-x-1/2"
-      >
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-sm text-claro">Deslize para saber mais</span>
-          <div className="w-6 h-10 border-2 border-strong rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-botao-primary rounded-full mt-2 animate-bounce"></div>
+                Conhecer Psicanalistas
+              </a>
+            </div>
           </div>
         </div>
-      </motion.div>
-    </section>
+      </section>
+    </>
   );
 }
