@@ -3,28 +3,25 @@ import {
   getAgendamentosByPsicanalista,
 } from "@/actions/psicanalistas";
 import { notFound } from "next/navigation";
-import Calendar from "@/components/landing/Calendar";
 import PsicAgendamentoClient from "@/components/landing/PsicAgendamentoClient";
 import Header from "@/components/ui/Header";
 
-export default async function PsicanalistaPage({
+export default async function Page({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  // Buscar dados do psicanalista (mock)
-  const psicanalista = await getPsicanalistaById(params.id);
+  const { id } = await params;
+  const psicanalista = await getPsicanalistaById(id);
   if (!psicanalista) return notFound();
 
-  // Buscar agendamentos (mock)
-  const agendamentos = await getAgendamentosByPsicanalista(params.id);
+  const agendamentos = await getAgendamentosByPsicanalista(id);
 
   return (
     <>
       <Header backgroundColor="white" />
       <div className="min-h-screen bg-white flex flex-col items-center py-0 px-0">
-        {/* Faixa superior ... */}
-        <div className="w-full  flex flex-col md:flex-row items-center justify-between px-20 py-8 mt-20">
+        <div className="w-full flex flex-col md:flex-row items-center justify-between px-20 py-8 mt-20">
           {/* Esquerda: foto e dados pessoais */}
           <div className="flex flex-row items-center gap-6">
             <img
@@ -62,9 +59,7 @@ export default async function PsicanalistaPage({
             </ul>
           </div>
         </div>
-        {/* Linha separadora */}
         <div className="w-full max-w-5xl border-b border-[#b7c8b1] my-0 mx-auto" />
-        {/* Calendário e agendamento (Client) */}
         <div className="w-full max-w-7xl flex flex-col items-center px-2 mt-8">
           <h2 className="font-akzidens text-2xl text-[#01386F] font-bold mb-4">
             Agenda do Profissional

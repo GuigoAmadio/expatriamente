@@ -146,8 +146,7 @@ export interface ActionResponse<T = any> {
   error?: string;
 }
 
-export interface DashboardStatsResponse
-  extends ActionResponse<DashboardStats> {}
-export interface AppointmentsResponse extends ActionResponse<Appointment[]> {}
-export interface EmployeesResponse extends ActionResponse<Employee[]> {}
-export interface ServicesResponse extends ActionResponse<Service[]> {}
+export type DashboardStatsResponse = ActionResponse<DashboardStats>;
+export type AppointmentsResponse = ActionResponse<Appointment[]>;
+export type EmployeesResponse = ActionResponse<Employee[]>;
+export type ServicesResponse = ActionResponse<Service[]>;

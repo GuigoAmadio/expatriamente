@@ -60,7 +60,7 @@ const ProcessStepsSection = () => {
       }, 800);
       return () => clearTimeout(timeout);
     }
-  }, [currentStep, inView, delayInicialPassou]);
+  }, [currentStep, inView, delayInicialPassou, animationSequence.length]);
 
   // Se sair da tela, reseta o delay inicial e a animação
   useEffect(() => {
