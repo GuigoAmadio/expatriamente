@@ -59,7 +59,12 @@ export default function TopicsSection() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section className="w-full py-24 px-2 flex flex-col items-center justify-center bg-white">
+    <section
+      className="w-full py-24 px-2 flex flex-col items-center justify-center"
+      style={{
+        background: "linear-gradient(to bottom, #fff 0%, #deefff 100%)",
+      }}
+    >
       <motion.h2
         className="text-4xl font-akzidens font-bold text-[#DBD1A4] mb-2 text-center"
         initial={{ opacity: 0, y: 30 }}

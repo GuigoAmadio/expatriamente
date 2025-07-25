@@ -100,15 +100,20 @@ export default function StoriesSection() {
   ];
 
   return (
-    <section className="w-full py-20 px-4 md:px-0 flex flex-col items-center justify-center bg-white">
-      <div className="w-full px-28 flex flex-col items-center pt-16">
+    <section
+      className="w-full py-12 sm:py-16 md:py-20 px-4 md:px-0 flex flex-col items-center justify-center"
+      style={{
+        background: "linear-gradient(to top, #fff 0%, #deefff 40%)",
+      }}
+    >
+      <div className="w-full max-w-6xl flex flex-col items-center pt-8 sm:pt-12 md:pt-16">
         {/* Desktop layout especial */}
         <div className="hidden md:flex flex-col gap-16 w-full">
           {/* Primeira linha: título e depoimento 0 */}
           <div className="flex gap-10 w-full items-start justify-between">
             <div className="flex flex-col gap-6 items-start w-2/3">
               <motion.div
-                className="font-akzidens text-3xl text-[#DBD1A4] font-bold italic text-left items-center"
+                className="font-akzidens text-3xl text-[#edd778] font-bold italic text-left items-center"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
@@ -126,7 +131,7 @@ export default function StoriesSection() {
               </motion.div>
               <div className="flex justify-end">
                 <motion.div
-                  className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-lg text-[#5a5427] font-medium leading-relaxed items-center w-2/3"
+                  className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-base text-[#5a5427] font-medium leading-relaxed items-center w-2/3"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
@@ -138,7 +143,7 @@ export default function StoriesSection() {
               </div>
             </div>
             <motion.div
-              className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-lg text-[#5a5427] font-medium leading-relaxed w-1/3 items-center"
+              className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-base text-[#5a5427] font-medium leading-relaxed w-1/3 items-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -150,7 +155,7 @@ export default function StoriesSection() {
           </div>
           {/* Segunda linha: dois depoimentos lado a lado */}
           <div className="flex justify-end w-full">
-            <h2 className="text-3xl text-[#DBD1A4] font-bold italic text-right w-2/3">
+            <h2 className="text-3xl text-[#edd778] font-bold italic text-right w-2/3">
               Conheça <span className="text-orange-400">histórias reais </span>
               de brasileiros que encontraram acolhimento e crescimento pessoal
               através da psicanálise,{" "}
@@ -161,7 +166,7 @@ export default function StoriesSection() {
           </div>
           <div className="flex flex-col gap-8 w-full items-start">
             <motion.div
-              className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-lg text-[#5a5427] font-medium leading-relaxed w-4/5 items-center"
+              className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-basea text-[#5a5427] font-medium leading-relaxed w-4/5 items-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -171,7 +176,7 @@ export default function StoriesSection() {
               <span className="italic">"{depoimentos[1]}"</span>
             </motion.div>
             <motion.div
-              className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-lg text-[#5a5427] font-medium leading-relaxed w-4/5 items-center justify-center"
+              className="bg-[#DBD1A4] rounded-2xl shadow-xl shadow-orange-400/50 p-8 text-base text-[#5a5427] font-medium leading-relaxed w-4/5 items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
@@ -183,10 +188,10 @@ export default function StoriesSection() {
           </div>
           {/* Subtítulo centralizado */}
         </div>
-        {/* Mobile: coluna única */}
-        <div className="md:hidden grid grid-cols-1 gap-8 w-full">
+        {/* Mobile: layout otimizado */}
+        <div className="md:hidden flex flex-col gap-6 w-full">
           <motion.div
-            className="font-akzidens text-2xl text-[#DBD1A4] font-bold italic text-center"
+            className="font-akzidens text-xl sm:text-2xl text-[#DBD1A4] font-bold italic text-center leading-tight"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -204,8 +209,8 @@ export default function StoriesSection() {
           {depoimentos.map((texto, idx) => (
             <motion.div
               key={idx}
-              className="bg-[#DBD1A4] rounded-2xl shadow p-8 text-lg text-[#5a5427] font-medium leading-relaxed mx-auto"
-              style={{ minHeight: 120 }}
+              className="bg-[#DBD1A4] rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base text-[#5a5427] font-medium leading-relaxed w-full"
+              style={{ minHeight: 100 }}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: idx * 0.2 }}
@@ -213,15 +218,10 @@ export default function StoriesSection() {
               whileHover={{ scale: 1.02, y: -5 }}
             >
               <span className="italic">
-                "{texto.length > 350 ? texto.slice(0, 350) + "…" : texto}"
+                "{texto.length > 300 ? texto.slice(0, 300) + "…" : texto}"
               </span>
             </motion.div>
           ))}
-          <div className="w-full flex justify-center my-4">
-            <span className="font-akzidens text-xl text-[#6B3F1D] font-semibold text-center">
-              Subtítulo
-            </span>
-          </div>
         </div>
       </div>
     </section>

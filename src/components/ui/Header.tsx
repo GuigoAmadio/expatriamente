@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiMenu, FiX } from "react-icons/fi";
 
 export default function Header({
   backgroundColor,
@@ -22,9 +22,8 @@ export default function Header({
   backgroundColor?: string;
 }) {
   const [mounted, setMounted] = useState(false);
-  // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t } = useLanguage();
-  // const { darkMode } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
   const { user, isLoading } = useAuth();
@@ -42,21 +41,40 @@ export default function Header({
     }
   }
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    setIsMobileMenuOpen(false); // Fecha o menu mobile após navegação
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Fecha o menu mobile quando a tela é redimensionada para desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (!mounted) {
-    return <div className="min-h-14 sm:min-h-16 bg-[#9EB7AA] animate-pulse" />;
+    return (
+      <div className="min-h-14 sm:min-h-16 bg-transparent animate-pulse" />
+    );
   }
 
   return (
     <header
       className={`${
-        backgroundColor === "white" ? "bg-white" : "bg-transparent"
-      } shadow-none h-[110px] z-50`}
+        backgroundColor === "white" ? "bg-white" : "bg-[#deefff]"
+      } shadow-none h-[110px] z-50 relative`}
     >
-      <div className="flex items-center gap-5 h-full px-8 md:px-20">
+      <div className="flex items-center gap-5 h-full px-4 md:px-8 lg:px-20">
         {/* Esquerda: Logo */}
         <div
           className="flex items-center flex-shrink-0"
@@ -71,45 +89,45 @@ export default function Header({
             priority
           />
         </div>
-        {/* Textos e menu */}
-        <div className="flex flex-col flex-1">
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex flex-col flex-1">
           <div className="flex flex-row items-center">
-            <span className="font-akzidens text-4xl text-[#743606] leading-none tracking-tight">
+            <span className="font-akzidens text-2xl lg:text-4xl text-[#743606] leading-none tracking-tight">
               Expatriamente
             </span>
-            <nav className="font-akzidens text-base font-medium text-blue-900 flex-1 flex justify-center items-center gap-12 ml-16">
+            <nav className="font-akzidens text-sm lg:text-base font-medium text-blue-900 flex-1 flex justify-center items-center gap-8 lg:gap-12 ml-8 lg:ml-16">
               <button
-                onClick={() => handleNav("hero")}
-                className=" hover:underline bg-transparent border-none cursor-pointer"
+                onClick={() => handleNavigation("/")}
+                className="hover:underline bg-transparent border-none cursor-pointer transition-colors"
               >
                 Início
               </button>
               <button
-                onClick={() => handleNav("sobre")}
-                className=" hover:underline bg-transparent border-none cursor-pointer"
+                onClick={() => handleNavigation("/sobre")}
+                className="hover:underline bg-transparent border-none cursor-pointer transition-colors"
               >
                 Sobre Nós
               </button>
               <button
-                onClick={() => handleNav("servicos")}
-                className=" hover:underline bg-transparent border-none cursor-pointer"
+                onClick={() => handleNavigation("/servicos")}
+                className="hover:underline bg-transparent border-none cursor-pointer transition-colors"
               >
                 Serviços
               </button>
               <button
-                onClick={() => handleNav("psicanalistas")}
-                className=" hover:underline bg-transparent border-none cursor-pointer"
+                onClick={() => handleNavigation("/psicanalistas")}
+                className="hover:underline bg-transparent border-none cursor-pointer transition-colors"
               >
                 Psicanalistas
               </button>
             </nav>
             {/* Ícone de login à extrema direita */}
             <button
-              className="ml-auto flex items-center justify-center w-12 h-12 rounded-full hover:bg-[#01386F]/10 transition-colors"
+              className="ml-auto flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:bg-[#01386F]/10 transition-colors"
               title={user ? "Ir para o dashboard" : "Entrar"}
               onClick={() => {
                 if (user) {
-                  // Redireciona para o dashboard conforme o role
                   if (user.role === "ADMIN") router.push("/dashboard/admin");
                   else if (user.role === "EMPLOYEE")
                     router.push("/dashboard/employee");
@@ -119,14 +137,102 @@ export default function Header({
                 }
               }}
             >
-              <FiUser size={28} className="text-[#01386F]" />
+              <FiUser size={24} className="lg:w-7 lg:h-7 text-[#01386F]" />
             </button>
           </div>
           {/* Linha horizontal alinhada apenas com textos e menu */}
           <div className="w-full flex flex-row">
             <div className="border-b border-white flex-1" />
           </div>
-          <span className="font-akzidens text-base text-blue-900 leading-none tracking-tight mt-1 font-medium">
+          <span className="font-akzidens text-sm lg:text-base text-blue-900 leading-none tracking-tight mt-1 font-medium">
+            Psicanálise para brasileiros no exterior
+          </span>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex flex-col flex-1">
+          <div className="flex flex-row items-center justify-between">
+            <span className="font-akzidens text-xl text-[#743606] leading-none tracking-tight">
+              Expatriamente
+            </span>
+
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-[#01386F]/10 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <FiX size={24} className="text-[#01386F]" />
+              ) : (
+                <FiMenu size={24} className="text-[#01386F]" />
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200"
+            >
+              <nav className="flex flex-col py-4">
+                <button
+                  onClick={() => handleNavigation("/")}
+                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-blue-900 hover:bg-[#01386F]/5 transition-colors"
+                >
+                  Início
+                </button>
+                <button
+                  onClick={() => handleNavigation("/sobre")}
+                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-blue-900 hover:bg-[#01386F]/5 transition-colors"
+                >
+                  Sobre Nós
+                </button>
+                <button
+                  onClick={() => handleNavigation("/servicos")}
+                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-blue-900 hover:bg-[#01386F]/5 transition-colors"
+                >
+                  Serviços
+                </button>
+                <button
+                  onClick={() => handleNavigation("/psicanalistas")}
+                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-blue-900 hover:bg-[#01386F]/5 transition-colors"
+                >
+                  Psicanalistas
+                </button>
+                <div className="border-t border-gray-200 mt-2 pt-2">
+                  <button
+                    className="px-6 py-3 text-left font-akzidens text-base font-medium text-blue-900 hover:bg-[#01386F]/5 transition-colors flex items-center gap-2"
+                    onClick={() => {
+                      if (user) {
+                        if (user.role === "ADMIN")
+                          router.push("/dashboard/admin");
+                        else if (user.role === "EMPLOYEE")
+                          router.push("/dashboard/employee");
+                        else router.push("/dashboard/client");
+                      } else {
+                        router.push("/auth/signin");
+                      }
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    <FiUser size={20} />
+                    {user ? "Dashboard" : "Entrar"}
+                  </button>
+                </div>
+              </nav>
+            </motion.div>
+          )}
+
+          {/* Linha horizontal e subtítulo para mobile */}
+          <div className="w-full flex flex-row">
+            <div className="border-b border-white flex-1" />
+          </div>
+          <span className="font-akzidens text-sm text-blue-900 leading-none tracking-tight mt-1 font-medium">
             Psicanálise para brasileiros no exterior
           </span>
         </div>

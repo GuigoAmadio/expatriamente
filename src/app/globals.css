@@ -5,6 +5,44 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Remove horizontal overflow and borders */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* HeroSection specific styles */
+.hero-section {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Prevent vertical movement in hero */
+.hero-section * {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Prevent any vertical animations or movements */
+.hero-section .motion-div,
+.hero-section motion.div {
+  transform: translateZ(0) !important;
+  will-change: auto !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -139,13 +177,6 @@ html {
 .font-akzidens {
   font-family: var(--font-akzidens) !important;
   letter-spacing: 0.01em;
-}
-
-body {
-  background: var(--color-background);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  overflow-x: hidden;
 }
 
 /* Classes de Hierarquia Visual */

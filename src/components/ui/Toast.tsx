@@ -67,6 +67,11 @@ export const Toast: React.FC<ToastProps> = ({
 import { useCallback, useState } from "react";
 export function useToasts(initial: ToastProps[] = []) {
   const [toasts, setToasts] = useState<ToastProps[]>(initial);
+
+  const removeToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
   const addToast = useCallback(
     (toast: Omit<ToastProps, "onClose" | "id"> & { id?: string }) => {
       const id = toast.id || Math.random().toString(36).slice(2);
@@ -75,11 +80,9 @@ export function useToasts(initial: ToastProps[] = []) {
         { ...toast, id, onClose: () => removeToast(id) },
       ]);
     },
-    []
+    [removeToast]
   );
-  const removeToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  }, []);
+
   return { toasts, addToast, removeToast };
 }
 

@@ -1,166 +1,298 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
+import React, { useRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Flickity from "react-flickity-component";
+import { FaPlay, FaPause, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const videos = [
   {
     src: "/videos/video1Expatriamente.mp4",
-    thumb: "/videos/video1Expatriamente.jpg",
+    title: "Bem-vindo ao Expatriamente",
+    description:
+      "Conheça nossa plataforma dedicada ao bem-estar emocional de brasileiros no exterior.",
   },
   {
     src: "/videos/video2Expatriamente.mp4",
-    thumb: "/videos/video2Expatriamente.jpg",
+    title: "Atendimento Humanizado",
+    description:
+      "Nossa equipe de psicólogos especializados oferece suporte personalizado e acolhedor.",
   },
   {
     src: "/videos/video3Expatriamente.mp4",
-    thumb: "/videos/video3Expatriamente.jpg",
+    title: "Comunidade de Apoio",
+    description:
+      "Conecte-se com outros brasileiros que compartilham experiências similares.",
   },
 ];
 
-export default function VideoCarouselSection() {
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 esquerda, 1 direita
+const VideoCarouselSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const flickityRef = useRef<any>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const total = videos.length;
 
-  function goTo(idx: number, dir: number) {
-    // Pausar todos os vídeos ANTES de trocar
-    videoRefs.current.forEach((video) => {
-      if (video) {
-        video.pause();
-        video.currentTime = 0;
-      }
-    });
-    setDirection(dir);
-    setCurrent((idx + total) % total);
-  }
+  const flickityOptions = {
+    cellAlign: "center",
+    contain: true,
+    wrapAround: true,
+    autoPlay: false,
+    adaptiveHeight: false,
+    pageDots: true,
+    prevNextButtons: false,
+    draggable: true,
+    friction: 0.28,
+    selectedAttraction: 0.025,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          cellAlign: "left",
+          adaptiveHeight: false,
+        },
+      },
+    ],
+  };
 
-  // Para carrossel infinito
-  const getIndex = (offset: number) => (current + offset + total) % total;
-
-  // Pausar todos os vídeos exceto o atual (garantia extra)
   useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (video && idx !== getIndex(0)) {
+    if (flickityRef.current) {
+      flickityRef.current.on("settle", (index: number) => {
+        setCurrentSlide(index);
+        // Pausar todos os vídeos quando mudar de slide
+        videoRefs.current.forEach((video, i) => {
+          if (video && i !== index) {
+            video.pause();
+            video.currentTime = 0;
+          }
+        });
+        setIsPlaying(false);
+      });
+    }
+  }, []);
+
+  const handleVideoClick = (index: number) => {
+    const video = videoRefs.current[index];
+    if (video) {
+      if (video.paused) {
+        // Pausar todos os outros vídeos primeiro
+        videoRefs.current.forEach((otherVideo, i) => {
+          if (otherVideo && i !== index) {
+            otherVideo.pause();
+            otherVideo.currentTime = 0;
+          }
+        });
+
+        video.play();
+        setIsPlaying(true);
+      } else {
         video.pause();
-        video.currentTime = 0;
+        setIsPlaying(false);
       }
-    });
-  }, [current]);
+    }
+  };
+
+  const goToSlide = (index: number) => {
+    if (flickityRef.current) {
+      flickityRef.current.select(index);
+    }
+  };
+
+  const nextSlide = () => {
+    if (flickityRef.current) {
+      flickityRef.current.next();
+    }
+  };
+
+  const prevSlide = () => {
+    if (flickityRef.current) {
+      flickityRef.current.previous();
+    }
+  };
 
   return (
-    <section className="w-full py-20 flex flex-col items-center bg-white">
-      <h2 className="font-akzidens text-3xl md:text-4xl font-bold text-[#01386F] text-center mb-2">
-        Vamos falar sobre...
-      </h2>
-      <p className="text-xl w-1/2 my-8 text-[#01386F] text-center mb-10">
-        Como a escuta atenta e o diálogo promovem autoconhecimento e
-        transformação pessoal.
-      </p>
-      <div className="relative w-full flex justify-center items-center">
-        {/* Setas */}
-        <button
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 rounded-full p-2 shadow hover:bg-[#01386F]/10 transition-colors"
-          onClick={() => goTo(current - 1, -1)}
-          aria-label="Anterior"
-        >
-          <FaChevronLeft size={28} className="text-[#01386F]" />
-        </button>
-        <button
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 rounded-full p-2 shadow hover:bg-[#01386F]/10 transition-colors"
-          onClick={() => goTo(current + 1, 1)}
-          aria-label="Próximo"
-        >
-          <FaChevronRight size={28} className="text-[#01386F]" />
-        </button>
-        {/* Carrossel */}
-        <div className="flex w-full max-w-4xl items-center justify-center gap-4 md:gap-8">
-          {/* Mobile: só o central */}
-          <div className="w-full flex md:hidden justify-center">
-            <motion.video
-              key={current}
-              ref={(el) => {
-                videoRefs.current[getIndex(0)] = el;
-              }}
-              src={videos[getIndex(0)].src}
-              poster={videos[getIndex(0)].thumb}
-              controls
-              className="rounded-2xl shadow-xl w-full max-w-xs h-96 object-contain border-4 border-[#01386F]"
-              initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-          {/* Desktop: 3 vídeos */}
-          <div className="hidden md:flex w-full items-center justify-center gap-8">
-            {/* Esquerda */}
-            <motion.video
-              key={getIndex(-1)}
-              ref={(el) => {
-                videoRefs.current[getIndex(-1)] = el;
-              }}
-              src={videos[getIndex(-1)].src}
-              poster={videos[getIndex(-1)].thumb}
-              controls
-              className="rounded-2xl shadow-lg  w-[280px] object-contain opacity-60 scale-90 blur-[1px] border-2 border-[#01386F]/20"
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 0.6, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-            />
-            {/* Central */}
-            <motion.video
-              key={getIndex(0)}
-              ref={(el) => {
-                videoRefs.current[getIndex(0)] = el;
-              }}
-              src={videos[getIndex(0)].src}
-              poster={videos[getIndex(0)].thumb}
-              controls
-              autoPlay
-              className="rounded-2xl shadow-2xl w-[340px] object-contain border-4 border-[#01386F] z-10"
-              initial={{
-                opacity: 0,
-                scale: 0.95,
-                x: direction > 0 ? 100 : -100,
-              }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              exit={{ opacity: 0, scale: 0.95, x: direction > 0 ? -100 : 100 }}
-              transition={{ duration: 0.5 }}
-            />
-            {/* Direita */}
-            <motion.video
-              key={getIndex(1)}
-              ref={(el) => {
-                videoRefs.current[getIndex(1)] = el;
-              }}
-              src={videos[getIndex(1)].src}
-              poster={videos[getIndex(1)].thumb}
-              controls
-              className="rounded-2xl shadow-lg w-[280px] object-contain opacity-60 scale-90 blur-[1px] border-2 border-[#01386F]/20"
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 0.6, x: 0 }}
-              exit={{ opacity: 0, x: 100 }}
-              transition={{ duration: 0.5 }}
-            />
+    <>
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-blue-50">
+        <div className="container mx-auto px-4">
+          {/* Título e Descrição */}
+          <motion.div
+            className="text-center mb-8 sm:mb-12 w-full max-w-4xl mx-auto px-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#01386F] mb-4">
+              Vamos falar sobre...
+            </h2>
+            <p className="text-lg sm:text-xl text-[#01386F] text-center leading-relaxed">
+              Como a escuta atenta e o diálogo promovem autoconhecimento e
+              transformação pessoal
+            </p>
+          </motion.div>
+
+          {/* Carrossel de Vídeos */}
+          <div className="relative mx-auto">
+            <Flickity
+              className="video-carousel"
+              elementType="div"
+              options={flickityOptions}
+              flickityRef={(c) => (flickityRef.current = c)}
+              disableImagesLoaded={false}
+              reloadOnUpdate={false}
+              static={false}
+            >
+              {videos.map((video, index) => (
+                <div key={index} className="px-4">
+                  <motion.div
+                    className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl h-[600px]"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    onClick={() => handleVideoClick(index)}
+                  >
+                    {/* Vídeo */}
+                    <video
+                      ref={(el) => {
+                        videoRefs.current[index] = el;
+                      }}
+                      className="w-full h-full object-cover"
+                      preload="metadata"
+                      playsInline
+                    >
+                      <source src={video.src} type="video/mp4" />
+                      Seu navegador não suporta vídeos.
+                    </video>
+
+                    {/* Overlay com Título */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end">
+                      <div className="p-6 w-full">
+                        <h3 className="text-white text-xl sm:text-2xl font-bold mb-2">
+                          {video.title}
+                        </h3>
+                        <p className="text-white/90 text-sm sm:text-base">
+                          {video.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Botão de Play/Pause */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 group-hover:bg-white/30 transition-all duration-300">
+                        {isPlaying && currentSlide === index ? (
+                          <FaPause className="text-white text-2xl sm:text-3xl" />
+                        ) : (
+                          <FaPlay className="text-white text-2xl sm:text-3xl ml-1" />
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              ))}
+            </Flickity>
+
+            {/* Navegação Desktop */}
+            <div className="hidden md:flex absolute top-1/2 -translate-y-1/2 left-4 right-4 justify-between pointer-events-none">
+              <button
+                onClick={prevSlide}
+                className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-3 shadow-lg transition-all duration-300 pointer-events-auto group"
+              >
+                <FaChevronLeft className="text-[#01386F] text-xl group-hover:scale-110 transition-transform" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="bg-white/80 hover:bg-white backdrop-blur-sm rounded-full p-3 shadow-lg transition-all duration-300 pointer-events-auto group"
+              >
+                <FaChevronRight className="text-[#01386F] text-xl group-hover:scale-110 transition-transform" />
+              </button>
+            </div>
+
+            {/* Navegação Mobile */}
+            <div className="md:hidden flex justify-center items-center mt-6 space-x-4">
+              <button
+                onClick={prevSlide}
+                className="bg-[#01386F] hover:bg-[#012a5a] text-white rounded-full p-2 transition-colors"
+              >
+                <FaChevronLeft className="text-sm" />
+              </button>
+
+              {/* Indicadores */}
+              <div className="flex space-x-2">
+                {videos.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      currentSlide === index
+                        ? "bg-[#01386F] scale-125"
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={nextSlide}
+                className="bg-[#01386F] hover:bg-[#012a5a] text-white rounded-full p-2 transition-colors"
+              >
+                <FaChevronRight className="text-sm" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      {/* Bolinhas de navegação */}
-      <div className="flex gap-2 justify-center mt-8">
-        {videos.map((_, idx) => (
-          <button
-            key={idx}
-            className={`w-3 h-3 rounded-full border-2 border-[#01386F] transition-all ${
-              current === idx ? "bg-[#01386F]" : "bg-white"
-            }`}
-            onClick={() => goTo(idx, idx > current ? 1 : -1)}
-            aria-label={`Ir para vídeo ${idx + 1}`}
-          />
-        ))}
-      </div>
-    </section>
+      </section>
+
+      {/* Espaçamento com Gradiente */}
+      <div className="h-12 bg-gradient-to-b from-blue-50 to-white"></div>
+
+      <style jsx global>{`
+        .video-carousel {
+          margin: 0 auto;
+        }
+
+        .video-carousel .flickity-viewport {
+          overflow: visible;
+        }
+
+        .video-carousel .carousel-cell {
+          width: 100%;
+          margin-right: 0;
+          height: auto;
+        }
+
+        .video-carousel .flickity-page-dots {
+          bottom: -40px;
+        }
+
+        .video-carousel .flickity-page-dots .dot {
+          width: 12px;
+          height: 12px;
+          margin: 0 6px;
+          background: #cbd5e1;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+        }
+
+        .video-carousel .flickity-page-dots .dot.is-selected {
+          background: #01386f;
+          transform: scale(1.2);
+        }
+
+        .video-carousel .flickity-button {
+          display: none;
+        }
+
+        .video-carousel .flickity-slider {
+          display: flex;
+          align-items: center;
+        }
+
+        @media (max-width: 768px) {
+          .video-carousel .flickity-page-dots {
+            bottom: -30px;
+          }
+        }
+      `}</style>
+    </>
   );
-}
+};
+
+export default VideoCarouselSection;

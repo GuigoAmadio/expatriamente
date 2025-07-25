@@ -5,6 +5,9 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { Playfair_Display, Montserrat } from "next/font/google";
 
+// Import Flickity CSS
+import "flickity/css/flickity.css";
+
 // Configuração da fonte Playfair Display para títulos
 const playfair = Playfair_Display({
   subsets: ["latin"],

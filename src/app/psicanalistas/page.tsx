@@ -11,17 +11,14 @@ export default function PsicanalistasPage() {
   if (!mounted) return null;
 
   return (
-    <>
+    <div className="bg-[#deefff]">
       <Header />
-      <main className="min-h-screen bg-[#f5f6f3] flex flex-col items-center pt-12 pb-24 px-4 w-full">
-        <h1 className="font-akzidens text-4xl md:text-5xl font-bold text-[#01386F] mb-10 text-center">
-          Nossos Psicanalistas
-        </h1>
-        <div className="w-full max-w-6xl">
+      <main className="min-h-screen w-full">
+        <div className="w-full">
           <PsychologistsSection />
         </div>
       </main>
       <FooterSection />
-    </>
+    </div>
   );
 }

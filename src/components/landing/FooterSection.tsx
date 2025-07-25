@@ -17,7 +17,7 @@ export default function FooterSection() {
 
   return (
     <footer
-      className="relative w-full min-h-[550px] flex items-center justify-end pr-40"
+      className="relative w-full min-h-[550px] flex items-center justify-end pr-4 sm:pr-8 md:pr-20 lg:pr-40 pb-8"
       style={{ background: "none" }}
     >
       <Image
