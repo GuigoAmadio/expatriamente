@@ -2,6 +2,7 @@
 
 import type { DashboardStats } from "@/types";
 import { serverGet } from "@/lib/server-api";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
 
 interface ProductStatsResponse {
   totalProducts: number;
@@ -71,19 +72,26 @@ interface Appointment {
   };
 }
 
-export async function getDashboardStats() {
+export async function getDashboardStats(startDate?: string, endDate?: string) {
   try {
-    console.log("🚀 [Frontend] Iniciando getDashboardStats()");
-
-    const dashboardResult = await serverGet<any>("/dashboard/stats");
-
-    console.log("📥 [Frontend] Resposta recebida do backend:");
-    console.log("Dashboard data:", dashboardResult);
-
-    return {
-      success: true,
-      data: (dashboardResult.data as any)?.data || dashboardResult.data,
-    };
+    console.log("🚀 [Frontend] Iniciando getDashboardStats()", {
+      startDate,
+      endDate,
+    });
+    const query =
+      startDate && endDate ? `?startDate=${startDate}&endDate=${endDate}` : "";
+    return await cacheUtils.getCachedData(
+      `dashboard:stats:${startDate || "default"}:${endDate || "default"}`,
+      async () => {
+        const dashboardResult = await serverGet<any>(
+          `/dashboard/stats${query}`
+        );
+        console.log("📥 [Frontend] Resposta recebida do backend:");
+        console.log("Dashboard data:", dashboardResult);
+        return (dashboardResult.data as any)?.data || dashboardResult.data;
+      },
+      CACHE_CONFIG.dashboard
+    );
   } catch (error: any) {
     console.error("❌ [Frontend] Erro ao carregar estatísticas:", error);
     return {
@@ -96,11 +104,14 @@ export async function getDashboardStats() {
 
 export async function getProductStats() {
   try {
-    const result = await serverGet<ProductStatsResponse>("/products/stats");
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
+    return await cacheUtils.getCachedData(
+      "dashboard:product-stats",
+      async () => {
+        const result = await serverGet<ProductStatsResponse>("/products/stats");
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.dashboard
+    );
   } catch (error: any) {
     return {
       success: false,
@@ -111,13 +122,16 @@ export async function getProductStats() {
 
 export async function getTopSellingProducts(limit: number = 5) {
   try {
-    const result = await serverGet<TopSellingProduct[]>(
-      `/products/top-selling?limit=${limit}`
+    return await cacheUtils.getCachedData(
+      `dashboard:top-selling-products:${limit}`,
+      async () => {
+        const result = await serverGet<TopSellingProduct[]>(
+          `/products/top-selling?limit=${limit}`
+        );
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.dashboard
     );
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
   } catch (error: any) {
     return {
       success: false,
@@ -128,13 +142,16 @@ export async function getTopSellingProducts(limit: number = 5) {
 
 export async function getAppointmentStats() {
   try {
-    const result = await serverGet<AppointmentStatsResponse>(
-      "/appointments/stats"
+    return await cacheUtils.getCachedData(
+      "dashboard:appointment-stats",
+      async () => {
+        const result = await serverGet<AppointmentStatsResponse>(
+          "/appointments/stats"
+        );
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.appointments
     );
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
   } catch (error: any) {
     return {
       success: false,
@@ -145,11 +162,16 @@ export async function getAppointmentStats() {
 
 export async function getTodayAppointments() {
   try {
-    const result = await serverGet<TodayAppointment[]>("/appointments/today");
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
+    return await cacheUtils.getCachedData(
+      "appointments:today",
+      async () => {
+        const result = await serverGet<TodayAppointment[]>(
+          "/appointments/today"
+        );
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.appointments
+    );
   } catch (error: any) {
     return {
       success: false,
@@ -191,16 +213,29 @@ export async function getAppointments(params?: {
     const url = `/appointments${
       queryParams.toString() ? `?${queryParams.toString()}` : ""
     }`;
-    const result = await serverGet<Appointment[]>(url);
 
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
+    return await cacheUtils.getCachedData(
+      `appointments:list:${url}`,
+      async () => {
+        const result = await serverGet<Appointment[]>(url);
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.appointments
+    );
   } catch (error: any) {
     return {
       success: false,
       message: error.message || "Erro ao carregar agendamentos",
     };
   }
+}
+
+// Função para invalidar cache do dashboard
+export async function invalidateDashboardCache() {
+  await cacheUtils.invalidateByType("dashboard");
+}
+
+// Função para invalidar cache de agendamentos
+export async function invalidateAppointmentsCache() {
+  await cacheUtils.invalidateByType("appointments");
 }

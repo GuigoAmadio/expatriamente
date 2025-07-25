@@ -19,11 +19,16 @@ export function RoleGuard({
   const router = useRouter();
 
   useEffect(() => {
+    // Só redirecionar se não estiver carregando E não tiver usuário
     if (!isLoading && !user) {
-      router.push("/login");
+      console.log(
+        "RoleGuard: Usuário não encontrado, redirecionando para login"
+      );
+      router.push("/auth/signin");
     }
   }, [user, isLoading, router]);
 
+  // Mostrar loading enquanto carrega
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -32,11 +37,17 @@ export function RoleGuard({
     );
   }
 
+  // Se não tem usuário E não está carregando, não renderizar nada (vai redirecionar)
   if (!user) {
     return null;
   }
 
+  // Verificar se o usuário tem a role permitida
   if (!allowedRoles.includes(user.role)) {
+    console.log(
+      `RoleGuard: Usuário com role ${user.role} não tem acesso. Roles permitidas:`,
+      allowedRoles
+    );
     return (
       fallback || (
         <div className="flex items-center justify-center min-h-screen">

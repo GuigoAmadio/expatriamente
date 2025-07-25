@@ -58,7 +58,7 @@ export function useAuth() {
         isAuthenticated: false,
       });
 
-      router.push("/login");
+      router.push("/auth/signin");
     } catch (error) {
       console.error("Erro no logout:", error);
       // Limpar estado local mesmo se der erro
@@ -67,7 +67,7 @@ export function useAuth() {
         isLoading: false,
         isAuthenticated: false,
       });
-      router.push("/login");
+      router.push("/auth/signin");
     }
   }, [router]);
 
@@ -79,7 +79,7 @@ export function useAuth() {
   // Verificar se está em uma rota protegida
   const requireAuth = useCallback(() => {
     if (!authState.isLoading && !authState.isAuthenticated) {
-      router.push("/login");
+      router.push("/auth/signin");
       return false;
     }
     return true;

@@ -61,7 +61,7 @@ export default function TopicsSection() {
   return (
     <section className="w-full py-24 px-2 flex flex-col items-center justify-center bg-white">
       <motion.h2
-        className="text-4xl font-akzidens font-bold text-[#11486b] mb-2 text-center"
+        className="text-4xl font-akzidens font-bold text-[#DBD1A4] mb-2 text-center"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -70,7 +70,7 @@ export default function TopicsSection() {
         Vamos falar sobre…
       </motion.h2>
       <motion.p
-        className="text-xl italic text-[#11486b] mb-10 text-center"
+        className="text-2xl italic text-orange-400 mt-10 mb-20 text-center max-w-[800px]"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}

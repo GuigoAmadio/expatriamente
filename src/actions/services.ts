@@ -7,14 +7,18 @@ import {
   serverPut,
   serverDelete,
 } from "@/lib/server-api";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
 
 export async function getServices() {
   try {
-    const result = await serverGet<Service[]>("/services");
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
+    return await cacheUtils.getCachedData(
+      "services:list",
+      async () => {
+        const result = await serverGet<Service[]>("/services");
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.services
+    );
   } catch (error: any) {
     return {
       success: false,
@@ -25,11 +29,14 @@ export async function getServices() {
 
 export async function getService(id: string) {
   try {
-    const result = await serverGet<Service>(`/services/${id}`);
-    return {
-      success: true,
-      data: (result.data as any)?.data || result.data,
-    };
+    return await cacheUtils.getCachedData(
+      `services:detail:${id}`,
+      async () => {
+        const result = await serverGet<Service>(`/services/${id}`);
+        return (result.data as any)?.data || result.data;
+      },
+      CACHE_CONFIG.services
+    );
   } catch (error: any) {
     return {
       success: false,
@@ -41,6 +48,10 @@ export async function getService(id: string) {
 export async function createService(data: CreateServiceRequest) {
   try {
     const result = await serverPost<Service>("/services", data);
+
+    // Invalidar cache de serviços após criação
+    await cacheUtils.invalidateByType("services");
+
     return {
       success: true,
       data: (result.data as any)?.data || result.data,
@@ -60,6 +71,10 @@ export async function updateService(
 ) {
   try {
     const result = await serverPut<Service>(`/services/${id}`, data);
+
+    // Invalidar cache de serviços após atualização
+    await cacheUtils.invalidateByType("services");
+
     return {
       success: true,
       data: (result.data as any)?.data || result.data,
@@ -76,6 +91,10 @@ export async function updateService(
 export async function deleteService(id: string) {
   try {
     await serverDelete(`/services/${id}`);
+
+    // Invalidar cache de serviços após exclusão
+    await cacheUtils.invalidateByType("services");
+
     return {
       success: true,
       message: "Serviço excluído com sucesso",

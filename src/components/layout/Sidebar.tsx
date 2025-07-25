@@ -4,12 +4,13 @@ import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BackendUser } from "@/types/backend";
+import React from "react";
 
 interface SidebarProps {
   user: BackendUser | null;
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
 
   const getMenuItems = () => {
@@ -24,11 +25,11 @@ export function Sidebar({ user }: SidebarProps) {
             icon: "👥",
           },
           {
-            label: "Agendamentos",
+            label: "Appointments",
             href: "/dashboard/admin/appointments",
             icon: "📅",
           },
-          { label: "Usuários", href: "/dashboard/admin/users", icon: "👤" },
+          { label: "Usuários", href: "/dashboard/admin/clients", icon: "👤" },
           { label: "Serviços", href: "/dashboard/admin/services", icon: "⚙️" },
         ];
       case "EMPLOYEE":
@@ -40,8 +41,8 @@ export function Sidebar({ user }: SidebarProps) {
             icon: "👥",
           },
           {
-            label: "Minha Agenda",
-            href: "/dashboard/employee/schedule",
+            label: "Appointments",
+            href: "/dashboard/employee/appointments",
             icon: "📅",
           },
         ];
@@ -49,7 +50,7 @@ export function Sidebar({ user }: SidebarProps) {
         return [
           { label: "Dashboard", href: "/dashboard/client", icon: "🏠" },
           {
-            label: "Meus Agendamentos",
+            label: "My Appointments",
             href: "/dashboard/client/appointments",
             icon: "📅",
           },
@@ -102,7 +103,7 @@ export function Sidebar({ user }: SidebarProps) {
           onClick={() => {
             // Implementar logout
             localStorage.removeItem("auth-token");
-            window.location.href = "/login";
+            window.location.href = "/auth/signin";
           }}
           className="w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
         >
@@ -112,4 +113,4 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
     </nav>
   );
-}
+});

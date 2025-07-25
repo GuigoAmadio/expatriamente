@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { LoginInput, User } from "@/types";
 import { serverPost, serverGet } from "@/lib/server-api";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
 
 // Interfaces para tipar os dados da API
 interface LoginApiResponse {
@@ -39,7 +40,6 @@ interface AuthMeResponse {
 export async function loginAction(data: LoginInput) {
   try {
     console.log("🔐 Expatriamente - Iniciando login...");
-    console.log("📧 Email:", data.email);
 
     const result = await serverPost<LoginApiResponse>("/auth/login", data);
     console.log("📋 result.data:", JSON.stringify(result.data, null, 2));
@@ -115,6 +115,26 @@ export async function loginAction(data: LoginInput) {
       cookieStore.get("refresh_token") ? "Salvo" : "N/A"
     );
 
+    // Cache do usuário logado (sem dados sensíveis)
+    if ((responseData as any)?.user) {
+      console.log("💾 [Auth] Salvando dados do usuário no cache...");
+      const userForCache = {
+        id: (responseData as any).user.id,
+        name: (responseData as any).user.name,
+        email: (responseData as any).user.email,
+        role: (responseData as any).user.role,
+        clientId: (responseData as any).client_id,
+        // NÃO cachear tokens, senhas ou dados sensíveis
+      };
+
+      await cacheUtils.getCachedData(
+        `auth:user:${(responseData as any).user.id}`,
+        async () => userForCache,
+        { ...CACHE_CONFIG.profile, ttl: 30 * 60 * 1000 } // 30 minutos para dados de perfil
+      );
+      console.log("✅ [Auth] Dados do usuário salvos no cache");
+    }
+
     return {
       success: true,
       message: "Login realizado com sucesso",
@@ -123,6 +143,124 @@ export async function loginAction(data: LoginInput) {
     };
   } catch (error: unknown) {
     console.error("❌ Expatriamente - Erro no login:", error);
+    console.error("❌ Erro completo:", JSON.stringify(error, null, 2));
+    const errorMessage =
+      error instanceof Error ? error.message : "Erro interno do servidor";
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+}
+
+// Registro do usuário com login automático
+export async function registerAction(data: {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+}) {
+  try {
+    console.log("🔐 Expatriamente - Iniciando registro...");
+    console.log("📧 Email:", data.email);
+
+    const result = await serverPost<LoginApiResponse>("/auth/register", data);
+    console.log("📋 result.data:", JSON.stringify(result.data, null, 2));
+
+    // A API retorna uma estrutura aninhada: result.data.data contém os dados reais
+    const nestedResult = result.data as LoginApiResponse;
+    const responseData = nestedResult?.data || result.data || result;
+
+    console.log("✅ Expatriamente - Registro bem-sucedido!");
+    console.log("- Client ID recebido:", (responseData as any)?.client_id);
+    console.log("- User recebido:", !!(responseData as any)?.user);
+
+    // Verificar se temos os dados necessários
+    if (!(responseData as any)?.token) {
+      console.error("❌ Token não encontrado na resposta!");
+      console.error("📋 Dados encontrados:", Object.keys(responseData || {}));
+      return {
+        success: false,
+        message: "Token não recebido do servidor",
+      };
+    }
+
+    if (!(responseData as any)?.client_id) {
+      console.error("❌ Client ID não encontrado na resposta!");
+      console.error("📋 Dados encontrados:", Object.keys(responseData || {}));
+      return {
+        success: false,
+        message: "Client ID não recebido do servidor",
+      };
+    }
+
+    // Salvar tokens e client_id nos cookies httpOnly
+    const cookieStore = await cookies();
+
+    cookieStore.set("auth_token", (responseData as any).token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+    });
+
+    // Salvar client_id do usuário autenticado
+    cookieStore.set("client_id", (responseData as any).client_id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 dias
+    });
+
+    // Salvar refresh token se fornecido
+    if ((responseData as any).refresh_token) {
+      cookieStore.set("refresh_token", (responseData as any).refresh_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 dias
+      });
+    }
+
+    console.log("🍪 Expatriamente - Cookies salvos com sucesso!");
+    console.log(
+      "- auth_token:",
+      cookieStore.get("auth_token") ? "Salvo" : "ERRO"
+    );
+    console.log("- client_id:", cookieStore.get("client_id")?.value);
+    console.log(
+      "- refresh_token:",
+      cookieStore.get("refresh_token") ? "Salvo" : "N/A"
+    );
+
+    // Cache do usuário registrado (sem dados sensíveis)
+    if ((responseData as any)?.user) {
+      console.log("💾 [Auth] Salvando dados do usuário registrado no cache...");
+      const userForCache = {
+        id: (responseData as any).user.id,
+        name: (responseData as any).user.name,
+        email: (responseData as any).user.email,
+        role: (responseData as any).user.role,
+        clientId: (responseData as any).client_id,
+        // NÃO cachear tokens, senhas ou dados sensíveis
+      };
+
+      await cacheUtils.getCachedData(
+        `auth:user:${(responseData as any).user.id}`,
+        async () => userForCache,
+        { ...CACHE_CONFIG.profile, ttl: 30 * 60 * 1000 } // 30 minutos para dados de perfil
+      );
+      console.log("✅ [Auth] Dados do usuário registrado salvos no cache");
+    }
+
+    return {
+      success: true,
+      message: "Registro realizado com sucesso",
+      user: (responseData as any).user,
+      clientId: (responseData as any).client_id,
+    };
+  } catch (error: unknown) {
+    console.error("❌ Expatriamente - Erro no registro:", error);
     console.error("❌ Erro completo:", JSON.stringify(error, null, 2));
     const errorMessage =
       error instanceof Error ? error.message : "Erro interno do servidor";
@@ -151,32 +289,58 @@ export async function logoutAction() {
     cookieStore.delete("refresh_token");
     cookieStore.delete("client_id");
 
-    redirect("/login");
+    // Limpar cache de autenticação
+    console.log("🗑️ [Auth] Invalidando cache de autenticação...");
+    await cacheUtils.invalidateByType("profile");
+    console.log("✅ [Auth] Cache de autenticação invalidado");
+
+    redirect("/auth/signin");
   } catch (error) {
     console.error("Erro no logout:", error);
-    redirect("/login");
+    redirect("/auth/signin");
   }
 }
 
 // Verificar se o usuário está autenticado
 export async function getAuthUser(): Promise<User | null> {
   try {
-    const result = await serverGet<AuthMeResponse>("/auth/me");
+    // Tentar obter do cache primeiro
+    const cachedUser = await cacheUtils.getCachedData(
+      "auth:current-user",
+      async () => {
+        console.log("🔍 [Auth] Buscando dados do usuário no backend...");
+        const result = await serverGet<AuthMeResponse>("/auth/me");
 
-    // Verificar wrapper duplo
-    const userData = (result.data as any)?.data || result.data;
+        // Verificar wrapper duplo
+        const userData = (result.data as any)?.data || result.data;
 
-    if (!userData) {
-      return null;
-    }
+        if (!userData) {
+          return null;
+        }
 
-    // Transformar client_id em clientId para compatibilidade
-    const user: User = {
-      ...userData,
-      clientId: userData.client_id || userData.clientId || "",
-    };
+        // Transformar client_id em clientId para compatibilidade
+        const user: User = {
+          ...userData,
+          clientId: userData.client_id || userData.clientId || "",
+        };
 
-    return user;
+        // NÃO cachear tokens ou dados sensíveis
+        const userForCache = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          // Remover dados sensíveis antes de cachear
+        };
+
+        return userForCache;
+      },
+      { ...CACHE_CONFIG.profile, ttl: 5 * 60 * 1000 } // 5 minutos para dados de auth
+    );
+
+    return cachedUser;
   } catch (error: unknown) {
     console.error("Erro ao verificar autenticação:", error);
 
@@ -191,7 +355,7 @@ export async function requireAuth() {
   const user = await getAuthUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/auth/signin");
   }
 
   return user;
@@ -245,6 +409,11 @@ export async function refreshTokenAction() {
       maxAge: 60 * 60 * 24 * 30, // 30 dias
     });
 
+    // Invalidar cache de auth após refresh
+    console.log("🔄 [Auth] Invalidando cache após refresh do token...");
+    await cacheUtils.invalidateByType("profile");
+    console.log("✅ [Auth] Cache invalidado após refresh");
+
     return {
       success: true,
       message: "Token atualizado com sucesso",
@@ -266,6 +435,11 @@ export async function clearAuthCookiesAction() {
     cookieStore.delete("auth_token");
     cookieStore.delete("refresh_token");
     cookieStore.delete("client_id");
+
+    // Limpar cache de autenticação
+    console.log("🗑️ [Auth] Invalidando cache de autenticação...");
+    await cacheUtils.invalidateByType("profile");
+    console.log("✅ [Auth] Cache de autenticação invalidado");
 
     return {
       success: true,

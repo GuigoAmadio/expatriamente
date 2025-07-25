@@ -1,14 +1,15 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import PsychologistCard from "./PsychologistCard";
 import { useRouter } from "next/navigation";
+import { getPsicanalistas } from "@/actions/psicanalistas";
 
 interface Psychologist {
-  id: number;
+  id: string;
   name: string;
   specialty: string;
   categories: string[];
@@ -44,215 +45,16 @@ export default function PsychologistsSection() {
   const { t } = useLanguage();
   const { darkMode } = useTheme();
   const [search, setSearch] = useState("");
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
   const router = useRouter();
 
-  const psychologists: Psychologist[] = [
-    {
-      id: 1,
-      name: "Dr. Ana Silva",
-      specialty: "Ansiedade e Depressão",
-      categories: ["Ansiedade e Depressão", "Burnout e Estresse"],
-      experience: "8 anos",
-      rating: 4.9,
-      price: "R$ 120",
-      location: "São Paulo, SP",
-      languages: ["Português", "Inglês"],
-      bio: "Especialista em terapia cognitivo-comportamental com foco em transtornos de ansiedade e depressão. Atendimento humanizado e baseado em evidências científicas.",
-      education: "Mestrado em Psicologia Clínica - USP",
-      approach: "Terapia Cognitivo-Comportamental",
-      availability: "Seg-Sex: 8h às 18h",
-      image:
-        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 2,
-      name: "Dr. Carlos Mendes",
-      specialty: "Relacionamentos",
-      categories: ["Relacionamentos", "Família e Maternidade"],
-      experience: "12 anos",
-      rating: 4.8,
-      price: "R$ 150",
-      location: "Rio de Janeiro, RJ",
-      languages: ["Português", "Espanhol"],
-      bio: "Terapeuta especializado em terapia de casal e relacionamentos. Ajudo pessoas a construírem vínculos mais saudáveis e duradouros.",
-      education: "PhD em Psicologia - UFRJ",
-      approach: "Terapia Sistêmica Familiar",
-      availability: "Ter-Sáb: 9h às 19h",
-      image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 3,
-      name: "Dra. Maria Santos",
-      specialty: "Trauma e PTSD",
-      categories: ["Trauma e PTSD", "Ansiedade e Depressão"],
-      experience: "15 anos",
-      rating: 5.0,
-      price: "R$ 180",
-      location: "Brasília, DF",
-      languages: ["Português", "Francês"],
-      bio: "Especialista em trauma e transtorno de estresse pós-traumático. Utilizo técnicas avançadas como EMDR para tratamento eficaz.",
-      education: "Doutorado em Neuropsicologia - UnB",
-      approach: "EMDR e Terapia do Trauma",
-      availability: "Seg-Qui: 10h às 20h",
-      image:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=faces",
-    },
-    {
-      id: 4,
-      name: "Dr. João Oliveira",
-      specialty: "Adolescentes",
-      categories: ["Desenvolvimento", "Ansiedade e Depressão"],
-      experience: "10 anos",
-      rating: 4.7,
-      price: "R$ 110",
-      location: "Belo Horizonte, MG",
-      languages: ["Português"],
-      bio: "Psicólogo especializado no atendimento de adolescentes e jovens adultos. Experiência em questões de identidade e desenvolvimento.",
-      education: "Mestrado em Psicologia do Desenvolvimento - UFMG",
-      approach: "Terapia Humanística",
-      availability: "Seg-Sex: 14h às 22h",
-      image:
-        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 5,
-      name: "Dra. Lucia Costa",
-      specialty: "Burnout Profissional",
-      categories: ["Burnout e Estresse", "Ansiedade e Depressão"],
-      experience: "9 anos",
-      rating: 4.8,
-      price: "R$ 140",
-      location: "Porto Alegre, RS",
-      languages: ["Português", "Inglês"],
-      bio: "Especialista em burnout e estresse profissional. Ajudo executivos e profissionais a encontrarem equilíbrio entre vida pessoal e carreira.",
-      education: "Especialização em Psicologia Organizacional - PUCRS",
-      approach: "Terapia Cognitiva e Mindfulness",
-      availability: "Seg-Sex: 7h às 17h",
-      image:
-        "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 6,
-      name: "Dr. Rafael Lima",
-      specialty: "Vícios e Dependências",
-      categories: ["Vícios e Dependências", "Trauma e PTSD"],
-      experience: "11 anos",
-      rating: 4.9,
-      price: "R$ 160",
-      location: "Salvador, BA",
-      languages: ["Português", "Inglês"],
-      bio: "Terapeuta especializado em dependência química e comportamental. Abordagem compassiva e baseada em evidências para recuperação.",
-      education: "Mestrado em Psiquiatria - UFBA",
-      approach: "Terapia Motivacional",
-      availability: "Ter-Sáb: 8h às 18h",
-      image:
-        "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 7,
-      name: "Dra. Patricia Rocha",
-      specialty: "Maternidade e Família",
-      categories: ["Família e Maternidade", "Relacionamentos"],
-      experience: "7 anos",
-      rating: 4.8,
-      price: "R$ 130",
-      location: "Fortaleza, CE",
-      languages: ["Português"],
-      bio: "Psicóloga especializada em questões relacionadas à maternidade, pós-parto e dinâmicas familiares. Atendimento acolhedor e empático.",
-      education: "Especialização em Psicologia Perinatal - UFC",
-      approach: "Terapia Integrativa",
-      availability: "Seg-Sex: 9h às 18h",
-      image:
-        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 8,
-      name: "Dr. Fernando Alves",
-      specialty: "Transtornos Alimentares",
-      categories: ["Transtornos Alimentares", "Ansiedade e Depressão"],
-      experience: "13 anos",
-      rating: 4.9,
-      price: "R$ 170",
-      location: "Curitiba, PR",
-      languages: ["Português", "Italiano"],
-      bio: "Especialista em transtornos alimentares e imagem corporal. Trabalho integrado com nutricionistas para tratamento completo.",
-      education: "PhD em Psicologia da Saúde - UFPR",
-      approach: "Terapia Cognitivo-Comportamental",
-      availability: "Seg-Sex: 8h às 19h",
-      image:
-        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 9,
-      name: "Dra. Camila Ferreira",
-      specialty: "Autismo e Neurodivergência",
-      categories: ["Neurodivergência", "Desenvolvimento"],
-      experience: "6 anos",
-      rating: 4.7,
-      price: "R$ 125",
-      location: "Recife, PE",
-      languages: ["Português", "Libras"],
-      bio: "Psicóloga especializada em autismo e neurodivergência. Atendimento inclusivo e personalizado para todas as idades.",
-      education: "Mestrado em Neuropsicologia - UFPE",
-      approach: "ABA e Terapia Comportamental",
-      availability: "Seg-Sex: 13h às 21h",
-      image:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 10,
-      name: "Dr. Roberto Dias",
-      specialty: "Terceira Idade",
-      categories: ["Terceira Idade", "Luto e Perdas"],
-      experience: "16 anos",
-      rating: 5.0,
-      price: "R$ 135",
-      location: "Goiânia, GO",
-      languages: ["Português"],
-      bio: "Especialista em psicologia do envelhecimento e cuidados com idosos. Experiência em demências e adaptação a mudanças de vida.",
-      education: "Doutorado em Gerontologia - UFG",
-      approach: "Terapia Reminiscência",
-      availability: "Seg-Qui: 8h às 16h",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 11,
-      name: "Dra. Juliana Moreira",
-      specialty: "LGBTQIA+ e Identidade",
-      categories: ["LGBTQIA+ e Identidade", "Desenvolvimento"],
-      experience: "8 anos",
-      rating: 4.9,
-      price: "R$ 140",
-      location: "Florianópolis, SC",
-      languages: ["Português", "Inglês"],
-      bio: "Psicóloga especializada em questões de identidade de gênero e sexualidade. Atendimento afirmativo e respeitoso à diversidade.",
-      education: "Mestrado em Psicologia Social - UFSC",
-      approach: "Terapia Afirmativa",
-      availability: "Ter-Sáb: 10h às 20h",
-      image:
-        "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&h=400&fit=crop&crop=face",
-    },
-    {
-      id: 12,
-      name: "Dr. Marcos Barbosa",
-      specialty: "Luto e Perdas",
-      categories: ["Luto e Perdas", "Trauma e PTSD"],
-      experience: "14 anos",
-      rating: 4.8,
-      price: "R$ 155",
-      location: "Manaus, AM",
-      languages: ["Português", "Espanhol"],
-      bio: "Terapeuta especializado em processos de luto e perdas significativas. Acompanhamento compassivo em momentos difíceis da vida.",
-      education: "PhD em Tanatologia - UFAM",
-      approach: "Terapia do Luto",
-      availability: "Seg-Sex: 9h às 19h",
-      image:
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face",
-    },
-  ];
+  useEffect(() => {
+    getPsicanalistas().then((data) => {
+      console.log("[PsychologistsSection] Dados recebidos:", data);
+      setPsychologists(data);
+    });
+  }, []);
 
   // Filtro por nome ou disponibilidade
   const filteredPsychologists = psychologists.filter(
@@ -262,7 +64,7 @@ export default function PsychologistsSection() {
   );
 
   return (
-    <section className="py-20 bg-[#9EB7AA] text-primary">
+    <section className="py-20 bg-[#c5e2ff] text-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12"
@@ -281,7 +83,7 @@ export default function PsychologistsSection() {
             Conheça nossos Psicanalistas e veja horários disponíveis
           </motion.h2>
           <motion.p
-            className="text-lg text-white font-medium mb-8"
+            className="text-lg text-cyan-500 font-medium mb-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}

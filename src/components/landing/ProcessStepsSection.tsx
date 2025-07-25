@@ -329,7 +329,7 @@ const ProcessStepsSection = () => {
                         Crie uma conta para{" "}
                       </tspan>
                       <tspan x="115.986" y="137.682">
-                        concluir o agendamento
+                        concluir o appointment
                       </tspan>
                     </motion.text>
                     <motion.text
@@ -508,7 +508,7 @@ const ProcessStepsSection = () => {
                         Crie uma conta para{" "}
                       </tspan>
                       <tspan x="529.216" y="32.4545">
-                        concluir o agendamento
+                        concluir o appointment
                       </tspan>
                     </motion.text>
                     <motion.text

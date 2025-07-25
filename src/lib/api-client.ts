@@ -36,10 +36,10 @@ const API_CONFIG = {
   timeout: 5000,
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
-    "bac29d84-612d-4c2d-a576-fdc0e50f8e2d",
+    "a9a86733-b2a5-4f0e-b230-caed27ce74df",
 };
 
-// Cache simples para requisições
+// Cache simples para requisições (mantido para compatibilidade)
 const cache = new Map<string, { data: unknown; timestamp: number }>();
 const CACHE_DURATION = 30000; // 30 segundos
 
@@ -68,45 +68,20 @@ export function setCurrentTenant(clientId: string, token?: string) {
   }
 }
 
-// Função para obter o tenant atual
-export function getCurrentTenant(): TenantConfig | null {
-  if (currentTenant) {
-    return currentTenant;
-  }
-
-  // Tentar recuperar do localStorage
-  if (typeof window !== "undefined") {
-    const clientId = localStorage.getItem("current_client_id");
-    const token = localStorage.getItem("auth_token");
-
-    if (clientId) {
-      currentTenant = { clientId, token: token || undefined };
-      return currentTenant;
-    }
-  }
-
-  return null;
-}
-
-// Função para obter headers padrão (client-side)
+// Função para obter headers padrão (sempre usa o clientId fixo)
 function getDefaultHeaders(config?: {
   clientId?: string;
   token?: string;
 }): Record<string, string> {
-  const tenant = getCurrentTenant();
-  const clientId =
-    config?.clientId || tenant?.clientId || API_CONFIG.defaultClientId;
-  const token = config?.token || tenant?.token;
-
+  const clientId = API_CONFIG.defaultClientId;
+  const token = config?.token;
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     "x-client-id": clientId,
   };
-
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-
   return headers;
 }
 
@@ -143,10 +118,21 @@ api.interceptors.response.use(
       if (!isRedirecting && typeof window !== "undefined") {
         isRedirecting = true;
 
-        // Só redirecionar se não estamos já na página de login
-        if (!window.location.pathname.includes("/login")) {
-          console.log("🔄 Redirecionando para login devido a 401");
-          window.location.href = "/login";
+        // Só redirecionar se não estamos já na página de login E não estamos em rota pública
+        const publicPrefixes = [
+          "/",
+          "/auth/signin",
+          "/auth/signup",
+          "/psicanalistas",
+        ];
+        const isPublic = publicPrefixes.some(
+          (prefix) =>
+            window.location.pathname === prefix ||
+            window.location.pathname.startsWith(prefix + "/")
+        );
+        if (!window.location.pathname.includes("/auth/signin") && !isPublic) {
+          console.log("🔄 Redirecionando para auth/signin devido a 401");
+          window.location.href = "/auth/signin";
         }
 
         // Reset flag após um tempo
@@ -216,9 +202,13 @@ export async function post<T>(
   data?: unknown,
   config?: { clientId?: string; token?: string }
 ): Promise<ApiResponse<T>> {
+  console.log("[api-client] POST url:", url);
+  console.log("[api-client] POST data:", data);
+  const AAAA = getDefaultHeaders(config);
   const result = (await api.post<T>(url, data, {
-    headers: getDefaultHeaders(config),
+    headers: AAAA,
   })) as T;
+  console.log("[api-client] POST resposta:", result);
 
   return {
     success: true,

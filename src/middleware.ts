@@ -15,7 +15,9 @@ export function middleware(req: NextRequest) {
 
   // Páginas públicas que não precisam de autenticação
   const publicPaths = ["/", "/auth/signin", "/auth/signup"];
-  const isPublicPath = publicPaths.includes(nextUrl.pathname);
+  const isPublicPath =
+    publicPaths.includes(nextUrl.pathname) ||
+    nextUrl.pathname.startsWith("/psicanalistas");
 
   // Se está tentando acessar uma página protegida (dashboard)
   if (nextUrl.pathname.startsWith("/dashboard")) {

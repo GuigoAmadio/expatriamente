@@ -77,3 +77,9 @@ export function devAuthMiddleware() {
     authEnabled: authConfig.isAuthEnabled,
   };
 }
+
+export const DASHBOARD_ROUTE_BY_ROLE: Record<string, string> = {
+  ADMIN: "/dashboard/admin",
+  EMPLOYEE: "/dashboard/employee",
+  CLIENT: "/dashboard/client",
+};

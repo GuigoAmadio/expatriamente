@@ -60,10 +60,10 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="bg-[#d6cfae] w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
+    <section className="bg-[#c5e2ff] w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
       <div className="max-w-4xl w-full mx-auto">
         <motion.h2
-          className="font-akzidens text-3xl md:text-4xl font-bold mb-8 text-[#01386F] text-center"
+          className="font-akzidens text-3xl md:text-4xl font-bold mb-8 text-cyan-500 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -72,7 +72,7 @@ export default function FAQSection() {
           Dúvidas Frequentes
         </motion.h2>
         <motion.p
-          className="text-lg text-[#5a5427] font-medium mb-10 text-center"
+          className="text-lg text-white font-medium mb-10 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}

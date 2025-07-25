@@ -9,13 +9,14 @@ import PsychologistsSection from "@/components/landing/PsychologistsSection";
 import StoriesSection from "@/components/landing/StoriesSection";
 import WorkersSection from "@/components/landing/WorkersSection";
 import TopicsSection from "@/components/landing/TopicsSection";
+import VideoCarouselSection from "@/components/landing/VideoCarouselSection";
 
 export default function Home() {
   return (
-    <main className="bg-background min-h-screen transition-colors duration-300">
+    <main className="bg-[#deefff] min-h-screen transition-colors duration-300">
       <HeroSection />
       <StoriesSection />
-      <TopicsSection />
+      <VideoCarouselSection />
       <PsychologistsSection />
       <FAQSection />
       <FooterSection />

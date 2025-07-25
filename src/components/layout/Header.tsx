@@ -2,12 +2,13 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { BackendUser } from "@/types/backend";
+import React from "react";
 
 interface HeaderProps {
   user: BackendUser | null;
 }
 
-export function Header({ user }: HeaderProps) {
+export const Header = React.memo(function Header({ user }: HeaderProps) {
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
@@ -39,4 +40,4 @@ export function Header({ user }: HeaderProps) {
       </div>
     </header>
   );
-}
+});

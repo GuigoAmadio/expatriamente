@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-interface Agendamento {
+interface Appointment {
   data: string; // yyyy-mm-dd
   horarios: string[];
 }
@@ -32,15 +32,15 @@ function getDiaSemana(dateStr: string) {
 }
 
 export default function Calendar({
-  agendamentos,
+  appointments,
   onSelect,
 }: {
-  agendamentos: Agendamento[];
+  appointments: Appointment[];
   onSelect?: (dia: number, hora: string) => void;
 }) {
   const agendados = useMemo(() => {
     const map: Record<number, Record<string, boolean>> = {};
-    agendamentos.forEach((a) => {
+    appointments.forEach((a) => {
       const dia = getDiaSemana(a.data);
       if (!map[dia]) map[dia] = {};
       a.horarios.forEach((h) => {
@@ -48,7 +48,7 @@ export default function Calendar({
       });
     });
     return map;
-  }, [agendamentos]);
+  }, [appointments]);
 
   const [selecionado, setSelecionado] = useState<{
     dia: number;

@@ -8,39 +8,28 @@ const API_CONFIG = {
     "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
-    "bac29d84-612d-4c2d-a576-fdc0e50f8e2d",
+    "a9a86733-b2a5-4f0e-b230-caed27ce74df",
 };
 
 // Função para obter headers que funciona tanto no servidor quanto no cliente
 async function getHeaders(): Promise<Record<string, string>> {
   try {
-    // Verifica se estamos no servidor
+    // Sempre usa o client_id do environment
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      "x-client-id": API_CONFIG.defaultClientId,
+    };
+
+    // Token de autenticação (opcional)
+    let token: string | undefined;
     if (typeof window === "undefined") {
       // No servidor, tenta usar next/headers se disponível
       try {
         const { cookies } = await import("next/headers");
         const cookieStore = await cookies();
-
-        const token = cookieStore.get("auth_token")?.value;
-        const clientId =
-          cookieStore.get("client_id")?.value || API_CONFIG.defaultClientId;
-
-        const headers: Record<string, string> = {
-          "Content-Type": "application/json",
-          "x-client-id": clientId,
-        };
-
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        return headers;
+        token = cookieStore.get("auth_token")?.value;
       } catch (error) {
-        // Se next/headers não estiver disponível, usa headers padrão
-        return {
-          "Content-Type": "application/json",
-          "x-client-id": API_CONFIG.defaultClientId,
-        };
+        // Ignora erro, segue sem token
       }
     } else {
       // No cliente, usa document.cookie
@@ -49,21 +38,14 @@ async function getHeaders(): Promise<Record<string, string>> {
         acc[key] = value;
         return acc;
       }, {} as Record<string, string>);
-
-      const token = cookies.auth_token;
-      const clientId = cookies.client_id || API_CONFIG.defaultClientId;
-
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-        "x-client-id": clientId,
-      };
-
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-
-      return headers;
+      token = cookies.auth_token;
     }
+    console.log("TOKEEEENN A A AAA", token);
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
       console.error("❌ Erro ao obter headers:", error);

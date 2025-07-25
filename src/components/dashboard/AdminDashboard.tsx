@@ -1,38 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getDashboardStats } from "@/actions/dashboard";
-import { DashboardStats, DashboardStatsResponse } from "@/types/backend";
+import { DashboardStats } from "@/types/backend";
 
-export function AdminDashboard() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loading, setLoading] = useState(true);
+interface AdminDashboardProps {
+  stats: DashboardStats;
+}
 
-  useEffect(() => {
-    const loadStats = async () => {
-      try {
-        const response = await getDashboardStats();
-        if (response.success && response.data) {
-          setStats(response.data);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar estatísticas:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadStats();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
-
+export function AdminDashboard({ stats }: AdminDashboardProps) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -103,8 +77,8 @@ export function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Agendamentos de Hoje
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Appointments Hoje
           </h3>
           <div className="space-y-3">
             {stats?.todayAppointments?.map((appointment) => (
@@ -134,8 +108,8 @@ export function AdminDashboard() {
                 </div>
               </div>
             )) || (
-              <p className="text-gray-500 text-center py-4">
-                Nenhum agendamento para hoje
+              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                Nenhum appointment para hoje
               </p>
             )}
           </div>

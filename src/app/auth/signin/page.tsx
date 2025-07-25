@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
 import { loginAction } from "@/actions/auth";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
@@ -19,14 +21,12 @@ export default function SignInPage() {
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
 
-      const result = await loginAction({ email, password });
+      const result = await login(email, password);
 
       if (!result.success) {
-        setError(result.message || "Erro ao fazer login");
-      } else {
-        router.push("/dashboard");
-        router.refresh();
+        setError(result.error || "Erro ao fazer login");
       }
+      // O redirecionamento já é feito dentro do contexto!
     } catch (error) {
       setError("Erro interno do servidor");
     } finally {

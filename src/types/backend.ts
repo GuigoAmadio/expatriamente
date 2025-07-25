@@ -150,3 +150,14 @@ export type DashboardStatsResponse = ActionResponse<DashboardStats>;
 export type AppointmentsResponse = ActionResponse<Appointment[]>;
 export type EmployeesResponse = ActionResponse<Employee[]>;
 export type ServicesResponse = ActionResponse<Service[]>;
+
+export interface BackendClient {
+  id: string;
+  name: string;
+  email: string;
+  slug: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  // Adicione outros campos conforme necessário
+}

@@ -27,19 +27,11 @@ export default function HeroSection() {
   return (
     <>
       <Header />
-      <section className="relative h-screen flex items-center transition-colors duration-300 bg-[#b7c8b1] overflow-hidden">
+      <section className="relative h-screen flex items-center transition-colors duration-300 overflow-hidden">
         {/* Fundo contínuo */}
-        <div className="absolute inset-0 w-full h-full bg-[#9EB7AA] z-0" />
-        {/* Gradiente para próxima seção */}
-        <div
-          className="absolute left-0 bottom-0 w-full h-32 z-10 pointer-events-none"
-          style={{
-            background: "linear-gradient(to bottom, #9EB7AA 0%, #d6cfae 100%)",
-          }}
-        />
         {/* Imagem da mulher sem fundo */}
         <motion.div
-          className="flex-1 flex items-center justify-start relative z-20 h-full"
+          className="flex-1 flex items-center justify-center relative z-20 h-full"
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
@@ -47,9 +39,9 @@ export default function HeroSection() {
           <Image
             src="/heroMulher.png"
             alt="Hero Mulher"
-            width={900}
-            height={1200}
-            className="object-contain object-left-bottom w-full h-full pointer-events-none select-none"
+            width={400}
+            height={600}
+            className="object-contain max-w-[400px] max-h-[600px] pointer-events-none select-none"
             priority
           />
         </motion.div>
@@ -62,22 +54,21 @@ export default function HeroSection() {
         >
           <div className="max-w-xl text-left flex flex-col justify-start pt-20 h-full">
             <motion.h1
-              className="font-akzidens text-5xl leading-tight mb-8 font-medium tracking-tight"
+              className="font-akzidens text-5xl leading-tight mb-8 font-semibold tracking-tight"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
             >
-              <span className="text-white">CUIDADO </span>
+              <span className="text-cyan-500">CUIDADO </span>
               <span className="text-[#01386F]">EMOCIONAL</span>
               <br />
-              <span className="text-white">PARA </span>
-              <span className="text-[#01386F]">BRASILEIROS</span>
+              <span className="text-cyan-500">PARA </span>
+              <span className="text-cyan-500">BRASILEIROS</span>
               <br />
-              <span className="text-white">NO EXTERIOR</span>
+              <span className="text-[#01386F]">NO EXTERIOR</span>
             </motion.h1>
             <motion.p
-              className="text-white text-lg md:text-2xl font-normal mb-12"
-              style={{ textShadow: "2px 2px 8px #0008" }}
+              className="text-blue-900 text-lg md:text-2xl font-normal mb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.9 }}

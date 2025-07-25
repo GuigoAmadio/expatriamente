@@ -1,42 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useAuth } from "@/context/AuthContext";
-import { getAppointments } from "@/actions/dashboard";
 import { Appointment } from "@/types/backend";
 
-export function EmployeeDashboard() {
-  const { user } = useAuth();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [loading, setLoading] = useState(true);
+interface EmployeeDashboardProps {
+  appointments: Appointment[];
+}
 
-  useEffect(() => {
-    const loadAppointments = async () => {
-      try {
-        const response = await getAppointments({ employeeId: user?.id });
-        if (response.success) {
-          setAppointments(response.data || []);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar agendamentos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (user?.id) {
-      loadAppointments();
-    }
-  }, [user?.id]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
-
+export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
   const todayAppointments = appointments.filter((apt) => {
     const today = new Date();
     const aptDate = new Date(apt.startTime);
@@ -105,8 +75,8 @@ export function EmployeeDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Agendamentos de Hoje
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Appointments Hoje
           </h3>
           <div className="space-y-3">
             {todayAppointments.length > 0 ? (
@@ -140,16 +110,16 @@ export function EmployeeDashboard() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-4">
-                Nenhum agendamento para hoje
+              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                Nenhum appointment para hoje
               </p>
             )}
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Próximos Agendamentos
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Próximos Appointments
           </h3>
           <div className="space-y-3">
             {upcomingAppointments.length > 0 ? (
@@ -188,8 +158,8 @@ export function EmployeeDashboard() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-4">
-                Nenhum agendamento futuro
+              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
+                Nenhum appointment futuro
               </p>
             )}
           </div>
