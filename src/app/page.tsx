@@ -10,6 +10,7 @@ import StoriesSection from "@/components/landing/StoriesSection";
 import WorkersSection from "@/components/landing/WorkersSection";
 import TopicsSection from "@/components/landing/TopicsSection";
 import VideoCarouselSection from "@/components/landing/VideoCarouselSection";
+import CTASection from "@/components/landing/CTASection";
 import Header from "@/components/ui/Header";
 
 export default function Home() {
@@ -18,13 +19,15 @@ export default function Home() {
       className="w-full overflow-x-hidden overflow-y-hidden"
       style={{ transform: "translateZ(0)" }}
     >
-      <Header />
-      <main className="bg-[#deefff] transition-colors duration-300 w-full">
+      <main className="w-full">
         <HeroSection />
         <StoriesSection />
         <VideoCarouselSection />
-        <PsychologistsSection />
-        <FAQSection />
+        <div className="bg-gradient-to-br from-[#A6C0B3] to-[#85A899]">
+          <PsychologistsSection />
+          <FAQSection />
+        </div>
+        <CTASection />
         <FooterSection />
       </main>
     </div>

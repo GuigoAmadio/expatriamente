@@ -60,10 +60,10 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="bg-[#deefff] w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
+    <section className="w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
       <div className="max-w-4xl w-full mx-auto">
         <motion.h2
-          className="font-akzidens text-3xl md:text-4xl font-bold mb-8 text-cyan-500 text-center"
+          className="font-akzidens text-3xl md:text-4xl font-bold mb-2 text-blue-900 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -72,7 +72,7 @@ export default function FAQSection() {
           Dúvidas Frequentes
         </motion.h2>
         <motion.p
-          className="text-lg text-blue-900 font-medium mb-10 text-center"
+          className="text-lg text-blue-900 font-medium mb-20 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -107,7 +107,7 @@ export default function FAQSection() {
                       open ? "border-[#01386F]" : "border-transparent"
                     }`}
                   >
-                    <Disclosure.Button className="flex w-full justify-between items-center px-6 py-5 text-left font-akzidens text-lg text-[#01386F] font-bold focus:outline-none">
+                    <Disclosure.Button className="flex w-full justify-between items-center px-6 py-5 text-left font-akzidens text-base text-[#01386F] font-bold focus:outline-none">
                       <span>{faq.question}</span>
                       <ChevronDownIcon
                         className={`h-5 w-5 ml-4 transition-transform duration-300 ${

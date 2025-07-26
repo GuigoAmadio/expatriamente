@@ -125,7 +125,6 @@ body {
 @font-face {
   font-family: "Akzidens-Grotesk-BQ-Extended";
   src: local("Akzidens-Grotesk BQ Extended"),
-    url("/fonts/Akzidens-Grotesk-BQ-Extended.woff2") format("woff2"),
     url("/fonts/Akzidens-Grotesk-BQ-Extended.woff") format("woff");
   font-weight: 400;
   font-style: normal;
