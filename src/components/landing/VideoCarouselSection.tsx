@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaPlay, FaPause, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
@@ -67,6 +67,16 @@ export default function VideoCarouselSection() {
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
+  // Configurar vídeos ao carregar
+  useEffect(() => {
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        video.muted = true;
+        video.preload = "metadata";
+      }
+    });
+  }, []);
+
   const handleVideoClick = (index: number) => {
     const video = videoRefs.current[index];
     if (video) {
@@ -78,6 +88,10 @@ export default function VideoCarouselSection() {
             otherVideo.currentTime = 0;
           }
         });
+
+        // Configurar o vídeo para reprodução
+        video.muted = true; // Necessário para autoplay em desktop
+        video.currentTime = 0; // Voltar ao início
 
         // Iniciar o vídeo atual
         video
@@ -186,7 +200,7 @@ export default function VideoCarouselSection() {
                     }}
                     className="w-full h-full object-cover"
                     preload="metadata"
-                    muted={false}
+                    muted={true}
                     controls={false}
                   >
                     <source src={video.src} type="video/mp4" />
@@ -290,7 +304,7 @@ export default function VideoCarouselSection() {
                     }}
                     className="w-full h-full object-cover"
                     preload="metadata"
-                    muted={false}
+                    muted={true}
                     controls={false}
                   >
                     <source src={video.src} type="video/mp4" />
@@ -359,7 +373,7 @@ export default function VideoCarouselSection() {
                 }}
                 className="w-full h-full object-cover"
                 preload="metadata"
-                muted={false}
+                muted={true}
                 controls={false}
               >
                 <source src={videos[currentSlide].src} type="video/mp4" />

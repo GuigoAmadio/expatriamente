@@ -59,8 +59,18 @@ export default function Header({
         setCurrentSection("expatriados");
       }
     } else {
-      // Se estamos em outra página, usar router.push() para navegação real
-      router.push(path);
+      // Se estamos em outra página (como página dinâmica), redirecionar para home com componente específico
+      if (path === "/sobre") {
+        router.push("/?section=about");
+      } else if (path === "/servicos") {
+        router.push("/?section=services");
+      } else if (path === "/intercambio") {
+        router.push("/?section=intercambio");
+      } else if (path === "/expatriados") {
+        router.push("/?section=expatriados");
+      } else {
+        router.push(path);
+      }
     }
 
     setIsMobileMenuOpen(false); // Fecha o menu mobile após navegação
