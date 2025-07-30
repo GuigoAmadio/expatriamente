@@ -15,10 +15,10 @@ import VideoCarouselSection from "@/components/landing/VideoCarouselSection";
 import CTASection from "@/components/landing/CTASection";
 import Header from "@/components/ui/Header";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useNavigation } from "@/context/NavigationContext";
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const { setCurrentSection } = useNavigation();
 
@@ -48,5 +48,32 @@ export default function Home() {
         <FooterSection />
       </main>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="w-full overflow-x-hidden overflow-y-hidden"
+          style={{ transform: "translateZ(0)" }}
+        >
+          <main className="w-full">
+            <HeroSection />
+            <StoriesSection />
+            <VideoCarouselSection />
+            <div className="bg-gradient-to-br from-[#A6C0B3] to-[#85A899]">
+              <PsychologistsSection />
+              <FAQSection />
+            </div>
+            <CTASection />
+            <FooterSection />
+          </main>
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }
