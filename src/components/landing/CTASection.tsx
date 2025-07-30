@@ -58,7 +58,7 @@ export default function CTASection() {
           >
             Transforme sua experiência no exterior
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600">
-              com apoio psicológico especializado
+              com apoio psicanalítico especializado
             </span>
           </motion.h2>
 
