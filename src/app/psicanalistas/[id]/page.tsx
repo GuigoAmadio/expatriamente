@@ -1,37 +1,8 @@
-import { getAgendamentosByPsicanalista } from "@/actions/users";
-import { getServicesByEmployee } from "@/actions/users";
-import { getEmployeeById } from "@/actions/users";
+import { getAgendamentosByPsicanalista } from "@/actions/psicanalistas";
+import { getPsicanalistaById } from "@/actions/psicanalistas";
 import PsicAppointmentClient from "@/components/landing/PsicAppointmentClient";
-import type {
-  Service,
-  Employee,
-  Appointment as BackendAppointment,
-} from "@/types/backend";
-
-function isService(obj: any): obj is Service {
-  return (
-    obj &&
-    typeof obj === "object" &&
-    "id" in obj &&
-    "name" in obj &&
-    "price" in obj
-  );
-}
-function isEmployee(obj: any): obj is Employee {
-  return (
-    obj &&
-    typeof obj === "object" &&
-    "id" in obj &&
-    "name" in obj &&
-    "email" in obj
-  );
-}
-function isAppointments(arr: any): arr is BackendAppointment[] {
-  return (
-    Array.isArray(arr) &&
-    (arr.length === 0 || (arr[0] && "id" in arr[0] && "startTime" in arr[0]))
-  );
-}
+import psicanalistasMockup from "@/psicanalistas.json";
+import { Header } from "@/components/ui";
 
 // Tipo esperado pelo componente PsicAppointmentClient
 interface AppointmentClientFormat {
@@ -44,9 +15,38 @@ export default async function PsicanalistaPage(props: {
 }) {
   const { id } = await props.params;
 
-  // Buscar dados do psicanalista
-  const employee = await getEmployeeById(id);
-  if (!isEmployee(employee)) {
+  // Buscar dados do psicanalista (tenta servidor primeiro, depois mockup)
+  let employee = await getPsicanalistaById(id);
+
+  // Se não encontrou no servidor, buscar no mockup
+  if (!employee) {
+    const mockupData = psicanalistasMockup.find(
+      (p) => p.nome.replace(/\s+/g, "-").toLowerCase() === id
+    );
+
+    if (mockupData) {
+      employee = {
+        id: mockupData.nome.replace(/\s+/g, "-").toLowerCase(),
+        name: mockupData.nome,
+        specialty: "Psicanalista Clínico",
+        categories: [],
+        experience: mockupData.observacoes || "",
+        rating: 5,
+        price: "",
+        location: "",
+        languages: ["Português"],
+        bio: mockupData.observacoes || "",
+        education: "",
+        approach: "",
+        availability: mockupData.horarios
+          ? mockupData.horarios.join(", ")
+          : "Horários não disponíveis",
+        image: mockupData.foto || "/user-placeholder.svg",
+      };
+    }
+  }
+
+  if (!employee) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-xl text-gray-600">Psicanalista não encontrado</p>
@@ -54,79 +54,98 @@ export default async function PsicanalistaPage(props: {
     );
   }
 
-  // Buscar serviços do psicanalista
-  const services = await getServicesByEmployee(id);
-  const servicesArray = Array.isArray(services)
-    ? services.filter(isService)
-    : [];
-  if (!servicesArray.length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-600">
-          Nenhum serviço disponível para este psicanalista
-        </p>
-      </div>
-    );
-  }
-
-  // Usar o primeiro serviço como padrão
-  const defaultService = servicesArray[0];
-  if (!isService(defaultService)) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-600">
-          Serviço inválido para este psicanalista
-        </p>
-      </div>
-    );
-  }
-
-  // Buscar appointments do psicanalista
+  // Buscar appointments do psicanalista (com fallback para mockup)
   const appointmentsRaw = await getAgendamentosByPsicanalista(id);
-  const appointmentsArray: AppointmentClientFormat[] = isAppointments(
+  const appointmentsArray: AppointmentClientFormat[] = Array.isArray(
     appointmentsRaw
   )
-    ? appointmentsRaw.map((apt) => ({
-        data: apt.startTime
-          ? new Date(apt.startTime).toISOString().split("T")[0]
-          : "",
-        horarios: [
-          apt.startTime
-            ? new Date(apt.startTime).toISOString().split("T")[1]?.slice(0, 5)
-            : "",
-        ],
-      }))
+    ? appointmentsRaw
     : [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">
-            Agende sua sessão
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            com {employee.name}
-          </p>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-              {defaultService.name}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              {defaultService.description}
-            </p>
-            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              R$ {defaultService.price.toFixed(2)}
-            </p>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+
+      {/* Faixa horizontal com informações do psicanalista */}
+      <div className="w-full bg-white shadow-sm border-b border-gray-200 mt-24">
+        <div className="w-full px-4 py-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-8 px-10">
+            {/* Foto do psicanalista */}
+            <div className="flex-shrink-0">
+              <img
+                src={employee.image}
+                alt={employee.name}
+                className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 shadow-lg"
+              />
+            </div>
+
+            {/* Informações pessoais */}
+            <div className="flex-1 flex flex-col md:flex-row gap-6 md:gap-12">
+              {/* Coluna 1: Informações básicas */}
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  {employee.name}
+                </h1>
+                <p className="text-xl text-blue-600 font-semibold mb-3">
+                  {employee.specialty}
+                </p>
+                <div className="space-y-2 text-gray-600">
+                  <p>
+                    <span className="font-medium">Idiomas:</span>{" "}
+                    {employee.languages.join(", ")}
+                  </p>
+                  <p>
+                    <span className="font-medium">Localização:</span>{" "}
+                    {employee.location || "Online"}
+                  </p>
+                  <p>
+                    <span className="font-medium">Avaliação:</span> ⭐⭐⭐⭐⭐ (
+                    {employee.rating}/5)
+                  </p>
+                </div>
+              </div>
+
+              {/* Coluna 2: Experiência e formação */}
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  Experiência e Formação
+                </h3>
+                <div className="text-gray-600 space-y-2">
+                  <p className="text-sm leading-relaxed">{employee.bio}</p>
+                  {employee.education && (
+                    <p className="text-sm">
+                      <span className="font-medium">Formação:</span>{" "}
+                      {employee.education}
+                    </p>
+                  )}
+                  {employee.approach && (
+                    <p className="text-sm">
+                      <span className="font-medium">Abordagem:</span>{" "}
+                      {employee.approach}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="flex justify-center">
-          <PsicAppointmentClient
-            appointments={appointmentsArray}
-            employeeId={id}
-            serviceId={defaultService.id}
-          />
+      {/* Seção de agendamento */}
+      <div className="px-4 py-8">
+        <div className="w-5/6 mx-auto">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+            Agende sua sessão
+          </h2>
+
+          {/* Calendário */}
+          <div className="mb-8">
+            <PsicAppointmentClient
+              appointments={appointmentsArray}
+              employeeId={id}
+              serviceId="consulta-padrao"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -56,17 +56,17 @@ export default function Calendar({
   } | null>(null);
 
   return (
-    <div className="overflow-x-auto w-full bg-white rounded-2xl shadow-2xl p-4 md:p-8">
+    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-200">
       <table className="w-full border-separate border-spacing-y-2 border-spacing-x-0">
         <thead>
           <tr>
-            <th className="bg-transparent text-[#01386F] font-medium text-sm font-akzidens">
+            <th className="bg-transparent text-gray-800 font-medium text-sm font-akzidens">
               Hora
             </th>
             {DIAS.map((dia, i) => (
               <th
                 key={dia}
-                className="bg-transparent text-[#01386F] font-medium  text-sm font-akzidens"
+                className="bg-transparent text-gray-800 font-medium text-sm font-akzidens"
               >
                 {dia}
               </th>
@@ -76,7 +76,7 @@ export default function Calendar({
         <tbody>
           {HORAS.map((hora) => (
             <tr key={hora}>
-              <td className="bg-transparent text-[#01386F] font-semibold px-2 py-2 text-left text-base font-akzidens">
+              <td className="bg-transparent text-gray-800 font-semibold px-2 py-2 text-left text-base font-akzidens">
                 {hora}
               </td>
               {DIAS.map((_, diaIdx) => {
@@ -91,15 +91,15 @@ export default function Calendar({
                     className={`px-0 py-0 text-center transition-all duration-200 cursor-pointer align-middle`}
                   >
                     <div
-                      className={`rounded-xl flex items-center justify-center h-10 w-40 text-xs md:text-sm font-akzidens select-none
+                      className={`rounded-lg flex items-center justify-center h-8 w-32 text-xs md:text-sm font-akzidens select-none border
                         ${
                           isMarcado
-                            ? "bg-[#b7c8b1] text-[#01386F] font-semibold opacity-70"
+                            ? "bg-gray-200 text-gray-500 font-semibold opacity-70 border-gray-200"
                             : isSelecionado
-                            ? "bg-[#13b955]/90 text-white font-bold"
-                            : "bg-[#f6f8f7] text-[#01386F] group hover:bg-[#e6f4fa] hover:opacity-90"
+                            ? "bg-blue-500 text-white font-bold border-blue-500"
+                            : "bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
                         }
-                        group relative`}
+                      `}
                       onClick={() => {
                         if (!isMarcado) {
                           setSelecionado({ dia: diaIdx, hora });
@@ -107,15 +107,11 @@ export default function Calendar({
                         }
                       }}
                     >
-                      {isMarcado ? (
-                        <span className="opacity-60">Indisponível</span>
-                      ) : isSelecionado ? (
-                        <span className="opacity-100 font-bold">Marcado</span>
-                      ) : (
-                        <span className="opacity-40 hidden group-hover:inline">
-                          Marcar
-                        </span>
-                      )}
+                      {isMarcado
+                        ? "Ocupado"
+                        : isSelecionado
+                        ? "Selecionado"
+                        : "Disponível"}
                     </div>
                   </td>
                 );

@@ -23,6 +23,8 @@ interface Psychologist {
   approach: string;
   availability: string;
   image: string;
+  shortBio?: string; // Bio resumida para o card normal
+  fullBio?: string; // Bio completa para o hover
 }
 
 const specialtyCategories = [
@@ -41,6 +43,43 @@ const specialtyCategories = [
   { key: "Luto e Perdas", label: "categories.grief" },
 ];
 
+// Função para dividir as observações em bio resumida e completa
+function splitBio(observacoes: string): { shortBio: string; fullBio: string } {
+  if (!observacoes) {
+    return {
+      shortBio: "Psicanalista Clínico",
+      fullBio: "Psicanalista Clínico",
+    };
+  }
+
+  // Se as observações são curtas, usar como bio resumida
+  if (observacoes.length <= 100) {
+    return { shortBio: observacoes, fullBio: observacoes };
+  }
+
+  // Dividir em frases
+  const sentences = observacoes
+    .split(/[.!?]/)
+    .filter((s) => s.trim().length > 0);
+
+  if (sentences.length <= 2) {
+    // Se tem poucas frases, dividir pela metade
+    const midPoint = Math.floor(observacoes.length / 2);
+    return {
+      shortBio: observacoes.substring(0, midPoint).trim(),
+      fullBio: observacoes,
+    };
+  }
+
+  // Pegar a primeira frase como bio resumida
+  const shortBio = sentences[0].trim();
+  return {
+    shortBio:
+      shortBio.length > 80 ? shortBio.substring(0, 80) + "..." : shortBio,
+    fullBio: observacoes,
+  };
+}
+
 export default function PsychologistsSection() {
   const { t } = useLanguage();
   const { darkMode } = useTheme();
@@ -52,7 +91,16 @@ export default function PsychologistsSection() {
   useEffect(() => {
     getPsicanalistas().then((data) => {
       console.log("[PsychologistsSection] Dados recebidos:", data);
-      setPsychologists(data);
+      // Processar os dados para dividir as observações
+      const processedData = data.map((psychologist: Psychologist) => {
+        const { shortBio, fullBio } = splitBio(psychologist.bio);
+        return {
+          ...psychologist,
+          shortBio,
+          fullBio,
+        };
+      });
+      setPsychologists(processedData);
     });
   }, []);
 
@@ -114,11 +162,9 @@ export default function PsychologistsSection() {
           {filteredPsychologists.map((p, idx) => (
             <motion.div
               key={p.id}
-              className="bg-white rounded-2xl shadow p-6 flex flex-col items-center text-center relative cursor-pointer group"
-              onMouseEnter={() => setHovered(p.id)}
-              onMouseLeave={() => setHovered(null)}
+              className="bg-white relative rounded-2xl shadow p-6 flex flex-col items-center text-center cursor-pointer group"
               onClick={() => router.push(`/psicanalistas/${p.id}`)}
-              style={{ minHeight: 260 }}
+              style={{ minHeight: 400 }}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.1 }}
@@ -128,17 +174,32 @@ export default function PsychologistsSection() {
               <img
                 src={p.image}
                 alt={p.name}
-                className="w-20 h-20 rounded-full object-cover mb-4 border-2 border-[#01386F]"
+                className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-[#01386F] shadow-md"
+                style={{
+                  width: "96px",
+                  height: "96px",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                }}
               />
               <div className="font-akzidens text-xl text-[#01386F] font-bold mb-1">
                 {p.name}
               </div>
               <div className="text-base text-[#5a5427] mb-2">{p.specialty}</div>
-              <div className="text-sm text-[#6B3F1D] mb-4">
-                {p.availability}
+              <div
+                className="text-sm text-[#6B3F1D] mb-4 overflow-hidden"
+                style={{
+                  maxHeight: "80px",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: "vertical",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {p.shortBio || p.availability}
               </div>
               <button
-                className="px-6 py-2 rounded-lg bg-[#01386F] text-white font-akzidens font-bold shadow hover:bg-[#012a52] transition-all"
+                className="absolute bottom-10 px-6 py-2 rounded-lg bg-[#01386F] text-white font-akzidens font-bold shadow hover:bg-[#012a52] transition-all"
                 onClick={(e) => {
                   e.stopPropagation();
                   router.push(`/psicanalistas/${p.id}`);
@@ -162,7 +223,13 @@ export default function PsychologistsSection() {
                     <img
                       src={p.image}
                       alt={p.name}
-                      className="w-20 h-20 rounded-full object-cover mb-2 border-2 border-[#01386F]"
+                      className="w-24 h-24 rounded-full object-cover mb-2 border-2 border-[#01386F] shadow-md"
+                      style={{
+                        width: "96px",
+                        height: "96px",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
                     />
                     <div className="font-akzidens text-lg text-[#01386F] font-bold mb-1">
                       {p.name}
@@ -173,11 +240,40 @@ export default function PsychologistsSection() {
                     <div className="text-xs text-[#6B3F1D] mb-2">
                       {p.availability}
                     </div>
-                    <div className="text-sm text-[#01386F] mb-2">{p.bio}</div>
-                    <div className="text-xs text-[#5a5427] mb-1">
+                    <div 
+                      className="text-sm text-[#01386F] mb-2 overflow-hidden"
+                      style={{ 
+                        maxHeight: '120px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 6,
+                        WebkitBoxOrient: 'vertical',
+                        textOverflow: 'ellipsis'
+                      }}
+                    >
+                      {p.fullBio || p.bio}
+                    </div>
+                    <div 
+                      className="text-xs text-[#5a5427] mb-1 overflow-hidden"
+                      style={{ 
+                        maxHeight: '40px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        textOverflow: 'ellipsis'
+                      }}
+                    >
                       {p.education}
                     </div>
-                    <div className="text-xs text-[#5a5427] mb-2">
+                    <div 
+                      className="text-xs text-[#5a5427] mb-2 overflow-hidden"
+                      style={{ 
+                        maxHeight: '40px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        textOverflow: 'ellipsis'
+                      }}
+                    >
                       {p.approach}
                     </div>
                     <div className="flex flex-row flex-wrap gap-2 mb-2">

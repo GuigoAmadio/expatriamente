@@ -1,9 +1,32 @@
 import { get } from "@/lib/api-client";
 import type { Appointment, EmployeesResponse } from "@/types/backend";
+import psicanalistasMockup from "@/psicanalistas.json";
 
 interface AgendamentoPsicanalista {
   data: string;
   horarios: string[];
+}
+
+// Função para mapear dados mockup para o formato esperado
+function mapMockupToPsychologist(mockupData: any) {
+  return {
+    id: mockupData.nome.replace(/\s+/g, "-").toLowerCase(), // Criar ID baseado no nome
+    name: mockupData.nome,
+    specialty: "Psicanalista Clínico",
+    categories: [],
+    experience: mockupData.observacoes || "",
+    rating: 5,
+    price: "",
+    location: "",
+    languages: ["Português"],
+    bio: mockupData.observacoes || "",
+    education: "",
+    approach: "",
+    availability: mockupData.horarios
+      ? mockupData.horarios.join(", ")
+      : "Horários não disponíveis",
+    image: mockupData.foto || "/user-placeholder.svg",
+  };
 }
 
 export async function getPsicanalistaById(id: string) {
@@ -31,7 +54,14 @@ export async function getPsicanalistaById(id: string) {
     };
     return result;
   } catch (e) {
-    return null;
+    // Fallback para dados mockup
+    console.warn(
+      "[getPsicanalistaById] Servidor não disponível, usando dados mockup"
+    );
+    const mockupData = psicanalistasMockup.find(
+      (p) => p.nome.replace(/\s+/g, "-").toLowerCase() === id
+    );
+    return mockupData ? mapMockupToPsychologist(mockupData) : null;
   }
 }
 
@@ -64,6 +94,61 @@ export async function getAgendamentosByPsicanalista(employeeId: string) {
     );
     return resultado;
   } catch (e) {
+    // Fallback para horários mockup
+    console.warn(
+      "[getAgendamentosByPsicanalista] Servidor não disponível, usando horários mockup"
+    );
+
+    // Encontrar o psicanalista pelo ID (nome convertido)
+    const mockupData = psicanalistasMockup.find(
+      (p) => p.nome.replace(/\s+/g, "-").toLowerCase() === employeeId
+    );
+
+    if (mockupData && mockupData.horarios && mockupData.horarios.length > 0) {
+      // Converter horários mockup para o formato esperado
+      const horariosFormatados = mockupData.horarios
+        .map((horario) => {
+          // Extrair apenas o horário do formato "2a - 8:00, 10:00, 16:00 e 19:30"
+          const horarios = horario
+            .replace(/^[^0-9]*/, "")
+            .split(/[, e]+/)
+            .map((h) => h.trim());
+          return horarios.filter((h) => h.match(/^\d{1,2}:\d{2}/));
+        })
+        .flat();
+
+      // Criar datas para os próximos 30 dias com os horários disponíveis
+      const agendamentos = [];
+      const hoje = new Date();
+
+      for (let i = 0; i < 30; i++) {
+        const data = new Date(hoje);
+        data.setDate(hoje.getDate() + i);
+
+        // Verificar se é um dia da semana que o psicanalista atende
+        const diaSemana = data.getDay(); // 0 = domingo, 1 = segunda, etc.
+        const diasAtendimento = mockupData.horarios.some((horario) => {
+          if (horario.includes("2a") && diaSemana === 1) return true;
+          if (horario.includes("3a") && diaSemana === 2) return true;
+          if (horario.includes("4a") && diaSemana === 3) return true;
+          if (horario.includes("5a") && diaSemana === 4) return true;
+          if (horario.includes("6a") && diaSemana === 5) return true;
+          if (horario.includes("Sábado") && diaSemana === 6) return true;
+          return false;
+        });
+
+        if (diasAtendimento) {
+          const dataStr = data.toISOString().split("T")[0];
+          agendamentos.push({
+            data: dataStr,
+            horarios: horariosFormatados,
+          });
+        }
+      }
+
+      return agendamentos;
+    }
+
     return [];
   }
 }
@@ -75,7 +160,9 @@ export async function getPsicanalistas() {
       response.data && Array.isArray((response.data as any).data?.data)
         ? (response.data as any).data.data
         : [];
-    if (!response.success || !employees.length) return [];
+    if (!response.success || !employees.length) {
+      throw new Error("Nenhum funcionário encontrado no servidor");
+    }
     const mapped = employees.map((emp: any) => ({
       id: emp.id,
       name: emp.name,
@@ -94,7 +181,25 @@ export async function getPsicanalistas() {
     }));
     return mapped;
   } catch (e) {
-    console.error("[getPsicanalistas] Erro ao buscar psicanalistas:", e);
-    return [];
+    // Fallback para dados mockup quando servidor não está disponível
+    console.warn(
+      "[getPsicanalistas] Servidor não disponível, usando dados mockup:",
+      e
+    );
+
+    // Filtrar apenas psicanalistas que aceitaram o convite
+    const psicanalistasAtivos = psicanalistasMockup.filter(
+      (p) => p.convite === "Sim"
+    );
+
+    // Mapear dados mockup para o formato esperado
+    const mapped = psicanalistasAtivos.map(mapMockupToPsychologist);
+
+    console.log(
+      "[getPsicanalistas] Usando",
+      mapped.length,
+      "psicanalistas mockup"
+    );
+    return mapped;
   }
 }

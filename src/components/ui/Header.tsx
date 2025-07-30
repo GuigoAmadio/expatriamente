@@ -45,17 +45,24 @@ export default function Header({
   }
 
   const handleNavigation = (path: string) => {
-    if (path === "/") {
-      setCurrentSection("home");
-    } else if (path === "/sobre") {
-      setCurrentSection("about");
-    } else if (path === "/servicos") {
-      setCurrentSection("services");
-    } else if (path === "/intercambio") {
-      setCurrentSection("intercambio");
-    } else if (path === "/expatriados") {
-      setCurrentSection("expatriados");
+    // Se estamos na landing page (pathname === "/"), usar setCurrentSection
+    if (pathname === "/") {
+      if (path === "/") {
+        setCurrentSection("home");
+      } else if (path === "/sobre") {
+        setCurrentSection("about");
+      } else if (path === "/servicos") {
+        setCurrentSection("services");
+      } else if (path === "/intercambio") {
+        setCurrentSection("intercambio");
+      } else if (path === "/expatriados") {
+        setCurrentSection("expatriados");
+      }
+    } else {
+      // Se estamos em outra página, usar router.push() para navegação real
+      router.push(path);
     }
+
     setIsMobileMenuOpen(false); // Fecha o menu mobile após navegação
     setIsServicesDropdownOpen(false); // Fecha o dropdown após navegação
   };

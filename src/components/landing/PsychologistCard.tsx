@@ -83,12 +83,6 @@ export default function PsychologistCard({ data, onClick }: Props) {
       className={`relative card-elevated cursor-pointer transition-all duration-300 hover:transform hover:scale-105 ${
         darkMode === "dark" ? "dark" : ""
       }`}
-      onMouseEnter={() => {
-        if (window.innerWidth > 768) handleShowDetails();
-      }}
-      onMouseLeave={() => {
-        if (window.innerWidth > 768) setShowDetails(false);
-      }}
       onClick={() => {
         if (onClick) onClick();
         if (window.innerWidth <= 768) handleShowDetails();
@@ -99,7 +93,7 @@ export default function PsychologistCard({ data, onClick }: Props) {
       }}
     >
       {/* Card principal */}
-      <div className="flex flex-col items-center h-full justify-center p-4">
+      <div className="flex flex-col items-center h-full justify-around p-4">
         <img
           src={data.image}
           alt={data.name}
