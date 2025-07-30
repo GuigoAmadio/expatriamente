@@ -44,13 +44,13 @@ export default function CTASection() {
             viewport={{ once: true }}
             className="mb-6"
           >
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-blue-100 to-green-100 text-blue-800 font-semibold rounded-full text-sm mb-4">
+            <span className="inline-block px-[1.5vw] py-[0.8vw] bg-gradient-to-r from-blue-100 to-green-100 text-blue-800 font-semibold rounded-full text-[1vw] mb-[1vw]">
               ✨ Pronto para começar sua jornada?
             </span>
           </motion.div>
 
           <motion.h2
-            className="font-akzidens text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight"
+            className="font-akzidens text-[4vw] font-bold text-gray-900 mb-[2vw] leading-tight"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
@@ -63,7 +63,7 @@ export default function CTASection() {
           </motion.h2>
 
           <motion.p
-            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-[1.8vw] text-gray-600 max-w-[80vw] mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -87,17 +87,17 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <motion.a
               href="#"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 text-white font-akzidens font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[200px] justify-center"
+              className="group px-[3vw] py-[1.5vw] bg-gradient-to-r from-blue-600 to-green-600 text-white font-akzidens font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-[1vw] min-w-[15vw] justify-center text-[1.2vw]"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <span>Agendar Primeira Sessão</span>
-              <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              <ArrowRightIcon className="w-[1.5vw] h-[1.5vw] group-hover:translate-x-1 transition-transform duration-300" />
             </motion.a>
 
             <motion.a
               href="#"
-              className="px-8 py-4 bg-white text-gray-800 font-akzidens font-bold border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-300 flex items-center gap-3 min-w-[200px] justify-center"
+              className="px-[3vw] py-[1.5vw] bg-white text-gray-800 font-akzidens font-bold border-2 border-gray-300 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-300 flex items-center gap-[1vw] min-w-[15vw] justify-center text-[1.2vw]"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

@@ -347,7 +347,7 @@ export default function VideoCarouselSection() {
           <div className="relative flex flex-col items-center">
             <motion.div
               key={currentSlide}
-              className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl h-[220px] w-[140px] mx-auto"
+              className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl h-[280px] sm:h-[320px] w-[160px] sm:w-[180px] mx-auto"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}

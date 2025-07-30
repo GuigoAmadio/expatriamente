@@ -4,12 +4,20 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { useNavigation } from "@/context/NavigationContext";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Header from "@/components/ui/Header";
+import HeroRightSection from "@/components/hero/HeroRightSection";
+import AboutHeroSection from "@/components/about/AboutHeroSection";
+import ServicesHeroSection from "@/components/services/ServicesHeroSection";
+import IntercambioSection from "@/components/services/IntercambioSection";
+import ExpatriadosSection from "@/components/services/ExpatriadosSection";
+import MissionVisionValues from "@/components/about/MissionVisionValues";
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  const { currentSection } = useNavigation();
 
   const { t } = useLanguage();
   const { darkMode } = useTheme();
@@ -22,96 +30,117 @@ export default function HeroSection() {
     return <div className="min-h-screen bg-surface animate-pulse" />;
   }
 
-  return (
-    <section className="relative min-h-screen flex flex-col transition-colors duration-300 overflow-visible w-full bg-gradient-to-br from-[#A6C0B3] to-[#85A899]">
-      <Header />
-      <div className="flex flex-col lg:flex-row items-start justify-center flex-1 relative">
-        {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}
-        <motion.div
-          className="flex items-center justify-center relative z-30"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <Image
-            src="/heroMulher.png"
-            alt="Hero Mulher"
-            width={500}
-            height={700}
-            className="object-contain w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[550px] pointer-events-none select-none"
-            priority
-            style={{
-              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))",
-              transform: "translateY(120px)", // AUMENTADO para sobrepor naturalmente
-            }}
-          />
-        </motion.div>
+  // Definindo o background baseado na seção
+  const getBackground = () => {
+    if (currentSection === "about") {
+      return `linear-gradient(
+        to bottom,
+        #96bfd4 0%,          /* azul muito claro */
+        #92bacf 15%,         /* azul bem claro */
+        #8eb5cb 30%,         /* azul mais claro */
+        #89b0c6 45%,         /* azul claro */
+        #85acc1 60%,         /* azul médio-claro */
+        #81a7bd 75%,         /* azul médio */
+        rgba(122, 158, 179, 0.7) 75.1%, /* sombra azul escuro */
+        rgba(129, 167, 189, 0.8) 75.2%, /* sombra azul médio */
+        rgba(133, 172, 193, 0.9) 75.3%, /* sombra azul médio-claro */
+        rgba(137, 176, 198, 0.95) 75.4%, /* sombra azul claro */
+        #9e9470 75.5%,         /* início do chão */
+        #b0a480 80%,         /* chão escuro */
+        #c2b494 100%         /* chão ainda mais escuro */
+      ), linear-gradient(
+        to right,
+        rgba(122, 158, 179, 0.6) 0%,   /* sombra azul escuro na esquerda */
+        rgba(129, 167, 189, 0.4) 30%,  /* sombra azul médio */
+        rgba(133, 172, 193, 0.2) 60%,  /* sombra azul médio-claro */
+        rgba(137, 176, 198, 0) 100%    /* transparente na direita */
+      ), linear-gradient(
+        to bottom left,
+        transparent 0%,
+        transparent 70%,
+        rgba(0,0,0,0.1) 80%,
+        rgba(0,0,0,0.2) 90%,
+        rgba(0,0,0,0.3) 100%
+      )`;
+    }
+    return `linear-gradient(
+      to bottom,
+      #96b6a3 0%,          /* verde muito claro */
+      #99b8a7 15%,         /* verde bem claro */
+      #9ab9a8 30%,         /* verde mais claro */
+      #9fbcab 45%,         /* verde claro */
+      #9cbba9 60%,         /* verde médio-claro */
+      #8cae99 75%,         /* verde médio */
+      rgba(131, 166, 145, 1.5) 75.1%, /* sombra verde escuro */
+      rgba(0, 0, 0, 0.35) 75.2%, /* sombra verde escuro */
+      #9e9470 75.3%,         /* início do chão */
+      #b0a480 80%,         /* chão escuro */
+      #c2b494 100%         /* chão ainda mais escuro */
+    ), linear-gradient(
+      to right,
+      rgba(131, 166, 145, 0.7) 0%,   /* sombra verde escuro na esquerda */
+      rgba(140, 174, 153, 0.5) 30%,  /* sombra verde médio */
+      rgba(156, 187, 169, 0.3) 60%,  /* sombra verde médio-claro */
+      rgba(159, 188, 171, 0) 100%    /* transparente na direita */
+    ), linear-gradient(
+      to bottom left,
+      transparent 0%,
+      transparent 70%,
+      rgba(0,0,0,0.1) 80%,
+      rgba(0,0,0,0.2) 90%,
+      rgba(0,0,0,0.3) 100%
+    )`;
+  };
 
-        {/* Conteúdo à direita */}
-        <motion.div
-          className="pt-28 flex flex-col justify-center items-center lg:items-start z-20 px-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <div className="text-center lg:text-left flex flex-col justify-center items-center lg:items-start">
-            <motion.h1
-              className="font-akzidens text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight mb-3 sm:mb-4 md:mb-6 lg:mb-8 font-medium tracking-tight"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <div className="flex flex-col items-start">
-                <div className="flex justify-start gap-4 text-nowrap">
-                  <span className="text-white font-extrabold">CUIDADO</span>
-                  <span className="text-blue-900">EMOCIONAL</span>
-                </div>
-                <div className="flex justify-start gap-4 text-nowrap">
-                  <span className="text-white">PARA </span>
-                  <span className="text-blue-900">BRASILEIROS</span>
-                </div>
-                <div className="flex justify-start gap-4 text-nowrap">
-                  <span className="text-white">NO </span>
-                  <span className="text-white font-extrabold">EXTERIOR</span>
-                </div>
-              </div>
-            </motion.h1>
-            <motion.p
-              className="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-normal mb-4 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12 leading-relaxed text-center lg:text-left max-w-2xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              Encontre acolhimento e compreensão em sua jornada como expatriado.
-              Sessões de psicanálise online com profissionais que entendem sua
-              realidade.
-            </motion.p>
-            <motion.div
-              className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 lg:gap-6 justify-center lg:justify-start w-full items-center lg:items-stretch"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <motion.a
-                href="#"
-                className="px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 rounded-lg bg-blue-900 text-white font-akzidens font-bold shadow-lg hover:scale-105 hover:text-blue-900 hover:bg-gray-50 focus:ring-4 focus:ring-white/30 transition-all duration-400 outline-none border-none text-center text-sm sm:text-base md:text-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Agendar Consulta
-              </motion.a>
-              <motion.a
-                href="#"
-                className="px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 rounded-lg bg-white text-blue-900 font-akzidens font-bold border-2 border-white shadow-lg hover:scale-105 hover:bg-blue-900 hover:text-white focus:ring-4 focus:ring-white/20 transition-all duration-400 outline-none text-center text-sm sm:text-base md:text-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Conhecer Psicanalistas
-              </motion.a>
-            </motion.div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+  return (
+    <>
+      <section
+        className="relative min-h-screen flex flex-col transition-colors duration-300 overflow-visible w-full"
+        style={{
+          background: getBackground(),
+        }}
+      >
+        <Header />
+        <div className="flex flex-col md:flex-row items-start justify-center relative">
+          {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}
+          <motion.div
+            className="flex items-center justify-center relative z-30 "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <Image
+              src="/heroMulher.png"
+              alt="Hero Mulher"
+              width={500}
+              height={80}
+              className="object-contain w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[550px] pointer-events-none select-none translate-y-5 sm:translate-y-6 md:translate-y-8 lg:translate-y-10 xl:translate-y-12"
+              priority
+              style={{
+                filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))",
+              }}
+            />
+          </motion.div>
+
+          {/* Conteúdo à direita - Alternando entre componentes */}
+          {currentSection === "home" ? (
+            <HeroRightSection />
+          ) : currentSection === "about" ? (
+            <AboutHeroSection />
+          ) : currentSection === "services" ? (
+            <ServicesHeroSection />
+          ) : currentSection === "intercambio" ? (
+            <IntercambioSection />
+          ) : currentSection === "expatriados" ? (
+            <ExpatriadosSection />
+          ) : (
+            <HeroRightSection />
+          )}
+        </div>
+      </section>
+
+      {/* Seção Mission Vision Values - apenas para about */}
+      {currentSection === "about" && <MissionVisionValues />}
+    </>
   );
 }

@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { NavigationProvider } from "@/context/NavigationContext";
 import { Playfair_Display, Montserrat } from "next/font/google";
 
 // Import Flickity CSS
@@ -40,7 +41,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ThemeProvider>
-            <LanguageProvider>{children}</LanguageProvider>
+            <LanguageProvider>
+              <NavigationProvider>{children}</NavigationProvider>
+            </LanguageProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

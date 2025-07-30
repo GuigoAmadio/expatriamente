@@ -24,6 +24,21 @@ body {
   will-change: auto;
 }
 
+/* Footer responsive styles */
+@media (min-width: 850px) {
+  .footer-contacts {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+
+  .footer-contact-item {
+    flex: 1 !important;
+    min-width: 200px !important;
+  }
+}
+
 /* Prevent vertical movement in hero */
 .hero-section * {
   user-select: none;

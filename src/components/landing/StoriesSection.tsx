@@ -3,12 +3,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
+import { useNavigation } from "@/context/NavigationContext";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function StoriesSection() {
   const { t } = useLanguage();
   const { darkMode } = useTheme();
+  const { currentSection } = useNavigation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [page, setPage] = useState(0);
   const commentsPerPage = 6;
@@ -21,92 +23,46 @@ export default function StoriesSection() {
     "Viver no exterior trouxe desafios que eu não esperava. A terapia me ajudou a entender que é normal sentir saudades e que posso criar minha nova identidade sem perder minhas raízes.",
   ];
 
+  // Determina o gradiente baseado na seção ativa
+  const getBackground = () => {
+    if (currentSection === "about") {
+      // Gradiente invertido para "Sobre Nós"
+      return `linear-gradient(
+        to bottom,
+        #e8dcc0 0%,
+        #e4d9ae 15%,
+        #d5caa1 30%,
+        #c6bb94 45%,
+        #b7ac87 60%,
+        #a89d7a 75%,
+        #c2b494 100%
+      )`;
+    }
+    // Gradiente normal para outras seções
+    return `linear-gradient(
+      to bottom,
+      #c2b494 0%,
+      #a89d7a 15%,
+      #b7ac87 30%,
+      #c6bb94 45%,
+      #d5caa1 60%,
+      #e4d9ae 75%,
+      #e8dcc0 100%
+    )`;
+  };
+
   return (
     <section
       className="w-full py-12 sm:py-16 md:py-20 px-4 md:px-0 flex flex-col items-center justify-center relative overflow-hidden"
       style={{
-        background: `
-          linear-gradient(
-            135deg,
-            #f5f5dc 0%,
-            #e8dcc0 20%,
-            #d4c4a8 40%,
-            #c2b494 60%,
-            #b0a480 80%,
-            #9e9470 100%
-          )
-        `,
+        background: getBackground(),
       }}
     >
-      {/* Elemento de profundidade - sombra projetada da "parede" verde */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(
-              ellipse 80% 20% at 50% 0%,
-              rgba(0,0,0,0.15) 0%,
-              rgba(0,0,0,0.08) 30%,
-              rgba(0,0,0,0.03) 60%,
-              transparent 80%
-            )
-          `,
-        }}
-      />
-
-      {/* Elemento de profundidade - gradiente atmosférico (transição suave do verde) */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            linear-gradient(
-              to bottom,
-              rgba(166, 192, 179, 0.4) 0%,
-              rgba(166, 192, 179, 0.2) 15%,
-              rgba(166, 192, 179, 0.1) 30%,
-              rgba(166, 192, 179, 0.05) 50%,
-              transparent 70%
-            )
-          `,
-        }}
-      />
-
-      {/* Elemento de profundidade - textura sutil do "chão" */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          background: `
-            repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 2px,
-              rgba(0,0,0,0.02) 2px,
-              rgba(0,0,0,0.02) 4px
-            )
-          `,
-        }}
-      />
-
-      {/* Elemento de profundidade - gradiente de valor */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            linear-gradient(
-              to bottom,
-              rgba(255,255,255,0.1) 0%,
-              transparent 30%,
-              rgba(0,0,0,0.05) 100%
-            )
-          `,
-        }}
-      />
-
       <div className="w-full max-w-6xl flex flex-col items-center pt-8 sm:pt-12 md:pt-16 relative z-10">
         {/* Desktop layout com título no meio */}
         <div className="hidden md:flex flex-col gap-16 w-full items-center">
-          {/* Primeira linha: dois cards */}
-          <div className="grid grid-cols-2 gap-8 w-full">
+          {/* Layout responsivo: coluna em telas menores que xl, grid em xl+ */}
+          <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full">
             <motion.div
               className="bg-white rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#5a5427] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
@@ -139,7 +95,7 @@ export default function StoriesSection() {
 
           {/* Título no meio */}
           <motion.div
-            className="font-akzidens text-3xl text-[#8c7b30] font-bold italic text-center"
+            className="font-akzidens text-3xl text-[#ffffff] font-bold italic text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -159,7 +115,7 @@ export default function StoriesSection() {
           </motion.div>
 
           {/* Segunda linha: dois cards */}
-          <div className="grid grid-cols-2 gap-8 w-full">
+          <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full  ">
             <motion.div
               className="bg-white rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#5a5427] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
@@ -194,7 +150,7 @@ export default function StoriesSection() {
         {/* Mobile: layout otimizado */}
         <div className="md:hidden flex flex-col gap-6 w-full">
           <motion.div
-            className="font-akzidens text-xl sm:text-2xl text-[#e0c02e] font-bold italic text-center leading-tight mb-8"
+            className="font-akzidens text-xl sm:text-2xl text-[#ffffff] font-bold italic text-center leading-tight mb-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}

@@ -61,9 +61,9 @@ export default function FAQSection() {
 
   return (
     <section className="w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
-      <div className="max-w-4xl w-full mx-auto">
+      <div className="max-w-4xl w-full flex flex-col items-center justify-center">
         <motion.h2
-          className="font-akzidens text-3xl md:text-4xl font-bold mb-2 text-blue-900 text-center"
+          className="font-akzidens text-[5vw] md:text-[3.5vw] lg:text-[3vw] font-bold mb-[0.5vw] text-blue-900 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -72,7 +72,7 @@ export default function FAQSection() {
           Dúvidas Frequentes
         </motion.h2>
         <motion.p
-          className="text-lg text-blue-900 font-medium mb-20 text-center"
+          className="text-[3vw] w-5/6 xl:w-full md:text-[1.8vw] text-blue-900 font-medium mb-[4vw] text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -82,7 +82,7 @@ export default function FAQSection() {
           psicanálise online
         </motion.p>
         <motion.div
-          className="space-y-6"
+          className="flex flex-col items-center justify-center gap-6 w-full"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
@@ -99,6 +99,7 @@ export default function FAQSection() {
                 delay: index * 0.1,
               }}
               viewport={{ once: true }}
+              className="w-full"
             >
               <Disclosure>
                 {({ open }) => (
@@ -107,7 +108,7 @@ export default function FAQSection() {
                       open ? "border-[#01386F]" : "border-transparent"
                     }`}
                   >
-                    <Disclosure.Button className="flex w-full justify-between items-center px-6 py-5 text-left font-akzidens text-base text-[#01386F] font-bold focus:outline-none">
+                    <Disclosure.Button className="flex w-full justify-between items-center px-[2.5vw] md:px-[1.8vw] py-[3vw] lg:py-[1.5vw] text-left font-akzidens text-[2.8vw] md:text-[1.6vw] lg:text-[1vw] text-[#01386F] font-bold focus:outline-none">
                       <span>{faq.question}</span>
                       <ChevronDownIcon
                         className={`h-5 w-5 ml-4 transition-transform duration-300 ${
@@ -128,7 +129,7 @@ export default function FAQSection() {
                           }}
                           className="overflow-hidden"
                         >
-                          <div className="px-6 pb-5 text-[#5a5427] text-base border-t border-[#d6cfae]">
+                          <div className="px-[1.8vw] pb-[1.2vw] text-[#5a5427] text-[1.1vw] border-t border-[#d6cfae]">
                             {faq.answer}
                           </div>
                         </motion.div>
