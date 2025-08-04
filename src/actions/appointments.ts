@@ -26,6 +26,45 @@ export interface UpdateAppointmentData {
   serviceId?: string;
 }
 
+export interface GetAppointmentsCountParams {
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+}
+
+export interface GetAppointmentsCountResponse {
+  success: boolean;
+  data?: {
+    count: number;
+  };
+}
+
+// Obter quantidade de appointments com filtros opcionais
+export async function getAppointmentsCount(
+  params: GetAppointmentsCountParams = {}
+): Promise<number> {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (params.startDate) queryParams.append("startDate", params.startDate);
+    if (params.endDate) queryParams.append("endDate", params.endDate);
+    if (params.status) queryParams.append("status", params.status);
+
+    const response = await serverGet<GetAppointmentsCountResponse>(
+      `/appointments/count?${queryParams.toString()}`
+    );
+
+    if (response.success && response.data?.count !== undefined) {
+      return response.data.count;
+    }
+
+    return 0;
+  } catch (error) {
+    console.error("Erro ao obter quantidade de appointments:", error);
+    return 0;
+  }
+}
+
 // Listar todos os appointments (para admin)
 export async function getAllAppointments() {
   try {
@@ -241,10 +280,9 @@ export async function deleteAppointment(id: string) {
 // Confirmar appointment
 export async function confirmAppointment(id: string) {
   try {
-    const result = await serverPut<Appointment>(
-      `/appointments/${id}/confirm`,
-      {}
-    );
+    const result = await serverPut<Appointment>(`/appointments/${id}/status`, {
+      status: "CONFIRMED",
+    });
 
     // Invalidar apenas cache específico
     await cacheUtils.invalidatePattern("appointments:today");
@@ -268,10 +306,9 @@ export async function confirmAppointment(id: string) {
 // Cancelar appointment
 export async function cancelAppointment(id: string) {
   try {
-    const result = await serverPut<Appointment>(
-      `/appointments/${id}/cancel`,
-      {}
-    );
+    const result = await serverPut<Appointment>(`/appointments/${id}/status`, {
+      status: "CANCELLED",
+    });
 
     // Invalidar apenas cache específico
     await cacheUtils.invalidatePattern("appointments:today");

@@ -1,4 +1,4 @@
-import { getUsers } from "@/actions/users";
+import { getClientById } from "@/actions/clients";
 import { EmployeeClientProfile } from "@/components/dashboard/EmployeeClientProfile";
 
 export default async function ClientDetailPage(props: {
@@ -6,9 +6,7 @@ export default async function ClientDetailPage(props: {
 }) {
   const { id } = await props.params;
   // Busca server-side dos detalhes do cliente
-  const { data: clients } = await getUsers({ id });
-  const client =
-    Array.isArray(clients) && clients.length > 0 ? clients[0] : null;
+  const client = await getClientById(id);
   if (!client) return <div>Cliente não encontrado</div>;
   return <EmployeeClientProfile client={client} />;
 }

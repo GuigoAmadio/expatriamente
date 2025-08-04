@@ -9,20 +9,20 @@ export default function ExpatriadosSection() {
       number: "25%",
       description:
         "dos expatriados brasileiros retornam precocemente por falta de suporte¹",
-      color: "text-[#3B82F6]",
-      bgColor: "bg-[#8B4513]",
+      color: "text-cyan-400",
+      bgColor: "bg-red-950",
     },
     {
       number: "45%",
       description: "apresentam estresse moderado a severo antes do retorno¹",
-      color: "text-[#3B82F6]",
-      bgColor: "bg-[#8B4513]",
+      color: "text-cyan-400",
+      bgColor: "bg-red-950",
     },
     {
       number: "30%",
       description: "Turnover de até 30% em 18 meses²",
-      color: "text-[#3B82F6]",
-      bgColor: "bg-[#8B4513]",
+      color: "text-sky-500",
+      bgColor: "bg-red-950",
     },
   ];
 
@@ -33,20 +33,21 @@ export default function ExpatriadosSection() {
   ];
 
   return (
-    <div className="pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full md:w-2/3 lg:w-3/4 xl:w-2/3">
+    <div className="pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full md:w-1/2">
       {/* Título Principal */}
       <motion.div
-        className="text-center mb-8 md:mb-12 w-full"
+        className="text-start mb-8 md:mb-12 w-full"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 px-4">
-          <span className="text-[#4A4A4A]">Programa de cuidados com </span>
-          <span className="text-[#3B82F6]">Saúde Mental para Expatriado</span>
+        <h1 className="text-red-950 text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-4 md:mb-6 px-4">
+          Programa de cuidados com{" "}
+          <span className="text-cyan-800">Saúde Mental</span> para{" "}
+          <span className="text-cyan-800">Expatriados</span>
         </h1>
 
-        <p className="text-[#4A4A4A] text-base sm:text-lg md:text-xl max-w-4xl leading-relaxed px-4">
+        <p className="text-red-950 text-base sm:text-lg md:text-xl max-w-4xl leading-relaxed px-4">
           Ofereça aos seus talentos um suporte completo antes, durante e após a
           missão internacional, reduzindo custos, impactos com familiares e
           aumentando engajamento:
@@ -75,7 +76,7 @@ export default function ExpatriadosSection() {
               >
                 {stat.number}
               </h3>
-              <p className="text-white text-xs sm:text-sm md:text-base leading-relaxed">
+              <p className="text-white text-xs sm:text-base md:text-lg italic font-thin">
                 {stat.description}
               </p>
             </div>
@@ -90,7 +91,7 @@ export default function ExpatriadosSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <h2 className="text-[#F97316] text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8">
+        <h2 className="text-red-950 text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8">
           Benefícios Tangíveis
         </h2>
 
@@ -105,7 +106,7 @@ export default function ExpatriadosSection() {
                 transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
               >
                 <div className="bg-[#F97316] rounded-full w-2 h-2 md:w-3 md:h-3 mt-2 md:mt-3 mr-3 md:mr-4 flex-shrink-0"></div>
-                <p className="text-[#4A4A4A] text-sm md:text-base lg:text-lg leading-relaxed">
+                <p className="text-red-950 text-sm md:text-base lg:text-lg leading-relaxed">
                   {benefit}
                 </p>
               </motion.div>

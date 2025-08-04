@@ -7,16 +7,21 @@ export default async function ClientPsychologistsPage() {
   const psychologists = result || [];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Psicanalistas
-        </h1>
-        <RefreshButton clearAllCache={true} className="ml-auto">
-          🔄 Atualizar Psicanalistas
-        </RefreshButton>
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Psicanalistas</h1>
+            <p className="text-gray-600 mt-2">
+              Encontre o profissional ideal para sua consulta
+            </p>
+          </div>
+          <RefreshButton clearAllCache={true} className="ml-auto">
+            🔄 Atualizar Psicanalistas
+          </RefreshButton>
+        </div>
+        <PsychologistList psychologists={psychologists} />
       </div>
-      <PsychologistList psychologists={psychologists} />
     </div>
   );
 }

@@ -3,205 +3,300 @@
 import {
   serverGet,
   serverPost,
-  serverPut,
   serverDelete,
+  serverPatch,
 } from "@/lib/server-api";
-import type { Employee } from "@/types/backend";
-import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
+import { Employee as BackendEmployee } from "@/types/backend";
+
+// Re-exportar o tipo do backend para manter compatibilidade
+export type Employee = BackendEmployee;
 
 export interface CreateEmployeeData {
   name: string;
   email: string;
-  password: string;
-  role: string;
   phone?: string;
+  position?: string;
+  description?: string;
+  isActive?: boolean;
+  workingHours?: any;
 }
 
-export interface UpdateEmployeeData {
-  name?: string;
-  email?: string;
-  role?: string;
-  status?: string;
-  phone?: string;
+export interface UpdateEmployeeData extends Partial<CreateEmployeeData> {
+  id: string;
 }
 
-// Listar todos os employees
-export async function getEmployees(params?: {
-  page?: number;
-  limit?: number;
-  role?: string;
-  status?: string;
-  search?: string;
-}) {
+export interface GetEmployeesCountResponse {
+  success: boolean;
+  data: {
+    count: number;
+  };
+}
+
+export interface GetEmployeeCountResponse {
+  success: boolean;
+  data: {
+    count: number;
+  };
+}
+
+// Obter quantidade de employees com filtro opcional por status
+export async function getEmployeesCount(isActive?: boolean): Promise<number> {
   try {
-    // Montar query string com os parâmetros recebidos
-    const query = new URLSearchParams();
-    if (params?.page) query.append("page", params.page.toString());
-    if (params?.limit) query.append("limit", params.limit.toString());
-    if (params?.role) query.append("role", params.role);
-    if (params?.status) query.append("status", params.status);
-    if (params?.search) query.append("search", params.search);
+    const queryParams = new URLSearchParams();
 
-    const url = "/employees" + (query.toString() ? `?${query.toString()}` : "");
+    if (isActive !== undefined) {
+      queryParams.append("isActive", isActive.toString());
+    }
 
-    return await cacheUtils.getCachedData(
-      `employees:list:${url}`,
-      async () => {
-        const result = await serverGet<any>(url);
-        // Corrigir o aninhamento
-        const employees = result.data?.data?.data || [];
-        const resumoEmployees = result.data?.data?.meta || [];
-        return {
-          success: true,
-          data: employees,
-          resumo: resumoEmployees,
-        };
-      },
-      CACHE_CONFIG.employees
+    const response = await serverGet<any>(
+      `/employees/count?${queryParams.toString()}`
     );
+
+    if (response.success && response.data && response.data.count) {
+      return response.data.count as number;
+    }
+
+    return 0;
   } catch (error) {
-    console.error("Erro ao buscar employees:", error);
-    return {
-      success: false,
-      message: "Erro ao buscar funcionários",
-    };
+    console.error("Erro ao obter quantidade de employees:", error);
+    return 0;
   }
 }
 
-// Buscar employee por ID
-export async function getEmployee(id: string) {
+// Obter quantidade de employees ativos
+export async function getActiveEmployeeCount(): Promise<number> {
   try {
-    return await cacheUtils.getCachedData(
-      `employees:detail:${id}`,
-      async () => {
-        const result = await serverGet<Employee>(`/employees/${id}`);
-        return result.data;
+    const response = await serverGet<any>("/employees/count/active");
+
+    if (response.success && response.data.data && response.data.data.count) {
+      return response.data.data.count;
+    }
+
+    return 0;
+  } catch (error) {
+    console.error("Erro ao obter quantidade de employees ativos:", error);
+    return 0;
+  }
+}
+
+// Obter quantidade de employees inativos
+export async function getInactiveEmployeeCount(): Promise<number> {
+  try {
+    const response = await serverGet<any>("/employees/count/inactive");
+
+    if (response.success && response.data && response.data.count) {
+      return response.data.count;
+    }
+
+    return 0;
+  } catch (error) {
+    console.error("Erro ao obter quantidade de employees inativos:", error);
+    return 0;
+  }
+}
+
+export async function getEmployees(): Promise<Employee[]> {
+  try {
+    const response = await serverGet<{
+      success: boolean;
+      data: {
+        success: boolean;
+        data: { data: Employee[]; meta: any };
+        timestamp: string;
+        path: string;
+        method: string;
+      };
+      message: string;
+    }>("/employees");
+
+    // A resposta tem estrutura: response.data.data.data (array de funcionários)
+    if (response.data?.data?.data && Array.isArray(response.data.data.data)) {
+      return response.data.data.data;
+    }
+
+    // Fallback para resposta direta (array)
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+
+    console.warn("Resposta inesperada da API:", response.data);
+    return [];
+  } catch (error) {
+    console.error("Erro ao buscar funcionários:", error);
+    return [];
+  }
+}
+
+export async function getEmployeesWithMeta(): Promise<{
+  data: Employee[];
+  meta: any;
+}> {
+  try {
+    const response = await serverGet<{
+      success: boolean;
+      data: {
+        success: boolean;
+        data: { data: Employee[]; meta: any };
+        meta: any;
+        timestamp: string;
+        path: string;
+        method: string;
+      };
+      message: string;
+    }>("/employees");
+
+    // A resposta tem estrutura: response.data.data.data (array de funcionários) e response.data.data.meta
+    if (response.data?.data?.data && Array.isArray(response.data.data.data)) {
+      return {
+        data: response.data.data.data,
+        meta: response.data.data.meta || {
+          page: 1,
+          limit: 10,
+          total: response.data.data.data.length,
+          totalPages: 1,
+          hasNext: false,
+          hasPrevious: false,
+        },
+      };
+    }
+
+    // Fallback para resposta direta (array)
+    if (Array.isArray(response.data)) {
+      return {
+        data: response.data,
+        meta: {
+          page: 1,
+          limit: 10,
+          total: response.data.length,
+          totalPages: 1,
+          hasNext: false,
+          hasPrevious: false,
+        },
+      };
+    }
+
+    console.warn("Resposta inesperada da API:", response.data);
+    return {
+      data: [],
+      meta: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 1,
+        hasNext: false,
+        hasPrevious: false,
       },
-      CACHE_CONFIG.employees
-    );
+    };
   } catch (error) {
-    console.error("Erro ao buscar employee:", error);
+    console.error("Erro ao buscar funcionários:", error);
     return {
-      success: false,
-      message: "Erro ao buscar funcionário",
+      data: [],
+      meta: {
+        page: 1,
+        limit: 10,
+        total: 0,
+        totalPages: 1,
+        hasNext: false,
+        hasPrevious: false,
+      },
     };
   }
 }
 
-// Criar novo employee
-export async function createEmployee(data: CreateEmployeeData) {
+export async function getEmployeeById(id: string): Promise<Employee | null> {
   try {
-    const result = await serverPost<Employee>("/employees", data);
+    console.log("🔍 Buscando funcionário com ID:", id);
 
-    // Invalidar cache de employees após criação
-    await cacheUtils.invalidateByType("employees");
+    const response = await serverGet<{
+      success: boolean;
+      data: {
+        success: boolean;
+        data: Employee;
+        message: string;
+      };
+      message: string;
+    }>(`/employees/${id}`);
 
-    return {
-      success: true,
-      data: result.data,
-      message: "Funcionário criado com sucesso",
-    };
+    console.log("📦 Resposta completa da API:", response);
+    console.log("📦 response.data:", response.data);
+    console.log("📦 response.data?.data:", response.data?.data);
+
+    // A resposta tem estrutura: response.data.data.data (objeto do funcionário)
+    if (response.data?.data) {
+      console.log("✅ Funcionário encontrado:", response.data.data);
+      return response.data?.data as unknown as Employee;
+    }
+
+    console.warn("❌ Resposta inesperada da API:", response.data);
+    return null;
   } catch (error) {
-    console.error("Erro ao criar employee:", error);
-    return {
-      success: false,
-      message: "Erro ao criar funcionário",
-    };
+    console.error("❌ Erro ao buscar funcionário:", error);
+    return null;
   }
 }
 
-// Atualizar employee
-export async function updateEmployee(id: string, data: UpdateEmployeeData) {
+export async function createEmployee(
+  data: CreateEmployeeData
+): Promise<Employee | null> {
   try {
-    const result = await serverPut<Employee>(`/employees/${id}`, data);
+    console.log("🆕 Criando funcionário:", data);
 
-    // Invalidar cache de employees após atualização
-    await cacheUtils.invalidateByType("employees");
+    const response = await serverPost<{
+      success: boolean;
+      data: Employee;
+      message: string;
+    }>("/employees", data);
 
-    return {
-      success: true,
-      data: result.data,
-      message: "Funcionário atualizado com sucesso",
-    };
+    console.log("✅ Funcionário criado:", response.data);
+    return response.data?.data || null;
   } catch (error) {
-    console.error("Erro ao atualizar employee:", error);
-    return {
-      success: false,
-      message: "Erro ao atualizar funcionário",
-    };
+    console.error("❌ Erro ao criar funcionário:", error);
+    throw error;
   }
 }
 
-// Excluir employee
-export async function deleteEmployee(id: string) {
+export async function updateEmployee(
+  id: string,
+  data: Partial<Employee>
+): Promise<Employee | null> {
+  try {
+    console.log("🔄 Atualizando funcionário:", id, data);
+
+    const response = await serverPatch<{
+      success: boolean;
+      data: Employee;
+      message: string;
+    }>(`/employees/${id}`, data);
+
+    console.log("✅ Funcionário atualizado:", response.data);
+    return response.data?.data || null;
+  } catch (error) {
+    console.error("❌ Erro ao atualizar funcionário:", error);
+    throw error;
+  }
+}
+
+export async function deleteEmployee(id: string): Promise<boolean> {
   try {
     await serverDelete(`/employees/${id}`);
-
-    // Invalidar cache de employees após exclusão
-    await cacheUtils.invalidateByType("employees");
-
-    return {
-      success: true,
-      message: "Funcionário excluído com sucesso",
-    };
+    return true;
   } catch (error) {
-    console.error("Erro ao excluir employee:", error);
-    return {
-      success: false,
-      message: "Erro ao excluir funcionário",
-    };
+    console.error("Erro ao deletar funcionário:", error);
+    throw error;
   }
 }
 
-// Buscar employees por role
-export async function getEmployeesByRole(role: string) {
+export async function toggleEmployeeStatus(
+  id: string,
+  isActive: boolean
+): Promise<Employee | null> {
   try {
-    return await cacheUtils.getCachedData(
-      `employees:role:${role}`,
-      async () => {
-        const result = await serverGet<Employee[]>(`/employees?role=${role}`);
-        return result.data;
-      },
-      CACHE_CONFIG.employees
-    );
+    const response = await serverPatch<Employee>(`/employees/${id}`, {
+      isActive,
+    });
+    return response.data || null;
   } catch (error) {
-    console.error("Erro ao buscar employees por role:", error);
-    return {
-      success: false,
-      message: "Erro ao buscar funcionários por função",
-    };
+    console.error("Erro ao alterar status do funcionário:", error);
+    throw error;
   }
-}
-
-// Buscar employees ativos
-export async function getActiveEmployees() {
-  try {
-    return await cacheUtils.getCachedData(
-      "employees:active",
-      async () => {
-        const result = await serverGet<Employee[]>("/employees?status=ACTIVE");
-        return result.data;
-      },
-      CACHE_CONFIG.employees
-    );
-  } catch (error) {
-    console.error("Erro ao buscar employees ativos:", error);
-    return {
-      success: false,
-      message: "Erro ao buscar funcionários ativos",
-    };
-  }
-}
-
-export async function getAllPsychologists() {
-  return await cacheUtils.getCachedData(
-    "employees:psychologists",
-    async () => {
-      const resp = await serverGet<{ data: Employee[] }>(
-        "/employees?role=EMPLOYEE"
-      );
-      return resp.data?.data || [];
-    },
-    CACHE_CONFIG.employees
-  );
 }

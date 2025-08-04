@@ -46,11 +46,10 @@ export interface CreateEmployeeRequest {
   name: string;
   email: string;
   phone?: string;
-  avatar?: string;
-  position: string;
+  position?: string;
   description?: string;
-  workingHours?: object;
   isActive?: boolean;
+  workingHours?: any;
 }
 
 export interface CreateServiceRequest {
@@ -62,18 +61,28 @@ export interface CreateServiceRequest {
   categoryId?: string;
 }
 
+export interface WorkingHours {
+  monday: string[];
+  tuesday: string[];
+  wednesday: string[];
+  thursday: string[];
+  friday: string[];
+  saturday: string[];
+  sunday: string[];
+}
+
 export interface Employee {
   id: string;
   name: string;
   email: string;
   phone?: string;
-  avatar?: string;
-  position: string;
+  position?: string;
   description?: string;
-  workingHours?: object;
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  workingHours?: any;
+  clientId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Service {
@@ -160,4 +169,14 @@ export interface BackendClient {
   createdAt: Date;
   updatedAt: Date;
   // Adicione outros campos conforme necessário
+}
+
+export interface Client {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  status: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+  updatedAt: string;
 }

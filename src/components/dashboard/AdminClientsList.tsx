@@ -1,25 +1,18 @@
 "use client";
-import { BackendUser } from "@/types/backend";
-import { Pagination } from "@/components/ui/Pagination";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-  Legend,
-} from "recharts";
-import { useMemo, useCallback } from "react";
-import { FixedSizeList as List } from "react-window";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useToasts } from "@/components/ui/Toast";
+import { Client } from "@/types/backend";
+import { deleteClient } from "@/actions/clients";
+import { FiSearch, FiPlus, FiEdit, FiEye, FiTrash2 } from "react-icons/fi";
 
 interface AdminClientsListProps {
-  clients: BackendUser[];
+  clients: Client[];
   meta: {
     page: number;
     limit: number;
-    total: number;
+    totalItems: number;
     totalPages: number;
     hasNext: boolean;
     hasPrevious: boolean;
@@ -28,229 +21,137 @@ interface AdminClientsListProps {
   error: string | null;
   searchTerm: string;
   statusFilter: string;
-  roleFilter: string;
-  onSearchChange: (value: string) => void;
-  onStatusFilterChange: (value: string) => void;
-  onRoleFilterChange: (value: string) => void;
+  onSearchChange: (term: string) => void;
+  onStatusFilterChange: (status: string) => void;
   onPageChange: (page: number) => void;
-  onAddClient: () => void;
-  onEditClient: (client: BackendUser) => void;
-  onDeleteClient: (id: string) => void;
-  deletingId?: string;
-  confirmDeleteId?: string;
-  onSelectClient: (client: BackendUser) => void;
+  onSelectClient: (client: Client) => void;
+  onClientDeleted?: () => void;
 }
 
-export function AdminClientsList({
+export default function AdminClientsList({
   clients,
   meta,
   loading,
   error,
   searchTerm,
   statusFilter,
-  roleFilter,
   onSearchChange,
   onStatusFilterChange,
-  onRoleFilterChange,
   onPageChange,
-  onAddClient,
-  onEditClient,
-  onDeleteClient,
-  deletingId,
-  confirmDeleteId,
   onSelectClient,
+  onClientDeleted,
 }: AdminClientsListProps) {
-  // Memoizar dados do gráfico
-  const registrationsByMonth = useMemo(() => {
-    return clients.reduce((acc, client) => {
-      if (!client.createdAt) return acc;
-      const date = new Date(client.createdAt);
-      const month = `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-      acc[month] = (acc[month] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-  }, [clients]);
+  const router = useRouter();
+  const { addToast } = useToasts();
+  const [deletingClientId, setDeletingClientId] = useState<string | null>(null);
+  const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
 
-  const lineChartData = useMemo(() => {
-    return Object.entries(registrationsByMonth)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([month, total]) => ({
-        month,
-        total,
-      }));
-  }, [registrationsByMonth]);
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
-  // Memoizar contagem de status
-  const totalActive = useMemo(
-    () => clients.filter((c) => c.status === "ACTIVE").length,
-    [clients]
-  );
-  const totalSuspended = useMemo(
-    () => clients.filter((c) => c.status === "SUSPENDED").length,
-    [clients]
-  );
-  const totalInactive = useMemo(
-    () => clients.filter((c) => c.status === "INACTIVE").length,
-    [clients]
-  );
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("pt-BR");
+  };
 
-  // Memoizar funções de callback
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onSearchChange(e.target.value);
-    },
-    [onSearchChange]
-  );
+  const handleViewClient = (client: Client) => {
+    onSelectClient(client);
+    router.push(`/dashboard/admin/clients/${client.id}`);
+  };
 
-  const handleStatusFilterChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onStatusFilterChange(e.target.value);
-    },
-    [onStatusFilterChange]
-  );
+  const handleEditClient = (client: Client) => {
+    onSelectClient(client);
+    router.push(`/dashboard/admin/clients/${client.id}/edit`);
+  };
 
-  const handleRoleFilterChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onRoleFilterChange(e.target.value);
-    },
-    [onRoleFilterChange]
-  );
+  const handleDeleteClick = (client: Client) => {
+    setClientToDelete(client);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!clientToDelete) return;
+
+    try {
+      setDeletingClientId(clientToDelete.id);
+      await deleteClient(clientToDelete.id);
+      addToast({
+        type: "success",
+        message: "Cliente excluído com sucesso!",
+      });
+      // Chamar callback para atualizar a lista
+      if (onClientDeleted) {
+        onClientDeleted();
+      }
+    } catch (error: any) {
+      addToast({
+        type: "error",
+        message: error.message || "Erro ao excluir cliente",
+      });
+    } finally {
+      setDeletingClientId(null);
+      setClientToDelete(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setClientToDelete(null);
+  };
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-md p-4">
+        <div className="flex">
+          <div className="text-red-800">
+            <p className="font-medium">Erro ao carregar clientes</p>
+            <p className="text-sm">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Filtros e Busca */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {/* Busca */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Buscar
-            </label>
+      {/* Barra de pesquisa e filtros */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <div className="relative">
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Nome ou email..."
+              placeholder="Buscar clientes..."
               value={searchTerm}
-              onChange={handleSearchChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
             />
           </div>
-
-          {/* Filtro de Status */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Status
-            </label>
-            <select
-              value={statusFilter}
-              onChange={handleStatusFilterChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">Todos</option>
-              <option value="ACTIVE">Ativo</option>
-              <option value="INACTIVE">Inativo</option>
-              <option value="SUSPENDED">Suspenso</option>
-            </select>
-          </div>
-
-          {/* Filtro de Role */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tipo
-            </label>
-            <select
-              value={roleFilter}
-              onChange={handleRoleFilterChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">Todos</option>
-              <option value="CLIENT">Cliente</option>
-              <option value="EMPLOYEE">Funcionário</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-          </div>
-
-          {/* Botão Adicionar */}
-          <div className="flex items-end">
-            <button
-              onClick={onAddClient}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              + Adicionar Cliente
-            </button>
-          </div>
         </div>
+        <div className="sm:w-48">
+          <select
+            value={statusFilter}
+            onChange={(e) => onStatusFilterChange(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
+          >
+            <option value="all">Todos os status</option>
+            <option value="ACTIVE">Ativo</option>
+            <option value="INACTIVE">Inativo</option>
+          </select>
+        </div>
+        <button
+          onClick={() => router.push("/dashboard/admin/clients/new")}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer flex items-center gap-2"
+        >
+          <FiPlus />
+          Novo Cliente
+        </button>
       </div>
 
-      {/* Feedback visual */}
-      {loading && (
-        <div className="bg-white p-4 rounded-lg shadow text-center text-blue-600 font-semibold">
-          Carregando clientes...
-        </div>
-      )}
-      {error && (
-        <div className="bg-white p-4 rounded-lg shadow text-center text-red-600 font-semibold">
-          {error}
-        </div>
-      )}
-
-      {/* Estatísticas */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-          <div>
-            <div className="text-2xl font-bold text-blue-600">{meta.total}</div>
-            <div className="text-sm text-gray-600">Total de Clientes</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-green-600">
-              {totalActive}
-            </div>
-            <div className="text-sm text-gray-600">Ativos</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-yellow-600">
-              {totalSuspended}
-            </div>
-            <div className="text-sm text-gray-600">Suspensos</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-red-600">
-              {totalInactive}
-            </div>
-            <div className="text-sm text-gray-600">Inativos</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Gráfico de evolução de cadastros */}
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
-        <h3 className="text-lg font-bold mb-2">Evolução de Cadastros</h3>
-        <div style={{ width: "100%", height: 250 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={lineChartData}
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="total"
-                stroke="#2563eb"
-                name="Cadastros"
-                strokeWidth={3}
-                dot={{ r: 4 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Tabela de Clientes */}
+      {/* Tabela de clientes */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -263,7 +164,7 @@ export function AdminClientsList({
                   Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tipo
+                  Telefone
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -277,118 +178,95 @@ export function AdminClientsList({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {!loading && clients.length === 0 ? (
+              {loading ? (
                 <tr>
                   <td
                     colSpan={6}
                     className="px-6 py-4 text-center text-gray-500"
                   >
-                    Nenhum cliente encontrado.
+                    Carregando...
+                  </td>
+                </tr>
+              ) : clients.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
+                    Nenhum cliente encontrado
                   </td>
                 </tr>
               ) : (
-                <List
-                  height={400}
-                  itemCount={clients.length}
-                  itemSize={56}
-                  width="100%"
-                  style={{ minWidth: "100%" }}
-                >
-                  {({ index, style }) => {
-                    const client = clients[index];
-                    return (
-                      <tr
-                        key={client.id}
-                        className="hover:bg-gray-50 cursor-pointer"
-                        onClick={() => onSelectClient(client)}
-                        style={style}
+                clients.map((client) => (
+                  <tr
+                    key={client.id}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0 h-10 w-10">
+                          <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
+                            <span className="text-sm font-medium text-gray-700">
+                              {getInitials(client.name)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {client.name}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {client.email}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {client.phone || "-"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          client.status === "ACTIVE"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
                       >
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10">
-                              <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                                <span className="text-sm font-medium text-gray-700">
-                                  {client.name?.charAt(0).toUpperCase()}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">
-                                {client.name || "Sem nome"}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {client.email}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              client.role === "ADMIN"
-                                ? "bg-purple-100 text-purple-800"
-                                : client.role === "EMPLOYEE"
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-green-100 text-green-800"
-                            }`}
-                          >
-                            {client.role === "ADMIN"
-                              ? "Admin"
-                              : client.role === "EMPLOYEE"
-                              ? "Funcionário"
-                              : "Cliente"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              client.status === "ACTIVE"
-                                ? "bg-green-100 text-green-800"
-                                : client.status === "SUSPENDED"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-red-100 text-red-800"
-                            }`}
-                          >
-                            {client.status === "ACTIVE"
-                              ? "Ativo"
-                              : client.status === "SUSPENDED"
-                              ? "Suspenso"
-                              : "Inativo"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {client.createdAt
-                              ? new Date(client.createdAt).toLocaleDateString()
-                              : "-"}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onEditClient(client);
-                            }}
-                            className="text-blue-600 hover:underline mr-2"
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onDeleteClient(client.id);
-                            }}
-                            className="text-red-600 hover:underline"
-                          >
-                            Excluir
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  }}
-                </List>
+                        {client.status === "ACTIVE" ? "Ativo" : "Inativo"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {formatDate(client.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleViewClient(client)}
+                          className="text-blue-600 hover:text-blue-900 cursor-pointer transition-colors"
+                        >
+                          <FiEye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleEditClient(client)}
+                          className="text-green-600 hover:text-green-900 cursor-pointer transition-colors"
+                        >
+                          <FiEdit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(client)}
+                          disabled={deletingClientId === client.id}
+                          className={`transition-colors ${
+                            deletingClientId === client.id
+                              ? "text-gray-400 cursor-not-allowed"
+                              : "text-red-600 hover:text-red-900 cursor-pointer"
+                          }`}
+                        >
+                          <FiTrash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>
@@ -396,14 +274,93 @@ export function AdminClientsList({
       </div>
 
       {/* Paginação */}
-      {meta.total > 0 && (
-        <div className="bg-white p-4 rounded-lg shadow">
-          <Pagination
-            totalItems={meta.total}
-            itemsPerPage={meta.limit}
-            currentPage={meta.page}
-            onPageChange={onPageChange}
-          />
+      {meta.totalPages > 1 && (
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-gray-700">
+            Mostrando {(meta.page - 1) * meta.limit + 1} a{" "}
+            {Math.min(meta.page * meta.limit, meta.totalItems)} de{" "}
+            {meta.totalItems} itens
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => onPageChange(meta.page - 1)}
+              disabled={!meta.hasPrevious}
+              className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+            >
+              Anterior
+            </button>
+
+            {Array.from({ length: Math.min(5, meta.totalPages) }, (_, i) => {
+              const page = i + 1;
+              return (
+                <button
+                  key={page}
+                  onClick={() => onPageChange(page)}
+                  className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer transition-colors ${
+                    meta.page === page
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            {meta.totalPages > 5 && (
+              <>
+                <span className="px-2 text-gray-500">...</span>
+                <button
+                  onClick={() => onPageChange(meta.totalPages)}
+                  className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer transition-colors"
+                >
+                  {meta.totalPages}
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={() => onPageChange(meta.page + 1)}
+              disabled={!meta.hasNext}
+              className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+            >
+              Próximo
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Confirmação de Delete */}
+      {clientToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Confirmar Exclusão
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Tem certeza que deseja excluir o cliente{" "}
+              <span className="font-semibold">{clientToDelete.name}</span>? Esta
+              ação não pode ser desfeita.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleCancelDelete}
+                disabled={deletingClientId === clientToDelete.id}
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                disabled={deletingClientId === clientToDelete.id}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
+              >
+                {deletingClientId === clientToDelete.id
+                  ? "Excluindo..."
+                  : "Excluir"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

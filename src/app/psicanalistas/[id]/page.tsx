@@ -33,7 +33,7 @@ export default async function PsicanalistaPage(props: {
         experience: mockupData.observacoes || "",
         rating: 5,
         price: "",
-        location: "",
+        location: "Online",
         languages: ["Português"],
         bio: mockupData.observacoes || "",
         education: "",

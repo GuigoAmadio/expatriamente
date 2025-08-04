@@ -32,11 +32,11 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
+    "http://72.60.1.234:3000/api/v1", // Backend NestJS na porta 3000
   timeout: 5000,
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
-    "a9a86733-b2a5-4f0e-b230-caed27ce74df",
+    "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
 };
 
 // Cache simples para requisições (mantido para compatibilidade)
@@ -238,6 +238,22 @@ export async function del<T>(
   config?: { clientId?: string; token?: string }
 ): Promise<ApiResponse<T>> {
   const result = (await api.delete<T>(url, {
+    headers: getDefaultHeaders(config),
+  })) as T;
+
+  return {
+    success: true,
+    data: result,
+    message: "Success",
+  };
+}
+
+export async function patch<T>(
+  url: string,
+  data?: unknown,
+  config?: { clientId?: string; token?: string }
+): Promise<ApiResponse<T>> {
+  const result = (await api.patch<T>(url, data, {
     headers: getDefaultHeaders(config),
   })) as T;
 

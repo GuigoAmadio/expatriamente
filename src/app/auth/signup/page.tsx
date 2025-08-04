@@ -4,29 +4,55 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
-import { loginAction } from "@/actions/auth";
-import { useAuth } from "@/context/AuthContext";
+import { registerAction } from "@/actions/auth";
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const router = useRouter();
-  const { login } = useAuth();
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
     setError("");
+    setSuccess("");
 
     try {
+      const name = formData.get("name") as string;
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
+      const confirmPassword = formData.get("confirmPassword") as string;
 
-      const result = await login(email, password);
-
-      if (!result.success) {
-        setError(result.error || "Erro ao fazer login");
+      // Validações básicas
+      if (!name || !email || !password || !confirmPassword) {
+        setError("Todos os campos são obrigatórios");
+        return;
       }
-      // O redirecionamento já é feito dentro do contexto!
+
+      if (password !== confirmPassword) {
+        setError("As senhas não coincidem");
+        return;
+      }
+
+      if (password.length < 6) {
+        setError("A senha deve ter pelo menos 6 caracteres");
+        return;
+      }
+
+      const result = await registerAction({
+        name,
+        email,
+        password,
+      });
+
+      if (result.success) {
+        setSuccess("Conta criada com sucesso! Redirecionando para login...");
+        setTimeout(() => {
+          router.push("/auth/signin");
+        }, 2000);
+      } else {
+        setError(result.message || "Erro ao criar conta");
+      }
     } catch (error) {
       setError("Erro interno do servidor");
     } finally {
@@ -61,39 +87,55 @@ export default function SignInPage() {
         </div>
 
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
-          Login
+          Criar Conta
         </h1>
 
-        {/* Login com Credenciais */}
         <form action={handleSubmit} className="space-y-4">
+          <Input
+            name="name"
+            type="text"
+            placeholder="Nome completo"
+            required
+            disabled={isLoading}
+          />
           <Input
             name="email"
             type="email"
-            placeholder="admin@expatriamente.com"
+            placeholder="seu@email.com"
             required
             disabled={isLoading}
           />
           <Input
             name="password"
             type="password"
-            placeholder="password123"
+            placeholder="Senha (mínimo 6 caracteres)"
             required
             disabled={isLoading}
           />
+          <Input
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirmar senha"
+            required
+            disabled={isLoading}
+          />
+
           {error && <p className="text-sm text-red-500">{error}</p>}
+          {success && <p className="text-sm text-green-500">{success}</p>}
+
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Entrando..." : "Entrar com Email e Senha"}
+            {isLoading ? "Criando conta..." : "Criar Conta"}
           </Button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Não tem uma conta?{" "}
+            Já tem uma conta?{" "}
             <a
-              href="/auth/signup"
+              href="/auth/signin"
               className="text-blue-600 hover:text-blue-500"
             >
-              Cadastre-se
+              Faça login
             </a>
           </p>
         </div>

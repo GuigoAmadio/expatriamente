@@ -13,14 +13,23 @@ export default async function ClientAppointmentsPage() {
 
   return (
     <RoleGuard allowedRoles={["CLIENT"]}>
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Meus Agendamentos</h1>
-          <RefreshButton clearAllCache={true} className="ml-auto">
-            🔄 Atualizar Agendamentos
-          </RefreshButton>
+      <div className="min-h-screen bg-white p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Meus Agendamentos
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Gerencie seus agendamentos e visualize sua agenda
+              </p>
+            </div>
+            <RefreshButton clearAllCache={true} className="ml-auto">
+              🔄 Atualizar Agendamentos
+            </RefreshButton>
+          </div>
+          <ClientAppointmentsClient appointments={appointments} />
         </div>
-        <ClientAppointmentsClient appointments={appointments} />
       </div>
     </RoleGuard>
   );

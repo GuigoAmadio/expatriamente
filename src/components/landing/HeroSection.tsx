@@ -101,7 +101,7 @@ export default function HeroSection() {
         }}
       >
         <Header />
-        <div className="flex flex-col md:flex-row items-start justify-center relative">
+        <div className="flex flex-col md:flex-row items-center md:items-start justify-center relative">
           {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}
           <motion.div
             className="flex items-center justify-center relative z-30 "

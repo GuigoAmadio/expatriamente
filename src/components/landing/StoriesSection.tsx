@@ -105,12 +105,10 @@ export default function StoriesSection() {
             }}
           >
             <h2>
-              Conheça <span className="text-orange-400">histórias reais </span>
+              Conheça <span className="text-red-950">histórias reais </span>
               de brasileiros que encontraram acolhimento e crescimento pessoal
               através da psicanálise,{" "}
-              <span className="text-orange-400">
-                mesmo estando longe de casa.
-              </span>
+              <span className="text-red-950">mesmo estando longe de casa.</span>
             </h2>
           </motion.div>
 

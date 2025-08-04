@@ -14,7 +14,22 @@ export async function getServices() {
     return await cacheUtils.getCachedData(
       "services:list",
       async () => {
-        const result = await serverGet<Service[]>("/services");
+        const result = await serverGet<{
+          success: boolean;
+          data: {
+            data: Service[];
+            meta: {
+              page: number;
+              limit: number;
+              totalItems: number;
+              totalPages: number;
+              hasNext: boolean;
+              hasPrevious: boolean;
+            };
+          };
+          message: string;
+        }>("/services");
+        console.log(result);
         return (result.data as any)?.data || result.data;
       },
       CACHE_CONFIG.services

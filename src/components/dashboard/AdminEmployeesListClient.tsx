@@ -1,106 +1,207 @@
 "use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { AdminEmployeesList } from "./AdminEmployeesList";
-import { Employee } from "@/types/backend";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { Modal } from "@/components/ui/Modal";
+import {
+  Employee,
+  getEmployees,
+  deleteEmployee,
+  toggleEmployeeStatus,
+} from "@/actions/employees";
 import { useToasts, Toast } from "@/components/ui/Toast";
-import { deleteEmployee } from "@/actions/employees";
 
-export default function AdminEmployeesListClient(props: any) {
+interface AdminEmployeesListClientProps {
+  employees?: Employee[];
+  meta?: any;
+  loading?: boolean;
+  error?: string | null;
+  searchTerm?: string;
+  statusFilter?: string;
+}
+
+export default function AdminEmployeesListClient({
+  employees: initialEmployees = [],
+  meta,
+  loading: initialLoading = false,
+  error: initialError = null,
+  searchTerm = "",
+  statusFilter = "",
+}: AdminEmployeesListClientProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { toasts, addToast, removeToast } = useToasts();
-  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const { toasts, addToast } = useToasts();
+  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
+  const [loading, setLoading] = useState(initialLoading);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [currentSearchTerm, setCurrentSearchTerm] = useState(searchTerm);
+  const [currentStatusFilter, setCurrentStatusFilter] = useState(statusFilter);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  function updateQuery(params: Record<string, any>) {
-    const current = new URLSearchParams(searchParams.toString());
-    Object.entries(params).forEach(([key, value]) => {
-      if (value === undefined || value === null || value === "") {
-        current.delete(key);
-      } else {
-        current.set(key, value);
-      }
-    });
-    router.push(`?${current.toString()}`);
-  }
+  // Se não recebeu employees iniciais, carrega
+  useEffect(() => {
+    if (initialEmployees.length === 0 && !initialLoading) {
+      loadEmployees();
+    }
+  }, [initialEmployees.length, initialLoading]);
 
-  const onSearchChange = (value: string) =>
-    updateQuery({ search: value, page: 1 });
-  const onStatusFilterChange = (value: string) =>
-    updateQuery({ status: value, page: 1 });
-  const onPageChange = (page: number) => updateQuery({ page });
+  const loadEmployees = async () => {
+    try {
+      setLoading(true);
+      const data = await getEmployees();
+      setEmployees(data);
+    } catch (error) {
+      console.error("Erro ao carregar funcionários:", error);
+      addToast({
+        message: "Erro ao carregar funcionários.",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const onAddEmployee = () => router.push("/dashboard/admin/employees/new");
+  const onViewEmployee = (emp: Employee) =>
+    router.push(`/dashboard/admin/employees/${emp.id}`);
   const onEditEmployee = (emp: Employee) =>
     router.push(`/dashboard/admin/employees/${emp.id}/edit`);
-  const onDeleteEmployee = (id: string) => setConfirmDeleteId(id);
   const onSelectEmployee = (emp: Employee) =>
     router.push(`/dashboard/admin/employees/${emp.id}`);
 
-  async function handleConfirmDelete() {
-    if (!confirmDeleteId) return;
-    setDeletingId(confirmDeleteId);
-    try {
-      const resp = await deleteEmployee(confirmDeleteId);
-      if (resp.success) {
-        addToast({
-          message: "Funcionário excluído com sucesso!",
-          type: "success",
+  const onDeleteEmployee = (employeeId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este funcionário?")) {
+      setDeletingId(employeeId);
+      deleteEmployee(employeeId)
+        .then(() => {
+          addToast({
+            message: "Funcionário excluído com sucesso!",
+            type: "success",
+          });
+
+          // Recarregar lista
+          return loadEmployees();
+        })
+        .catch((error: any) => {
+          console.error("Erro ao excluir funcionário:", error);
+
+          // Verificar se é erro de foreign key constraint
+          if (
+            error.message?.includes("agendamentos") ||
+            error.message?.includes("foreign key")
+          ) {
+            addToast({
+              message:
+                "Não é possível excluir funcionário com agendamentos ativos. Desative o funcionário ao invés de excluí-lo.",
+              type: "error",
+            });
+          } else {
+            addToast({
+              message: "Erro ao excluir funcionário. Tente novamente.",
+              type: "error",
+            });
+          }
+        })
+        .finally(() => {
+          setDeletingId(null);
         });
-        setConfirmDeleteId(null);
-        router.refresh();
-      } else {
-        addToast({
-          message: resp.message || "Erro ao excluir funcionário.",
-          type: "error",
-        });
-      }
-    } catch (e) {
-      addToast({ message: "Erro ao excluir funcionário.", type: "error" });
-    } finally {
-      setDeletingId(null);
     }
+  };
+
+  const onToggleEmployeeStatus = (employee: Employee) => {
+    const action = employee.isActive ? "desativar" : "ativar";
+    if (window.confirm(`Tem certeza que deseja ${action} este funcionário?`)) {
+      toggleEmployeeStatus(employee.id, !employee.isActive)
+        .then(() => {
+          addToast({
+            message: `Funcionário ${
+              action === "desativar" ? "desativado" : "ativado"
+            } com sucesso!`,
+            type: "success",
+          });
+
+          // Recarregar lista
+          return loadEmployees();
+        })
+        .catch((error: any) => {
+          console.error(`Erro ao ${action} funcionário:`, error);
+          addToast({
+            message: `Erro ao ${action} funcionário. Tente novamente.`,
+            type: "error",
+          });
+        });
+    }
+  };
+
+  const handleSearchChange = (value: string) => {
+    setCurrentSearchTerm(value);
+    // Implementar lógica de busca se necessário
+  };
+
+  const handleStatusFilterChange = (value: string) => {
+    setCurrentStatusFilter(value);
+    // Implementar lógica de filtro se necessário
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Implementar lógica de paginação se necessário
+  };
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded mb-4"></div>
+          <div className="h-64 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (initialError) {
+    return (
+      <div className="p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <h3 className="text-red-800 font-medium">
+            Erro ao carregar funcionários
+          </h3>
+          <p className="text-red-600 mt-1">{initialError}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <>
       <AdminEmployeesList
-        {...props}
-        onSearchChange={onSearchChange}
-        onStatusFilterChange={onStatusFilterChange}
-        onPageChange={onPageChange}
+        employees={employees}
+        meta={
+          meta || {
+            page: currentPage,
+            limit: 10,
+            total: employees.length,
+            totalPages: 1,
+            hasNext: false,
+            hasPrevious: false,
+          }
+        }
+        loading={loading}
+        error={initialError}
+        searchTerm={currentSearchTerm}
+        statusFilter={currentStatusFilter}
+        onSearchChange={handleSearchChange}
+        onStatusFilterChange={handleStatusFilterChange}
+        onPageChange={handlePageChange}
+        onAddEmployee={onAddEmployee}
+        onViewEmployee={onViewEmployee}
         onEditEmployee={onEditEmployee}
         onDeleteEmployee={onDeleteEmployee}
+        onToggleEmployeeStatus={onToggleEmployeeStatus}
         onSelectEmployee={onSelectEmployee}
         deletingId={deletingId || undefined}
         confirmDeleteId={confirmDeleteId || undefined}
       />
-      <Modal
-        open={!!confirmDeleteId}
-        onClose={() => setConfirmDeleteId(null)}
-        title="Confirmar exclusão"
-      >
-        <div className="mb-4">
-          Tem certeza que deseja excluir este funcionário?
-        </div>
-        <div className="flex gap-2 justify-end">
-          <button
-            className="px-4 py-2 bg-gray-200 rounded"
-            onClick={() => setConfirmDeleteId(null)}
-            disabled={!!deletingId}
-          >
-            Cancelar
-          </button>
-          <button
-            className="px-4 py-2 bg-red-600 text-white rounded"
-            onClick={handleConfirmDelete}
-            disabled={!!deletingId}
-          >
-            {deletingId ? "Excluindo..." : "Excluir"}
-          </button>
-        </div>
-      </Modal>
       {toasts.map((toast) => (
         <Toast key={toast.id} {...toast} />
       ))}

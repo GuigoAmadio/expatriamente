@@ -5,56 +5,114 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
+    "http://72.60.1.234:3000/api/v1", // Backend NestJS na porta 3000
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
-    "a9a86733-b2a5-4f0e-b230-caed27ce74df",
+    "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
 };
 
 // Função para obter headers que funciona tanto no servidor quanto no cliente
-async function getHeaders(): Promise<Record<string, string>> {
-  try {
-    // Sempre usa o client_id do environment
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-      "x-client-id": API_CONFIG.defaultClientId,
-    };
+async function getHeaders(): Promise<HeadersInit> {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "x-client-id": API_CONFIG.defaultClientId,
+  };
 
-    // Token de autenticação (opcional)
-    let token: string | undefined;
+  let token: string | undefined;
+
+  try {
+    console.log("🔍 [server-api] Iniciando busca do token...");
+
+    // Verificar se estamos no contexto de uma requisição
     if (typeof window === "undefined") {
-      // No servidor, tenta usar next/headers se disponível
       try {
+        // Sempre no servidor - acessa cookies HTTP-only
         const { cookies } = await import("next/headers");
         const cookieStore = await cookies();
-        token = cookieStore.get("auth_token")?.value;
+
+        console.log("🔍 [server-api] Cookie store obtido:", cookieStore);
+
+        const authCookie = cookieStore.get("auth_token");
+        console.log(
+          "🔍 [server-api] Cookie auth_token encontrado:",
+          authCookie
+        );
+
+        if (authCookie) {
+          token = authCookie.value;
+          console.log(
+            "✅ [server-api] Token extraído com sucesso:",
+            token ? `${token.substring(0, 20)}...` : "null"
+          );
+        } else {
+          console.log("❌ [server-api] Cookie auth_token não encontrado");
+
+          // Listar todos os cookies para debug
+          const allCookies = cookieStore.getAll();
+          console.log(
+            "🔍 [server-api] Todos os cookies disponíveis:",
+            allCookies.map((c) => c.name)
+          );
+        }
       } catch (error) {
-        // Ignora erro, segue sem token
+        console.error(
+          "❌ [server-api] Erro ao acessar cookies (fora do contexto de requisição):",
+          error
+        );
+        console.log("🔍 [server-api] Tentando método alternativo...");
+
+        // Método alternativo: usar headers da requisição
+        try {
+          const { headers: requestHeaders } = await import("next/headers");
+          const headersList = await requestHeaders();
+          const cookieHeader = headersList.get("cookie");
+
+          if (cookieHeader) {
+            console.log(
+              "🔍 [server-api] Cookie header encontrado:",
+              cookieHeader
+            );
+            const cookies = cookieHeader.split(";").reduce((acc, cookie) => {
+              const [key, value] = cookie.trim().split("=");
+              if (key && value) {
+                acc[key] = value;
+              }
+              return acc;
+            }, {} as Record<string, string>);
+
+            token = cookies.auth_token;
+            console.log(
+              "🔍 [server-api] Token extraído do header:",
+              token ? `${token.substring(0, 20)}...` : "null"
+            );
+          }
+        } catch (headerError) {
+          console.error(
+            "❌ [server-api] Erro ao acessar headers:",
+            headerError
+          );
+        }
       }
     } else {
-      // No cliente, usa document.cookie
-      const cookies = document.cookie.split(";").reduce((acc, cookie) => {
-        const [key, value] = cookie.trim().split("=");
-        acc[key] = value;
-        return acc;
-      }, {} as Record<string, string>);
-      token = cookies.auth_token;
+      console.log(
+        "❌ [server-api] Executando no cliente - não é possível acessar cookies HTTP-only"
+      );
     }
-    console.log("TOKEEEENN A A AAA", token);
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
-    return headers;
   } catch (error) {
-    if (process.env.NODE_ENV === "development") {
-      console.error("❌ Erro ao obter headers:", error);
-    }
-    return {
-      "Content-Type": "application/json",
-      "x-client-id": API_CONFIG.defaultClientId,
-    };
+    console.error("❌ [server-api] Erro geral ao acessar cookies:", error);
   }
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+    console.log("✅ [server-api] Authorization header adicionado");
+  } else {
+    console.log(
+      "❌ [server-api] Nenhum token disponível - requisição sem autenticação"
+    );
+  }
+
+  console.log("🔍 [server-api] Headers finais:", headers);
+  return headers;
 }
 
 // Funções para Server Actions
