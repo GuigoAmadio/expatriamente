@@ -23,7 +23,7 @@ export {
 export {
   createEmployee,
   getEmployees,
-  getEmployee,
+  getEmployeeById,
   updateEmployee,
   deleteEmployee,
 } from "./employees";

@@ -171,8 +171,6 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
 
   // Obter dados da semana atual
   const currentWeekStart = getWeekStart(currentWeek);
-  const currentWeekEnd = new Date(currentWeekStart);
-  currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
 
   // Horários de atendimento (8h às 18h)
   const workingHours = useMemo(() => {
@@ -186,6 +184,10 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
   // Gerar dados do calendário
   const calendarData = useMemo(() => {
     const data: CalendarCell[] = [];
+
+    // Calcular o final da semana atual
+    const currentWeekEnd = new Date(currentWeekStart);
+    currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
 
     // Gerar dias da semana
     const weekDays: Date[] = [];
@@ -230,6 +232,8 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
   const filteredAppointments = useMemo(() => {
     let filtered = appointments.filter((apt) => {
       const aptDate = new Date(apt.startTime);
+      const currentWeekEnd = new Date(currentWeekStart);
+      currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
       return aptDate >= currentWeekStart && aptDate <= currentWeekEnd;
     });
 
@@ -251,13 +255,7 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
     }
 
     return filtered;
-  }, [
-    appointments,
-    currentWeekStart,
-    currentWeekEnd,
-    selectedDay,
-    selectedHour,
-  ]);
+  }, [appointments, currentWeekStart, selectedDay, selectedHour]);
 
   // Função para lidar com clique no calendário
   const handleCalendarClick = useCallback(
@@ -817,7 +815,10 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
           </button>
           <div className="text-center">
             <h3 className="text-lg font-semibold">
-              {formatDate(currentWeekStart)} - {formatDate(currentWeekEnd)}
+              {formatDate(currentWeekStart)} -{" "}
+              {formatDate(
+                new Date(currentWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000)
+              )}
             </h3>
             <p className="text-sm text-gray-500">
               {filteredAppointments.length} agendamento(s){" "}

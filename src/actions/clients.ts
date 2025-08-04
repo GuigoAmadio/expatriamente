@@ -233,3 +233,38 @@ export async function deleteClient(id: string): Promise<boolean> {
     throw error;
   }
 }
+
+// Listar clientes por employee
+export async function getClientsByEmployee(employeeId: string) {
+  try {
+    console.log(
+      "🔍 [server-action] Buscando clientes do employee:",
+      employeeId
+    );
+
+    const response = await serverFetch<{
+      success: boolean;
+      data: {
+        data: Client[];
+      };
+      message: string;
+    }>(`/clients?employeeId=${employeeId}`);
+
+    console.log("✅ [server-action] Clientes encontrados:", response.data);
+    return {
+      success: response.success,
+      data: response.data?.data || [],
+      message: response.message,
+    };
+  } catch (error) {
+    console.error(
+      "❌ [server-action] Erro ao buscar clientes do employee:",
+      error
+    );
+    return {
+      success: false,
+      data: [],
+      message: "Erro ao buscar clientes",
+    };
+  }
+}

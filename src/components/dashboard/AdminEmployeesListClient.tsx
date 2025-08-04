@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { AdminEmployeesList } from "./AdminEmployeesList";
 import {
@@ -38,14 +38,7 @@ export default function AdminEmployeesListClient({
   const [currentStatusFilter, setCurrentStatusFilter] = useState(statusFilter);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Se não recebeu employees iniciais, carrega
-  useEffect(() => {
-    if (initialEmployees.length === 0 && !initialLoading) {
-      loadEmployees();
-    }
-  }, [initialEmployees.length, initialLoading]);
-
-  const loadEmployees = async () => {
+  const loadEmployees = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getEmployees();
@@ -59,7 +52,14 @@ export default function AdminEmployeesListClient({
     } finally {
       setLoading(false);
     }
-  };
+  }, [addToast]);
+
+  // Se não recebeu employees iniciais, carrega
+  useEffect(() => {
+    if (initialEmployees.length === 0 && !initialLoading) {
+      loadEmployees();
+    }
+  }, [initialEmployees.length, initialLoading, loadEmployees]);
 
   const onAddEmployee = () => router.push("/dashboard/admin/employees/new");
   const onViewEmployee = (emp: Employee) =>

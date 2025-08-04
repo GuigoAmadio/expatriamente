@@ -1,25 +1,25 @@
 "use client";
-import { BackendUser } from "@/types/backend";
+import { Client } from "@/types/backend";
 import { useRouter } from "next/navigation";
 import { useMemo, useCallback } from "react";
 import { FixedSizeList as List } from "react-window";
 
 interface EmployeeClientsListProps {
-  clients: BackendUser[];
+  clients: Client[];
 }
 
 export function EmployeeClientsList({ clients }: EmployeeClientsListProps) {
   const router = useRouter();
 
   const onSelectClient = useCallback(
-    (client: BackendUser) => {
+    (client: Client) => {
       router.push(`/dashboard/employee/clients/${client.id}`);
     },
     [router]
   );
 
   const onEditClient = useCallback(
-    (client: BackendUser) => {
+    (client: Client) => {
       router.push(`/dashboard/employee/clients/${client.id}/edit`);
     },
     [router]

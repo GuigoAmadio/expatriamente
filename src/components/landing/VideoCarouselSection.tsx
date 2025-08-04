@@ -106,7 +106,7 @@ export default function VideoCarouselSection() {
         });
       }
     });
-  }, []);
+  }, [playingIndex]);
 
   const handleVideoClick = (index: number) => {
     const video = videoRefs.current[index];

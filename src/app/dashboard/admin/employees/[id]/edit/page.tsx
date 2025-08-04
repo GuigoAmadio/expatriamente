@@ -138,7 +138,7 @@ export default function EditEmployeePage() {
     if (params.id) {
       fetchEmployee();
     }
-  }, [params.id, addToast, router]);
+  }, [params.id, addToast, router, emptyWorkingHours]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

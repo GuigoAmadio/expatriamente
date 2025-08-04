@@ -6,6 +6,7 @@ import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
 import { loginAction } from "@/actions/auth";
 import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +40,7 @@ export default function SignInPage() {
       <div className="p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full max-w-md">
         {/* Link para voltar */}
         <div className="mb-4">
-          <a
+          <Link
             href="/"
             className="text-blue-600 hover:text-blue-500 text-sm flex items-center gap-1"
           >
@@ -57,7 +58,7 @@ export default function SignInPage() {
               />
             </svg>
             Voltar ao início
-          </a>
+          </Link>
         </div>
 
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
@@ -89,12 +90,12 @@ export default function SignInPage() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Não tem uma conta?{" "}
-            <a
+            <Link
               href="/auth/signup"
               className="text-blue-600 hover:text-blue-500"
             >
               Cadastre-se
-            </a>
+            </Link>
           </p>
         </div>
       </div>

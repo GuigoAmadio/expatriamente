@@ -33,10 +33,7 @@ export interface GetAppointmentsCountParams {
 }
 
 export interface GetAppointmentsCountResponse {
-  success: boolean;
-  data?: {
-    count: number;
-  };
+  count: number;
 }
 
 // Obter quantidade de appointments com filtros opcionais

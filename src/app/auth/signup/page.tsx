@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
 import { registerAction } from "@/actions/auth";
+import Link from "next/link";
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +66,7 @@ export default function SignUpPage() {
       <div className="p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full max-w-md">
         {/* Link para voltar */}
         <div className="mb-4">
-          <a
+          <Link
             href="/"
             className="text-blue-600 hover:text-blue-500 text-sm flex items-center gap-1"
           >
@@ -83,7 +84,7 @@ export default function SignUpPage() {
               />
             </svg>
             Voltar ao início
-          </a>
+          </Link>
         </div>
 
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
@@ -131,12 +132,12 @@ export default function SignUpPage() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Já tem uma conta?{" "}
-            <a
+            <Link
               href="/auth/signin"
               className="text-blue-600 hover:text-blue-500"
             >
               Faça login
-            </a>
+            </Link>
           </p>
         </div>
       </div>
