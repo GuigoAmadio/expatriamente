@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useToasts, Toast } from "@/components/ui/Toast";
 import { Employee, WorkingHours } from "@/types/backend";
@@ -31,7 +31,7 @@ export default function EditEmployeePage() {
     isActive: true,
   });
 
-  const emptyWorkingHours: WorkingHours = {
+  const [workingHours, setWorkingHours] = useState<WorkingHours>({
     monday: [],
     tuesday: [],
     wednesday: [],
@@ -39,10 +39,20 @@ export default function EditEmployeePage() {
     friday: [],
     saturday: [],
     sunday: [],
-  };
+  });
 
-  const [workingHours, setWorkingHours] =
-    useState<WorkingHours>(emptyWorkingHours);
+  const emptyWorkingHours = useMemo(
+    () => ({
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: [],
+    }),
+    []
+  );
 
   const daysOfWeek = [
     { key: "monday", label: "Segunda-feira" },

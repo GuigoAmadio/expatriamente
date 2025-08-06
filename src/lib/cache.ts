@@ -323,6 +323,11 @@ export const cacheUtils = {
     await advancedCache.invalidatePattern(pattern);
   },
 
+  // Deletar chave específica
+  async delete(key: string): Promise<void> {
+    await advancedCache.delete(key);
+  },
+
   // Prefetch de dados principais
   async prefetchMainData(): Promise<void> {
     if (typeof window === "undefined") return;

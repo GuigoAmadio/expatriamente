@@ -5,7 +5,7 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "http://72.60.1.234:3000/api/v1", // Backend NestJS na porta 3000
+    "http://72.60.1.234/api/v1", // Backend NestJS na porta 3000
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
     "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
@@ -123,12 +123,13 @@ export async function serverFetch<T>(
   const headers = await getHeaders();
 
   // Log para debug
-  console.log("[server-api] Fazendo fetch:", {
-    url: `${API_CONFIG.baseURL}${url}`,
-    headers: { ...headers, ...(options.headers || {}) },
-    method: options.method || "GET",
-  });
-
+  if (process.env.NODE_ENV === "development") {
+    console.log("[server-api] Fazendo fetch:", {
+      url: `${API_CONFIG.baseURL}${url}`,
+      headers: { ...headers, ...(options.headers || {}) },
+      method: options.method || "GET",
+    });
+  }
   const response = await fetch(`${API_CONFIG.baseURL}${url}`, {
     ...options,
     headers: {

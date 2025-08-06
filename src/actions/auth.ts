@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { LoginInput, User } from "@/types";
-import { serverPost, serverGet } from "@/lib/server-api";
+import { serverPost, serverGet, serverPut } from "@/lib/server-api";
 import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
 
 // Interfaces para tipar os dados da API
@@ -40,6 +40,11 @@ interface AuthMeResponse {
 export async function loginAction(data: LoginInput) {
   try {
     console.log("🔐 Expatriamente - Iniciando login...");
+
+    // Limpar cache de usuário anterior antes do novo login
+    console.log("🗑️ [Auth] Limpando cache de usuário anterior...");
+    await cacheUtils.delete("profile:current-user");
+    await cacheUtils.invalidateByType("profile");
 
     const result = await serverPost<LoginApiResponse>("/auth/login", data);
     console.log("📋 result.data:", JSON.stringify(result.data, null, 2));
@@ -128,7 +133,7 @@ export async function loginAction(data: LoginInput) {
       };
 
       await cacheUtils.getCachedData(
-        `auth:user:${(responseData as any).user.id}`,
+        "profile:current-user",
         async () => userForCache,
         { ...CACHE_CONFIG.profile, ttl: 30 * 60 * 1000 } // 30 minutos para dados de perfil
       );
@@ -292,6 +297,10 @@ export async function logoutAction() {
     // Limpar cache de autenticação
     console.log("🗑️ [Auth] Invalidando cache de autenticação...");
     await cacheUtils.invalidateByType("profile");
+
+    // Deletar também a chave específica do usuário atual
+    await cacheUtils.delete("profile:current-user");
+
     console.log("✅ [Auth] Cache de autenticação invalidado");
 
     redirect("/auth/signin");
@@ -304,9 +313,19 @@ export async function logoutAction() {
 // Verificar se o usuário está autenticado
 export async function getAuthUser(): Promise<User | null> {
   try {
+    // Verificar se existe token válido antes de usar cache
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get("auth_token")?.value;
+
+    if (!authToken) {
+      console.log("🔍 [Auth] Nenhum token encontrado, limpando cache...");
+      await cacheUtils.delete("profile:current-user");
+      return null;
+    }
+
     // Tentar obter do cache primeiro
     const cachedUser = await cacheUtils.getCachedData(
-      "auth:current-user",
+      "profile:current-user",
       async () => {
         console.log("🔍 [Auth] Buscando dados do usuário no backend...");
         const result = await serverGet<AuthMeResponse>("/auth/me");
@@ -450,6 +469,96 @@ export async function clearAuthCookiesAction() {
     return {
       success: false,
       message: "Erro ao limpar cookies de autenticação",
+    };
+  }
+}
+
+// Verificar se é primeira vez que o usuário acessa
+export async function checkFirstTimeAccess(): Promise<{
+  isFirstTime: boolean;
+  message: string;
+}> {
+  try {
+    const user = await getAuthUser();
+
+    if (!user) {
+      console.log("🔍 [FirstTime] Usuário não autenticado");
+      return {
+        isFirstTime: false,
+        message: "Usuário não autenticado",
+      };
+    }
+
+    // Verificar se é EMPLOYEE e se tem email padrão (gerado automaticamente)
+    const isEmployee = (user as any).role === "EMPLOYEE";
+    const hasDefaultEmail =
+      user.email.includes("@expatriamente.com") &&
+      (user.email.includes("psicanalista") ||
+        user.email.includes("normalized") ||
+        // Corrigir o match para retornar boolean
+        !!user.email.match(/^[a-z.]+@expatriamente\.com$/));
+
+    const isFirstTime = isEmployee && hasDefaultEmail;
+
+    console.log("🔍 [FirstTime] Verificação:", {
+      userId: user.id,
+      userEmail: user.email,
+      userRole: (user as any).role,
+      isEmployee,
+      hasDefaultEmail,
+      isFirstTime,
+    });
+
+    return {
+      isFirstTime,
+      message: isFirstTime
+        ? "Primeira vez acessando - precisa atualizar credenciais"
+        : "Usuário já configurado",
+    };
+  } catch (error: any) {
+    console.error("Erro ao verificar primeira vez:", error);
+    return {
+      isFirstTime: false,
+      message: "Erro ao verificar status do usuário",
+    };
+  }
+}
+
+// Atualizar dados do usuário (email e senha)
+export async function updateUserCredentialsAction(data: {
+  email: string;
+  password: string;
+}): Promise<{
+  success: boolean;
+  message: string;
+}> {
+  try {
+    const result = await serverPut<{
+      success: true;
+      data: User[];
+      message: "Success";
+    }>("/auth/update-credentials", data);
+
+    // Invalidar cache de autenticação após atualização
+    console.log(
+      "🔄 [Auth] Invalidando cache após atualização de credenciais..."
+    );
+    await cacheUtils.invalidateByType("profile");
+
+    // Invalidar também a chave específica do usuário atual
+    await cacheUtils.delete("profile:current-user");
+
+    console.log("✅ [Auth] Cache invalidado após atualização de credenciais");
+
+    return {
+      success: true,
+      message: "Credenciais atualizadas com sucesso",
+    };
+  } catch (error: any) {
+    console.error("Erro ao atualizar credenciais:", error);
+    return {
+      success: false,
+      message: error.message || "Erro interno do servidor",
     };
   }
 }

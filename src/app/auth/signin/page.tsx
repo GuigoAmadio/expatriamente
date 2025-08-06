@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
-import { loginAction } from "@/actions/auth";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
