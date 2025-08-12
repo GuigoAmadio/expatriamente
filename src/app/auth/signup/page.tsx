@@ -5,17 +5,32 @@ import { useState } from "react";
 import { Button } from "@/components/ui";
 import { Input } from "@/components/ui";
 import { registerAction } from "@/actions/auth";
+import { useToast } from "@/components/ui/Toast";
+import { extractErrorMessage, getErrorType } from "@/lib/error-utils";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Lock,
+  ArrowLeft,
+  CheckCircle,
+} from "lucide-react";
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formError, setFormError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
+  const { showToast } = useToast();
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
-    setError("");
+    setFormError("");
     setSuccess("");
 
     try {
@@ -26,17 +41,27 @@ export default function SignUpPage() {
 
       // Validações básicas
       if (!name || !email || !password || !confirmPassword) {
-        setError("Todos os campos são obrigatórios");
+        setFormError("Todos os campos são obrigatórios");
         return;
       }
 
-      if (password !== confirmPassword) {
-        setError("As senhas não coincidem");
+      if (name.length < 2) {
+        setFormError("O nome deve ter pelo menos 2 caracteres");
+        return;
+      }
+
+      if (!email.includes("@")) {
+        setFormError("Por favor, insira um email válido");
         return;
       }
 
       if (password.length < 6) {
-        setError("A senha deve ter pelo menos 6 caracteres");
+        setFormError("A senha deve ter pelo menos 6 caracteres");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setFormError("As senhas não coincidem");
         return;
       }
 
@@ -48,99 +73,228 @@ export default function SignUpPage() {
 
       if (result.success) {
         setSuccess("Conta criada com sucesso! Redirecionando para login...");
+        showToast({
+          type: "success",
+          title: "Conta Criada",
+          message: "Sua conta foi criada com sucesso!",
+        });
         setTimeout(() => {
           router.push("/auth/signin");
         }, 2000);
       } else {
-        setError(result.message || "Erro ao criar conta");
+        const errorMessage = extractErrorMessage(result.message);
+        const errorType = getErrorType(result);
+
+        setFormError(errorMessage);
+        showToast({
+          type: errorType,
+          title: "Erro no Cadastro",
+          message: errorMessage,
+        });
       }
     } catch (error) {
-      setError("Erro interno do servidor");
+      const errorMessage = extractErrorMessage(error);
+      setFormError(errorMessage);
+      showToast({
+        type: "error",
+        title: "Erro Inesperado",
+        message: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full max-w-md">
-        {/* Link para voltar */}
-        <div className="mb-4">
-          <Link
-            href="/"
-            className="text-blue-600 hover:text-blue-500 text-sm flex items-center gap-1"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Voltar ao início
-          </Link>
-        </div>
-
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
-          Criar Conta
-        </h1>
-
-        <form action={handleSubmit} className="space-y-4">
-          <Input
-            name="name"
-            type="text"
-            placeholder="Nome completo"
-            required
-            disabled={isLoading}
-          />
-          <Input
-            name="email"
-            type="email"
-            placeholder="seu@email.com"
-            required
-            disabled={isLoading}
-          />
-          <Input
-            name="password"
-            type="password"
-            placeholder="Senha (mínimo 6 caracteres)"
-            required
-            disabled={isLoading}
-          />
-          <Input
-            name="confirmPassword"
-            type="password"
-            placeholder="Confirmar senha"
-            required
-            disabled={isLoading}
-          />
-
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          {success && <p className="text-sm text-green-500">{success}</p>}
-
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Criando conta..." : "Criar Conta"}
-          </Button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Já tem uma conta?{" "}
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        {/* Card Principal */}
+        <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/30 p-8">
+          {/* Header */}
+          <div className="mb-8">
             <Link
-              href="/auth/signin"
-              className="text-blue-600 hover:text-blue-500"
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-pink-500 transition-colors mb-6"
             >
-              Faça login
+              <ArrowLeft className="w-4 h-4" />
+              Voltar ao início
             </Link>
-          </p>
+
+            <div className="text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="w-16 h-16 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <span className="text-2xl">✨</span>
+              </motion.div>
+
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
+                Criar Conta
+              </h1>
+              <p className="text-gray-600 mt-2">Junte-se à nossa comunidade</p>
+            </div>
+          </div>
+
+          {/* Formulário */}
+          <motion.form
+            action={handleSubmit}
+            className="space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            {/* Campo Nome */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Nome Completo
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  name="name"
+                  type="text"
+                  placeholder="Seu nome completo"
+                  required
+                  disabled={isLoading}
+                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            {/* Campo Email */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  name="email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  required
+                  disabled={isLoading}
+                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            {/* Campo Senha */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Senha</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Mínimo 6 caracteres"
+                  required
+                  disabled={isLoading}
+                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  disabled={isLoading}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Campo Confirmar Senha */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Confirmar Senha
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Input
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirme sua senha"
+                  required
+                  disabled={isLoading}
+                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  disabled={isLoading}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Mensagem de Erro */}
+            {formError && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 bg-red-50 border border-red-200 rounded-lg"
+              >
+                <p className="text-sm text-red-600">{formError}</p>
+              </motion.div>
+            )}
+
+            {/* Mensagem de Sucesso */}
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2"
+              >
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                <p className="text-sm text-green-600">{success}</p>
+              </motion.div>
+            )}
+
+            {/* Botão de Cadastro */}
+            <Button
+              type="submit"
+              className="!w-full !h-12 !bg-gradient-to-r !from-pink-400 !to-rose-500 hover:!from-pink-500 hover:!to-rose-600 !text-white !font-semibold !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
+              loading={isLoading}
+              disabled={isLoading}
+            >
+              {isLoading ? "Criando conta..." : "Criar Conta"}
+            </Button>
+          </motion.form>
+
+          {/* Footer */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 text-center"
+          >
+            <p className="text-sm text-gray-600">
+              Já tem uma conta?{" "}
+              <Link
+                href="/auth/signin"
+                className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
+              >
+                Faça login
+              </Link>
+            </p>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -4,7 +4,8 @@ export interface User {
   email: string;
   name?: string;
   image?: string;
-  role: "user" | "admin";
+  role: "SUPER_ADMIN" | "ADMIN" | "EMPLOYEE" | "CLIENT";
+  employeeId?: string;
   createdAt: Date;
   updatedAt: Date;
 }

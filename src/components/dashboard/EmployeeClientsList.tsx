@@ -1,8 +1,8 @@
 "use client";
 import { Client } from "@/types/backend";
 import { useRouter } from "next/navigation";
-import { useMemo, useCallback } from "react";
-import { FixedSizeList as List } from "react-window";
+import { useCallback } from "react";
+import { FiCheckCircle, FiUser, FiXCircle, FiMail } from "react-icons/fi";
 
 interface EmployeeClientsListProps {
   clients: Client[];
@@ -18,77 +18,64 @@ export function EmployeeClientsList({ clients }: EmployeeClientsListProps) {
     [router]
   );
 
-  const onEditClient = useCallback(
-    (client: Client) => {
-      router.push(`/dashboard/employee/clients/${client.id}/edit`);
-    },
-    [router]
-  );
-
-  const onDeleteClient = useCallback((id: string) => {
-    // Implementar lógica de exclusão
-    console.log(`Excluir cliente com ID: ${id}`);
-  }, []);
+  // Removidos editar/excluir no contexto do employee
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Meus Clientes</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {clients.length === 0 ? (
-          <div className="col-span-full text-center text-gray-500">
-            Nenhum cliente encontrado.
-          </div>
-        ) : (
-          <List
-            height={400}
-            itemCount={clients.length}
-            itemSize={56}
-            width="100%"
-            style={{ minWidth: "100%" }}
-          >
-            {({ index, style }) => {
-              const client = clients[index];
-              return (
-                <tr
-                  key={client.id}
-                  className="hover:bg-gray-50 cursor-pointer"
-                  onClick={() => onSelectClient(client)}
-                  style={style}
-                >
-                  {/* Renderize as células da linha conforme já está no seu código */}
-                  <td className="px-6 py-4 whitespace-nowrap">{client.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {client.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {client.status}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onEditClient(client);
-                      }}
-                      className="text-blue-600 hover:underline mr-2"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteClient(client.id);
-                      }}
-                      className="text-red-600 hover:underline"
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              );
-            }}
-          </List>
-        )}
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          Meus Clientes
+        </h1>
+        <p className="text-sm text-gray-500">Total: {clients.length}</p>
       </div>
+
+      {clients.length === 0 ? (
+        <div className="flex h-40 items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white text-gray-500">
+          Nenhum cliente encontrado
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {clients.map((client) => (
+            <div
+              key={client.id}
+              className="group relative rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md cursor-pointer"
+              onClick={() => onSelectClient(client)}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600">
+                    <FiUser className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-gray-900 group-hover:text-blue-700 flex items-center gap-2">
+                      {client.name}
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600 flex items-center gap-1">
+                      <FiMail className="h-4 w-4" /> {client.email}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${
+                    client.status === "ACTIVE"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {client.status === "ACTIVE" ? (
+                    <FiCheckCircle className="h-3.5 w-3.5" />
+                  ) : (
+                    <FiXCircle className="h-3.5 w-3.5" />
+                  )}
+                  {client.status}
+                </span>
+              </div>
+
+              {/* Removidos botões de Editar/Excluir conforme solicitado */}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -11,6 +11,8 @@ body {
   padding: 0;
   overflow-x: hidden;
   width: 100%;
+  /* Fonte padrão do site: Akzidens */
+  font-family: var(--font-akzidens), Arial, Helvetica, sans-serif;
 }
 
 /* HeroSection specific styles */
@@ -191,6 +193,18 @@ body {
 .font-akzidens {
   font-family: var(--font-akzidens) !important;
   letter-spacing: 0.01em;
+}
+
+/* Utilitário para aplicar Montserrat explicitamente (corpo/texto) */
+.font-body {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif !important;
+}
+
+/* Títulos condensados (Bebas Neue) */
+.font-condensed {
+  font-family: var(--font-condensed), "Bebas Neue", Impact, Haettenschweiler,
+    "Arial Narrow Bold", sans-serif !important;
+  letter-spacing: 0.02em;
 }
 
 /* Classes de Hierarquia Visual */
@@ -816,4 +830,15 @@ svg {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+/* Padrão minimalista de bolinhas para fundos de páginas/calendários */
+.bg-dots {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.bg-dots-muted {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 20px 20px;
 }

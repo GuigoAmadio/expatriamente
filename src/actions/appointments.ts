@@ -127,11 +127,8 @@ export async function getAppointmentsByEmployee(employeeId: string) {
     const data = await cacheUtils.getCachedData(
       `appointments:employee:${employeeId}`,
       async () => {
-        const result = await serverGet<{ data: Appointment[] }>(
-          `/appointments?employeeId=${employeeId}`
-        );
-        console.log("result", result);
-        return result.data?.data || [];
+        const result = await getAppointments({ employeeId });
+        return result.data || [];
       },
       CACHE_CONFIG.appointments
     );
@@ -355,6 +352,7 @@ export async function getWeekAppointments(weekStart: string) {
 
 // Listar appointments paginados e filtrados
 export async function getAppointments(params: Record<string, any> = {}) {
+  console.log("params", params);
   try {
     const query = new URLSearchParams();
     if (params.page) query.append("page", params.page.toString());

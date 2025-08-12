@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { FiUser, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function Header({
   backgroundColor,
@@ -25,6 +26,7 @@ export default function Header({
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
   const { t } = useLanguage();
   const { currentSection, setCurrentSection } = useNavigation();
   const router = useRouter();
@@ -77,6 +79,23 @@ export default function Header({
     setIsServicesDropdownOpen(false); // Fecha o dropdown após navegação
   };
 
+  const handleLoginClick = async () => {
+    setIsLoginLoading(true);
+
+    // Simular um pequeno delay para mostrar o loading
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    if (user) {
+      if (user.role === "ADMIN") router.push("/dashboard/admin");
+      else if (user.role === "EMPLOYEE") router.push("/dashboard/employee");
+      else router.push("/dashboard/client");
+    } else {
+      router.push("/auth/signin");
+    }
+
+    setIsLoginLoading(false);
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -109,9 +128,9 @@ export default function Header({
           <Image
             src="/logoFinal.svg"
             alt="Expatriamente Logo"
-            width={80}
-            height={80}
-            className="object-contain w-[12vw] h-[12vw] lg:w-[8vw] lg:h-[8vw]"
+            width={100}
+            height={100}
+            className="object-contain w-[14vw] h-[14vw] lg:w-[10vw] lg:h-[10vw]"
             priority
           />
         </div>
@@ -201,24 +220,22 @@ export default function Header({
                 Psicanalistas
               </button>
             </nav>
-            {/* Ícone de login à extrema direita */}
+
+            {/* Ícone de login à extrema direita com loading */}
             <button
               className="ml-auto flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:bg-white/20 transition-colors"
               title={user ? "Ir para o dashboard" : "Entrar"}
-              onClick={() => {
-                if (user) {
-                  if (user.role === "ADMIN") router.push("/dashboard/admin");
-                  else if (user.role === "EMPLOYEE")
-                    router.push("/dashboard/employee");
-                  else router.push("/dashboard/client");
-                } else {
-                  router.push("/auth/signin");
-                }
-              }}
+              onClick={handleLoginClick}
+              disabled={isLoginLoading}
             >
-              <FiUser size={24} className="lg:w-7 lg:h-7 text-[#0A4C8A]" />
+              {isLoginLoading ? (
+                <LoadingSpinner size="sm" color="blue" />
+              ) : (
+                <FiUser size={24} className="lg:w-7 lg:h-7 text-[#0A4C8A]" />
+              )}
             </button>
           </div>
+
           {/* Linha horizontal alinhada apenas com textos e menu */}
           <div className="w-full flex flex-row">
             <div className="border-b border-[#0A4C8A] flex-1" />
@@ -312,6 +329,27 @@ export default function Header({
                 >
                   Psicanalistas
                 </button>
+
+                {/* Login button no mobile menu */}
+                <div className="border-t border-white/10">
+                  <button
+                    onClick={handleLoginClick}
+                    disabled={isLoginLoading}
+                    className="w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors flex items-center gap-2"
+                  >
+                    {isLoginLoading ? (
+                      <>
+                        <LoadingSpinner size="sm" color="blue" />
+                        <span>Carregando...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FiUser size={16} />
+                        <span>{user ? "Dashboard" : "Entrar"}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </nav>
             </motion.div>
           )}

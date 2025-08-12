@@ -111,16 +111,16 @@ export default function FooterSection() {
             {/* Renderizar itens de contato sem classes condicionais */}
             {[
               {
-                icon: FaEnvelope,
-                text: "contato@expatriamente.com",
-                color: "text-[#7db6f7]",
-                delay: 1.0,
-              },
-              {
                 icon: FaWhatsapp,
                 text: "001 7543087970",
                 color: "text-[#25d366] font-bold",
                 delay: 1.1,
+              },
+              {
+                icon: FaEnvelope,
+                text: "contato@expatriamente.com",
+                color: "text-[#7db6f7]",
+                delay: 1.0,
               },
               {
                 icon: FaTiktok,
@@ -255,24 +255,24 @@ export default function FooterSection() {
                 className="flex items-center gap-1.5 sm:gap-2 md:gap-3"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 1.0 }}
-                viewport={{ once: true }}
-              >
-                <FaEnvelope className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-[#7db6f7] flex-shrink-0" />
-                <span className="text-black text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-normal break-all leading-tight">
-                  contato@expatriamente.com
-                </span>
-              </motion.div>
-              <motion.div
-                className="flex items-center gap-1.5 sm:gap-2 md:gap-3"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1.1 }}
                 viewport={{ once: true }}
               >
                 <FaWhatsapp className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-[#25d366] flex-shrink-0" />
                 <span className="text-[#25d366] text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-bold leading-tight">
                   001 7543087970
+                </span>
+              </motion.div>
+              <motion.div
+                className="flex items-center gap-1.5 sm:gap-2 md:gap-3"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 1.0 }}
+                viewport={{ once: true }}
+              >
+                <FaEnvelope className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-[#7db6f7] flex-shrink-0" />
+                <span className="text-black text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-normal break-all leading-tight">
+                  contato@expatriamente.com
                 </span>
               </motion.div>
               <motion.div

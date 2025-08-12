@@ -41,12 +41,12 @@ async function serverFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "http://72.60.1.234/api/v1";
   const fullUrl = `${baseUrl}${url}`;
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",
-    "x-client-id": "a9a86733-b2a5-4f0e-b230-caed27ce74df",
+    "x-client-id": "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
   };
 
   // Obter token do cookie
@@ -248,7 +248,7 @@ export async function getClientsByEmployee(employeeId: string) {
         data: Client[];
       };
       message: string;
-    }>(`/clients?employeeId=${employeeId}`);
+    }>(`/clients/by-employee/${employeeId}`);
 
     console.log("✅ [server-action] Clientes encontrados:", response.data);
     return {

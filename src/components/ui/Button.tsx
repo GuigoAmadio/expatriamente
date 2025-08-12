@@ -22,21 +22,25 @@ const Button: React.FC<ButtonProps> = ({
     "focus:outline-none focus:ring-2 focus:ring-offset-2",
     "disabled:opacity-50 disabled:cursor-not-allowed",
     {
-      // Tamanhos
-      "px-3 py-2 text-sm rounded-md": size === "sm",
-      "px-4 py-2.5 text-base rounded-lg": size === "md",
-      "px-6 py-3 text-lg rounded-xl": size === "lg",
+      // Tamanhos - apenas se não houver classes customizadas
+      "px-3 py-2 text-sm rounded-md":
+        size === "sm" && !className?.includes("px-"),
+      "px-4 py-2.5 text-base rounded-lg":
+        size === "md" && !className?.includes("px-"),
+      "px-6 py-3 text-lg rounded-xl":
+        size === "lg" && !className?.includes("px-"),
 
-      // Variantes com nova hierarquia visual
-      "btn-cta-primary": variant === "primary", // CTA principal - máximo destaque
-      "btn-cta-secondary": variant === "secondary", // CTA secundário - destaque médio
-      "btn-cta-tertiary": variant === "outline", // CTA terciário - sutil
+      // Variantes - apenas se não houver classes customizadas de background
+      "btn-cta-primary": variant === "primary" && !className?.includes("bg-"),
+      "btn-cta-secondary":
+        variant === "secondary" && !className?.includes("bg-"),
+      "btn-cta-tertiary": variant === "outline" && !className?.includes("bg-"),
 
-      // Variantes especiais
+      // Variantes especiais - apenas se não houver classes customizadas
       "bg-transparent text-primary dark:text-surface hover:bg-surface-elevated dark:hover:bg-secondary focus:ring-primary border-0":
-        variant === "ghost",
+        variant === "ghost" && !className?.includes("bg-"),
       "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/25 hover:shadow-red-500/40 focus:ring-red-500 rounded-lg":
-        variant === "danger",
+        variant === "danger" && !className?.includes("bg-"),
     }
   );
 
@@ -66,8 +70,10 @@ const Button: React.FC<ButtonProps> = ({
         {children}
       </span>
 
-      {/* Efeito de brilho sutil */}
-      <div className="absolute inset-0 rounded-inherit bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+      {/* Efeito de brilho sutil - apenas se não houver classes customizadas */}
+      {!className?.includes("bg-") && (
+        <div className="absolute inset-0 rounded-inherit bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+      )}
     </motion.button>
   );
 };

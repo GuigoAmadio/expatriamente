@@ -7,6 +7,7 @@ export interface BackendUser {
   role: "SUPER_ADMIN" | "ADMIN" | "EMPLOYEE" | "CLIENT";
   status: "ACTIVE" | "INACTIVE" | "SUSPENDED";
   clientId: string;
+  employeeId?: string;
   createdAt: Date;
   updatedAt: Date;
   lastLogin?: Date;
@@ -14,6 +15,12 @@ export interface BackendUser {
     id: string;
     name: string;
     status: string;
+  };
+  employee?: {
+    id: string;
+    name: string;
+    position: string;
+    isActive: boolean;
   };
 }
 

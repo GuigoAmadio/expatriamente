@@ -17,10 +17,10 @@ export default function StoriesSection() {
 
   // Depoimentos da imagem de referência
   const depoimentos = [
-    "Quando cheguei no exterior, achava que só precisava me adaptar ao idioma e à rotina. Mas, aos poucos, comecei a sentir um peso, uma tristeza constante que não conseguia explicar. A terapia me fez compreender que depressão não é fraqueza e que pedir ajuda foi o primeiro passo para resgatar meu bem-estar.",
-    "Adaptação parecia só uma questão de tempo, mas me peguei sobrecarregado entre costumes diferentes, exigências acadêmicas e saudade de casa. Conversar na terapia foi essencial para organizar meus sentimentos, respeitar meus limites e perceber que me reinventar em outro país também é um ato de coragem.",
-    "Antes de me mudar, minha maior preocupação era encaixar as malas no avião. Depois que cheguei, percebi que o medo e a ansiedade estavam em cada pequena decisão do dia a dia — desde pedir um café até socializar no trabalho. As sessões de terapia me ajudaram a respirar, priorizar o presente e entender que errar faz parte do processo.",
     "Viver no exterior trouxe desafios que eu não esperava. A terapia me ajudou a entender que é normal sentir saudades e que posso criar minha nova identidade sem perder minhas raízes.",
+    "Adaptação parecia só uma questão de tempo, mas me peguei sobrecarregado entre costumes diferentes, exigências acadêmicas e saudade de casa. Conversar na terapia foi essencial para organizar meus sentimentos, respeitar meus limites e perceber que me reinventar em outro país também é um ato de coragem.",
+    "Quando cheguei no exterior, achava que só precisava me adaptar ao idioma e à rotina. Mas, aos poucos, comecei a sentir um peso, uma tristeza constante que não conseguia explicar. A terapia me fez compreender que depressão não é fraqueza e que pedir ajuda foi o primeiro passo para resgatar meu bem-estar.",
+    "Antes de me mudar, minha maior preocupação era encaixar as malas no avião. Depois que cheguei, percebi que o medo e a ansiedade estavam em cada pequena decisão do dia a dia — desde pedir um café até socializar no trabalho. As sessões de terapia me ajudaram a respirar, priorizar o presente e entender que errar faz parte do processo.",
   ];
 
   // Determina o gradiente baseado na seção ativa
@@ -64,7 +64,7 @@ export default function StoriesSection() {
           {/* Layout responsivo: coluna em telas menores que xl, grid em xl+ */}
           <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full">
             <motion.div
-              className="bg-white rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#5a5427] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="relative bg-[#BFE0F4] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -75,10 +75,15 @@ export default function StoriesSection() {
                   "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
               }}
             >
+              <img
+                src="/logoFinal.svg"
+                alt="Logo Expatriamente"
+                className="absolute w-20 h-20 -top-10 -left-10"
+              />
               <span className="italic text-start">"{depoimentos[0]}"</span>
             </motion.div>
             <motion.div
-              className="bg-white rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#5a5427] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#C5F3E6] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -105,17 +110,19 @@ export default function StoriesSection() {
             }}
           >
             <h2>
-              Conheça <span className="text-red-950">histórias reais </span>
+              Conheça <span className="text-[#B2412D]">histórias reais </span>
               de brasileiros que encontraram acolhimento e crescimento pessoal
               através da psicanálise,{" "}
-              <span className="text-red-950">mesmo estando longe de casa.</span>
+              <span className="text-[#B2412D]">
+                mesmo estando longe de casa.
+              </span>
             </h2>
           </motion.div>
 
           {/* Segunda linha: dois cards */}
           <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full  ">
             <motion.div
-              className="bg-white rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#5a5427] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#C5F3E6] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
@@ -129,7 +136,7 @@ export default function StoriesSection() {
               <span className="italic text-start">"{depoimentos[2]}"</span>
             </motion.div>
             <motion.div
-              className="bg-white rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#5a5427] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#BFE0F4] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
@@ -158,33 +165,43 @@ export default function StoriesSection() {
             }}
           >
             <h2>
-              Conheça <span className="text-orange-400">histórias reais </span>
+              Conheça <span className="text-[#B2412D]">histórias reais </span>
               de brasileiros que encontraram acolhimento e crescimento pessoal
               através da psicanálise,{" "}
-              <span className="text-orange-400">
+              <span className="text-[#B2412D]">
                 mesmo estando longe de casa.
               </span>
             </h2>
           </motion.div>
-          {depoimentos.map((texto, idx) => (
-            <motion.div
-              key={idx}
-              className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base text-[#5a5427] font-medium leading-relaxed w-full min-h-[200px] flex items-center justify-center"
-              style={{
-                boxShadow:
-                  "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
-              }}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: idx * 0.2 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.02, y: -5 }}
-            >
-              <span className="italic text-center">
-                "{texto.length > 300 ? texto.slice(0, 300) + "…" : texto}"
-              </span>
-            </motion.div>
-          ))}
+          {depoimentos.map((texto, idx) => {
+            const bgColors = ["#BFE0F4", "#C5F3E6", "#C5F3E6", "#BFE0F4"]; // segue a ordem dos cards no desktop
+            const bg = bgColors[idx % bgColors.length];
+            return (
+              <motion.div
+                key={idx}
+                className="rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base font-medium leading-relaxed w-full min-h-[200px] flex items-center justify-center"
+                style={{
+                  backgroundColor: bg,
+                  color: "#00000",
+                  boxShadow:
+                    "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
+                }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.8,
+                  ease: "easeOut",
+                  delay: idx * 0.2,
+                }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.02, y: -5 }}
+              >
+                <span className="italic text-center">
+                  "{texto.length > 300 ? texto.slice(0, 300) + "…" : texto}"
+                </span>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

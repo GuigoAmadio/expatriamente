@@ -115,14 +115,14 @@ export function ClientAppointments({
   const hasAppointments = appointments.length > 0;
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      {/* Header do Calendário */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+    <div className="rounded-none border-0 overflow-hidden">
+      {/* Header minimalista do Calendário, sem card */}
+      <div className="px-2 sm:px-4 py-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigateWeek("prev")}
-              className="text-white hover:text-blue-200 transition-colors p-2 rounded-lg hover:bg-blue-600"
+              className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-md hover:bg-gray-100"
             >
               <svg
                 className="w-5 h-5"
@@ -138,7 +138,7 @@ export function ClientAppointments({
                 />
               </svg>
             </button>
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">
               {weekDays[0].toLocaleDateString("pt-BR", {
                 day: "2-digit",
                 month: "2-digit",
@@ -152,7 +152,7 @@ export function ClientAppointments({
             </h2>
             <button
               onClick={() => navigateWeek("next")}
-              className="text-white hover:text-blue-200 transition-colors p-2 rounded-lg hover:bg-blue-600"
+              className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-md hover:bg-gray-100"
             >
               <svg
                 className="w-5 h-5"
@@ -169,7 +169,7 @@ export function ClientAppointments({
               </svg>
             </button>
           </div>
-          <div className="text-white text-sm">
+          <div className="text-gray-600 text-xs sm:text-sm">
             {hasAppointments
               ? `${appointments.length} agendamento${
                   appointments.length !== 1 ? "s" : ""
@@ -179,25 +179,29 @@ export function ClientAppointments({
         </div>
       </div>
 
-      {/* Grid do Calendário */}
+      {/* Grid do Calendário com fundo de bolinhas minimalista */}
       <div className="overflow-x-auto">
-        <div className="min-w-[800px]">
+        <div className="min-w-[800px] bg-dots-muted">
           {/* Header dos dias */}
-          <div className="grid grid-cols-8 bg-gray-50 border-b border-gray-200">
-            <div className="p-4 text-center font-semibold text-gray-700 border-r border-gray-200">
+          <div className="grid grid-cols-8 border-b border-gray-200">
+            <div className="p-3 sm:p-4 text-center font-semibold text-gray-700 border-r border-gray-200 bg-white/70 backdrop-blur">
               Hora
             </div>
             {weekDays.map((day, index) => (
               <div
                 key={index}
-                className={`p-4 text-center border-r border-gray-200 ${
+                className={`p-3 sm:p-4 text-center border-r border-gray-200 ${
                   isToday(day)
-                    ? "bg-blue-50 text-blue-700 font-semibold"
-                    : "text-gray-700"
+                    ? "bg-white/80 font-semibold text-gray-900"
+                    : "text-gray-700 bg-white/60"
                 }`}
               >
-                <div className="text-sm font-medium">{DIAS[day.getDay()]}</div>
-                <div className="text-lg font-bold">{day.getDate()}</div>
+                <div className="text-xs sm:text-sm font-medium">
+                  {DIAS[day.getDay()]}
+                </div>
+                <div className="text-base sm:text-lg font-bold">
+                  {day.getDate()}
+                </div>
               </div>
             ))}
           </div>
@@ -206,9 +210,9 @@ export function ClientAppointments({
           {HORAS.map((hour) => (
             <div
               key={hour}
-              className="grid grid-cols-8 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+              className="grid grid-cols-8 border-b border-gray-100 hover:bg-white/40 transition-colors"
             >
-              <div className="p-4 text-center font-medium text-gray-600 border-r border-gray-200 bg-gray-50">
+              <div className="p-2 sm:p-3 text-center font-medium text-gray-600 border-r border-gray-200 bg-white/70 backdrop-blur text-xs sm:text-sm">
                 {hour}
               </div>
               {weekDays.map((day, dayIndex) => {
@@ -216,8 +220,8 @@ export function ClientAppointments({
                 return (
                   <div
                     key={dayIndex}
-                    className={`p-4 text-center border-r border-gray-200 min-h-[80px] flex items-center justify-center ${
-                      isToday(day) ? "bg-blue-50" : ""
+                    className={`p-2 sm:p-3 text-center border-r border-gray-200 min-h-[44px] sm:min-h-[52px] flex items-center justify-center ${
+                      isToday(day) ? "bg-white/70" : "bg-white/40"
                     }`}
                   >
                     {dayAppointments.length > 0 ? (
@@ -225,7 +229,7 @@ export function ClientAppointments({
                         {dayAppointments.map((apt, aptIndex) => (
                           <div
                             key={aptIndex}
-                            className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full cursor-pointer hover:bg-blue-700 transition-colors"
+                            className="bg-gray-900/80 text-white text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full cursor-pointer hover:bg-gray-900 transition-colors"
                             onClick={() => onSelectAppointment(apt)}
                             title={`${
                               apt.employee?.name || "Psicólogo"
@@ -236,7 +240,7 @@ export function ClientAppointments({
                         ))}
                       </div>
                     ) : (
-                      <div className="text-gray-400 text-xs">
+                      <div className="text-gray-400 text-[10px] sm:text-[11px]">
                         {hasAppointments ? "Livre" : "—"}
                       </div>
                     )}
@@ -250,7 +254,7 @@ export function ClientAppointments({
 
       {/* Mensagem quando não há agendamentos */}
       {!hasAppointments && (
-        <div className="p-8 text-center bg-gray-50 border-t border-gray-200">
+        <div className="p-8 text-center">
           <div className="text-gray-500 mb-4">
             <svg
               className="w-16 h-16 mx-auto text-gray-300"
@@ -274,7 +278,7 @@ export function ClientAppointments({
           </p>
           <a
             href="/dashboard/client/psychologists"
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-black transition-colors"
           >
             <svg
               className="w-4 h-4 mr-2"

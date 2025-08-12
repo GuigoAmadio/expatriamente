@@ -1,101 +1,188 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function IntercambioSection() {
   const stats = [
     {
       number: "57%",
-      description: "dos intercambistas relatam sofrimento emocional¹",
+      description: "dos intercambistas\n relatam sofrimento\n emocional",
       color: "text-cyan-300",
       bgColor: "bg-[#0A4C8A]",
     },
     {
       number: "DOBRO",
-      description: "Duas vezes mais risco de ansiedade severa e depressão²",
+      description: "Duas vezes mais\n risco de ansiedade\n severa e depressão",
       color: "text-lime-400",
       bgColor: "bg-[#0A4C8A]",
     },
     {
       number: "VULNERÁVEL",
       description:
-        "Isolamento social, barreiras linguísticas e choque cultural aumentam a vulnerabilidade³",
+        "Isolamento social,\n barreiras linguísticas\n e choque cultural\n aumentam a\n vulnerabilidade",
       color: "text-yellow-300",
       bgColor: "bg-[#0A4C8A]",
     },
   ];
 
   return (
-    <div className="pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full md:w-1/2">
-      {/* Título Principal */}
-      <motion.div
-        className="text-start mb-8 md:mb-12 w-full"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 px-4">
-          <span className="text-[#0A4C8A]">Programa de </span>Bem-estar
-          Emocional <span className="text-[#0A4C8A]">para </span>
-          Estudantes de <span className="text-[#0A4C8A]">Intercâmbio</span>
-        </h1>
+    <div className="w-full flex flex-col items-center md:items-end">
+      <div className="lg:mr-20 pt-10 md:pt-12 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full max-w-full md:max-w-[60%]">
+        {/* Título Principal */}
+        <motion.div
+          className="text-start mb-8 md:mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <h1 className="text-white text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 md:text-nowrap">
+            <span className="text-[#0A4C8A]">Programa de </span>
+            <span className="font-bold">Bem estar Emocional </span>
+            <span className="text-[#0A4C8A]">
+              para <br className="hidden md:inline" />
+            </span>
+            <span className="font-bold">Estudantes de </span>
+            <span className="text-[#0A4C8A]">Intercâmbio</span>
+          </h1>
 
-        <p className="text-[#0A4C8A] text-base sm:text-lg md:text-xl max-w-4xl leading-relaxed px-4">
-          Investir no bem-estar emocional{" "}
-          <span className="font-bold">não é custo</span> , é{" "}
-          <span className="font-bold">diferencial</span>: aumenta retenção,
-          satisfação e fortalece sua reputação internacional.
-        </p>
-      </motion.div>
+          <p className="text-[#0A4C8A] text-sm sm:text-lg md:text-[1.5vw] px-4 md:text-nowrap font-medium">
+            Investir no bem-estar emocional{" "}
+            <span className="font-bold">não é custo,</span> é{" "}
+            <span className="font-bold">
+              diferencial:
+              <br />
+            </span>
+            aumenta retenção, satisfação e fortalece sua reputação
+            internacional.
+          </p>
+          {/* Espaço reservado para a imagem no mobile, garantindo a ordem visual: Título, Subtítulo, Mulher, Cards */}
+          <div className="block md:hidden h-[320px]" aria-hidden="true" />
+        </motion.div>
 
-      {/* Cards de Estatísticas */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16 w-full max-w-6xl px-4"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        {stats.map((stat, index) => (
-          <motion.div
-            key={index}
-            className={`${stat.bgColor} rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg md:shadow-xl hover:shadow-2xl transition-all duration-300`}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-            whileHover={{ y: -4, scale: 1.02 }}
-          >
-            <div className="text-center">
-              <h3
-                className={`${
-                  stat.number.toLowerCase().includes("vulnerável")
-                    ? "text-lg sm:text-2xl md:text-3xl"
-                    : "text-2xl sm:text-3xl md:text-5xl"
-                } font-bold mb-2 md:mb-3 ${stat.color}`}
-              >
-                {stat.number}
-              </h3>
-              <p className="text-white text-xs sm:text-base md:text-lg italic font-light">
-                {stat.description}
-              </p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+        {/* Cards de Estatísticas */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16 font-condensed w-full px-4 place-items-center"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          {stats.map((stat, index) => (
+            <motion.div
+              key={index}
+              className={`flex items-center md:items-start md:justify-center max-w-sm md:max-w-none ${stat.bgColor} rounded-2xl md:rounded-4xl px-2 py-4 shadow-lg md:shadow-xl hover:shadow-2xl transition-all duration-300`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+              whileHover={{ y: -4, scale: 1.02 }}
+            >
+              <div className="text-center flex flex-row sm:flex-col items-center gap-4 md:gap-0 p-2 md:p-0 md:pt-5">
+                <h3
+                  className={`${
+                    stat.number.toLowerCase().includes("vulnerável")
+                      ? "text-xl sm:text-2xl md:text-[43px] pt-3"
+                      : "text-4xl sm:text-5xl md:text-[6.4vw]"
+                  } mb-2 md:mb-3 ${stat.color}`}
+                >
+                  {stat.number}
+                </h3>
+                <p className="text-start ml-3 font-body text-white text-[2.5vw] sm:text-[1.6vw] md:text-[1vw] italic md:whitespace-pre-line">
+                  {stat.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-      {/* Seção do Programa - Apenas texto */}
+        {/* Seção do Programa - Desktop (>=1000px) */}
+        <motion.div
+          className="hidden md:block w-full max-w-6xl px-4"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          <h2 className="text-[#0A4C8A] text-xl font-bold text-start mb-4 text-nowrap">
+            Programa Expatriamente para estudantes de intercâmbio:
+          </h2>
+
+          <div className="">
+            <motion.div
+              className="text-[#0A4C8A] text-base md:text-lg"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
+              <span className="font-bold">1 - Pré-Intercâmbio:</span> Preparação
+              Proativa
+            </motion.div>
+
+            <motion.div
+              className="text-[#0A4C8A] text-base md:text-lg"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+            >
+              <span className="font-bold">2 - Durante o Intercâmbio:</span>{" "}
+              Acompanhamento Contínuo
+            </motion.div>
+
+            <motion.div
+              className="text-[#0A4C8A] text-base md:text-lg"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+            >
+              <span className="font-bold">3 - Pós-Intercâmbio:</span>{" "}
+              Reintegração Saudável
+            </motion.div>
+            <motion.div
+              className="text-neutral-700 text-[10px] italic text-nowrap mt-8 font-body"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+            >
+              <span className="font-bold not-italic text-black">Fontes: </span>
+              Association of International Educators (NAFSA), ²relatório 2023 do
+              Journal of American College Health, ³American Psychological
+              Association, 2022
+            </motion.div>
+            <motion.div
+              className="absolute -bottom-6 w-full right-0 flex flex-col sm:flex-row items-center justify-center md:justify-end gap-4 sm:gap-10 mt-10 font-body pr-10"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+            >
+              <div className="px-4 py-2 font-bold text-blue-950 text-xl rounded-full bg-white underline">
+                contato@expatriamente.com
+              </div>
+              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
+                <FaWhatsapp
+                  className="text-green-500"
+                  size={24}
+                  aria-label="WhatsApp"
+                />
+                <p className="text-blue-950 font-bold text-nowrap">
+                  +55 11 98221.0290
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+      {/* Seção do Programa - Mobile (<1000px) */}
       <motion.div
-        className="w-full max-w-6xl px-4"
+        className="w-full max-w-6xl px-4 md:hidden pl-4"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <h2 className="text-[#0A4C8A] text-xl sm:text-2xl lg:text-3xl font-semibold text-start mb-4">
+        <h2 className="text-[#0A4C8A] text-[3.5vw] font-bold text-start mb-4">
           Programa Expatriamente para estudantes de intercâmbio:
         </h2>
 
-        <div className="space-y-2">
+        <div className="">
           <motion.div
-            className="text-[#0A4C8A] text-base md:text-lg leading-relaxed"
+            className="text-[#0A4C8A] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
@@ -105,7 +192,7 @@ export default function IntercambioSection() {
           </motion.div>
 
           <motion.div
-            className="text-[#0A4C8A] text-base md:text-lg leading-relaxed"
+            className="text-[#0A4C8A] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.9 }}
@@ -115,13 +202,42 @@ export default function IntercambioSection() {
           </motion.div>
 
           <motion.div
-            className="text-[#0A4C8A] text-base md:text-lg leading-relaxed"
+            className="text-[#0A4C8A] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
           >
             <span className="font-bold">3 - Pós-Intercâmbio:</span> Reintegração
             Saudável
+          </motion.div>
+          <motion.div
+            className="text-neutral-700 max-w-5/6 md:max-w-none text-[2vw] italic md:text-nowrap mt-8 font-body"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+          >
+            <span className="font-bold not-italic text-black">Fontes: </span>
+            Association of International Educators (NAFSA), ²relatório 2023 do
+            Journal of American College Health, ³American Psychological
+            Association, 2022
+          </motion.div>
+          <motion.div
+            className="w-full flex flex-col items-center justify-center gap-4 sm:gap-6 mt-8 font-body"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+          >
+            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-base sm:text-lg">
+              <FaWhatsapp
+                className="text-green-500"
+                size={20}
+                aria-label="WhatsApp"
+              />
+              <p className="text-blue-950 font-bold">+55 11 98221.0290</p>
+            </div>
+            <div className="px-4 py-2 font-bold text-blue-950 text-base sm:text-lg rounded-full bg-white underline">
+              contato@expatriamente.com
+            </div>
           </motion.div>
         </div>
       </motion.div>

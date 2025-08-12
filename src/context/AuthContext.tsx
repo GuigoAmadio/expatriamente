@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loadUser = useCallback(async () => {
     try {
       // Usar Server Action para buscar usuário (acessa cookies HttpOnly)
-      const { getAuthUser } = await import("@/actions/auth");
+    const { getAuthUser } = await import("@/actions/auth");
       const user = await getAuthUser();
 
       console.log("Usuário carregado via Server Action:", user);
@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Converter User para BackendUser se necessário
         const backendUser: BackendUser = {
           id: user.id,
+          employeeId: user.employeeId,
           name: user.name || "",
           email: user.email,
           phone: (user as any).phone,

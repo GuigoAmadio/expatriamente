@@ -4,7 +4,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { NavigationProvider } from "@/context/NavigationContext";
-import { Playfair_Display, Montserrat } from "next/font/google";
+import { ToastProvider } from "@/components/ui/Toast";
+import { Playfair_Display, Montserrat, Bebas_Neue } from "next/font/google";
 
 // Import Flickity CSS
 import "flickity/css/flickity.css";
@@ -23,6 +24,14 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+// Fonte condensada para títulos curtos (cards)
+const bebas = Bebas_Neue({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-condensed",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Expatriamente - Saúde Mental para Brasileiros no Exterior",
   description:
@@ -37,12 +46,14 @@ export default function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <body
-        className={`antialiased ${playfair.variable} ${montserrat.variable}`}
+        className={`antialiased ${playfair.variable} ${montserrat.variable} ${bebas.variable}`}
       >
         <AuthProvider>
           <ThemeProvider>
             <LanguageProvider>
-              <NavigationProvider>{children}</NavigationProvider>
+              <NavigationProvider>
+                <ToastProvider>{children}</ToastProvider>
+              </NavigationProvider>
             </LanguageProvider>
           </ThemeProvider>
         </AuthProvider>

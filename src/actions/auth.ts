@@ -22,6 +22,7 @@ interface LoginApiResponse {
 
 interface AuthMeResponse {
   id: string;
+  employeeId?: string;
   name: string;
   email: string;
   phone?: string;
@@ -346,6 +347,7 @@ export async function getAuthUser(): Promise<User | null> {
         // NÃO cachear tokens ou dados sensíveis
         const userForCache = {
           id: user.id,
+          employeeId: user.employeeId,
           name: user.name,
           email: user.email,
           role: user.role,

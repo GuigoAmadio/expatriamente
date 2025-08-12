@@ -9,62 +9,68 @@ export default function AboutHeroSection() {
       icon: "/icones/cerebro.svg",
       title: "+20",
       description:
-        "Corpo clínico com mais de 20 psicanalistas experientes e especializados em dinâmica intercultural",
+        "Corpo clínico com\n mais de 20\n psicanalistas\n experientes e\n especializados em dinâmica\n intercultural",
       bgColor: "bg-[#0A4C8A]",
-      titleColor: "text-[#EC4899]",
+      titleColor: "text-pink-400",
+      textColor: "text-white",
     },
     {
       icon: "/icones/sinal.svg",
       title: "ONLINE",
       description:
-        "Atendimento online e personalizado, ajustado a diferentes fusos e horários",
+        "Atendimento\n online e\n personalizado,\n ajustado a\n diferentes fusos\n e horários",
       bgColor: "bg-[#0A4C8A]",
-      titleColor: "text-[#EC4899]",
+      titleColor: "text-pink-600",
+      textColor: "text-white",
     },
     {
       icon: "/icones/mao.svg",
       title: "ACOLHIMENTO",
       description:
-        "Abordagem que integra história de vida, traços culturais e o contexto do país de acolhimento",
+        "Abordagem que\n integra história de\n vida, traços\n culturais e o\n contexto do país\n de acolhimento",
       bgColor: "bg-[#2196F3]",
-      titleColor: "text-[#F97316]",
+      titleColor: "text-amber-500",
+      textColor: "text-white",
     },
     {
       icon: "/icones/lampada.svg",
       title: "CFPC",
-      subtitle: "Centro de Formação em Psicanálise Clínica",
-      description:
-        "Supervisão e respaldo técnico do CFPC - Centro de Formação em Psicanálise Clínica",
+      description: `Supervisão e respaldo técnico\n do CFPC - Centro\n de Formação em\n Psicanálise Clínica`,
       bgColor: "bg-white",
-      titleColor: "text-[#8B5CF6]",
-      textColor: "text-[#374151]",
+      titleColor: "text-purple-800",
+      textColor: "text-purple-700",
     },
   ];
 
   return (
-    <div className="pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full md:w-1/2">
+    <div className="w-full md:max-w-[60%] md:mr-12 pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col items-center md:items-end z-20 px-4">
       {/* Card informativo azul inicial */}
       <motion.div
-        className="bg-[#0A4C8A] rounded-xl p-6 mb-10 shadow-lg max-w-[900px] w-full"
+        className="bg-[#0A4C8A] rounded-4xl p-6 mb-10 shadow-lg z-50 w-full flex justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
       >
-        <p className="text-white text-sm sm:text-lg leading-relaxed">
+        <p className="text-white text-[2.5vw] sm:text-[1.3vw] italic leading-relaxed font-body">
           Somos uma <span className="font-bold">Clínica de Psicanálise</span>,
           dedicada exclusivamente ao{" "}
           <span className="font-bold">
-            cuidado emocional de brasileiros que vivem no exterior
+            cuidado <br className="hidden md:block" /> emocional de brasileiros
+            que vivem no exterior
           </span>
-          . Nosso objetivo é oferecer um espaço acolhedor, seguro e
-          culturalmente sensível, onde você e sua família possam se adaptar
+          . Nosso objetivo é <br className="hidden md:block" /> oferecer um
+          espaço acolhedor, seguro e culturalmente sensível, onde você{" "}
+          <br className="hidden md:block" /> e sua família possam se adaptar
           física e emocionalmente à nova realidade.
         </p>
       </motion.div>
 
+      {/* Espaço para a imagem no mobile: card único -> imagem -> grid de 4 */}
+      <div className="block md:hidden h-[320px]" aria-hidden="true" />
+
       {/* 4 Feature Cards - Layout responsivo melhorado */}
       <motion.div
-        className="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl mb-16"
+        className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-20 mb-16 w-full place-items-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
@@ -83,49 +89,41 @@ export default function AboutHeroSection() {
             whileHover={{ y: -4, scale: 1.02 }}
           >
             {/* Ícone em cima do card */}
-            <div className="mb-4 flex items-center justify-center">
+            <div className="mb-4 flex items-center justify-center font-body">
               <Image
                 src={feature.icon}
                 alt={feature.title}
-                width={64}
-                height={64}
-                style={{
-                  width: feature.title === "ONLINE" ? "64px" : "64px",
-                  height: feature.title === "ONLINE" ? "64px" : "64px",
-                }}
+                width={0}
+                height={0}
+                className="w-[60px] h-[60px] md:w-[7vw] md:h-[7vw]"
               />
             </div>
 
             {/* Card com altura fixa e width automático */}
             <div
-              className={`${feature.bgColor} rounded-xl p-4 shadow-lg w-full h-full flex flex-col justify-start gap-4`}
+              className={`${feature.bgColor} text-center rounded-4xl p-4 shadow-lg max-w-40 md:max-w-44 h-full flex flex-col justify-start gap-4`}
             >
               <div>
-                <h3
-                  className={`font-bold mb-2 ${
-                    feature.title === "+20"
-                      ? "text-2xl sm:text-4xl lg:text-5xl"
-                      : feature.title === "ACOLHIMENTO"
-                      ? "text-lg sm:text-xl"
-                      : "text-xl sm:text-2xl lg:text-3xl"
-                  } ${feature.titleColor}`}
-                >
-                  {feature.title}
-                </h3>
-                {feature.subtitle && (
-                  <p
-                    className={`text-xs sm:text-sm mb-2 ${
-                      feature.textColor || "text-white"
-                    }`}
+                {feature.title === "CFPC" ? (
+                  <div className="mb-2 flex items-center justify-center"></div>
+                ) : (
+                  <h3
+                    className={`font-normal text-center mb-2 ${
+                      feature.title === "+20"
+                        ? "m-0 p-0 text-7xl md:text-[6vw] font-condensed font-normal"
+                        : feature.title === "ACOLHIMENTO"
+                        ? "pt-6 text-[30px] md:text-[2.2vw] font-condensed"
+                        : "pt-3 text-[60px] md:text-[4.2vw] font-condensed"
+                    } ${feature.titleColor}`}
                   >
-                    {feature.subtitle}
-                  </p>
+                    {feature.title}
+                  </h3>
                 )}
               </div>
               <p
-                className={`text-xs sm:text-sm leading-relaxed ${
-                  feature.textColor || "text-white"
-                }`}
+                className={`text-xs italic font-lg font-body sm:text-[1.2vw] whitespace-pre-line ${
+                  feature.title === "CFPC" ? "text-center" : "text-start"
+                } ${feature.textColor || "text-white"}`}
               >
                 {feature.description}
               </p>
@@ -136,17 +134,17 @@ export default function AboutHeroSection() {
 
       {/* Card informativo azul adicional mais abaixo */}
       <motion.div
-        className="bg-[#0A4C8A] rounded-xl p-6 shadow-lg max-w-[900px] w-full mt-8"
+        className="bg-[#0A4C8A] rounded-xl p-4 shadow-lg shadow-blue-300 mt-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.8 }}
       >
-        <h2 className="text-white text-lg sm:text-2xl font-bold mb-4">
+        <h2 className="text-white text-base sm:text-lg font-bold mb-2">
           Encontro inicial
         </h2>
-        <p className="text-white text-sm sm:text-lg leading-relaxed">
-          -Primeira conversa para mapear expectativas, histórico emocional e
-          seus desafios atuais (gratuito).
+        <p className="text-white text-xs sm:text-base leading-relaxed">
+          -Primeira conversa para mapear expectativas,
+          <br /> histórico emocional e seus desafios atuais (gratuito).
         </p>
       </motion.div>
     </div>

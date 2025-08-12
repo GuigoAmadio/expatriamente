@@ -70,11 +70,8 @@ export default function HeroSection() {
       #9ab9a8 30%,         /* verde mais claro */
       #9fbcab 45%,         /* verde claro */
       #9cbba9 60%,         /* verde médio-claro */
-      #8cae99 75%,         /* verde médio */
-      rgba(131, 166, 145, 1.5) 75.1%, /* sombra verde escuro */
-      rgba(0, 0, 0, 0.35) 75.2%, /* sombra verde escuro */
-      #9e9470 75.3%,         /* início do chão */
-      #b0a480 80%,         /* chão escuro */
+      #8cae99 98.9%,         /* verde médio */
+      #b0a480 99%,         /* chão escuro */
       #c2b494 100%         /* chão ainda mais escuro */
     ), linear-gradient(
       to right,
@@ -101,26 +98,17 @@ export default function HeroSection() {
         }}
       >
         <Header />
-        <div className="flex flex-col md:flex-row items-center md:items-start justify-center relative">
+        <div className="relative flex items-start justify-end">
           {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}
-          <motion.div
-            className="flex items-center justify-center relative z-30 "
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <Image
-              src="/heroMulher.png"
-              alt="Hero Mulher"
-              width={500}
-              height={80}
-              className="object-contain w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[550px] pointer-events-none select-none translate-y-5 sm:translate-y-6 md:translate-y-8 lg:translate-y-10 xl:translate-y-12"
-              priority
-              style={{
-                filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))",
-              }}
-            />
-          </motion.div>
+
+          <Image
+            src="/heroMulher.png"
+            alt="Hero Mulher"
+            width={500}
+            height={80}
+            className="absolute left-[118px] md:left-20 drop-shadow-2xl z-10 top-48 md:top-0 object-contain w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[550px] pointer-events-none select-none translate-y-5 sm:translate-y-6 md:translate-y-8 lg:translate-y-10 xl:translate-y-12"
+            priority
+          />
 
           {/* Conteúdo à direita - Alternando entre componentes */}
           {currentSection === "home" ? (

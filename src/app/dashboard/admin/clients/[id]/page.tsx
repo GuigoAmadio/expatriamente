@@ -8,5 +8,5 @@ export default async function ClientDetailPage(props: {
   // Busca server-side dos detalhes do cliente
   const client = await getClientById(id);
   if (!client) return <div>Cliente não encontrado</div>;
-  return <EmployeeClientProfile client={client} />;
+  return <EmployeeClientProfile client={client} showEdit />;
 }

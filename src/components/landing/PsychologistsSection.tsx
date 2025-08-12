@@ -86,6 +86,8 @@ export default function PsychologistsSection() {
   const [search, setSearch] = useState("");
   const [hovered, setHovered] = useState<string | null>(null);
   const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -109,6 +111,32 @@ export default function PsychologistsSection() {
     (p) =>
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.availability.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Responsividade para definir tamanho de página
+  useEffect(() => {
+    const updateIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    updateIsMobile();
+    window.addEventListener("resize", updateIsMobile);
+    return () => window.removeEventListener("resize", updateIsMobile);
+  }, []);
+
+  // Recalcular/ajustar página quando filtros ou breakpoint mudarem
+  const itemsPerPage = isMobile ? 4 : 12;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredPsychologists.length / itemsPerPage)
+  );
+  useEffect(() => {
+    setCurrentPage((prev) => (prev > totalPages ? totalPages : 1));
+  }, [search, isMobile, totalPages]);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedPsychologists = filteredPsychologists.slice(
+    startIndex,
+    startIndex + itemsPerPage
   );
 
   return (
@@ -159,7 +187,7 @@ export default function PsychologistsSection() {
           transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
           viewport={{ once: true }}
         >
-          {filteredPsychologists.map((p, idx) => (
+          {paginatedPsychologists.map((p, idx) => (
             <motion.div
               key={p.id}
               className="bg-white relative rounded-2xl shadow p-6 flex flex-col items-center text-center cursor-pointer group"
@@ -167,7 +195,7 @@ export default function PsychologistsSection() {
               style={{ minHeight: 400 }}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.1 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.05 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.05, y: -5 }}
             >
@@ -240,38 +268,38 @@ export default function PsychologistsSection() {
                     <div className="text-xs text-[#6B3F1D] mb-2">
                       {p.availability}
                     </div>
-                    <div 
+                    <div
                       className="text-sm text-[#01386F] mb-2 overflow-hidden"
-                      style={{ 
-                        maxHeight: '120px',
-                        display: '-webkit-box',
+                      style={{
+                        maxHeight: "120px",
+                        display: "-webkit-box",
                         WebkitLineClamp: 6,
-                        WebkitBoxOrient: 'vertical',
-                        textOverflow: 'ellipsis'
+                        WebkitBoxOrient: "vertical",
+                        textOverflow: "ellipsis",
                       }}
                     >
                       {p.fullBio || p.bio}
                     </div>
-                    <div 
+                    <div
                       className="text-xs text-[#5a5427] mb-1 overflow-hidden"
-                      style={{ 
-                        maxHeight: '40px',
-                        display: '-webkit-box',
+                      style={{
+                        maxHeight: "40px",
+                        display: "-webkit-box",
                         WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        textOverflow: 'ellipsis'
+                        WebkitBoxOrient: "vertical",
+                        textOverflow: "ellipsis",
                       }}
                     >
                       {p.education}
                     </div>
-                    <div 
+                    <div
                       className="text-xs text-[#5a5427] mb-2 overflow-hidden"
-                      style={{ 
-                        maxHeight: '40px',
-                        display: '-webkit-box',
+                      style={{
+                        maxHeight: "40px",
+                        display: "-webkit-box",
                         WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        textOverflow: 'ellipsis'
+                        WebkitBoxOrient: "vertical",
+                        textOverflow: "ellipsis",
                       }}
                     >
                       {p.approach}
@@ -301,6 +329,50 @@ export default function PsychologistsSection() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Paginação */}
+        {totalPages > 1 && (
+          <div className="mt-10 flex flex-col items-center gap-4">
+            <div className="flex items-center gap-3">
+              <button
+                className="px-4 py-2 rounded-full bg-[#01386F] text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                aria-label="Página anterior"
+              >
+                Anterior
+              </button>
+              <button
+                className="px-4 py-2 rounded-full bg-[#01386F] text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+                aria-label="Próxima página"
+              >
+                Próxima
+              </button>
+            </div>
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }).map((_, i) => {
+                const page = i + 1;
+                const isActive = page === currentPage;
+                return (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    aria-label={`Ir para página ${page}`}
+                    className={`transition-all duration-200 rounded-full border border-[#01386F]/30 ${
+                      isActive
+                        ? "bg-[#b7c8b1] scale-110 w-3.5 h-3.5"
+                        : "bg-white/80 w-3 h-3 hover:scale-105"
+                    }`}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

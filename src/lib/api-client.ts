@@ -32,7 +32,7 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "http://72.60.1.234:3000/api/v1", // Backend NestJS na porta 3000
+    "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
   timeout: 5000,
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
@@ -154,16 +154,29 @@ api.interceptors.response.use(
 
 // Função para verificar cache
 function getCachedData<T>(key: string): T | null {
+  console.log("🔍 [cache] Buscando dados para key:", key);
   const cached = cache.get(key);
+
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    console.log("✅ [cache] Dados encontrados e válidos");
     return cached.data as T;
   }
+
+  if (cached) {
+    console.log("⏰ [cache] Dados expirados, removendo...");
+    cache.delete(key);
+  } else {
+    console.log("❌ [cache] Nenhum dado encontrado");
+  }
+
   return null;
 }
 
 // Função para definir cache
 function setCachedData<T>(key: string, data: T): void {
+  console.log("💾 [cache] Salvando dados para key:", key);
   cache.set(key, { data, timestamp: Date.now() });
+  console.log("✅ [cache] Dados salvos com sucesso");
 }
 
 // Funções de API otimizadas com cache (CLIENT-SIDE)
@@ -171,30 +184,57 @@ export async function get<T>(
   url: string,
   config?: { clientId?: string; token?: string; useCache?: boolean }
 ): Promise<ApiResponse<T>> {
+  console.log("🔍 [api-client] GET iniciado:", { url, config });
+
   const cacheKey = `GET:${url}:${JSON.stringify(config)}`;
+  console.log("🔍 [api-client] Cache key gerada:", cacheKey);
 
   // Verificar cache se habilitado
   if (config?.useCache !== false) {
+    console.log("🔍 [api-client] Verificando cache...");
     const cached = getCachedData<ApiResponse<T>>(cacheKey);
-    if (cached) return cached;
+    if (cached) {
+      console.log("✅ [api-client] Dados encontrados no cache, retornando...");
+      return cached;
+    }
+    console.log("❌ [api-client] Cache miss, fazendo requisição...");
+  } else {
+    console.log("🔍 [api-client] Cache desabilitado, fazendo requisição...");
   }
 
-  const data = (await api.get<T>(url, {
-    headers: getDefaultHeaders(config),
-  })) as T;
+  console.log(
+    "🔍 [api-client] Headers que serão enviados:",
+    getDefaultHeaders(config)
+  );
 
-  const response: ApiResponse<T> = {
-    success: true,
-    data,
-    message: "Success",
-  };
+  try {
+    console.log("🚀 [api-client] Fazendo requisição GET para:", url);
+    const data = (await api.get<T>(url, {
+      headers: getDefaultHeaders(config),
+    })) as T;
+    console.log("✅ [api-client] Requisição GET bem-sucedida:", data);
 
-  // Salvar no cache
-  if (config?.useCache !== false) {
-    setCachedData(cacheKey, response);
+    const response: ApiResponse<T> = {
+      success: true,
+      data,
+      message: "Success",
+    };
+
+    // Salvar no cache
+    if (config?.useCache !== false) {
+      console.log("💾 [api-client] Salvando no cache...");
+      setCachedData(cacheKey, response);
+      console.log("✅ [api-client] Dados salvos no cache");
+    }
+
+    console.log("✅ [api-client] GET concluído com sucesso");
+    return response;
+  } catch (error) {
+    console.error("❌ [api-client] Erro na requisição GET:", error);
+    console.error("❌ [api-client] URL que falhou:", url);
+    console.error("❌ [api-client] Config que falhou:", config);
+    throw error;
   }
-
-  return response;
 }
 
 export async function post<T>(
