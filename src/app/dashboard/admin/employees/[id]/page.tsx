@@ -134,10 +134,10 @@ export default function EmployeeDetailsPage() {
 
   return (
     <div className="p-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => router.push("/dashboard/admin/employees")}
               className="text-gray-600 hover:text-gray-800 flex items-center gap-2 cursor-pointer transition-colors"
@@ -152,7 +152,7 @@ export default function EmployeeDetailsPage() {
               onClick={() =>
                 router.push(`/dashboard/admin/employees/${employee.id}/edit`)
               }
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 cursor-pointer transition-colors"
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 flex items-center gap-2 cursor-pointer transition-colors w-full sm:w-auto justify-center"
             >
               <FiEdit className="w-4 h-4" />
               Editar
@@ -160,7 +160,7 @@ export default function EmployeeDetailsPage() {
             <button
               onClick={handleDelete}
               disabled={deleting}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 flex items-center gap-2 cursor-pointer transition-colors"
+              className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 disabled:opacity-50 flex items-center gap-2 cursor-pointer transition-colors w-full sm:w-auto justify-center"
             >
               <FiTrash2 className="w-4 h-4" />
               {deleting ? "Excluindo..." : "Excluir"}
@@ -169,47 +169,41 @@ export default function EmployeeDetailsPage() {
         </div>
 
         {/* Informações principais */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-start gap-6">
-              <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-gray-100">
+            <div className="flex flex-col items-center text-center gap-3">
+              <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center ring-4 ring-gray-50">
                 <FiUser className="w-12 h-12 text-gray-400" />
               </div>
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  {employee.name}
-                </h2>
-                <p className="text-lg text-gray-600 mb-4">
-                  {employee.position}
-                </p>
-                <div className="flex items-center gap-4">
-                  <span
-                    className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
-                      employee.isActive
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {employee.isActive ? "Ativo" : "Inativo"}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    ID: {employee.id}
-                  </span>
-                </div>
-              </div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {employee.name}
+              </h2>
+              <p className="text-gray-600">
+                {employee.position || "Cargo não informado"}
+              </p>
+              <p
+                className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
+                  employee.isActive
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {employee.isActive ? "Ativo" : "Inativo"}
+              </p>
+              <p className="text-sm text-gray-500">ID: {employee.id}</p>
             </div>
           </div>
 
           {/* Informações detalhadas */}
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* Informações de contato */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
                   <FiMail className="w-5 h-5" />
                   Informações de Contato
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2.5 text-sm">
                   <div className="flex items-center gap-3">
                     <FiMail className="w-4 h-4 text-gray-400" />
                     <span className="text-gray-700">{employee.email}</span>
@@ -229,7 +223,7 @@ export default function EmployeeDetailsPage() {
                   <FiCalendar className="w-5 h-5" />
                   Informações do Sistema
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   <div className="flex items-center gap-3">
                     <FiCalendar className="w-4 h-4 text-gray-400" />
                     <span className="text-gray-700">

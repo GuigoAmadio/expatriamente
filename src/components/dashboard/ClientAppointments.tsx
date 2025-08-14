@@ -117,9 +117,9 @@ export function ClientAppointments({
   return (
     <div className="rounded-none border-0 overflow-hidden">
       {/* Header minimalista do Calendário, sem card */}
-      <div className="px-2 sm:px-4 py-3">
+      <div className="px-3 sm:px-4 py-3">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={() => navigateWeek("prev")}
               className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-md hover:bg-gray-100"
@@ -138,7 +138,7 @@ export function ClientAppointments({
                 />
               </svg>
             </button>
-            <h2 className="text-base sm:text-lg font-semibold text-gray-900">
+            <h2 className="text-sm sm:text-lg font-semibold text-gray-900">
               {weekDays[0].toLocaleDateString("pt-BR", {
                 day: "2-digit",
                 month: "2-digit",
@@ -180,26 +180,26 @@ export function ClientAppointments({
       </div>
 
       {/* Grid do Calendário com fundo de bolinhas minimalista */}
-      <div className="overflow-x-auto">
-        <div className="min-w-[800px] bg-dots-muted">
+      <div className="overflow-x-auto sm:overflow-visible">
+        <div className="min-w-[720px] sm:min-w-0 bg-dots-muted">
           {/* Header dos dias */}
           <div className="grid grid-cols-8 border-b border-gray-200">
-            <div className="p-3 sm:p-4 text-center font-semibold text-gray-700 border-r border-gray-200 bg-white/70 backdrop-blur">
+            <div className="p-2 sm:p-4 text-center font-semibold text-gray-700 border-r border-gray-200 bg-white/70 backdrop-blur text-xs sm:text-base">
               Hora
             </div>
             {weekDays.map((day, index) => (
               <div
                 key={index}
-                className={`p-3 sm:p-4 text-center border-r border-gray-200 ${
+                className={`p-2 sm:p-4 text-center border-r border-gray-200 ${
                   isToday(day)
                     ? "bg-white/80 font-semibold text-gray-900"
                     : "text-gray-700 bg-white/60"
                 }`}
               >
-                <div className="text-xs sm:text-sm font-medium">
+                <div className="text-[11px] sm:text-sm font-medium">
                   {DIAS[day.getDay()]}
                 </div>
-                <div className="text-base sm:text-lg font-bold">
+                <div className="text-sm sm:text-lg font-bold">
                   {day.getDate()}
                 </div>
               </div>
@@ -220,7 +220,7 @@ export function ClientAppointments({
                 return (
                   <div
                     key={dayIndex}
-                    className={`p-2 sm:p-3 text-center border-r border-gray-200 min-h-[44px] sm:min-h-[52px] flex items-center justify-center ${
+                    className={`p-1.5 sm:p-3 text-center border-r border-gray-200 min-h-[42px] sm:min-h-[52px] flex items-center justify-center ${
                       isToday(day) ? "bg-white/70" : "bg-white/40"
                     }`}
                   >

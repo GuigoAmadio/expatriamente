@@ -68,7 +68,7 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
   const menuItems = getMenuItems();
 
   return (
-    <nav className="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50">
+    <nav className="hidden lg:block fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50">
       <div className="p-6">
         <h1 className="text-2xl font-bold text-gray-900">Expatriamente</h1>
         {user && (

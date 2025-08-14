@@ -10,13 +10,13 @@ interface HeaderProps {
 
 export const Header = React.memo(function Header({ user }: HeaderProps) {
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+    <header className="bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4 sticky top-0 z-40">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
             Bem-vindo, {user?.name || "Usuário"}
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600">
             {user?.role === "ADMIN" || user?.role === "SUPER_ADMIN"
               ? "Painel Administrativo"
               : user?.role === "EMPLOYEE"
@@ -25,10 +25,14 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
           </p>
         </div>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 sm:space-x-4">
           <div className="text-right">
-            <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-            <p className="text-xs text-gray-500">{user?.email}</p>
+            <p className="text-sm font-medium text-gray-900 line-clamp-1 max-w-[40vw] sm:max-w-[200px]">
+              {user?.name}
+            </p>
+            <p className="text-xs text-gray-500 line-clamp-1 max-w-[40vw] sm:max-w-[220px]">
+              {user?.email}
+            </p>
           </div>
 
           <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">

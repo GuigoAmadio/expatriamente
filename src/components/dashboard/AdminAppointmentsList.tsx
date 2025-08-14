@@ -4,6 +4,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { FixedSizeList as List } from "react-window";
 import { createAppointment, updateAppointment } from "@/actions/appointments";
+import { FiEdit, FiTrash2, FiCheck, FiX, FiPlus } from "react-icons/fi";
 import { getUsers } from "@/actions/users";
 import { getEmployees } from "@/actions/employees";
 import { getServices } from "@/actions/services";
@@ -741,29 +742,29 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
   }, [editForm.month, editForm.day, editForm.employeeId, getAvailableHours]);
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Detalhes dos Agendamentos</h1>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm"
+    <div className="p-4 flex flex-col gap-2 items-center">
+      <h1 className="text-2xl font-bold text-center">
+        Detalhes dos Agendamentos
+      </h1>
+      <button
+        onClick={() => setShowCreateModal(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm"
+      >
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          Novo Agendamento
-        </button>
-      </div>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          />
+        </svg>
+        Novo Agendamento
+      </button>
 
       {/* Filtros */}
       <div className="bg-white rounded-lg shadow p-4 mb-6">
@@ -805,13 +806,14 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
       </div>
 
       {/* Navegação de Semanas */}
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
-        <div className="flex justify-between items-center">
+      <div className="bg-white rounded-2xl shadow-sm p-3 sm:p-4 mb-6">
+        {/* Desktop/Tablets: layout lado a lado */}
+        <div className="hidden sm:flex items-center justify-between gap-2">
           <button
             onClick={() => navigateWeek("prev")}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+            className="px-3 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors text-sm"
           >
-            ← Semana Anterior
+            ← Semana
           </button>
           <div className="text-center">
             <h3 className="text-lg font-semibold">
@@ -824,31 +826,48 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
               {filteredAppointments.length} agendamento(s){" "}
               {selectedDay || selectedHour ? "filtrado(s)" : "nesta semana"}
             </p>
-            {(selectedDay || selectedHour) && (
-              <button
-                onClick={() => {
-                  setSelectedDay("");
-                  setSelectedHour("");
-                }}
-                className="text-sm text-blue-600 hover:text-blue-800 mt-1"
-              >
-                Limpar filtros
-              </button>
-            )}
           </div>
           <button
             onClick={() => navigateWeek("next")}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+            className="px-3 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors text-sm"
           >
-            Próxima Semana →
+            Semana →
           </button>
+        </div>
+
+        {/* Mobile: data em cima, depois linha com botões e texto */}
+        <div className="sm:hidden flex flex-col items-center gap-2">
+          <h3 className="text-sm font-semibold text-center">
+            {formatDate(currentWeekStart)} -{" "}
+            {formatDate(
+              new Date(currentWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000)
+            )}
+          </h3>
+          <div className="w-full flex items-center justify-between gap-2">
+            <button
+              onClick={() => navigateWeek("prev")}
+              className="px-3 py-2 bg-cyan-200 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors text-xs"
+            >
+              ← Semana
+            </button>
+            <p className="flex-1 text-center text-xs text-gray-600">
+              {filteredAppointments.length} agendamento(s){" "}
+              {selectedDay || selectedHour ? "filtrado(s)" : "nesta semana"}
+            </p>
+            <button
+              onClick={() => navigateWeek("next")}
+              className="px-3 py-2 bg-cyan-200 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors text-xs"
+            >
+              Semana →
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Calendário Semanal */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6 border border-gray-100">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6 border border-gray-100">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 flex items-center gap-2">
             <svg
               className="w-5 h-5 text-blue-600"
               fill="none"
@@ -868,8 +887,34 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
             Clique em um horário para filtrar os agendamentos
           </p>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
+        <div className="overflow-hidden px-5 sm:px-0">
+          <div className="w-full max-w-full mx-auto grid grid-cols-7 gap-2 pt-3 pb-2 sm:hidden box-border">
+            {Array.from({ length: 7 }, (_, i) => {
+              const day = new Date(currentWeekStart);
+              day.setDate(currentWeekStart.getDate() + i);
+              const dayString = day.toISOString().split("T")[0];
+              const hasAny = calendarData.some(
+                (c) => c.day === dayString && c.count > 0
+              );
+              const isSelected = selectedDay === dayString;
+              return (
+                <button
+                  key={i}
+                  onClick={() => handleCalendarClick(dayString, "")}
+                  className={`w-full aspect-square rounded-lg text-[11px] flex flex-col items-center justify-center ${
+                    isSelected
+                      ? "bg-blue-600 text-white"
+                      : hasAny
+                      ? "bg-emerald-50 text-emerald-700"
+                      : "bg-gray-50 text-gray-600"
+                  }`}
+                >
+                  <span className="font-semibold">{day.getDate()}</span>
+                </button>
+              );
+            })}
+          </div>
+          <table className="min-w-full hidden sm:table">
             <thead className="bg-gray-50">
               <tr>
                 <th className="p-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
@@ -1014,7 +1059,7 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
         </div>
 
         {/* Legenda */}
-        <div className="bg-gray-50 px-6 py-3 border-t border-gray-200">
+        <div className="bg-gray-50 px-4 sm:px-6 py-3 border-t border-gray-200">
           <div className="flex items-center justify-between text-xs text-gray-600">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
@@ -1050,8 +1095,81 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
         </div>
       </div>
 
-      {/* Lista de Agendamentos */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      {/* Lista de Agendamentos - Mobile (minimalista) */}
+      <div className="sm:hidden space-y-3 w-full">
+        {loading ? (
+          <div className="bg-white rounded-2xl shadow-sm p-4 text-center text-gray-500">
+            Carregando...
+          </div>
+        ) : filteredAppointments.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-sm p-4 text-center text-gray-500">
+            {selectedDay || selectedHour
+              ? "Nenhum agendamento para os filtros selecionados"
+              : "Nenhum agendamento nesta semana"}
+          </div>
+        ) : (
+          filteredAppointments.map((appointment) => (
+            <div
+              key={appointment.id}
+              className="bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between gap-3"
+            >
+              <div className="min-w-0">
+                <div className="text-sm font-semibold text-gray-900">
+                  {formatDate(new Date(appointment.startTime))}
+                </div>
+                <div className="text-sm text-gray-600 truncate max-w-[60vw]">
+                  {appointment.user?.name || "Cliente"}
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  aria-label="Editar agendamento"
+                  title="Editar"
+                  className="w-9 h-9 grid place-items-center rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                  onClick={() => onEditAppointment(appointment)}
+                >
+                  <FiEdit className="w-4 h-4" />
+                </button>
+                {confirmDeleteId === appointment.id ? (
+                  <>
+                    <button
+                      aria-label="Confirmar exclusão"
+                      title="Confirmar"
+                      className="w-9 h-9 grid place-items-center rounded-lg bg-red-600 text-white disabled:opacity-50"
+                      onClick={() => onDeleteAppointment?.(appointment.id)}
+                      disabled={deletingId === appointment.id}
+                    >
+                      <FiCheck className="w-4 h-4" />
+                    </button>
+                    <button
+                      aria-label="Cancelar"
+                      title="Cancelar"
+                      className="w-9 h-9 grid place-items-center rounded-lg bg-gray-100 text-gray-700"
+                      onClick={() => onDeleteAppointment?.("")}
+                      disabled={deletingId === appointment.id}
+                    >
+                      <FiX className="w-4 h-4" />
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    aria-label="Excluir agendamento"
+                    title="Excluir"
+                    className="w-9 h-9 grid place-items-center rounded-lg bg-red-50 text-red-600 hover:bg-red-100 disabled:opacity-50"
+                    onClick={() => onDeleteAppointment?.(appointment.id)}
+                    disabled={deletingId === appointment.id}
+                  >
+                    <FiTrash2 className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Lista de Agendamentos - Desktop */}
+      <div className="hidden sm:block bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead className="bg-gray-50">
@@ -1146,82 +1264,86 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex gap-2">
+                      <div className="flex items-center gap-2">
                         <button
-                          className="text-blue-600 hover:text-blue-900 transition-colors"
+                          aria-label="Editar"
+                          title="Editar"
+                          className="w-9 h-9 grid place-items-center rounded-lg text-blue-600 hover:bg-blue-50"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleEditAppointment(appointment);
                           }}
                         >
-                          Editar
+                          <FiEdit size={18} />
                         </button>
                         {appointment.status === "SCHEDULED" && (
                           <button
-                            className="text-green-600 hover:text-green-900 transition-colors"
+                            aria-label="Confirmar"
+                            title="Confirmar"
+                            className="w-9 h-9 grid place-items-center rounded-lg text-green-600 hover:bg-green-50 disabled:opacity-50"
                             onClick={(e) => {
                               e.stopPropagation();
                               onConfirmAppointment?.(appointment.id);
                             }}
                             disabled={confirmingId === appointment.id}
                           >
-                            {confirmingId === appointment.id
-                              ? "Confirmando..."
-                              : "Confirmar"}
+                            <FiCheck size={18} />
                           </button>
                         )}
                         {(appointment.status === "SCHEDULED" ||
                           appointment.status === "CONFIRMED") && (
                           <button
-                            className="text-yellow-600 hover:text-yellow-900 transition-colors"
+                            aria-label="Cancelar"
+                            title="Cancelar"
+                            className="w-9 h-9 grid place-items-center rounded-lg text-yellow-600 hover:bg-yellow-50 disabled:opacity-50"
                             onClick={(e) => {
                               e.stopPropagation();
                               onCancelAppointment?.(appointment.id);
                             }}
                             disabled={cancellingId === appointment.id}
                           >
-                            {cancellingId === appointment.id
-                              ? "Cancelando..."
-                              : "Cancelar"}
+                            <FiX size={18} />
                           </button>
                         )}
                         {confirmDeleteId === appointment.id ? (
                           <>
                             <button
-                              className="text-red-600 font-bold transition-colors"
+                              aria-label="Confirmar exclusão"
+                              title="Confirmar"
+                              className="w-9 h-9 grid place-items-center rounded-lg bg-red-600 text-white disabled:opacity-50"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onDeleteAppointment?.(appointment.id);
                               }}
                               disabled={deletingId === appointment.id}
                             >
-                              {deletingId === appointment.id
-                                ? "Excluindo..."
-                                : "Confirmar"}
+                              <FiCheck size={18} />
                             </button>
                             <button
-                              className="text-gray-500 ml-2 transition-colors"
+                              aria-label="Cancelar"
+                              title="Cancelar"
+                              className="w-9 h-9 grid place-items-center rounded-lg bg-gray-100 text-gray-700"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onDeleteAppointment?.("");
                               }}
                               disabled={deletingId === appointment.id}
                             >
-                              Cancelar
+                              <FiX size={18} />
                             </button>
                           </>
                         ) : (
                           <button
-                            className="text-red-600 hover:text-red-900 transition-colors"
+                            aria-label="Excluir"
+                            title="Excluir"
+                            className="w-9 h-9 grid place-items-center rounded-lg text-red-600 hover:bg-red-50 disabled:opacity-50"
                             onClick={(e) => {
                               e.stopPropagation();
                               onDeleteAppointment?.(appointment.id);
                             }}
                             disabled={deletingId === appointment.id}
                           >
-                            {deletingId === appointment.id
-                              ? "Excluindo..."
-                              : "Excluir"}
+                            <FiTrash2 size={18} />
                           </button>
                         )}
                       </div>
@@ -1478,8 +1600,9 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
                 >
+                  <FiX className="w-4 h-4" />
                   Cancelar
                 </button>
                 <button
@@ -1512,19 +1635,7 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
                     </>
                   ) : (
                     <>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <FiPlus className="w-4 h-4" />
                       Criar Agendamento
                     </>
                   )}
@@ -1719,8 +1830,9 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
                 >
+                  <FiX className="w-4 h-4" />
                   Cancelar
                 </button>
                 <button
@@ -1753,19 +1865,7 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
                     </>
                   ) : (
                     <>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <FiCheck className="w-4 h-4" />
                       Salvar Alterações
                     </>
                   )}

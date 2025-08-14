@@ -122,11 +122,13 @@ export default function PsychologistList({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Filtros */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Filtros</h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
+          Filtros
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
           {/* Busca */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -140,7 +142,7 @@ export default function PsychologistList({
                 setSearchTerm(e.target.value);
                 handleFilterChange();
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -155,7 +157,7 @@ export default function PsychologistList({
                 setSelectedDay(e.target.value);
                 handleFilterChange();
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todos os dias</option>
               {daysOfWeek.map((day) => (
@@ -177,7 +179,7 @@ export default function PsychologistList({
                 setSelectedHour(e.target.value);
                 handleFilterChange();
               }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Todos os horários</option>
               {timeSlots.map((time) => (
@@ -197,7 +199,7 @@ export default function PsychologistList({
                 setSelectedHour("");
                 setCurrentPage(1);
               }}
-              className="w-full px-4 py-2 text-gray-600 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors"
+              className="w-full px-4 py-2 text-gray-600 bg-gray-100 border border-gray-300 rounded-xl hover:bg-gray-200 transition-colors"
             >
               Limpar Filtros
             </button>
@@ -206,7 +208,7 @@ export default function PsychologistList({
       </div>
 
       {/* Resultados */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-semibold text-gray-900">
             Psicanalistas ({filteredPsychologists.length})
@@ -220,11 +222,11 @@ export default function PsychologistList({
         </div>
 
         {/* Grid de cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {currentPsychologists.map((psych) => (
             <div
               key={psych.id}
-              className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col h-full"
+              className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-col h-full"
             >
               {/* Imagem - Tamanho fixo */}
               <div className="flex justify-center mb-4">
@@ -247,7 +249,7 @@ export default function PsychologistList({
               <div className="flex flex-col flex-grow">
                 {/* Nome - Altura fixa */}
                 <div className="text-center mb-2 min-h-[2.5rem] flex items-center justify-center">
-                  <h4 className="text-lg font-semibold text-gray-900 leading-tight">
+                  <h4 className="text-base sm:text-lg font-semibold text-gray-900 leading-tight">
                     {psych.name}
                   </h4>
                 </div>
@@ -255,7 +257,7 @@ export default function PsychologistList({
                 {/* Especialidade - Altura fixa */}
                 <div className="text-center mb-3 min-h-[1.5rem] flex items-center justify-center">
                   {psych.specialty && (
-                    <p className="text-sm text-blue-600 font-medium">
+                    <p className="text-xs sm:text-sm text-blue-600 font-medium">
                       {psych.specialty}
                     </p>
                   )}
@@ -265,7 +267,7 @@ export default function PsychologistList({
                 <div className="text-center mb-4 min-h-[3rem] flex items-center justify-center">
                   {psych.description && (
                     <p
-                      className="text-sm text-gray-600 overflow-hidden text-ellipsis"
+                      className="text-xs sm:text-sm text-gray-600 overflow-hidden text-ellipsis"
                       style={{
                         display: "-webkit-box",
                         WebkitLineClamp: 2,

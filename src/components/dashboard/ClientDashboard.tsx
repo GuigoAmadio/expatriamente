@@ -24,9 +24,9 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
     .slice(0, 3);
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+    <div className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">
             <div className="p-2 rounded-full bg-blue-100">
               <span className="text-2xl">📅</span>
@@ -46,7 +46,7 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">
             <div className="p-2 rounded-full bg-green-100">
               <span className="text-2xl">📊</span>
@@ -63,9 +63,9 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
             Próximas Sessões
           </h3>
           <div className="space-y-3">
@@ -73,7 +73,7 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
               upcomingAppointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
                 >
                   <div>
                     <p className="font-medium text-gray-900">
@@ -112,8 +112,8 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
             Sessões Anteriores
           </h3>
           <div className="space-y-3">
@@ -121,7 +121,7 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
               pastAppointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
                 >
                   <div>
                     <p className="font-medium text-gray-900">
@@ -161,11 +161,11 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
           Notas da Última Sessão
         </h3>
-        <div className="bg-gray-50 rounded-lg p-4">
+        <div className="bg-gray-50 rounded-xl p-4">
           <p className="text-gray-600">
             {pastAppointments.length > 0
               ? `Sua última sessão foi em ${new Date(

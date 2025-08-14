@@ -232,7 +232,7 @@ export default function EditEmployeePage() {
   return (
     <div className="p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <h1 className="text-2xl font-bold">Editar Funcionário</h1>
           <button
             onClick={() => router.back()}
@@ -244,7 +244,7 @@ export default function EditEmployeePage() {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Informações Básicas */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <FiUser className="w-5 h-5" />
               Informações Básicas
@@ -259,7 +259,7 @@ export default function EditEmployeePage() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
                   required
                 />
               </div>
@@ -273,7 +273,7 @@ export default function EditEmployeePage() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
                   required
                 />
               </div>
@@ -287,7 +287,7 @@ export default function EditEmployeePage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
                 />
               </div>
 
@@ -300,7 +300,7 @@ export default function EditEmployeePage() {
                   name="position"
                   value={formData.position}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
                 />
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function EditEmployeePage() {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors"
               />
             </div>
 
@@ -335,7 +335,7 @@ export default function EditEmployeePage() {
           </div>
 
           {/* Horários de Trabalho */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <FiClock className="w-5 h-5" />
               Horários de Trabalho
@@ -344,7 +344,7 @@ export default function EditEmployeePage() {
               {daysOfWeek.map(({ key, label }) => (
                 <div
                   key={key}
-                  className="border border-gray-200 rounded-lg p-4"
+                  className="border border-gray-200 rounded-xl p-4"
                 >
                   <h3 className="font-medium text-gray-900 mb-3">{label}</h3>
                   <div className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-8 gap-2">
@@ -381,18 +381,18 @@ export default function EditEmployeePage() {
           </div>
 
           {/* Botões de Ação */}
-          <div className="flex gap-4 justify-end">
+          <div className="flex gap-3 justify-end">
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
+              className="px-5 py-2 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer transition-colors"
+              className="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50 cursor-pointer transition-colors"
             >
               {saving ? "Salvando..." : "Salvar Alterações"}
             </button>

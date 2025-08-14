@@ -22,9 +22,9 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
     .slice(0, 5);
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+    <div className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">
             <div className="p-2 rounded-full bg-blue-100">
               <span className="text-2xl">📅</span>
@@ -40,7 +40,7 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">
             <div className="p-2 rounded-full bg-green-100">
               <span className="text-2xl">⏰</span>
@@ -56,7 +56,7 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">
             <div className="p-2 rounded-full bg-yellow-100">
               <span className="text-2xl">👥</span>
@@ -73,9 +73,9 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Appointments Hoje
           </h3>
           <div className="space-y-3">
@@ -83,7 +83,7 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
               todayAppointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
                 >
                   <div>
                     <p className="font-medium text-gray-900">
@@ -117,8 +117,8 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Próximos Appointments
           </h3>
           <div className="space-y-3">
@@ -126,7 +126,7 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
               upcomingAppointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
                 >
                   <div>
                     <p className="font-medium text-gray-900">

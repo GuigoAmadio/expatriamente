@@ -33,14 +33,14 @@ export function EmployeeClientProfile({
   return (
     <div className="p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <h1 className="text-2xl font-bold">Perfil do Cliente</h1>
           {showEdit && (
             <button
               onClick={() =>
                 router.push(`/dashboard/admin/clients/${client.id}/edit`)
               }
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 cursor-pointer transition-colors flex items-center gap-2 w-full sm:w-auto justify-center"
             >
               <FiEdit className="w-4 h-4" />
               Editar Cliente
@@ -49,7 +49,7 @@ export function EmployeeClientProfile({
         </div>
 
         {/* Informações Básicas */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <FiUser className="w-5 h-5" />
             Informações Básicas
@@ -110,7 +110,7 @@ export function EmployeeClientProfile({
 
         {/* Informações do Sistema */}
         {showSystemInfo && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <FiCalendar className="w-5 h-5" />
               Informações do Sistema
@@ -159,7 +159,7 @@ export function EmployeeClientProfile({
 
         {/* Informações do Cliente/Tenant */}
         {"client" in client && client.client && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <FiUser className="w-5 h-5" />
               Informações do Cliente/Tenant
@@ -199,7 +199,7 @@ export function EmployeeClientProfile({
 
         {/* Placeholder para funcionalidades futuras */}
         {showHistoryPlaceholder && (
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Histórico de Sessões
             </h2>
