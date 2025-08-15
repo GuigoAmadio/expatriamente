@@ -32,7 +32,7 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
+    "http://72.60.1.234/api/v1", // Backend NestJS na porta 3000
   timeout: 5000,
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
