@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useToasts } from "@/components/ui/Toast";
 import { Client } from "@/types/backend";
-import AdminClientsList from "./AdminClientsList";
+import AdminClientsListNew from "./AdminClientsListNew";
 
 interface AdminClientsListClientProps {
   clients: Client[];
@@ -55,7 +55,7 @@ export default function AdminClientsListClient({
   };
 
   return (
-    <AdminClientsList
+    <AdminClientsListNew
       clients={clients}
       meta={meta}
       loading={loading}

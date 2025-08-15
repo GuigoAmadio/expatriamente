@@ -143,7 +143,7 @@ export default async function PsicanalistaPage(props: {
             <PsicAppointmentClient
               appointments={appointmentsArray}
               employeeId={id}
-              serviceId="f5bcee0e-7efb-438e-99c8-9cc495778a93"
+              serviceId="f3571a6a0-a48b-4e26-87c4-6828b91f4d75"
             />
           </div>
         </div>

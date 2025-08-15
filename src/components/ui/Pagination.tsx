@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiMoreHorizontal,
+} from "react-icons/fi";
 
 interface PaginationProps {
   totalItems: number;
@@ -47,39 +52,39 @@ export function Pagination({
   const endPage = Math.min(totalPages, currentPage + 2);
 
   return (
-    <div className={`flex items-center justify-between ${className}`}>
-      <div className="flex items-center gap-2 text-sm text-gray-600">
-        <span>
-          Mostrando {(currentPage - 1) * itemsPerPage + 1} a{" "}
-          {Math.min(currentPage * itemsPerPage, totalItems)} de {totalItems}{" "}
-          itens
-        </span>
-      </div>
-
-      <div className="flex items-center gap-2">
+    <div className={`flex flex-col items-center gap-4 ${className}`}>
+      {/* Controles de paginação - Centralizados */}
+      <div className="flex items-center gap-3">
         {/* Botão Anterior */}
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="relative inline-flex items-center px-4 py-2.5 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-blue-600 disabled:hover:border-blue-200 transition-all duration-200 shadow-sm hover:shadow-md"
         >
-          Anterior
+          <FiChevronLeft className="w-4 h-4" />
+          <span className="hidden sm:ml-1 sm:inline">Anterior</span>
         </button>
 
-        {/* Páginas */}
-        <div className="flex items-center gap-1">
+        {/* Páginas - Desktop */}
+        <div className="hidden sm:flex items-center gap-2">
+          {/* Primeira página */}
           {startPage > 1 && (
             <>
               <button
                 onClick={() => handlePageChange(1)}
-                className="px-3 py-1 text-sm border rounded hover:bg-gray-50"
+                className="relative inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 1
               </button>
-              {startPage > 2 && <span className="px-2 text-gray-400">...</span>}
+              {startPage > 2 && (
+                <span className="relative inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-blue-400">
+                  <FiMoreHorizontal className="w-4 h-4" />
+                </span>
+              )}
             </>
           )}
 
+          {/* Páginas do meio */}
           {Array.from(
             { length: endPage - startPage + 1 },
             (_, i) => startPage + i
@@ -87,24 +92,27 @@ export function Pagination({
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`px-3 py-1 text-sm border rounded ${
+              className={`relative inline-flex items-center justify-center w-10 h-10 text-sm font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md ${
                 page === currentPage
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "hover:bg-gray-50"
+                  ? "z-10 bg-gradient-to-r from-blue-600 to-blue-700 text-white border border-blue-600 shadow-lg transform scale-105"
+                  : "text-blue-600 bg-white border border-blue-200 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
               }`}
             >
               {page}
             </button>
           ))}
 
+          {/* Última página */}
           {endPage < totalPages && (
             <>
               {endPage < totalPages - 1 && (
-                <span className="px-2 text-gray-400">...</span>
+                <span className="relative inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-blue-400">
+                  <FiMoreHorizontal className="w-4 h-4" />
+                </span>
               )}
               <button
                 onClick={() => handlePageChange(totalPages)}
-                className="px-3 py-1 text-sm border rounded hover:bg-gray-50"
+                className="relative inline-flex items-center justify-center w-10 h-10 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 {totalPages}
               </button>
@@ -112,33 +120,62 @@ export function Pagination({
           )}
         </div>
 
+        {/* Páginas - Mobile */}
+        <div className="flex sm:hidden items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-xl">
+          <span className="text-sm text-blue-700 font-medium">
+            Página {currentPage} de {totalPages}
+          </span>
+        </div>
+
         {/* Botão Próximo */}
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 text-sm border rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="relative inline-flex items-center px-4 py-2.5 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-xl hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-blue-600 disabled:hover:border-blue-200 transition-all duration-200 shadow-sm hover:shadow-md"
         >
-          Próximo
+          <span className="hidden sm:mr-1 sm:inline">Próximo</span>
+          <FiChevronRight className="w-4 h-4" />
         </button>
 
         {/* Input para ir direto para uma página */}
-        <form onSubmit={handleInputSubmit} className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Ir para:</span>
-          <input
-            type="number"
-            min="1"
-            max={totalPages}
-            value={inputPage}
-            onChange={(e) => handleInputChange(e.target.value)}
-            className="w-16 px-2 py-1 text-sm border rounded"
-          />
-          <button
-            type="submit"
-            className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+        <div className="hidden xl:flex items-center gap-3 ml-4 px-4 py-2 bg-blue-50 border border-blue-200 rounded-xl">
+          <span className="text-sm text-blue-700 font-medium">Ir para:</span>
+          <form
+            onSubmit={handleInputSubmit}
+            className="flex items-center gap-2"
           >
-            Ir
-          </button>
-        </form>
+            <input
+              type="number"
+              min="1"
+              max={totalPages}
+              value={inputPage}
+              onChange={(e) => handleInputChange(e.target.value)}
+              className="w-16 px-3 py-1.5 text-sm text-center border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-200"
+            />
+            <button
+              type="submit"
+              className="px-3 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+            >
+              Ir
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Informações de paginação - Abaixo e alinhado à esquerda */}
+      <div className="w-full">
+        <p className="text-sm text-blue-700 font-medium text-left">
+          Mostrando{" "}
+          <span className="font-semibold text-blue-800">
+            {(currentPage - 1) * itemsPerPage + 1}
+          </span>{" "}
+          a{" "}
+          <span className="font-semibold text-blue-800">
+            {Math.min(currentPage * itemsPerPage, totalItems)}
+          </span>{" "}
+          de <span className="font-semibold text-blue-800">{totalItems}</span>{" "}
+          resultados
+        </p>
       </div>
     </div>
   );

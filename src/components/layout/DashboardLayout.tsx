@@ -29,7 +29,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       <LazySidebar user={user} />
       <div className="lg:pl-64 pb-20 lg:pb-0">
         <LazyHeader user={user} />
-        <main className="p-6">{children}</main>
+        <main className="">{children}</main>
       </div>
       <MobileNav />
     </div>

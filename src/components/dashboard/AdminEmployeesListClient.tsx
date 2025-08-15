@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { AdminEmployeesList } from "./AdminEmployeesList";
+import { AdminEmployeesListNew } from "./AdminEmployeesListNew";
 import {
   Employee,
   getEmployees,
@@ -174,7 +174,7 @@ export default function AdminEmployeesListClient({
 
   return (
     <>
-      <AdminEmployeesList
+      <AdminEmployeesListNew
         employees={employees}
         meta={
           meta || {

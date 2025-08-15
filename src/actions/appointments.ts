@@ -354,20 +354,58 @@ export async function getWeekAppointments(weekStart: string) {
 export async function getAppointments(params: Record<string, any> = {}) {
   console.log("params", params);
   try {
+    // Defaults: semana atual e limite alto, para alimentar o calendário sem perdas
+    const now = params.date ? new Date(params.date) : new Date();
+    const wkStart = new Date(now);
+    wkStart.setDate(now.getDate() - now.getDay());
+    const wkEnd = new Date(wkStart);
+    wkEnd.setDate(wkStart.getDate() + 6);
+
+    const toLocalYMD = (d: Date) =>
+      `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d
+        .getDate()
+        .toString()
+        .padStart(2, "0")}`;
+
+    const normalizedParams = {
+      page: params.page ? Number(params.page) : 1,
+      limit: params.limit ? Number(params.limit) : 1000,
+      status: params.status,
+      search: params.search,
+      startDate: params.startDate || toLocalYMD(wkStart),
+      endDate: params.endDate || toLocalYMD(wkEnd),
+      employeeId: params.employeeId,
+      userId: params.userId,
+      clientId: params.clientId,
+      categoryId: params.categoryId,
+      orderBy: params.orderBy || "startTime",
+      orderDirection: params.orderDirection || "asc",
+    } as Record<string, any>;
+
     const query = new URLSearchParams();
-    if (params.page) query.append("page", params.page.toString());
-    if (params.limit) query.append("limit", params.limit.toString());
-    if (params.status) query.append("status", params.status);
-    if (params.search) query.append("search", params.search);
-    if (params.startDate) query.append("startDate", params.startDate);
-    if (params.endDate) query.append("endDate", params.endDate);
-    if (params.employeeId) query.append("employeeId", params.employeeId);
-    if (params.userId) query.append("userId", params.userId);
-    if (params.clientId) query.append("clientId", params.clientId);
-    if (params.categoryId) query.append("categoryId", params.categoryId);
-    if (params.orderBy) query.append("orderBy", params.orderBy);
-    if (params.orderDirection)
-      query.append("orderDirection", params.orderDirection);
+    query.append("page", String(normalizedParams.page));
+    query.append("limit", String(normalizedParams.limit));
+    if (normalizedParams.status)
+      query.append("status", normalizedParams.status);
+    if (normalizedParams.search)
+      query.append("search", normalizedParams.search);
+    if (normalizedParams.startDate)
+      query.append("startDate", normalizedParams.startDate);
+    if (normalizedParams.endDate)
+      query.append("endDate", normalizedParams.endDate);
+    if (normalizedParams.employeeId)
+      query.append("employeeId", normalizedParams.employeeId);
+    if (normalizedParams.userId)
+      query.append("userId", normalizedParams.userId);
+    if (normalizedParams.clientId)
+      query.append("clientId", normalizedParams.clientId);
+    if (normalizedParams.categoryId)
+      query.append("categoryId", normalizedParams.categoryId);
+    if (normalizedParams.orderBy)
+      query.append("orderBy", normalizedParams.orderBy);
+    if (normalizedParams.orderDirection)
+      query.append("orderDirection", normalizedParams.orderDirection);
+
     const url =
       "/appointments" + (query.toString() ? `?${query.toString()}` : "");
     const resp = await serverGet(url);

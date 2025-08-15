@@ -12,9 +12,6 @@ export default async function AdminEmployeesPage(props: {
     // Garantir que employees seja sempre um array
     const employeesArray = Array.isArray(employees) ? employees : [];
 
-    console.log("Employees carregados:", employeesArray);
-    console.log("Meta:", meta);
-
     const loading = false;
     const error = null;
     const searchTerm = searchParams?.search || "";

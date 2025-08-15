@@ -16,7 +16,7 @@ export default async function AdminClientsPage(props: {
 
     if (!response) {
       return (
-        <div className="p-6">
+        <div className="">
           <div className="bg-red-50 border border-red-200 rounded-md p-4">
             <div className="flex">
               <div className="text-red-800">
@@ -34,15 +34,8 @@ export default async function AdminClientsPage(props: {
     // Validar se clients é um array
     const clientsArray = Array.isArray(clients) ? clients : [];
 
-    console.log("📦 Clientes carregados:", clientsArray.length);
-    console.log("📦 Meta:", meta);
-
     return (
-      <div className="p-6">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Clientes</h1>
-        </div>
-
+      <div className="">
         <AdminClientsListClient
           clients={clientsArray}
           meta={meta}
