@@ -8,6 +8,7 @@ import {
   Settings,
   Plus,
   UserCircle2,
+  House,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -34,7 +35,7 @@ export function MobileNav() {
           icon: CalendarDays,
           label: "Agendamentos",
         },
-        { href: base, icon: Plus, label: "Painel", isPrimary: true },
+        { href: base, icon: House, label: "Painel", isPrimary: true },
         { href: `${base}/clients`, icon: UserCircle2, label: "Usuários" },
         { href: `${base}/services`, icon: Settings, label: "Config" },
       ];
@@ -47,7 +48,7 @@ export function MobileNav() {
           icon: CalendarDays,
           label: "Agendamentos",
         },
-        { href: base, icon: Plus, label: "Painel", isPrimary: true },
+        { href: base, icon: House, label: "Painel", isPrimary: true },
         { href: `${base}/clients`, icon: UserCircle2, label: "Usuários" },
         { href: `${base}/settings`, icon: Settings, label: "Config" },
       ];
@@ -60,7 +61,7 @@ export function MobileNav() {
           icon: CalendarDays,
           label: "Agendamentos",
         },
-        { href: base, icon: Plus, label: "Painel", isPrimary: true },
+        { href: base, icon: House, label: "Painel", isPrimary: true },
         { href: `${base}/psychologists`, icon: UserCircle2, label: "Usuários" },
         { href: `${base}/settings`, icon: Settings, label: "Config" },
       ];
@@ -73,7 +74,7 @@ export function MobileNav() {
         icon: CalendarDays,
         label: "Agendamentos",
       },
-      { href: `/dashboard`, icon: Plus, label: "Painel", isPrimary: true },
+      { href: `/dashboard`, icon: House, label: "Painel", isPrimary: true },
       { href: `/dashboard/users`, icon: UserCircle2, label: "Usuários" },
       { href: `/dashboard/settings`, icon: Settings, label: "Config" },
     ];
