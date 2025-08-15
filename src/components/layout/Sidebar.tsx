@@ -20,7 +20,7 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
         return [
           { label: "Dashboard", href: "/dashboard/admin", icon: "🏠" },
           {
-            label: "Funcionários",
+            label: "Psicanalistas",
             href: "/dashboard/admin/employees",
             icon: "👥",
           },
@@ -55,7 +55,7 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
             icon: "📅",
           },
           {
-            label: "Ver Psicólogos",
+            label: "Ver Psiquiatras",
             href: "/dashboard/client/psychologists",
             icon: "👤",
           },

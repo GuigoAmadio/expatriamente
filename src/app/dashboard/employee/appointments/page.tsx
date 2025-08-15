@@ -5,8 +5,17 @@ import AdminAppointmentsListClient from "@/components/dashboard/AdminAppointment
 
 export default async function EmployeeAppointmentsPage() {
   const user = await getAuthUser();
+
+  // Buscar agendamentos até o final do ano para ter dados suficientes no calendário
+  const currentYear = new Date().getFullYear();
+  const endOfYear = `${currentYear}-12-31`;
+
   const result = user
-    ? await getAppointments({ employeeId: user.employeeId })
+    ? await getAppointments({
+        employeeId: user.employeeId,
+        endDate: endOfYear, // Buscar até o final do ano
+        limit: 1000, // Limite alto para pegar todos os agendamentos
+      })
     : { data: [] };
   const appointments = (result.data || []) as any[];
 
@@ -18,7 +27,7 @@ export default async function EmployeeAppointmentsPage() {
 
   const meta = {
     page: 1,
-    limit: 10,
+    limit: 1000,
     total: appointments.length,
     totalPages: 1,
     hasNext: false,

@@ -104,7 +104,7 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
               {user?.role === "ADMIN" || user?.role === "SUPER_ADMIN"
                 ? "Admin"
                 : user?.role === "EMPLOYEE"
-                ? "Funcionário"
+                ? "Psicanalista"
                 : "Cliente"}
             </div>
           </div>

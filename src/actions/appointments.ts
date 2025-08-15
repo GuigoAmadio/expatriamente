@@ -354,12 +354,14 @@ export async function getWeekAppointments(weekStart: string) {
 export async function getAppointments(params: Record<string, any> = {}) {
   console.log("params", params);
   try {
-    // Defaults: semana atual e limite alto, para alimentar o calendário sem perdas
+    // Defaults: semana atual para startDate, final do ano para endDate
     const now = params.date ? new Date(params.date) : new Date();
     const wkStart = new Date(now);
     wkStart.setDate(now.getDate() - now.getDay());
-    const wkEnd = new Date(wkStart);
-    wkEnd.setDate(wkStart.getDate() + 6);
+
+    // Se não especificado endDate, buscar até o final do ano
+    const currentYear = new Date().getFullYear();
+    const defaultEndDate = `${currentYear}-12-31`;
 
     const toLocalYMD = (d: Date) =>
       `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d
@@ -373,7 +375,7 @@ export async function getAppointments(params: Record<string, any> = {}) {
       status: params.status,
       search: params.search,
       startDate: params.startDate || toLocalYMD(wkStart),
-      endDate: params.endDate || toLocalYMD(wkEnd),
+      endDate: params.endDate || defaultEndDate, // Final do ano por padrão
       employeeId: params.employeeId,
       userId: params.userId,
       clientId: params.clientId,
