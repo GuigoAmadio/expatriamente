@@ -88,7 +88,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-[#c2d5aa]/20 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -101,7 +101,7 @@ export default function SignInPage() {
           <div className="mb-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-pink-500 transition-colors mb-6"
+              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#c2d5aa] transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
               Voltar ao início
@@ -112,12 +112,12 @@ export default function SignInPage() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="w-16 h-16 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4"
+                className="w-16 h-16 bg-gradient-to-r from-[#c2d5aa] to-[#a8c48a] rounded-full flex items-center justify-center mx-auto mb-4"
               >
                 <span className="text-2xl">🧠</span>
               </motion.div>
 
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-[#c2d5aa] to-[#a8c48a] bg-clip-text text-transparent">
                 Bem-vindo de volta
               </h1>
               <p className="text-gray-600 mt-2">
@@ -145,7 +145,7 @@ export default function SignInPage() {
                   placeholder="admin@expatriamente.com"
                   required
                   disabled={isLoading}
-                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-[#c2d5aa] focus:!ring-[#c2d5aa]/20 !text-gray-900 !placeholder-gray-500"
                 />
               </div>
             </div>
@@ -161,7 +161,7 @@ export default function SignInPage() {
                   placeholder="••••••••"
                   required
                   disabled={isLoading}
-                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-[#c2d5aa] focus:!ring-[#c2d5aa]/20 !text-gray-900 !placeholder-gray-500"
                 />
                 <button
                   type="button"
@@ -192,7 +192,7 @@ export default function SignInPage() {
             {/* Botão de Login */}
             <Button
               type="submit"
-              className="!w-full !h-12 !bg-gradient-to-r !from-pink-400 !to-rose-500 hover:!from-pink-500 hover:!to-rose-600 !text-white !font-semibold !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
+              className="!w-full !h-12 !bg-gradient-to-r !from-[#c2d5aa] !to-[#a8c48a] hover:!from-[#a8c48a] hover:!to-[#8db070] !text-white !font-semibold !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
               loading={isLoading}
               disabled={isLoading}
             >
@@ -211,7 +211,7 @@ export default function SignInPage() {
               Não tem uma conta?{" "}
               <Link
                 href="/auth/signup"
-                className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
+                className="text-[#c2d5aa] hover:text-[#a8c48a] font-medium transition-colors"
               >
                 Cadastre-se
               </Link>

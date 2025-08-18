@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { Client } from "@/types/backend";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 export interface GetClientsParams {
   page?: number;
@@ -96,35 +97,44 @@ export async function getClients(params: GetClientsParams = {}) {
     if (params.search) queryParams.append("search", params.search);
     if (params.status) queryParams.append("status", params.status);
 
-    const response = await serverFetch<{
-      success: boolean;
-      data: {
-        data: Client[];
-        meta: {
-          page: number;
-          limit: number;
-          totalItems: number;
-          totalPages: number;
-          hasNext: boolean;
-          hasPrevious: boolean;
-        };
-      };
-      message: string;
-    }>(`/clients?${queryParams.toString()}`);
+    // ✅ Usar cache inteligente com validação
+    return await cacheUtils.getCachedData(
+      `clients:list:${queryParams.toString()}`,
+      async () => {
+        console.log("🔄 [Clients] Buscando dados frescos do backend...");
 
-    return {
-      success: response.success,
-      data: response.data?.data || [],
-      meta: response.data?.meta || {
-        page: 1,
-        limit: 10,
-        totalItems: 0,
-        totalPages: 0,
-        hasNext: false,
-        hasPrevious: false,
+        const response = await serverFetch<{
+          success: boolean;
+          data: {
+            data: Client[];
+            meta: {
+              page: number;
+              limit: number;
+              totalItems: number;
+              totalPages: number;
+              hasNext: boolean;
+              hasPrevious: boolean;
+            };
+          };
+          message: string;
+        }>(`/clients?${queryParams.toString()}`);
+
+        return {
+          success: response.success,
+          data: response.data?.data || [],
+          meta: response.data?.meta || {
+            page: 1,
+            limit: 10,
+            totalItems: 0,
+            totalPages: 0,
+            hasNext: false,
+            hasPrevious: false,
+          },
+          message: response.message,
+        };
       },
-      message: response.message,
-    };
+      CACHE_CONFIG.clients
+    );
   } catch (error) {
     console.error("❌ [clients] Erro ao buscar clientes:", error);
     return {
@@ -159,6 +169,10 @@ export async function createClient(
       method: "POST",
       body: JSON.stringify(data),
     });
+
+    // ✅ Invalidar cache após criação
+    await cacheUtils.invalidateByType("clients");
+    console.log("🗑️ [Cache] Cache invalidado após criação de cliente");
 
     console.log("✅ [server-action] Cliente criado:", response.data);
     return response.data?.data || null;
@@ -207,6 +221,11 @@ export async function updateClient(
       body: JSON.stringify(data),
     });
 
+    // ✅ Invalidar cache após atualização
+    await cacheUtils.invalidateByType("clients");
+    await cacheUtils.invalidatePattern(`client:${id}`);
+    console.log("🗑️ [Cache] Cache invalidado após atualização de cliente");
+
     console.log("✅ [server-action] Cliente atualizado:", response.data);
     return response.data?.data || null;
   } catch (error) {
@@ -225,6 +244,11 @@ export async function deleteClient(id: string): Promise<boolean> {
     }>(`/clients/${id}`, {
       method: "DELETE",
     });
+
+    // ✅ Invalidar cache após exclusão
+    await cacheUtils.invalidateByType("clients");
+    await cacheUtils.invalidatePattern(`client:${id}`);
+    console.log("🗑️ [Cache] Cache invalidado após exclusão de cliente");
 
     console.log("✅ [server-action] Cliente deletado:", response);
     return response.success;

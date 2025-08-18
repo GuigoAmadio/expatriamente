@@ -7,6 +7,8 @@ import {
   serverPatch,
 } from "@/lib/server-api";
 import { Employee as BackendEmployee } from "@/types/backend";
+// ✅ Imports para cache inteligente
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 // Re-exportar o tipo do backend para manter compatibilidade
 export type Employee = BackendEmployee;
@@ -97,30 +99,44 @@ export async function getInactiveEmployeeCount(): Promise<number> {
 
 export async function getEmployees(): Promise<Employee[]> {
   try {
-    const response = await serverGet<{
-      success: boolean;
-      data: {
-        success: boolean;
-        data: { data: Employee[]; meta: any };
-        timestamp: string;
-        path: string;
-        method: string;
-      };
-      message: string;
-    }>("/employees");
+    console.log("🔍 [getEmployees] Iniciando busca de funcionários...");
+    
+    // ✅ Usar cache inteligente com validação
+    return await cacheUtils.getCachedData(
+      "employees:list",
+      async () => {
+        console.log("🔄 [getEmployees] Cache miss - buscando dados frescos do backend...");
 
-    // A resposta tem estrutura: response.data.data.data (array de funcionários)
-    if (response.data?.data?.data && Array.isArray(response.data.data.data)) {
-      return response.data.data.data;
-    }
+        const response = await serverGet<{
+          success: boolean;
+          data: {
+            success: boolean;
+            data: { data: Employee[]; meta: any };
+            timestamp: string;
+            path: string;
+            method: string;
+          };
+          message: string;
+        }>("/employees");
 
-    // Fallback para resposta direta (array)
-    if (Array.isArray(response.data)) {
-      return response.data;
-    }
+        // A resposta tem estrutura: response.data.data.data (array de funcionários)
+        if (
+          response.data?.data?.data &&
+          Array.isArray(response.data.data.data)
+        ) {
+          return response.data.data.data;
+        }
 
-    console.warn("Resposta inesperada da API:", response.data);
-    return [];
+        // Fallback para resposta direta (array)
+        if (Array.isArray(response.data)) {
+          return response.data;
+        }
+
+        console.warn("Resposta inesperada da API:", response.data);
+        return [];
+      },
+      CACHE_CONFIG.employees
+    );
   } catch (error) {
     console.error("Erro ao buscar funcionários:", error);
     return [];
@@ -247,6 +263,10 @@ export async function createEmployee(
       message: string;
     }>("/employees", data);
 
+    // ✅ Invalidar cache após criação
+    await cacheUtils.invalidateByType("employees");
+    console.log("🗑️ [Employees] Cache invalidado após criação");
+
     console.log("✅ Funcionário criado:", response.data);
     return response.data?.data || null;
   } catch (error) {
@@ -268,6 +288,11 @@ export async function updateEmployee(
       message: string;
     }>(`/employees/${id}`, data);
 
+    // ✅ Invalidar cache após atualização
+    await cacheUtils.invalidateByType("employees");
+    await cacheUtils.invalidatePattern(`employee:${id}`);
+    console.log("🗑️ [Employees] Cache invalidado após atualização");
+
     console.log("✅ Funcionário atualizado:", response.data);
     return response.data?.data || null;
   } catch (error) {
@@ -279,6 +304,12 @@ export async function updateEmployee(
 export async function deleteEmployee(id: string): Promise<boolean> {
   try {
     await serverDelete(`/employees/${id}`);
+
+    // ✅ Invalidar cache após exclusão
+    await cacheUtils.invalidateByType("employees");
+    await cacheUtils.invalidatePattern(`employee:${id}`);
+    console.log("🗑️ [Employees] Cache invalidado após exclusão");
+
     return true;
   } catch (error) {
     console.error("Erro ao deletar funcionário:", error);

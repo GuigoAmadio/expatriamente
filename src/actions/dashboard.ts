@@ -2,7 +2,7 @@
 
 import type { DashboardStats } from "@/types";
 import { serverGet } from "@/lib/server-api";
-import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 interface ProductStatsResponse {
   totalProducts: number;

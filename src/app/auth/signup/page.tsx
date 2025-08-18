@@ -106,7 +106,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-[#7bb3f0]/20 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -119,7 +119,7 @@ export default function SignUpPage() {
           <div className="mb-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-pink-500 transition-colors mb-6"
+              className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#7bb3f0] transition-colors mb-6"
             >
               <ArrowLeft className="w-4 h-4" />
               Voltar ao início
@@ -130,12 +130,12 @@ export default function SignUpPage() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="w-16 h-16 bg-gradient-to-r from-pink-400 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4"
+                className="w-16 h-16 bg-gradient-to-r from-[#7bb3f0] to-[#5a9bd4] rounded-full flex items-center justify-center mx-auto mb-4"
               >
                 <span className="text-2xl">✨</span>
               </motion.div>
 
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-[#7bb3f0] to-[#5a9bd4] bg-clip-text text-transparent">
                 Criar Conta
               </h1>
               <p className="text-gray-600 mt-2">Junte-se à nossa comunidade</p>
@@ -163,7 +163,7 @@ export default function SignUpPage() {
                   placeholder="Seu nome completo"
                   required
                   disabled={isLoading}
-                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-[#7bb3f0] focus:!ring-[#7bb3f0]/20 !text-gray-900 !placeholder-gray-500"
                 />
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function SignUpPage() {
                   placeholder="seu@email.com"
                   required
                   disabled={isLoading}
-                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                  className="!pl-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-[#7bb3f0] focus:!ring-[#7bb3f0]/20 !text-gray-900 !placeholder-gray-500"
                 />
               </div>
             </div>
@@ -195,7 +195,7 @@ export default function SignUpPage() {
                   placeholder="Mínimo 6 caracteres"
                   required
                   disabled={isLoading}
-                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-[#7bb3f0] focus:!ring-[#7bb3f0]/20 !text-gray-900 !placeholder-gray-500"
                 />
                 <button
                   type="button"
@@ -225,7 +225,7 @@ export default function SignUpPage() {
                   placeholder="Confirme sua senha"
                   required
                   disabled={isLoading}
-                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-pink-400 focus:!ring-pink-400/20 !text-gray-900 !placeholder-gray-500"
+                  className="!pl-10 !pr-10 !h-12 !bg-white/70 !border-gray-200 focus:!border-[#7bb3f0] focus:!ring-[#7bb3f0]/20 !text-gray-900 !placeholder-gray-500"
                 />
                 <button
                   type="button"
@@ -268,7 +268,7 @@ export default function SignUpPage() {
             {/* Botão de Cadastro */}
             <Button
               type="submit"
-              className="!w-full !h-12 !bg-gradient-to-r !from-pink-400 !to-rose-500 hover:!from-pink-500 hover:!to-rose-600 !text-white !font-semibold !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
+              className="!w-full !h-12 !bg-gradient-to-r !from-[#7bb3f0] !to-[#5a9bd4] hover:!from-[#5a9bd4] hover:!to-[#4a88c7] !text-white !font-semibold !rounded-xl !shadow-lg hover:!shadow-xl !transition-all !duration-300"
               loading={isLoading}
               disabled={isLoading}
             >
@@ -287,7 +287,7 @@ export default function SignUpPage() {
               Já tem uma conta?{" "}
               <Link
                 href="/auth/signin"
-                className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
+                className="text-[#7bb3f0] hover:text-[#5a9bd4] font-medium transition-colors"
               >
                 Faça login
               </Link>

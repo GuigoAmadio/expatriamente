@@ -1199,7 +1199,7 @@ export function AdminAppointmentsList(props: AdminAppointmentsListProps) {
               <div className="grid grid-cols-8 gap-1 bg-gray-100 rounded-xl p-2">
                 {/* Header */}
                 <div className="bg-white p-1 flex items-center justify-center rounded-md shadow-sm">
-                  <span className="text-[8px] font-semibold text-gray-600 transform -rotate-90">
+                  <span className="text-[8px] font-semibold text-gray-600">
                     HORA
                   </span>
                 </div>

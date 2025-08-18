@@ -1,64 +1,70 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useCache } from "@/lib/cache";
-import { advancedCache } from "@/lib/cache";
+import { useCacheAndSSE, useCachePerformance } from "@/hooks/useCacheAndSSE";
+import { useRequestManager } from "@/hooks/useRequestManager";
+import { intelligentCache } from "@/lib/intelligent-cache";
+import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
 
-interface CacheStats {
-  memorySize: number;
-  localStorageSize: number;
-  totalSize: number;
+interface CacheDebugProps {
+  isVisible?: boolean;
 }
 
-interface PerformanceMetrics {
-  timestamp: string;
-  route: string;
-  loadTime: number;
-  cacheHits: number;
-  cacheMisses: number;
-}
+export function CacheDebug({ isVisible = false }: CacheDebugProps) {
+  const [debugVisible, setDebugVisible] = useState(isVisible);
+  const [activeTab, setActiveTab] = useState<
+    "cache" | "sse" | "requests" | "performance"
+  >("cache");
 
-export function CacheDebug() {
-  const [stats, setStats] = useState<CacheStats | null>(null);
-  const [metrics, setMetrics] = useState<PerformanceMetrics[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
-  const cache = useCache();
+  // ✅ Hooks de monitoramento
+  const {
+    isSSEConnected,
+    connectionStatus,
+    cacheStats,
+    lastCacheUpdate,
+    forceReconnect,
+    clearAllCache,
+    invalidateCache,
+  } = useCacheAndSSE();
 
+  const { hasAnyLoading, loadingStates, requestCounts, cancelAllRequests } =
+    useRequestManager();
+
+  const { performanceMetrics, requestTimes } = useCachePerformance();
+
+  const [prefetchStats, setPrefetchStats] = useState(
+    intelligentPrefetch.getStats()
+  );
+  const [refreshInterval, setRefreshInterval] = useState<NodeJS.Timeout | null>(
+    null
+  );
+
+  // ✅ Atualizar estatísticas em tempo real
   useEffect(() => {
-    const updateStats = () => {
-      const cacheStats = advancedCache.getStats();
-      setStats(cacheStats);
-    };
+    if (debugVisible) {
+      const interval = setInterval(() => {
+        setPrefetchStats(intelligentPrefetch.getStats());
+      }, 2000);
+      setRefreshInterval(interval);
 
-    updateStats();
-    const interval = setInterval(updateStats, 5000); // Atualizar a cada 5 segundos
+      return () => {
+        if (interval) clearInterval(interval);
+      };
+    } else {
+      if (refreshInterval) {
+        clearInterval(refreshInterval);
+        setRefreshInterval(null);
+      }
+    }
+  }, [debugVisible]);
 
-    return () => clearInterval(interval);
-  }, [cache]);
-
-  const clearCache = async () => {
-    await advancedCache.clear();
-    setStats(advancedCache.getStats());
-  };
-
-  const addPerformanceMetric = (route: string, loadTime: number) => {
-    const newMetric: PerformanceMetrics = {
-      timestamp: new Date().toISOString(),
-      route,
-      loadTime,
-      cacheHits: 0, // Implementar contadores
-      cacheMisses: 0,
-    };
-
-    setMetrics((prev) => [...prev.slice(-9), newMetric]); // Manter apenas os últimos 10
-  };
-
-  if (!isVisible) {
+  // ✅ Toggle visibility
+  if (!debugVisible) {
     return (
       <button
-        onClick={() => setIsVisible(true)}
-        className="fixed bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full shadow-lg z-50"
-        title="Debug Cache"
+        onClick={() => setDebugVisible(true)}
+        className="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg z-50 hover:bg-blue-700 transition-colors"
+        title="Abrir Debug Cache"
       >
         🔧
       </button>
@@ -66,93 +72,259 @@ export function CacheDebug() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white border border-gray-300 rounded-lg shadow-lg p-4 w-80 max-h-96 overflow-y-auto z-50">
-      <div className="flex justify-between items-center mb-4">
+    <div className="fixed bottom-4 right-4 bg-white border border-gray-300 rounded-lg shadow-2xl w-96 max-h-96 overflow-hidden z-50">
+      {/* ✅ Header */}
+      <div className="flex justify-between items-center p-4 bg-gray-50 border-b">
         <h3 className="font-bold text-gray-800">Cache Debug</h3>
-        <button
-          onClick={() => setIsVisible(false)}
-          className="text-gray-500 hover:text-gray-700"
-        >
-          ✕
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setDebugVisible(false)}
+            className="text-gray-500 hover:text-gray-700 text-lg"
+            title="Fechar"
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
-      {stats && (
-        <div className="space-y-2 mb-4">
-          <div className="text-sm">
-            <span className="font-medium">Memória:</span> {stats.memorySize}{" "}
-            itens
-          </div>
-          <div className="text-sm">
-            <span className="font-medium">LocalStorage:</span>{" "}
-            {stats.localStorageSize} itens
-          </div>
-          <div className="text-sm">
-            <span className="font-medium">Total:</span> {stats.totalSize} itens
-          </div>
-        </div>
-      )}
+      {/* ✅ Tabs */}
+      <div className="flex border-b">
+        {(["cache", "sse", "requests", "performance"] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`flex-1 py-2 px-3 text-xs font-medium ${
+              activeTab === tab
+                ? "bg-blue-500 text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
+          >
+            {tab === "cache" && "💾 Cache"}
+            {tab === "sse" && "📡 SSE"}
+            {tab === "requests" && "🔄 Requests"}
+            {tab === "performance" && "📊 Performance"}
+          </button>
+        ))}
+      </div>
 
-      <div className="space-y-2 mb-4">
-        <h4 className="font-medium text-sm text-gray-700">
-          Performance Recente
-        </h4>
-        {metrics.length > 0 ? (
-          <div className="space-y-1">
-            {metrics.map((metric, index) => (
-              <div key={index} className="text-xs text-gray-600">
-                <div className="flex justify-between">
-                  <span>{metric.route}</span>
-                  <span
-                    className={
-                      metric.loadTime > 1000 ? "text-red-500" : "text-green-500"
-                    }
-                  >
-                    {metric.loadTime}ms
-                  </span>
+      {/* ✅ Content */}
+      <div className="p-4 overflow-y-auto max-h-64">
+        {/* Cache Tab */}
+        {activeTab === "cache" && (
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <span className="font-medium">Memória:</span>{" "}
+                {cacheStats.memorySize} items
+              </div>
+              <div>
+                <span className="font-medium">LocalStorage:</span>{" "}
+                {cacheStats.localStorageSize} items
+              </div>
+              <div>
+                <span className="font-medium">Total:</span>{" "}
+                {cacheStats.totalSize} items
+              </div>
+              <div>
+                <span className="font-medium">Prefetch:</span>{" "}
+                {prefetchStats.queueSize} na fila
+              </div>
+            </div>
+
+            {lastCacheUpdate && (
+              <div className="bg-yellow-50 p-2 rounded text-xs">
+                <div className="font-medium">Última Atualização:</div>
+                <div>Tipo: {lastCacheUpdate.type}</div>
+                <div>Padrão: {lastCacheUpdate.pattern}</div>
+                <div>
+                  Quando:{" "}
+                  {new Date(lastCacheUpdate.timestamp).toLocaleTimeString()}
                 </div>
               </div>
-            ))}
+            )}
+
+            <div className="space-y-2">
+              <button
+                onClick={clearAllCache}
+                className="w-full bg-red-500 text-white text-sm py-2 px-3 rounded hover:bg-red-600"
+              >
+                🗑️ Limpar Todo Cache
+              </button>
+
+              <button
+                onClick={() => invalidateCache("employees")}
+                className="w-full bg-orange-500 text-white text-sm py-2 px-3 rounded hover:bg-orange-600"
+              >
+                🗑️ Invalidar Employees
+              </button>
+            </div>
           </div>
-        ) : (
-          <div className="text-xs text-gray-500">
-            Nenhuma métrica registrada
+        )}
+
+        {/* SSE Tab */}
+        {activeTab === "sse" && (
+          <div className="space-y-3">
+            <div className="space-y-2 text-sm">
+              <div
+                className={`p-2 rounded ${
+                  isSSEConnected
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                Status: {isSSEConnected ? "✅ Conectado" : "❌ Desconectado"}
+              </div>
+
+              <div>
+                <span className="font-medium">Ready State:</span>{" "}
+                {connectionStatus.readyState}
+              </div>
+
+              <div>
+                <span className="font-medium">Tentativas:</span>{" "}
+                {connectionStatus.reconnectAttempts}
+              </div>
+            </div>
+
+            {!isSSEConnected && (
+              <button
+                onClick={forceReconnect}
+                className="w-full bg-blue-500 text-white text-sm py-2 px-3 rounded hover:bg-blue-600"
+              >
+                🔄 Forçar Reconexão
+              </button>
+            )}
+
+            {lastCacheUpdate && (
+              <div className="bg-blue-50 p-2 rounded text-xs">
+                <div className="font-medium">Último Evento SSE:</div>
+                <div>Tipo: {lastCacheUpdate.type}</div>
+                <div>Padrão: {lastCacheUpdate.pattern}</div>
+                <div>
+                  Quando:{" "}
+                  {new Date(lastCacheUpdate.timestamp).toLocaleTimeString()}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Requests Tab */}
+        {activeTab === "requests" && (
+          <div className="space-y-3">
+            <div className="text-sm">
+              <div
+                className={`p-2 rounded ${
+                  hasAnyLoading
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-green-100 text-green-800"
+                }`}
+              >
+                Status: {hasAnyLoading ? "⏳ Carregando" : "✅ Idle"}
+              </div>
+            </div>
+
+            {Object.keys(loadingStates).filter((k) => loadingStates[k]).length >
+              0 && (
+              <div>
+                <div className="font-medium text-sm mb-2">
+                  Requisições Ativas:
+                </div>
+                <div className="space-y-1">
+                  {Object.keys(loadingStates)
+                    .filter((k) => loadingStates[k])
+                    .map((key) => (
+                      <div
+                        key={key}
+                        className="bg-yellow-50 p-1 rounded text-xs"
+                      >
+                        <div className="font-medium">{key}</div>
+                        <div>Count: {requestCounts[key] || 1}</div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={cancelAllRequests}
+              className="w-full bg-red-500 text-white text-sm py-2 px-3 rounded hover:bg-red-600"
+            >
+              ❌ Cancelar Todas
+            </button>
+          </div>
+        )}
+
+        {/* Performance Tab */}
+        {activeTab === "performance" && (
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <span className="font-medium">Hit Rate:</span>{" "}
+                {performanceMetrics.hitRate}%
+              </div>
+              <div>
+                <span className="font-medium">Miss Rate:</span>{" "}
+                {performanceMetrics.missRate}%
+              </div>
+              <div>
+                <span className="font-medium">Avg Time:</span>{" "}
+                {performanceMetrics.avgResponseTime}ms
+              </div>
+              <div>
+                <span className="font-medium">Total:</span>{" "}
+                {performanceMetrics.totalRequests}
+              </div>
+            </div>
+
+            {requestTimes.length > 0 && (
+              <div>
+                <div className="font-medium text-sm mb-2">
+                  Últimas Requisições:
+                </div>
+                <div className="space-y-1 max-h-32 overflow-y-auto">
+                  {requestTimes.map((req, index) => (
+                    <div
+                      key={index}
+                      className={`p-1 rounded text-xs ${
+                        req.hit ? "bg-green-50" : "bg-red-50"
+                      }`}
+                    >
+                      <div className="font-medium">{req.key}</div>
+                      <div className="flex justify-between">
+                        <span>{req.hit ? "✅ HIT" : "❌ MISS"}</span>
+                        <span>{req.endTime - req.startTime}ms</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      <div className="space-y-2">
-        <button
-          onClick={clearCache}
-          className="w-full bg-red-500 text-white text-sm py-1 px-2 rounded hover:bg-red-600"
-        >
-          Limpar Cache
-        </button>
-
-        <button
-          onClick={() => {
-            // Implementar prefetch manual
-            cache.prefetchMainData();
-          }}
-          className="w-full bg-green-500 text-white text-sm py-1 px-2 rounded hover:bg-green-600"
-        >
-          Prefetch Dados
-        </button>
-      </div>
-
-      <div className="mt-4 text-xs text-gray-500">
-        <div>Última atualização: {new Date().toLocaleTimeString()}</div>
+      {/* ✅ Footer */}
+      <div className="p-2 bg-gray-50 border-t text-xs text-gray-500 text-center">
+        Última atualização: {new Date().toLocaleTimeString()}
       </div>
     </div>
   );
 }
 
-// Hook para monitorar performance de rotas
-export function usePerformanceMonitor() {
-  const addMetric = (route: string, loadTime: number) => {
-    // Implementar lógica de monitoramento
-    console.log(`Performance: ${route} - ${loadTime}ms`);
-  };
+// ✅ Hook para usar o componente facilmente
+export function useCacheDebug() {
+  const [isVisible, setIsVisible] = useState(false);
 
-  return { addMetric };
+  const toggleDebug = () => setIsVisible(!isVisible);
+  const showDebug = () => setIsVisible(true);
+  const hideDebug = () => setIsVisible(false);
+
+  return {
+    isVisible,
+    toggleDebug,
+    showDebug,
+    hideDebug,
+    CacheDebugComponent: () => <CacheDebug isVisible={isVisible} />,
+  };
 }

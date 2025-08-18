@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { motion } from "framer-motion";
-import { FaPlay, FaPause, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaPlay, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const videos = [
   {
@@ -19,423 +25,488 @@ const videos = [
   },
   {
     src: "/videos/video3Expatriamente.mp4",
-    title: "Comunidade de Apoio",
+    title: "Suporte Especializado",
     description:
-      "Conecte-se com outros brasileiros que compartilham experiências similares.",
+      "Oferecemos atendimento psicológico especializado para expatriados brasileiros.",
   },
   {
     src: "/videos/video4Expatriamente.mp4",
     title: "Adaptação Cultural",
     description:
-      "Aprenda a navegar pelas diferenças culturais e construir sua nova identidade no exterior.",
+      "Te ajudamos a navegar pelas questões emocionais da vida no exterior.",
   },
   {
     src: "/videos/video5Expatriamente.mp4",
-    title: "Gestão do Estresse",
+    title: "Bem-estar Emocional",
     description:
-      "Técnicas práticas para gerenciar o estresse e a ansiedade da vida no exterior.",
-  },
-  {
-    src: "/videos/video6Expatriamente.mp4",
-    title: "Saudade e Conexão",
-    description:
-      "Como lidar com a saudade de casa mantendo conexões significativas com suas raízes.",
-  },
-  {
-    src: "/videos/video7Expatriamente.mp4",
-    title: "Crescimento Pessoal",
-    description:
-      "Transforme os desafios do exterior em oportunidades de desenvolvimento pessoal.",
-  },
-  {
-    src: "/videos/video8Expatriamente.mp4",
-    title: "Networking e Carreira",
-    description:
-      "Estratégias para construir uma rede profissional e avançar na carreira no exterior.",
-  },
-  {
-    src: "/videos/video9Expatriamente.mp4",
-    title: "Bem-estar Integral",
-    description:
-      "Abordagem holística para manter o equilíbrio físico, mental e emocional no exterior.",
+      "Priorizamos seu bem-estar emocional durante sua jornada no exterior.",
   },
 ];
 
-export default function VideoCarouselSection() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  // Configurar vídeos ao carregar
-  useEffect(() => {
-    videoRefs.current.forEach((video, index) => {
-      if (video) {
-        // Configurações iniciais
-        video.muted = false; // Permitir áudio
-        video.preload = "metadata";
-        video.playsInline = true;
-
-        // Prevenir mudança de tamanho durante carregamento
-        video.addEventListener("loadedmetadata", (e) => {
-          const player = e.target as HTMLVideoElement;
-          player.width = player.clientWidth;
-          player.height = player.clientHeight;
-        });
-
-        // Event listeners para play/pause
-        video.addEventListener("play", () => {
-          setIsPlaying(true);
-          setPlayingIndex(index);
-        });
-
-        video.addEventListener("pause", () => {
-          if (playingIndex === index) {
-            setIsPlaying(false);
-            setPlayingIndex(null);
-          }
-        });
-
-        video.addEventListener("ended", () => {
-          if (playingIndex === index) {
-            setIsPlaying(false);
-            setPlayingIndex(null);
-          }
-        });
-      }
-    });
-  }, [playingIndex]);
-
-  const handleVideoClick = (index: number) => {
-    const video = videoRefs.current[index];
-    if (!video) return;
-
-    // Se clicou em um vídeo lateral, centralizar primeiro
-    if (index !== currentSlide) {
-      goToSlide(index);
-      return; // A função goToSlide vai chamar handleVideoClick novamente
-    }
-
-    if (video.paused) {
-      // Pausar apenas o vídeo que está atualmente tocando
-      if (playingIndex !== null && playingIndex !== index) {
-        const currentVideo = videoRefs.current[playingIndex];
-        if (currentVideo) {
-          currentVideo.pause();
-        }
-      }
-
-      // Iniciar o vídeo atual
-      const playPromise = video.play();
-
-      if (playPromise !== undefined) {
-        playPromise.catch((e) => {
-          console.log("Erro ao reproduzir vídeo:", e);
-          setIsPlaying(false);
-          setPlayingIndex(null);
-        });
-      }
-    } else {
-      // Pausar o vídeo atual
-      video.pause();
-    }
-  };
-
-  const goToSlide = (index: number) => {
-    if (isAnimating) return;
-
-    setIsAnimating(true);
-    setCurrentSlide(index);
-
-    // Se foi chamado por um clique em vídeo lateral, iniciar o vídeo após centralizar
-    setTimeout(() => {
-      setIsAnimating(false);
-      // Pequeno delay para garantir que a animação terminou
-      setTimeout(() => {
-        const video = videoRefs.current[index];
-        if (video && video.paused) {
-          handleVideoClick(index);
-        }
-      }, 100);
-    }, 500);
-  };
-
-  const nextSlide = () => {
-    const next = (currentSlide + 1) % videos.length;
-    goToSlide(next);
-  };
-
-  const prevSlide = () => {
-    const prev = (currentSlide - 1 + videos.length) % videos.length;
-    goToSlide(prev);
-  };
-
-  // Função para obter os 3 vídeos visíveis
-  const getVisibleVideos = () => {
-    const prev = (currentSlide - 1 + videos.length) % videos.length;
-    const next = (currentSlide + 1) % videos.length;
-    return [
-      { index: prev, position: "left" as const },
-      { index: currentSlide, position: "center" as const },
-      { index: next, position: "right" as const },
-    ];
-  };
-
-  const VideoSlide = ({
+// Componente VideoCard completamente isolado para evitar re-renders
+const VideoCard = React.memo<{
+  video: (typeof videos)[0];
+  index: number;
+  position: "left" | "center" | "right";
+  onVideoClick: (index: number) => void;
+  currentIndex: number;
+  playingIndex: number | null;
+  videoRefs: React.MutableRefObject<(HTMLVideoElement | null)[]>;
+}>(
+  ({
     video,
     index,
     position,
-  }: {
-    video: any;
-    index: number;
-    position: "left" | "center" | "right";
+    onVideoClick,
+    currentIndex,
+    playingIndex,
+    videoRefs,
   }) => {
-    const isCenter = position === "center";
-    const isPlayingAnyVideo = isPlaying && playingIndex !== null;
-    const showOverlay = !isPlayingAnyVideo;
+    const isActive = position === "center";
+    const isPlaying = playingIndex === index && isActive;
+    const overlayRef = useRef<HTMLDivElement>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    // Controle de overlay otimizado - só atualiza quando necessário
+    useEffect(() => {
+      if (!overlayRef.current) return;
+
+      const shouldHide = isPlaying;
+      overlayRef.current.style.opacity = shouldHide ? "0" : "1";
+      overlayRef.current.style.pointerEvents = shouldHide ? "none" : "auto";
+    }, [isPlaying]);
+
+    // Controle direto do vídeo via ref
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      if (isPlaying) {
+        video.muted = false;
+        video.currentTime = 0;
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((e) => {
+            console.log("Erro ao reproduzir vídeo via useEffect:", e);
+            video.muted = true;
+            video.play().catch(() => {});
+          });
+        }
+      } else if (!video.paused) {
+        video.pause();
+      }
+    }, [isPlaying]);
+
+    // Otimização: carregar frame de preview apenas uma vez
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
+
+      const handleLoadedMetadata = () => {
+        if (!isPlaying && playingIndex !== index) {
+          video.currentTime = Math.min(2, video.duration * 0.1);
+          video.muted = true;
+        }
+      };
+
+      video.addEventListener("loadedmetadata", handleLoadedMetadata);
+      return () =>
+        video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    }, []);
+
+    const handleClick = useCallback(() => {
+      onVideoClick(index);
+    }, [onVideoClick, index]);
 
     return (
-      <div className={`video-slide ${isCenter ? "center" : "side"}`}>
-        <motion.div
-          className="relative group cursor-pointer rounded-2xl overflow-hidden shadow-2xl mx-auto"
-          style={{
-            width: isCenter ? "350px" : "280px",
-            height: isCenter ? "480px" : "380px",
+      <motion.div
+        className={`relative cursor-pointer rounded-2xl overflow-hidden shadow-2xl bg-gray-900 transition-all duration-500 ease-out will-change-transform ${
+          isActive
+            ? "w-[320px] h-[500px] md:w-[420px] md:h-[600px] scale-100"
+            : "w-[280px] h-[420px] md:w-[350px] md:h-[480px] scale-90 opacity-75"
+        }`}
+        initial={{
+          opacity: 0,
+          scale: 0.8,
+          x: position === "left" ? -100 : position === "right" ? 100 : 0,
+        }}
+        animate={{
+          opacity: isActive ? 1 : 0.75,
+          scale: isActive ? 1 : 0.9,
+          x: 0,
+        }}
+        transition={{
+          duration: 0.5,
+          ease: "easeOut",
+          type: "spring",
+          stiffness: 100,
+          damping: 20,
+        }}
+        whileHover={{
+          scale: isActive ? 1.02 : 0.92,
+          transition: { duration: 0.2 },
+        }}
+        onClick={handleClick}
+        style={{ willChange: "transform" }}
+      >
+        {/* Vídeo com otimizações */}
+        <video
+          ref={(el) => {
+            videoRef.current = el;
+            videoRefs.current[index] = el;
           }}
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
-          onClick={() => handleVideoClick(index)}
+          className="w-full h-full object-cover object-center"
+          loop
+          preload="metadata"
+          playsInline
+          muted
+          style={{ willChange: "auto" }}
         >
-          {/* Vídeo */}
-          <video
-            ref={(el) => {
-              videoRefs.current[index] = el;
-            }}
-            className="w-full h-full object-cover"
-            preload="metadata"
-            muted={false}
-            controls={false}
-            playsInline
-            webkit-playsinline="true"
-          >
-            <source src={video.src} type="video/mp4" />
-            Seu navegador não suporta vídeos.
-          </video>
+          <source src={video.src} type="video/mp4" />
+          Seu navegador não suporta o elemento de vídeo.
+        </video>
 
-          {/* Overlay condicional - só aparece quando nenhum vídeo está tocando */}
-          {showOverlay && (
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="p-4 w-full">
-                <h3 className="text-white text-lg font-bold mb-2">
-                  {video.title}
-                </h3>
-                <p className="text-white/90 text-sm">{video.description}</p>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Botão condicional - só aparece quando nenhum vídeo está tocando */}
-          {showOverlay && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center"
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 group-hover:bg-white/30 transition-all duration-300">
-                <FaPlay className="text-white text-xl ml-1" />
-              </div>
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
-    );
-  };
-
-  return (
-    <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-blue-50">
-      <div className="container mx-auto px-4">
-        {/* Título e Descrição */}
-        <motion.div
-          className="text-center mb-12 sm:mb-16 w-full max-w-4xl mx-auto px-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+        {/* Overlay estático - sem AnimatePresence para evitar re-renders */}
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 transition-opacity duration-300"
+          style={{ willChange: "opacity" }}
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#01386F] mb-4">
-            Vamos falar sobre...
-          </h2>
-          <p className="text-lg sm:text-xl text-[#01386F] text-center leading-relaxed">
-            Como a escuta atenta e o diálogo promovem autoconhecimento e
-            transformação pessoal
-          </p>
-        </motion.div>
+          {/* Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-        {/* Carousel CSS Nativo */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Setas de navegação */}
-          <button
-            onClick={prevSlide}
-            disabled={isAnimating}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 group disabled:opacity-50"
-          >
-            <FaChevronLeft className="text-[#01386F] text-xl group-hover:scale-110 transition-transform" />
-          </button>
-
-          <button
-            onClick={nextSlide}
-            disabled={isAnimating}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all duration-300 group disabled:opacity-50"
-          >
-            <FaChevronRight className="text-[#01386F] text-xl group-hover:scale-110 transition-transform" />
-          </button>
-
-          {/* Container do Carousel */}
-          <div
-            ref={carouselRef}
-            className="carousel-container relative overflow-hidden"
-          >
-            <div className="carousel-track flex justify-center items-center gap-6">
-              {getVisibleVideos().map(({ index, position }) => (
-                <VideoSlide
-                  key={`${index}-${currentSlide}`}
-                  video={videos[index]}
-                  index={index}
-                  position={position}
-                />
-              ))}
+          {/* Content Container */}
+          <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6">
+            {/* Play Button */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-white/25 backdrop-blur-md rounded-full p-3 md:p-4 border border-white/40 shadow-lg hover:bg-white/35 hover:scale-110 transition-all duration-200">
+                <FaPlay className="text-white text-lg md:text-xl ml-1" />
+              </div>
             </div>
-          </div>
 
-          {/* Indicadores de paginação estilizados */}
-          <div className="flex justify-center items-center mt-8 space-x-2">
-            {videos.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                disabled={isAnimating}
-                className={`pagination-dot transition-all duration-300 ${
-                  currentSlide === index ? "active" : "inactive"
-                } disabled:opacity-50`}
-              />
-            ))}
+            {/* Video Info */}
+            <div className="text-white space-y-1 md:space-y-2">
+              <h3 className="text-sm md:text-lg font-bold font-akzidens leading-tight">
+                {video.title}
+              </h3>
+              {isActive && (
+                <p className="text-xs md:text-sm text-gray-200 leading-relaxed">
+                  {video.description}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Estilos CSS Nativo */}
-        <style jsx>{`
-          .carousel-container {
-            height: 480px;
-            perspective: 1000px;
+        {/* Active Indicator */}
+        {isActive && (
+          <motion.div
+            className="absolute -bottom-3 left-1/2 transform -translate-x-1/2"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="w-4 h-4 bg-gradient-to-r from-[#01386F] to-[#0e5a94] rounded-full shadow-lg" />
+          </motion.div>
+        )}
+      </motion.div>
+    );
+  },
+  (prevProps, nextProps) => {
+    // Comparação otimizada - só re-render se mudanças essenciais
+    return (
+      prevProps.index === nextProps.index &&
+      prevProps.position === nextProps.position &&
+      prevProps.currentIndex === nextProps.currentIndex &&
+      prevProps.playingIndex === nextProps.playingIndex &&
+      prevProps.video.src === nextProps.video.src &&
+      prevProps.videoRefs === nextProps.videoRefs
+    );
+  }
+);
+
+VideoCard.displayName = "VideoCard";
+
+const VideoCarouselSection: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Declarar goToSlide primeiro
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (isTransitioning || index === currentIndex) return;
+
+      setIsTransitioning(true);
+
+      // Pausar todos os vídeos
+      videoRefs.current.forEach((video) => {
+        if (video && !video.paused) {
+          video.pause();
+          video.muted = true;
+        }
+      });
+      setPlayingIndex(null);
+
+      setCurrentIndex(index);
+
+      // Reset transition state after animation
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 500);
+    },
+    [isTransitioning, currentIndex]
+  );
+
+  // Agora podemos usar goToSlide no handleVideoClick
+  const handleVideoClick = useCallback(
+    (index: number) => {
+      // Se clicou em um card lateral, navegar para ele
+      if (index !== currentIndex) {
+        goToSlide(index);
+        return;
+      }
+
+      // Se já está no centro, controlar reprodução
+      if (playingIndex === index) {
+        // Pausar vídeo atual
+        setPlayingIndex(null);
+      } else {
+        // Pausar todos os outros vídeos
+        videoRefs.current.forEach((v, i) => {
+          if (v && i !== index && !v.paused) {
+            v.pause();
+            v.muted = true;
           }
+        });
 
-          .carousel-track {
-            transform-style: preserve-3d;
-            height: 100%;
-          }
+        // Iniciar reprodução do vídeo atual
+        setPlayingIndex(index);
+      }
+    },
+    [currentIndex, playingIndex, goToSlide]
+  );
 
-          .video-slide {
-            transition: all 0.5s ease-in-out;
-            position: relative;
-          }
+  const goToNext = useCallback(() => {
+    const nextIndex = currentIndex === videos.length - 1 ? 0 : currentIndex + 1;
+    goToSlide(nextIndex);
+  }, [currentIndex, goToSlide]);
 
-          .video-slide.center {
-            opacity: 1;
-            transform: scale(1);
-            z-index: 10;
-          }
+  const goToPrevious = useCallback(() => {
+    const prevIndex = currentIndex === 0 ? videos.length - 1 : currentIndex - 1;
+    goToSlide(prevIndex);
+  }, [currentIndex, goToSlide]);
 
-          .video-slide.side {
-            opacity: 0.7;
-            transform: scale(0.9);
-            z-index: 5;
-          }
+  // Detecção de mobile otimizada
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-          /* Bolinhas de paginação estilizadas */
-          .pagination-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-          }
+    checkIsMobile();
 
-          .pagination-dot.inactive {
-            background: linear-gradient(135deg, #e5e7eb, #d1d5db);
-            border-color: #9ca3af;
-            transform: scale(0.8);
-          }
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkIsMobile, 150);
+    };
 
-          .pagination-dot.inactive:hover {
-            background: linear-gradient(135deg, #d1d5db, #9ca3af);
-            transform: scale(1);
-            border-color: #6b7280;
-          }
+    window.addEventListener("resize", debouncedResize);
+    return () => {
+      window.removeEventListener("resize", debouncedResize);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
-          .pagination-dot.active {
-            background: linear-gradient(135deg, #01386f, #0a4c8a);
-            border-color: #01386f;
-            transform: scale(1.2);
-            box-shadow: 0 4px 12px rgba(1, 56, 111, 0.3);
-          }
+  // Memoização dos vídeos visíveis para evitar recálculos
+  const visibleVideos = useMemo(() => {
+    const result = [];
 
-          .pagination-dot.active::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.8;
-          }
+    if (isMobile) {
+      result.push({
+        video: videos[currentIndex],
+        index: currentIndex,
+        position: "center" as const,
+      });
+    } else {
+      const prevIndex =
+        currentIndex === 0 ? videos.length - 1 : currentIndex - 1;
+      const nextIndex =
+        currentIndex === videos.length - 1 ? 0 : currentIndex + 1;
 
-          /* Responsividade */
-          @media (max-width: 1024px) {
-            .carousel-container {
-              height: 420px;
-            }
-          }
+      result.push(
+        {
+          video: videos[prevIndex],
+          index: prevIndex,
+          position: "left" as const,
+        },
+        {
+          video: videos[currentIndex],
+          index: currentIndex,
+          position: "center" as const,
+        },
+        {
+          video: videos[nextIndex],
+          index: nextIndex,
+          position: "right" as const,
+        }
+      );
+    }
 
-          @media (max-width: 768px) {
-            .carousel-container {
-              height: 360px;
-            }
+    return result;
+  }, [currentIndex, isMobile]);
 
-            .video-slide.center {
-              transform: scale(0.95);
-            }
+  return (
+    <section className="relative py-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 overflow-hidden">
+      {/* Enhanced Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute -top-96 -right-96 w-[800px] h-[800px] bg-gradient-to-br from-blue-400/10 to-indigo-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.1, 1],
+            rotate: [0, 90, 180],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+        <motion.div
+          className="absolute -bottom-96 -left-96 w-[800px] h-[800px] bg-gradient-to-tr from-purple-400/10 to-pink-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1.1, 1, 1.1],
+            rotate: [180, 90, 0],
+          }}
+          transition={{
+            duration: 35,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
 
-            .video-slide.side {
-              transform: scale(0.8);
-            }
-          }
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
+          <motion.h2
+            className="text-4xl lg:text-5xl font-bold font-akzidens text-gray-900 mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Vamos falar sobre...
+          </motion.h2>
+          <motion.p
+            className="text-lg italic text-gray-600 max-w-4xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            Como a escuta atenta e o diálogo promovem autoconhecimento e
+            transformação pessoal.
+          </motion.p>
+        </motion.div>
 
-          @media (max-width: 640px) {
-            .carousel-container {
-              height: 320px;
-            }
+        {/* Video Carousel */}
+        <motion.div
+          className="relative mb-12"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+          viewport={{ once: true }}
+        >
+          {/* Container do Carousel */}
+          <div
+            ref={containerRef}
+            className="relative h-[550px] md:h-[650px] flex items-center justify-center gap-6 md:gap-8 px-4"
+            style={{ willChange: "auto" }}
+          >
+            {visibleVideos.map(({ video, index, position }) => (
+              <VideoCard
+                key={index}
+                video={video}
+                index={index}
+                position={position}
+                onVideoClick={handleVideoClick}
+                currentIndex={currentIndex}
+                playingIndex={playingIndex}
+                videoRefs={videoRefs}
+              />
+            ))}
+          </div>
 
-            .pagination-dot {
-              width: 10px;
-              height: 10px;
-            }
-          }
-        `}</style>
+          {/* Navigation Arrows */}
+          <motion.button
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 bg-white/90 backdrop-blur-sm text-[#01386F] p-3 md:p-4 rounded-full shadow-xl hover:bg-white hover:scale-110 transition-all duration-300"
+            whileHover={{ scale: 1.1, x: -2 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={goToPrevious}
+            disabled={isTransitioning}
+          >
+            <FaChevronLeft className="text-lg md:text-xl" />
+          </motion.button>
+          <motion.button
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 bg-white/90 backdrop-blur-sm text-[#01386F] p-3 md:p-4 rounded-full shadow-xl hover:bg-white hover:scale-110 transition-all duration-300"
+            whileHover={{ scale: 1.1, x: 2 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={goToNext}
+            disabled={isTransitioning}
+          >
+            <FaChevronRight className="text-lg md:text-xl" />
+          </motion.button>
+        </motion.div>
+
+        {/* Enhanced Pagination */}
+        <motion.div
+          className="flex justify-center items-center space-x-3"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
+          viewport={{ once: true }}
+        >
+          {videos.map((_, index) => (
+            <motion.button
+              key={index}
+              className={`relative transition-all duration-300 ${
+                index === currentIndex ? "w-12 h-3" : "w-3 h-3 hover:scale-125"
+              }`}
+              onClick={() => goToSlide(index)}
+              whileHover={{ scale: index === currentIndex ? 1 : 1.25 }}
+              whileTap={{ scale: 0.9 }}
+              disabled={isTransitioning}
+            >
+              <div
+                className={`w-full h-full rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? "bg-gradient-to-r from-[#01386F] to-[#0e5a94] shadow-lg"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+              />
+              {index === currentIndex && (
+                <motion.div
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-[#01386F] to-[#0e5a94] opacity-50"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              )}
+            </motion.button>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
-}
+};
+
+export default VideoCarouselSection;

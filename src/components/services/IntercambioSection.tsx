@@ -62,7 +62,7 @@ export default function IntercambioSection() {
 
         {/* Cards de Estatísticas */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16 font-condensed w-full px-4 place-items-center"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16 font-condensed w-full px-4 place-items-stretch items-start"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -70,13 +70,13 @@ export default function IntercambioSection() {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className={`flex items-center md:items-start md:justify-center max-w-sm md:max-w-none ${stat.bgColor} rounded-2xl md:rounded-4xl px-2 py-4 shadow-lg md:shadow-xl hover:shadow-2xl transition-all duration-300`}
+              className={`flex flex-col items-center justify-start max-w-sm md:max-w-none ${stat.bgColor} rounded-2xl md:rounded-4xl px-2 py-4 shadow-lg md:shadow-xl hover:shadow-2xl transition-all duration-300 h-full`}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
               whileHover={{ y: -4, scale: 1.02 }}
             >
-              <div className="text-center flex flex-row sm:flex-col items-center gap-4 md:gap-0 p-2 md:p-0 md:pt-5">
+              <div className="text-center flex flex-col items-center justify-start gap-4 md:gap-0 p-2 md:p-0 md:pt-5 h-full w-full">
                 <h3
                   className={`${
                     stat.number.toLowerCase().includes("vulnerável")
@@ -86,7 +86,7 @@ export default function IntercambioSection() {
                 >
                   {stat.number}
                 </h3>
-                <p className="text-start ml-3 font-body text-white text-[2.5vw] sm:text-[1.6vw] md:text-[1vw] italic md:whitespace-pre-line">
+                <p className="text-center font-body text-white text-[2.5vw] sm:text-[1.6vw] md:text-[1vw] italic md:whitespace-pre-line flex-1 flex items-center justify-center">
                   {stat.description}
                 </p>
               </div>

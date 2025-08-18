@@ -129,7 +129,7 @@ export default function FAQSection() {
                           }}
                           className="overflow-hidden"
                         >
-                          <div className="px-[1.8vw] pb-[1.2vw] text-[#5a5427] text-[1.1vw] border-t border-[#d6cfae]">
+                          <div className="px-[1.8vw] py-[1.2vw] text-[#5a5427] text-xs sm:text-[1.1vw] border-t border-[#d6cfae]">
                             {faq.answer}
                           </div>
                         </motion.div>

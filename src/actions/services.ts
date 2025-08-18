@@ -7,7 +7,7 @@ import {
   serverPut,
   serverDelete,
 } from "@/lib/server-api";
-import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 export async function getServices() {
   try {

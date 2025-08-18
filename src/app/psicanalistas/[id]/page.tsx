@@ -68,28 +68,28 @@ export default async function PsicanalistaPage(props: {
 
       {/* Faixa horizontal com informações do psicanalista */}
       <div className="w-full bg-white shadow-sm border-b border-gray-200 mt-24">
-        <div className="w-full px-4 py-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-8 px-10">
+        <div className="w-full px-4 py-6 sm:py-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-10">
             {/* Foto do psicanalista */}
             <div className="flex-shrink-0">
               <img
                 src={employee.image}
                 alt={employee.name}
-                className="w-32 h-32 rounded-full object-cover border-4 border-blue-100 shadow-lg"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-blue-100 shadow-lg"
               />
             </div>
 
             {/* Informações pessoais */}
-            <div className="flex-1 flex flex-col md:flex-row gap-6 md:gap-12">
+            <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-12">
               {/* Coluna 1: Informações básicas */}
               <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                   {employee.name}
                 </h1>
-                <p className="text-xl text-blue-600 font-semibold mb-3">
+                <p className="text-lg sm:text-xl text-blue-600 font-semibold mb-3">
                   {employee.specialty}
                 </p>
-                <div className="space-y-2 text-gray-600">
+                <div className="space-y-1 sm:space-y-2 text-gray-600 text-sm sm:text-base">
                   <p>
                     <span className="font-medium">Idiomas:</span>{" "}
                     {employee.languages.join(", ")}
@@ -107,19 +107,21 @@ export default async function PsicanalistaPage(props: {
 
               {/* Coluna 2: Experiência e formação */}
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">
                   Experiência e Formação
                 </h3>
-                <div className="text-gray-600 space-y-2">
-                  <p className="text-sm leading-relaxed">{employee.bio}</p>
+                <div className="text-gray-600 space-y-1 sm:space-y-2">
+                  <p className="text-xs sm:text-sm leading-relaxed">
+                    {employee.bio}
+                  </p>
                   {employee.education && (
-                    <p className="text-sm">
+                    <p className="text-xs sm:text-sm">
                       <span className="font-medium">Formação:</span>{" "}
                       {employee.education}
                     </p>
                   )}
                   {employee.approach && (
-                    <p className="text-sm">
+                    <p className="text-xs sm:text-sm">
                       <span className="font-medium">Abordagem:</span>{" "}
                       {employee.approach}
                     </p>
@@ -132,14 +134,14 @@ export default async function PsicanalistaPage(props: {
       </div>
 
       {/* Seção de agendamento */}
-      <div className="px-4 py-8">
-        <div className="w-5/6 mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+      <div className="px-4 py-6 sm:py-8">
+        <div className="w-full sm:w-5/6 lg:w-[97%] xl:w-5/6 mx-auto">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
             Agende sua sessão
           </h2>
 
           {/* Calendário */}
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <PsicAppointmentClient
               appointments={appointmentsArray}
               employeeId={id}

@@ -84,7 +84,6 @@ export default function PsychologistsSection() {
   const { t } = useLanguage();
   const { darkMode } = useTheme();
   const [search, setSearch] = useState("");
-  const [hovered, setHovered] = useState<string | null>(null);
   const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -190,14 +189,13 @@ export default function PsychologistsSection() {
           {paginatedPsychologists.map((p, idx) => (
             <motion.div
               key={p.id}
-              className="bg-white relative rounded-2xl shadow p-6 flex flex-col items-center text-center cursor-pointer group"
+              className="bg-white relative rounded-2xl shadow-lg hover:shadow-xl p-6 flex flex-col items-center text-center cursor-pointer group transition-all duration-300 ease-in-out"
               onClick={() => router.push(`/psicanalistas/${p.id}`)}
               style={{ minHeight: 400 }}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.05 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.05, y: -5 }}
             >
               <img
                 src={p.image}
@@ -227,7 +225,7 @@ export default function PsychologistsSection() {
                 {p.shortBio || p.availability}
               </div>
               <button
-                className="absolute bottom-10 px-6 py-2 rounded-lg bg-[#01386F] text-white font-akzidens font-bold shadow hover:bg-[#012a52] transition-all"
+                className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#01386F] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#0e5a94] hover:to-[#1e6aa5] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20"
                 onClick={(e) => {
                   e.stopPropagation();
                   router.push(`/psicanalistas/${p.id}`);
@@ -235,97 +233,6 @@ export default function PsychologistsSection() {
               >
                 Ver horários
               </button>
-              {/* Hover detalhado animado */}
-              <AnimatePresence>
-                {hovered === p.id && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 24 }}
-                    transition={{ duration: 0.28, ease: "easeInOut" }}
-                    className="absolute inset-0 bg-white/95 rounded-2xl shadow-2xl z-30 flex flex-col items-center justify-center p-6 border-2 border-[#01386F]"
-                    onMouseEnter={() => setHovered(p.id)}
-                    onMouseLeave={() => setHovered(null)}
-                    style={{ pointerEvents: "auto" }}
-                  >
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="w-24 h-24 rounded-full object-cover mb-2 border-2 border-[#01386F] shadow-md"
-                      style={{
-                        width: "96px",
-                        height: "96px",
-                        objectFit: "cover",
-                        objectPosition: "center",
-                      }}
-                    />
-                    <div className="font-akzidens text-lg text-[#01386F] font-bold mb-1">
-                      {p.name}
-                    </div>
-                    <div className="text-base text-[#5a5427] mb-1">
-                      {p.specialty}
-                    </div>
-                    <div className="text-xs text-[#6B3F1D] mb-2">
-                      {p.availability}
-                    </div>
-                    <div
-                      className="text-sm text-[#01386F] mb-2 overflow-hidden"
-                      style={{
-                        maxHeight: "120px",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 6,
-                        WebkitBoxOrient: "vertical",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {p.fullBio || p.bio}
-                    </div>
-                    <div
-                      className="text-xs text-[#5a5427] mb-1 overflow-hidden"
-                      style={{
-                        maxHeight: "40px",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {p.education}
-                    </div>
-                    <div
-                      className="text-xs text-[#5a5427] mb-2 overflow-hidden"
-                      style={{
-                        maxHeight: "40px",
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {p.approach}
-                    </div>
-                    <div className="flex flex-row flex-wrap gap-2 mb-2">
-                      {p.languages.map((lang) => (
-                        <span
-                          key={lang}
-                          className="bg-[#b7c8b1] text-[#01386F] rounded px-2 py-1 text-xs font-semibold"
-                        >
-                          {lang}
-                        </span>
-                      ))}
-                    </div>
-                    <button
-                      className="mt-2 px-6 py-2 rounded-lg bg-[#01386F] text-white font-akzidens font-bold shadow hover:bg-[#012a52] transition-all"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        router.push(`/psicanalistas/${p.id}`);
-                      }}
-                    >
-                      Ver agenda e marcar sessão
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           ))}
         </motion.div>

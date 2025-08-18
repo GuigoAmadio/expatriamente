@@ -68,9 +68,9 @@ export default function AboutHeroSection() {
       {/* Espaço para a imagem no mobile: card único -> imagem -> grid de 4 */}
       <div className="block md:hidden h-[320px]" aria-hidden="true" />
 
-      {/* 4 Feature Cards - Layout responsivo melhorado */}
+      {/* 4 Feature Cards - Layout responsivo melhorado com altura uniforme e topo alinhado */}
       <motion.div
-        className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-20 mb-16 w-full place-items-center"
+        className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-20 mb-16 w-full place-items-stretch items-start"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
@@ -78,7 +78,7 @@ export default function AboutHeroSection() {
         {features.map((feature, index) => (
           <motion.div
             key={feature.title}
-            className="flex flex-col items-center text-center"
+            className="flex flex-col items-center text-center h-full gap-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -88,8 +88,8 @@ export default function AboutHeroSection() {
             }}
             whileHover={{ y: -4, scale: 1.02 }}
           >
-            {/* Ícone em cima do card */}
-            <div className="mb-4 flex items-center justify-center font-body">
+            {/* Container do ícone com altura fixa para alinhamento */}
+            <div className="h-[80px] md:h-[8vw] flex items-center justify-center font-body">
               <Image
                 src={feature.icon}
                 alt={feature.title}
@@ -99,11 +99,11 @@ export default function AboutHeroSection() {
               />
             </div>
 
-            {/* Card com altura fixa e width automático */}
+            {/* Card com altura uniforme e layout flexível */}
             <div
-              className={`${feature.bgColor} text-center rounded-4xl p-4 shadow-lg max-w-40 md:max-w-44 h-full flex flex-col justify-start gap-4`}
+              className={`${feature.bgColor} text-center rounded-4xl p-4 shadow-lg max-w-40 md:max-w-44 h-full flex flex-col justify-between gap-4`}
             >
-              <div>
+              <div className="flex-1 flex flex-col justify-start">
                 {feature.title === "CFPC" ? (
                   <div className="mb-2 flex items-center justify-center"></div>
                 ) : (
@@ -121,7 +121,7 @@ export default function AboutHeroSection() {
                 )}
               </div>
               <p
-                className={`text-xs italic font-lg font-body sm:text-[1.2vw] whitespace-pre-line ${
+                className={`text-xs italic font-lg font-body sm:text-[1.2vw] whitespace-pre-line flex-1 flex items-center justify-center ${
                   feature.title === "CFPC" ? "text-center" : "text-start"
                 } ${feature.textColor || "text-white"}`}
               >

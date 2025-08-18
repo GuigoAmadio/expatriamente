@@ -24,7 +24,7 @@ export function ClientDashboard({ appointments }: ClientDashboardProps) {
     .slice(0, 3);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 p-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">

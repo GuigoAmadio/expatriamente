@@ -7,7 +7,7 @@ import {
   serverDelete,
 } from "@/lib/server-api";
 import type { Appointment } from "@/types/backend";
-import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 export interface CreateAppointmentData {
   startTime: string;
@@ -198,12 +198,15 @@ export async function getAppointment(id: string) {
 // Criar novo appointment
 export async function createAppointment(data: CreateAppointmentData) {
   try {
+    console.log("🆕 [createAppointment] Criando novo agendamento...");
+    console.log("📋 [createAppointment] Dados:", { ...data, userId: "***" });
     const result = await serverPost<Appointment>("/appointments", data);
 
-    // Invalidar apenas cache específico em vez de todo o tipo
-    await cacheUtils.invalidatePattern("appointments:today");
-    await cacheUtils.invalidatePattern("appointments:period");
-    await cacheUtils.invalidatePattern("dashboard:stats");
+    // ✅ Invalidar cache de appointments
+    console.log("🗑️ [createAppointment] Invalidando caches relacionados...");
+    await cacheUtils.invalidateByType("appointments");
+    await cacheUtils.invalidateByType("dashboard");
+    console.log("✅ [createAppointment] Caches invalidados com sucesso");
 
     return {
       success: true,
@@ -225,13 +228,15 @@ export async function updateAppointment(
   data: UpdateAppointmentData
 ) {
   try {
+    console.log(`🔄 [updateAppointment] Atualizando agendamento ${id}...`);
+    console.log("📋 [updateAppointment] Dados:", data);
     const result = await serverPut<Appointment>(`/appointments/${id}`, data);
 
-    // Invalidar apenas cache específico
-    await cacheUtils.invalidatePattern("appointments:today");
-    await cacheUtils.invalidatePattern("appointments:period");
-    await cacheUtils.invalidatePattern(`appointments:detail:${id}`);
-    await cacheUtils.invalidatePattern("dashboard:stats");
+    // ✅ Invalidar cache de appointments
+    console.log("🗑️ [updateAppointment] Invalidando caches relacionados...");
+    await cacheUtils.invalidateByType("appointments");
+    await cacheUtils.invalidateByType("dashboard");
+    console.log("✅ [createAppointment] Caches invalidados com sucesso");
 
     return {
       success: true,
@@ -250,13 +255,14 @@ export async function updateAppointment(
 // Excluir appointment
 export async function deleteAppointment(id: string) {
   try {
+    console.log(`🗑️ [deleteAppointment] Deletando agendamento ${id}...`);
     await serverDelete(`/appointments/${id}`);
 
-    // Invalidar apenas cache específico
-    await cacheUtils.invalidatePattern("appointments:today");
-    await cacheUtils.invalidatePattern("appointments:period");
-    await cacheUtils.invalidatePattern(`appointments:detail:${id}`);
-    await cacheUtils.invalidatePattern("dashboard:stats");
+    // ✅ Invalidar cache de appointments
+    console.log("🗑️ [deleteAppointment] Invalidando caches relacionados...");
+    await cacheUtils.invalidateByType("appointments");
+    await cacheUtils.invalidateByType("dashboard");
+    console.log("✅ [createAppointment] Caches invalidados com sucesso");
 
     return {
       success: true,

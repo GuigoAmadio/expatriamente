@@ -38,34 +38,30 @@ export const useToasts = () => useToast();
 const getToastStyles = (type: Toast["type"]) => {
   switch (type) {
     case "success":
-      return "bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-200";
+      return "bg-green-600 border-green-700 text-white shadow-lg";
     case "error":
-      return "bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800 dark:text-red-200";
+      return "bg-red-600 border-red-700 text-white shadow-lg";
     case "warning":
-      return "bg-yellow-50 border-yellow-200 text-yellow-800 dark:bg-yellow-900/20 dark:border-yellow-800 dark:text-yellow-200";
+      return "bg-yellow-600 border-yellow-700 text-white shadow-lg";
     case "info":
-      return "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-200";
+      return "bg-blue-600 border-blue-700 text-white shadow-lg";
     default:
-      return "bg-gray-50 border-gray-200 text-gray-800 dark:bg-gray-900/20 dark:border-gray-800 dark:text-gray-200";
+      return "bg-gray-600 border-gray-700 text-white shadow-lg";
   }
 };
 
 const getToastIcon = (type: Toast["type"]) => {
   switch (type) {
     case "success":
-      return (
-        <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-      );
+      return <CheckCircle className="w-5 h-5 text-white" />;
     case "error":
-      return <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />;
+      return <AlertCircle className="w-5 h-5 text-white" />;
     case "warning":
-      return (
-        <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-      );
+      return <AlertCircle className="w-5 h-5 text-white" />;
     case "info":
-      return <Info className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+      return <Info className="w-5 h-5 text-white" />;
     default:
-      return <Info className="w-5 h-5 text-gray-600 dark:text-gray-400" />;
+      return <Info className="w-5 h-5 text-white" />;
   }
 };
 
@@ -148,9 +144,9 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
                 </div>
                 <button
                   onClick={() => hideToast(toast.id)}
-                  className="flex-shrink-0 p-1 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+                  className="flex-shrink-0 p-1 rounded-full hover:bg-white/20 transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4 text-white" />
                 </button>
               </div>
             </motion.div>

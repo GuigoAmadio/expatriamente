@@ -111,49 +111,92 @@ export default function PsicAppointmentClient({
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className="w-full max-w-4xl mx-auto mt-8"
           >
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
-              <h3 className="font-akzidens text-2xl font-bold text-gray-900 mb-6 text-center">
-                Crie uma conta e finalize o agendamento
-              </h3>
+            <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 border border-blue-100">
+              <motion.div
+                className="text-center mb-6 sm:mb-8"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <h3 className="font-akzidens text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3">
+                  Crie uma conta e finalize o agendamento
+                </h3>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Preencha seus dados para confirmar a sessão
+                </p>
+              </motion.div>
+
               <form
                 className="w-full flex flex-col gap-6"
                 onSubmit={handleSubmit}
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <label className="text-gray-700 font-semibold">
-                    Nome
+                <motion.div
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <label className="text-gray-700 font-semibold text-sm sm:text-base">
+                    Nome Completo
                     <input
                       type="text"
                       name="name"
-                      className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
-                      placeholder="Seu nome"
+                      className="w-full mt-2 px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-300 hover:border-blue-300 text-sm sm:text-base"
+                      placeholder="Seu nome completo"
+                      required
                     />
                   </label>
-                  <label className="text-gray-700 font-semibold">
+                  <label className="text-gray-700 font-semibold text-sm sm:text-base">
                     Email
                     <input
                       type="email"
                       name="email"
-                      className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
-                      placeholder="Seu email"
+                      className="w-full mt-2 px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-300 hover:border-blue-300 text-sm sm:text-base"
+                      placeholder="seu@email.com"
+                      required
                     />
                   </label>
-                  <label className="text-gray-700 font-semibold">
+                  <label className="text-gray-700 font-semibold text-sm sm:text-base sm:col-span-2 lg:col-span-1">
                     Senha
                     <input
                       type="password"
                       name="password"
-                      className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
-                      placeholder="Crie uma senha"
+                      className="w-full mt-2 px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-300 hover:border-blue-300 text-sm sm:text-base"
+                      placeholder="Mínimo 6 caracteres"
+                      required
+                      minLength={6}
                     />
                   </label>
-                </div>
-                <button
-                  type="submit"
-                  className="mt-6 px-8 py-3 rounded-lg bg-blue-600 text-white font-akzidens font-bold shadow hover:bg-blue-700 transition-all text-lg mx-auto"
+                </motion.div>
+
+                <motion.div
+                  className="text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  Finalizar Agendamento
-                </button>
+                  <motion.button
+                    type="submit"
+                    className="px-6 sm:px-10 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-akzidens font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-lg hover:from-blue-700 hover:to-blue-800"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    ✓ Finalizar Agendamento
+                  </motion.button>
+
+                  <div className="mt-4 text-xs sm:text-sm text-gray-600">
+                    <p>
+                      Ao criar sua conta, você concorda com nossos termos de uso
+                    </p>
+                    <p className="mt-1">
+                      Sua primeira sessão é{" "}
+                      <span className="font-semibold text-green-600">
+                        gratuita
+                      </span>
+                      !
+                    </p>
+                  </div>
+                </motion.div>
               </form>
             </div>
           </motion.div>

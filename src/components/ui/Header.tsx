@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { FiUser, FiMenu, FiX, FiChevronDown } from "react-icons/fi";
+import { FiUser, FiMenu, FiX, FiChevronDown, FiLogIn } from "react-icons/fi";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function Header({
@@ -144,16 +144,20 @@ export default function Header({
             <nav className="font-akzidens text-[1.2vw] font-medium text-[#0A4C8A] flex-1 flex justify-around items-center gap-[2vw] ml-[2vw]">
               <button
                 onClick={() => handleNavigation("/")}
-                className={`hover:underline bg-transparent border-none cursor-pointer transition-colors ${
-                  currentSection === "home" ? "font-bold underline" : ""
+                className={`hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
+                  currentSection === "home"
+                    ? "font-bold text-[#0e5a94] scale-105"
+                    : ""
                 }`}
               >
                 Início
               </button>
               <button
                 onClick={() => handleNavigation("/sobre")}
-                className={`hover:underline bg-transparent border-none cursor-pointer transition-colors ${
-                  currentSection === "about" ? "font-bold underline" : ""
+                className={`hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
+                  currentSection === "about"
+                    ? "font-bold text-[#0e5a94] scale-105"
+                    : ""
                 }`}
               >
                 Sobre Nós
@@ -164,11 +168,11 @@ export default function Header({
                 <button
                   onClick={() => handleNavigation("/servicos")}
                   onMouseEnter={() => setIsServicesDropdownOpen(true)}
-                  className={`hover:underline bg-transparent border-none cursor-pointer transition-colors flex items-center gap-1 ${
+                  className={`hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out flex items-center gap-1 ${
                     currentSection === "services" ||
                     currentSection === "intercambio" ||
                     currentSection === "expatriados"
-                      ? "font-bold underline"
+                      ? "font-bold text-[#0e5a94] scale-105"
                       : ""
                   }`}
                 >
@@ -187,7 +191,7 @@ export default function Header({
                         duration: 0.2,
                         ease: "easeOut",
                       }}
-                      className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 min-w-[200px] z-50 overflow-hidden"
+                      className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 min-w-[220px] z-50 overflow-hidden backdrop-blur-sm"
                       onMouseLeave={() => setIsServicesDropdownOpen(false)}
                     >
                       <motion.button
@@ -195,18 +199,20 @@ export default function Header({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.05 }}
                         onClick={() => handleNavigation("/intercambio")}
-                        className="w-full px-4 py-3 text-left hover:bg-[#0A4C8A] hover:text-white transition-all duration-200 font-akzidens text-[1.1vw] text-[#0A4C8A] border-b border-gray-100 last:border-b-0"
+                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:from-[#0A4C8A] hover:to-[#0e5a94] hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#0A4C8A] border-b border-gray-50 last:border-b-0 relative group"
                       >
-                        Intercâmbio
+                        <span className="relative z-10">Intercâmbio</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#0A4C8A]/5 to-[#0e5a94]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </motion.button>
                       <motion.button
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
                         onClick={() => handleNavigation("/expatriados")}
-                        className="w-full px-4 py-3 text-left hover:bg-[#0A4C8A] hover:text-white transition-all duration-200 font-akzidens text-[1.1vw] text-[#0A4C8A] border-b border-gray-100 last:border-b-0"
+                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:from-[#0A4C8A] hover:to-[#0e5a94] hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#0A4C8A] border-b border-gray-50 last:border-b-0 relative group"
                       >
-                        Expatriados
+                        <span className="relative z-10">Expatriados</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#0A4C8A]/5 to-[#0e5a94]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </motion.button>
                     </motion.div>
                   )}
@@ -215,7 +221,7 @@ export default function Header({
 
               <button
                 onClick={() => handleNavigation("/psicanalistas")}
-                className="hover:underline bg-transparent border-none cursor-pointer transition-colors"
+                className="hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out"
               >
                 Psicanalistas
               </button>
@@ -223,15 +229,23 @@ export default function Header({
 
             {/* Ícone de login à extrema direita com loading */}
             <button
-              className="ml-auto flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:bg-white/20 transition-colors"
+              className="ml-auto flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:bg-gradient-to-r hover:from-[#0A4C8A]/10 hover:to-[#0e5a94]/10 hover:scale-110 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl"
               title={user ? "Ir para o dashboard" : "Entrar"}
               onClick={handleLoginClick}
               disabled={isLoginLoading}
             >
               {isLoginLoading ? (
                 <LoadingSpinner size="sm" color="blue" />
+              ) : user ? (
+                <FiUser
+                  size={24}
+                  className="lg:w-7 lg:h-7 text-[#0A4C8A] transition-colors duration-300"
+                />
               ) : (
-                <FiUser size={24} className="lg:w-7 lg:h-7 text-[#0A4C8A]" />
+                <FiLogIn
+                  size={24}
+                  className="lg:w-7 lg:h-7 text-[#0A4C8A] transition-colors duration-300"
+                />
               )}
             </button>
           </div>

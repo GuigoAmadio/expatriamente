@@ -5,7 +5,7 @@ import {
   serverDelete,
 } from "@/lib/server-api";
 import type { BackendUser } from "@/types/backend";
-import { cacheUtils, CACHE_CONFIG, advancedCache } from "@/lib/cache";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 type UsersApiResponse = {
   data: BackendUser[];
@@ -49,30 +49,37 @@ export async function getUsers(params: Record<string, any> = {}) {
 // Criar usuário
 export async function createUser(data: Partial<BackendUser>) {
   const resp = await serverPost<BackendUser>("/users", data);
-  console.log("[Cache][createUser] Invalidando cache de lista de usuários...");
-  await advancedCache.invalidatePattern("employees:list");
+
+  // ✅ Invalidar cache usando o novo sistema inteligente
+  console.log("🗑️ [Cache] Invalidando cache após criação de usuário...");
+  await cacheUtils.invalidateByType("clients");
+
   return { success: true, data: resp.data };
 }
 
 // Atualizar usuário
 export async function updateUser(id: string, data: Partial<BackendUser>) {
   const resp = await serverPut<BackendUser>(`/users/${id}`, data);
+
+  // ✅ Invalidar cache usando o novo sistema inteligente
   console.log(
-    `[Cache][updateUser] Invalidando cache de usuário ${id} e lista...`
+    `🗑️ [Cache] Invalidando cache após atualização de usuário ${id}...`
   );
-  await advancedCache.invalidatePattern(`employee:${id}`);
-  await advancedCache.invalidatePattern("employees:list");
+  await cacheUtils.invalidateByType("clients");
+  await cacheUtils.invalidatePattern(`client:${id}`);
+
   return { success: true, data: resp.data };
 }
 
 // Deletar usuário
 export async function deleteUser(id: string) {
   await serverDelete(`/users/${id}`);
-  console.log(
-    `[Cache][deleteUser] Invalidando cache de usuário ${id} e lista...`
-  );
-  await advancedCache.invalidatePattern(`employee:${id}`);
-  await advancedCache.invalidatePattern("employees:list");
+
+  // ✅ Invalidar cache usando o novo sistema inteligente
+  console.log(`🗑️ [Cache] Invalidando cache após exclusão de usuário ${id}...`);
+  await cacheUtils.invalidateByType("clients");
+  await cacheUtils.invalidatePattern(`client:${id}`);
+
   return { success: true };
 }
 

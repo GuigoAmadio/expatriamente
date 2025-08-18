@@ -20,8 +20,8 @@ export const CACHE_CONFIG = {
   notifications: { ttl: 60 * 1000, layer: "memory" }, // 1 minuto (era 30s)
 
   // Dados semi-estáticos - cache otimizado
-  services: { ttl: 30 * 60 * 1000, layer: "localStorage" }, // 30 minutos (era 10)
-  employees: { ttl: 45 * 60 * 1000, layer: "localStorage" }, // 45 minutos (era 15)
+  services: { ttl: 10 * 24 * 60 * 60 * 1000, layer: "localStorage" }, // 10 dias)
+  employees: { ttl: 10 * 24 * 60 * 60 * 1000, layer: "localStorage" }, // 10 dias
   clients: { ttl: 30 * 60 * 1000, layer: "localStorage" }, // 30 minutos (era 10)
 
   // Dados estáticos - cache otimizado
