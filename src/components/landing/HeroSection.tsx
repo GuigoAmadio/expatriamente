@@ -45,9 +45,11 @@ export default function HeroSection() {
         rgba(129, 167, 189, 0.8) 75.2%, /* sombra azul médio */
         rgba(133, 172, 193, 0.9) 75.3%, /* sombra azul médio-claro */
         rgba(137, 176, 198, 0.95) 75.4%, /* sombra azul claro */
-        #9e9470 75.5%,         /* início do chão */
-        #b0a480 80%,         /* chão escuro */
-        #c2b494 100%         /* chão ainda mais escuro */
+        #81a7bd 75.5%,         /* continua azul médio */
+        #81a7bd 85%,         /* continua azul médio */
+        #81a7bd 90%,         /* continua azul médio */
+        #f0eee8 95%,         /* início do chão - mais próximo do branco */
+        #f8f6f2 100%         /* chão claro - mais próximo do branco */
       ), linear-gradient(
         to right,
         rgba(122, 158, 179, 0.6) 0%,   /* sombra azul escuro na esquerda */
@@ -65,20 +67,23 @@ export default function HeroSection() {
     }
     return `linear-gradient(
       to bottom,
-      #96b6a3 0%,          /* verde muito claro */
-      #99b8a7 15%,         /* verde bem claro */
-      #9ab9a8 30%,         /* verde mais claro */
-      #9fbcab 45%,         /* verde claro */
-      #9cbba9 60%,         /* verde médio-claro */
-      #8cae99 98.9%,         /* verde médio */
-      #b0a480 99%,         /* chão escuro */
-      #c2b494 100%         /* chão ainda mais escuro */
+      #9ca995 0%,          /* verde acinzentado claro */
+      #9ca995 15%,         /* verde acinzentado claro */
+      #9ca995 30%,         /* verde acinzentado claro */
+      #9ca995 45%,         /* verde acinzentado claro */
+      #9ca995 60%,         /* verde acinzentado claro */
+      #9ca995 75%,         /* verde acinzentado claro */
+      #9ca995 85%,         /* verde acinzentado claro */
+      #9ca995 90%,         /* verde acinzentado claro */
+      #9ca995 95%,         /* verde acinzentado claro - mantém uniforme */
+      #e4ded2 98%,         /* transição suave para bege mais claro */
+      #e4ded2 100%         /* bege mais claro uniforme no final */
     ), linear-gradient(
       to right,
-      rgba(131, 166, 145, 0.7) 0%,   /* sombra verde escuro na esquerda */
-      rgba(140, 174, 153, 0.5) 30%,  /* sombra verde médio */
-      rgba(156, 187, 169, 0.3) 60%,  /* sombra verde médio-claro */
-      rgba(159, 188, 171, 0) 100%    /* transparente na direita */
+      rgba(156, 169, 149, 0.7) 0%,   /* sombra verde acinzentado na esquerda */
+      rgba(156, 169, 149, 0.5) 30%,  /* sombra verde acinzentado médio */
+      rgba(156, 169, 149, 0.3) 60%,  /* sombra verde acinzentado claro */
+      rgba(156, 169, 149, 0) 100%    /* transparente na direita */
     ), linear-gradient(
       to bottom left,
       transparent 0%,

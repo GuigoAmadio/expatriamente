@@ -392,14 +392,14 @@ const VideoCarouselSection: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           <motion.h2
-            className="text-4xl lg:text-5xl font-bold font-akzidens text-gray-900 mb-6"
+            className="text-4xl font-bold font-akzidens text-[#987b6b]"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -408,7 +408,7 @@ const VideoCarouselSection: React.FC = () => {
             Vamos falar sobre...
           </motion.h2>
           <motion.p
-            className="text-lg italic text-gray-600 max-w-4xl mx-auto leading-relaxed"
+            className="text-base italic text-gray-600 max-w-4xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}

@@ -37,6 +37,18 @@ export type Theme = {
     error: string;
     info: string;
 
+    // Novas cores específicas do projeto
+    begeRosado: string;
+    verdeAcinzentadoClaro: string;
+    verdeMusgoMedio: string;
+    verdePetroleoAcinzentado: string;
+    azulClaroSuave: string;
+    azulForteMedio: string;
+    azulClaroMedio: string;
+    begeClaro: string;
+    begeQuaseOffWhite: string;
+    marromAcinzentado: string;
+
     [key: string]: string;
   };
   fonts: {
@@ -73,6 +85,18 @@ export const themes: Theme[] = [
       warning: "#D16708", // laranja queimado
       error: "#B22222", // vermelho escuro
       info: "#F5CD62", // amarelo vibrante
+
+      // Novas cores específicas
+      begeRosado: "#c5b2a1",
+      verdeAcinzentadoClaro: "#9ca995",
+      verdeMusgoMedio: "#587861",
+      verdePetroleoAcinzentado: "#5b7470",
+      azulClaroSuave: "#9dc9e2",
+      azulForteMedio: "#1a75ce",
+      azulClaroMedio: "#77b2de",
+      begeClaro: "#ded1c0",
+      begeQuaseOffWhite: "#e4ded2",
+      marromAcinzentado: "#987b6b",
     },
     fonts: {
       heading: "Mikela, serif",

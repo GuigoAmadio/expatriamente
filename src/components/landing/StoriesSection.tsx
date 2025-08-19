@@ -26,28 +26,28 @@ export default function StoriesSection() {
   // Determina o gradiente baseado na seção ativa
   const getBackground = () => {
     if (currentSection === "about") {
-      // Gradiente invertido para "Sobre Nós"
+      // Gradiente invertido para "Sobre Nós" - bege mais claro
       return `linear-gradient(
         to bottom,
-        #e8dcc0 0%,
-        #e4d9ae 15%,
-        #d5caa1 30%,
-        #c6bb94 45%,
-        #b7ac87 60%,
-        #a89d7a 75%,
-        #c2b494 100%
+        #e4ded2 0%,
+        #e4ded2 15%,
+        #e4ded2 30%,
+        #e4ded2 45%,
+        #e4ded2 60%,
+        #e4ded2 75%,
+        #e4ded2 100%
       )`;
     }
-    // Gradiente normal para outras seções
+    // Gradiente normal para outras seções - bege mais claro
     return `linear-gradient(
       to bottom,
-      #c2b494 0%,
-      #a89d7a 15%,
-      #b7ac87 30%,
-      #c6bb94 45%,
-      #d5caa1 60%,
-      #e4d9ae 75%,
-      #e8dcc0 100%
+      #e4ded2 0%,
+      #e4ded2 15%,
+      #e4ded2 30%,
+      #e4ded2 45%,
+      #e4ded2 60%,
+      #e4ded2 75%,
+      #e4ded2 100%
     )`;
   };
 
@@ -64,7 +64,7 @@ export default function StoriesSection() {
           {/* Layout responsivo: coluna em telas menores que xl, grid em xl+ */}
           <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full">
             <motion.div
-              className="relative bg-[#BFE0F4] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="relative bg-[#987b6b] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-white font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -80,10 +80,10 @@ export default function StoriesSection() {
                 alt="Logo Expatriamente"
                 className="absolute w-20 h-20 -top-10 -left-10"
               />
-              <span className="italic text-start">"{depoimentos[0]}"</span>
+              <span className="text-start font-body">"{depoimentos[0]}"</span>
             </motion.div>
             <motion.div
-              className="bg-[#C5F3E6] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#ded1c0] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#987b6b] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -94,13 +94,13 @@ export default function StoriesSection() {
                   "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
               }}
             >
-              <span className="italic text-start">"{depoimentos[1]}"</span>
+              <span className="text-start font-body">"{depoimentos[1]}"</span>
             </motion.div>
           </div>
 
           {/* Título no meio */}
           <motion.div
-            className="font-akzidens text-3xl text-[#ffffff] font-bold italic text-center"
+            className="font-akzidens text-3xl text-[#987b6b] font-bold italic text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -122,7 +122,7 @@ export default function StoriesSection() {
           {/* Segunda linha: dois cards */}
           <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full  ">
             <motion.div
-              className="bg-[#C5F3E6] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#ded1c0] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#987b6b] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
@@ -133,10 +133,10 @@ export default function StoriesSection() {
                   "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
               }}
             >
-              <span className="italic text-start">"{depoimentos[2]}"</span>
+              <span className="text-start font-body">"{depoimentos[2]}"</span>
             </motion.div>
             <motion.div
-              className="bg-[#BFE0F4] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#00000] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#987b6b] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-white font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
@@ -147,7 +147,7 @@ export default function StoriesSection() {
                   "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
               }}
             >
-              <span className="italic text-start">"{depoimentos[3]}"</span>
+              <span className="text-start font-body">"{depoimentos[3]}"</span>
             </motion.div>
           </div>
         </div>
@@ -174,7 +174,7 @@ export default function StoriesSection() {
             </h2>
           </motion.div>
           {depoimentos.map((texto, idx) => {
-            const bgColors = ["#BFE0F4", "#C5F3E6", "#C5F3E6", "#BFE0F4"]; // segue a ordem dos cards no desktop
+            const bgColors = ["#987b6b", "#ded1c0", "#987b6b", "#ded1c0"]; // segue a ordem dos cards no desktop
             const bg = bgColors[idx % bgColors.length];
             return (
               <motion.div
@@ -182,7 +182,7 @@ export default function StoriesSection() {
                 className="rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base font-medium leading-relaxed w-full min-h-[200px] flex items-center justify-center"
                 style={{
                   backgroundColor: bg,
-                  color: "#00000",
+                  color: "white",
                   boxShadow:
                     "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
                 }}
@@ -196,7 +196,7 @@ export default function StoriesSection() {
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.02, y: -5 }}
               >
-                <span className="italic text-center">
+                <span className="text-center font-body">
                   "{texto.length > 300 ? texto.slice(0, 300) + "…" : texto}"
                 </span>
               </motion.div>

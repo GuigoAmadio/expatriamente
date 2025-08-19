@@ -138,15 +138,15 @@ export default function Header({
         {/* Desktop Navigation */}
         <div className="hidden md:flex flex-col flex-1">
           <div className="flex flex-row items-center">
-            <span className="font-akzidens text-[2.8vw] text-[#4F200D] leading-none tracking-tight">
+            <span className="font-akzidens text-[2.8vw] text-[#587861] leading-none tracking-tight">
               Expatriamente
             </span>
-            <nav className="font-akzidens text-[1.2vw] font-medium text-[#0A4C8A] flex-1 flex justify-around items-center gap-[2vw] ml-[2vw]">
+            <nav className="font-akzidens text-[1.2vw] font-medium text-[#587861] flex-1 flex justify-around items-center gap-[2vw] ml-[2vw]">
               <button
                 onClick={() => handleNavigation("/")}
-                className={`hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
+                className={`hover:text-[#ffffff] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
                   currentSection === "home"
-                    ? "font-bold text-[#0e5a94] scale-105"
+                    ? "font-bold text-[#587861] scale-105"
                     : ""
                 }`}
               >
@@ -154,9 +154,9 @@ export default function Header({
               </button>
               <button
                 onClick={() => handleNavigation("/sobre")}
-                className={`hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
+                className={`hover:text-[#ffffff] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
                   currentSection === "about"
-                    ? "font-bold text-[#0e5a94] scale-105"
+                    ? "font-bold text-[#587861] scale-105"
                     : ""
                 }`}
               >
@@ -168,11 +168,11 @@ export default function Header({
                 <button
                   onClick={() => handleNavigation("/servicos")}
                   onMouseEnter={() => setIsServicesDropdownOpen(true)}
-                  className={`hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out flex items-center gap-1 ${
+                  className={`hover:text-[#ffffff] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out flex items-center gap-1 ${
                     currentSection === "services" ||
                     currentSection === "intercambio" ||
                     currentSection === "expatriados"
-                      ? "font-bold text-[#0e5a94] scale-105"
+                      ? "font-bold text-[#587861] scale-105"
                       : ""
                   }`}
                 >
@@ -199,20 +199,20 @@ export default function Header({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.05 }}
                         onClick={() => handleNavigation("/intercambio")}
-                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:from-[#0A4C8A] hover:to-[#0e5a94] hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#0A4C8A] border-b border-gray-50 last:border-b-0 relative group"
+                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:from-[#587861] hover:to-[#587861] hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#587861] border-b border-gray-50 last:border-b-0 relative group"
                       >
                         <span className="relative z-10">Intercâmbio</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#0A4C8A]/5 to-[#0e5a94]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#587861]/5 to-[#587861]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </motion.button>
                       <motion.button
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
                         onClick={() => handleNavigation("/expatriados")}
-                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:from-[#0A4C8A] hover:to-[#0e5a94] hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#0A4C8A] border-b border-gray-50 last:border-b-0 relative group"
+                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:from-[#587861] hover:to-[#587861] hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#587861] border-b border-gray-50 last:border-b-0 relative group"
                       >
                         <span className="relative z-10">Expatriados</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#0A4C8A]/5 to-[#0e5a94]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#587861]/5 to-[#587861]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </motion.button>
                     </motion.div>
                   )}
@@ -221,7 +221,7 @@ export default function Header({
 
               <button
                 onClick={() => handleNavigation("/psicanalistas")}
-                className="hover:text-[#0e5a94] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out"
+                className="hover:text-[#ffffff] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out"
               >
                 Psicanalistas
               </button>
@@ -229,7 +229,7 @@ export default function Header({
 
             {/* Ícone de login à extrema direita com loading */}
             <button
-              className="ml-auto flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:bg-gradient-to-r hover:from-[#0A4C8A]/10 hover:to-[#0e5a94]/10 hover:scale-110 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl"
+              className="ml-auto flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:bg-gradient-to-r hover:from-[#587861]/10 hover:to-[#587861]/10 hover:scale-110 transition-all duration-300 ease-in-out shadow-lg hover:shadow-xl"
               title={user ? "Ir para o dashboard" : "Entrar"}
               onClick={handleLoginClick}
               disabled={isLoginLoading}
@@ -239,12 +239,12 @@ export default function Header({
               ) : user ? (
                 <FiUser
                   size={24}
-                  className="lg:w-7 lg:h-7 text-[#0A4C8A] transition-colors duration-300"
+                  className="lg:w-7 lg:h-7 text-[#587861] transition-colors duration-300"
                 />
               ) : (
                 <FiLogIn
                   size={24}
-                  className="lg:w-7 lg:h-7 text-[#0A4C8A] transition-colors duration-300"
+                  className="lg:w-7 lg:h-7 text-[#587861] transition-colors duration-300"
                 />
               )}
             </button>
@@ -252,9 +252,9 @@ export default function Header({
 
           {/* Linha horizontal alinhada apenas com textos e menu */}
           <div className="w-full flex flex-row">
-            <div className="border-b border-[#0A4C8A] flex-1" />
+            <div className="border-b border-[#587861] flex-1" />
           </div>
-          <span className="font-akzidens text-[1.04vw] ml-[0.2vw] text-[#0A4C8A] leading-none tracking-tight mt-[0.5vw] font-medium">
+          <span className="font-akzidens text-[1.04vw] ml-[0.2vw] text-[#ffffff] text-opacity-50 leading-none tracking-tight mt-[0.5vw] font-medium">
             Psicanálise para brasileiros no exterior
           </span>
         </div>
@@ -292,7 +292,7 @@ export default function Header({
               <nav className="flex flex-col py-4">
                 <button
                   onClick={() => handleNavigation("/")}
-                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors ${
+                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#587861] hover:bg-white/10 transition-colors ${
                     currentSection === "home" ? "bg-white/20" : ""
                   }`}
                 >
@@ -300,7 +300,7 @@ export default function Header({
                 </button>
                 <button
                   onClick={() => handleNavigation("/sobre")}
-                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors ${
+                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#587861] hover:bg-white/10 transition-colors ${
                     currentSection === "about" ? "bg-white/20" : ""
                   }`}
                 >
@@ -311,7 +311,7 @@ export default function Header({
                 <div className="border-t border-white/10">
                   <button
                     onClick={() => handleNavigation("/servicos")}
-                    className={`w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors ${
+                    className={`w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#587861] hover:bg-white/10 transition-colors ${
                       currentSection === "services" ? "bg-white/20" : ""
                     }`}
                   >
@@ -320,7 +320,7 @@ export default function Header({
                   <div className="bg-white/5">
                     <button
                       onClick={() => handleNavigation("/intercambio")}
-                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors ${
+                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#587861] hover:bg-white/10 transition-colors ${
                         currentSection === "intercambio" ? "bg-white/20" : ""
                       }`}
                     >
@@ -328,7 +328,7 @@ export default function Header({
                     </button>
                     <button
                       onClick={() => handleNavigation("/expatriados")}
-                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors ${
+                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#587861] hover:bg-white/10 transition-colors ${
                         currentSection === "expatriados" ? "bg-white/20" : ""
                       }`}
                     >
@@ -339,7 +339,7 @@ export default function Header({
 
                 <button
                   onClick={() => handleNavigation("/psicanalistas")}
-                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors"
+                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-[#587861] hover:bg-white/10 transition-colors"
                 >
                   Psicanalistas
                 </button>
@@ -349,7 +349,7 @@ export default function Header({
                   <button
                     onClick={handleLoginClick}
                     disabled={isLoginLoading}
-                    className="w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#0A4C8A] hover:bg-white/10 transition-colors flex items-center gap-2"
+                    className="w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#587861] hover:bg-white/10 transition-colors flex items-center gap-2"
                   >
                     {isLoginLoading ? (
                       <>

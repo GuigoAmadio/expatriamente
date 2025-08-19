@@ -8,21 +8,21 @@ export default function IntercambioSection() {
     {
       number: "57%",
       description: "dos intercambistas\n relatam sofrimento\n emocional",
-      color: "text-cyan-300",
-      bgColor: "bg-[#0A4C8A]",
+      color: "text-[#9dc9e2]",
+      bgColor: "bg-[#1a75ce]",
     },
     {
       number: "DOBRO",
       description: "Duas vezes mais\n risco de ansiedade\n severa e depressão",
-      color: "text-lime-400",
-      bgColor: "bg-[#0A4C8A]",
+      color: "text-[#9dc9e2]",
+      bgColor: "bg-[#77b2de]",
     },
     {
       number: "VULNERÁVEL",
       description:
         "Isolamento social,\n barreiras linguísticas\n e choque cultural\n aumentam a\n vulnerabilidade",
-      color: "text-yellow-300",
-      bgColor: "bg-[#0A4C8A]",
+      color: "text-[#9dc9e2]",
+      bgColor: "bg-[#1a75ce]",
     },
   ];
 
@@ -37,16 +37,16 @@ export default function IntercambioSection() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h1 className="text-white text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 md:text-nowrap">
-            <span className="text-[#0A4C8A]">Programa de </span>
+            <span className="text-[#1a75ce]">Programa de </span>
             <span className="font-bold">Bem estar Emocional </span>
-            <span className="text-[#0A4C8A]">
+            <span className="text-[#1a75ce]">
               para <br className="hidden md:inline" />
             </span>
             <span className="font-bold">Estudantes de </span>
-            <span className="text-[#0A4C8A]">Intercâmbio</span>
+            <span className="text-[#1a75ce]">Intercâmbio</span>
           </h1>
 
-          <p className="text-[#0A4C8A] text-sm sm:text-lg md:text-[1.5vw] px-4 md:text-nowrap font-medium">
+          <p className="text-[#1a75ce] text-sm sm:text-lg md:text-[1.5vw] px-4 md:text-nowrap font-medium">
             Investir no bem-estar emocional{" "}
             <span className="font-bold">não é custo,</span> é{" "}
             <span className="font-bold">
@@ -101,13 +101,13 @@ export default function IntercambioSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h2 className="text-[#0A4C8A] text-xl font-bold text-start mb-4 text-nowrap">
+          <h2 className="text-[#1a75ce] text-xl font-bold text-start mb-4 text-nowrap">
             Programa Expatriamente para estudantes de intercâmbio:
           </h2>
 
           <div className="">
             <motion.div
-              className="text-[#0A4C8A] text-base md:text-lg"
+              className="text-[#1a75ce] text-base md:text-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
@@ -117,7 +117,7 @@ export default function IntercambioSection() {
             </motion.div>
 
             <motion.div
-              className="text-[#0A4C8A] text-base md:text-lg"
+              className="text-[#1a75ce] text-base md:text-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
@@ -127,7 +127,7 @@ export default function IntercambioSection() {
             </motion.div>
 
             <motion.div
-              className="text-[#0A4C8A] text-base md:text-lg"
+              className="text-[#1a75ce] text-base md:text-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
@@ -152,7 +152,7 @@ export default function IntercambioSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
             >
-              <div className="px-4 py-2 font-bold text-blue-950 text-xl rounded-full bg-white underline">
+              <div className="px-4 py-2 font-bold text-[#1a75ce] text-xl rounded-full bg-white underline">
                 contato@expatriamente.com
               </div>
               <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
@@ -161,7 +161,7 @@ export default function IntercambioSection() {
                   size={24}
                   aria-label="WhatsApp"
                 />
-                <p className="text-blue-950 font-bold text-nowrap">
+                <p className="text-[#1a75ce] font-bold text-nowrap">
                   +55 11 98221.0290
                 </p>
               </div>
@@ -176,13 +176,13 @@ export default function IntercambioSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <h2 className="text-[#0A4C8A] text-[3.5vw] font-bold text-start mb-4">
+        <h2 className="text-[#1a75ce] text-[3.5vw] font-bold text-start mb-4">
           Programa Expatriamente para estudantes de intercâmbio:
         </h2>
 
         <div className="">
           <motion.div
-            className="text-[#0A4C8A] text-[2.5vw] sm:text-[2vw]"
+            className="text-[#1a75ce] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
@@ -192,7 +192,7 @@ export default function IntercambioSection() {
           </motion.div>
 
           <motion.div
-            className="text-[#0A4C8A] text-[2.5vw] sm:text-[2vw]"
+            className="text-[#1a75ce] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.9 }}
@@ -202,7 +202,7 @@ export default function IntercambioSection() {
           </motion.div>
 
           <motion.div
-            className="text-[#0A4C8A] text-[2.5vw] sm:text-[2vw]"
+            className="text-[#1a75ce] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
@@ -233,9 +233,9 @@ export default function IntercambioSection() {
                 size={20}
                 aria-label="WhatsApp"
               />
-              <p className="text-blue-950 font-bold">+55 11 98221.0290</p>
+              <p className="text-[#1a75ce] font-bold">+55 11 98221.0290</p>
             </div>
-            <div className="px-4 py-2 font-bold text-blue-950 text-base sm:text-lg rounded-full bg-white underline">
+            <div className="px-4 py-2 font-bold text-[#1a75ce] text-base sm:text-lg rounded-full bg-white underline">
               contato@expatriamente.com
             </div>
           </motion.div>

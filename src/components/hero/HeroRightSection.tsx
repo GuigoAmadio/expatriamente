@@ -19,11 +19,11 @@ export default function HeroRightSection() {
         <div className="flex flex-col items-center md:items-start">
           <div className="flex justify-center md:justify-start gap-2 md:gap-4 text-nowrap">
             <span className="text-white font-extrabold">CUIDADO</span>
-            <span className="text-blue-900">EMOCIONAL</span>
+            <span className="text-[#ffffff]">EMOCIONAL</span>
           </div>
           <div className="flex justify-center md:justify-start gap-2 md:gap-4 text-nowrap">
             <span className="text-white">PARA </span>
-            <span className="text-blue-900">BRASILEIROS</span>
+            <span className="text-[#5b7470]">BRASILEIROS</span>
           </div>
           <div className="flex justify-center md:justify-start gap-2 md:gap-4 text-nowrap">
             <span className="text-white">NO </span>
@@ -32,7 +32,7 @@ export default function HeroRightSection() {
         </div>
       </motion.h1>
       <motion.p
-        className="py-[2vw] text-white text-[2.8vw] sm:text-[1.8vw]  font-normal mb-[2vw] leading-relaxed text-center lg:text-left max-w-[80vw] sm:max-w-[50vw]"
+        className="py-[2vw] text-white text-[2.2vw] sm:text-[1.3vw]  font-normal mb-[2vw] leading-relaxed text-center lg:text-left max-w-[80vw] sm:max-w-[50vw]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -50,7 +50,7 @@ export default function HeroRightSection() {
       >
         <motion.a
           href="#"
-          className="px-[3vw] py-[2.5vw] lg:px-[2vw] lg:py-[1vw] rounded-lg bg-white text-blue-900 font-akzidens font-bold border-2 border-white shadow-lg hover:scale-105 hover:bg-blue-900 hover:text-white focus:ring-4 focus:ring-white/20 transition-all duration-400 outline-none text-center text-[3.5vw] sm:text-[2vw] md:text-[1.8vw] lg:text-[1.2vw]"
+          className="px-[3vw] py-[2.5vw] lg:px-[2vw] lg:py-[1vw] rounded-lg bg-white text-[#587861] font-akzidens font-bold border-2 border-white shadow-lg hover:scale-105 hover:bg-[#587861] hover:text-white focus:ring-4 focus:ring-white/20 transition-all duration-400 outline-none text-center text-[3.5vw] sm:text-[2vw] md:text-[1.8vw] lg:text-[1.2vw]"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -58,7 +58,7 @@ export default function HeroRightSection() {
         </motion.a>
         <motion.a
           href="#"
-          className="px-[3vw] py-[2.5vw] lg:px-[2vw] lg:py-[1vw] rounded-lg bg-blue-900 text-white font-akzidens font-bold shadow-lg hover:scale-105 hover:text-blue-900 hover:bg-gray-50 focus:ring-4 focus:ring-white/30 transition-all duration-400 outline-none border-none text-center text-[3.5vw] sm:text-[2vw] md:text-[1.8vw] lg:text-[1.2vw]"
+          className="px-[3vw] py-[2.5vw] lg:px-[2vw] lg:py-[1vw] rounded-lg bg-[#ffffff] text-[#987b6b] font-akzidens font-bold shadow-lg hover:scale-105 hover:text-[#587861] hover:bg-gray-50 focus:ring-4 focus:ring-white/30 transition-all duration-400 outline-none border-none text-center text-[3.5vw] sm:text-[2vw] md:text-[1.8vw] lg:text-[1.2vw]"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

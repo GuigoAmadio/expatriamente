@@ -37,13 +37,13 @@ export default function MissionVisionValues() {
       style={{
         background: `linear-gradient(
             to bottom,
-            #c2b494 0%,
-            #a89d7a 15%,
-            #b7ac87 30%,
-            #c6bb94 45%,
-            #d5caa1 60%,
-            #e4d9ae 75%,
-            #e8dcc0 100%
+            #e4ded2 0%,
+            #e4ded2 15%,
+            #e4ded2 30%,
+            #e4ded2 45%,
+            #e4ded2 60%,
+            #e4ded2 75%,
+            #e4ded2 100%
           )`,
       }}
     >

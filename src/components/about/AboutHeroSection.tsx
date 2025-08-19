@@ -10,8 +10,8 @@ export default function AboutHeroSection() {
       title: "+20",
       description:
         "Corpo clínico com\n mais de 20\n psicanalistas\n experientes e\n especializados em dinâmica\n intercultural",
-      bgColor: "bg-[#0A4C8A]",
-      titleColor: "text-pink-400",
+      bgColor: "bg-[#1a75ce]",
+      titleColor: "text-[#9dc9e2]",
       textColor: "text-white",
     },
     {
@@ -19,8 +19,8 @@ export default function AboutHeroSection() {
       title: "ONLINE",
       description:
         "Atendimento\n online e\n personalizado,\n ajustado a\n diferentes fusos\n e horários",
-      bgColor: "bg-[#0A4C8A]",
-      titleColor: "text-pink-600",
+      bgColor: "bg-[#77b2de]",
+      titleColor: "text-[#9dc9e2]",
       textColor: "text-white",
     },
     {
@@ -28,17 +28,17 @@ export default function AboutHeroSection() {
       title: "ACOLHIMENTO",
       description:
         "Abordagem que\n integra história de\n vida, traços\n culturais e o\n contexto do país\n de acolhimento",
-      bgColor: "bg-[#2196F3]",
-      titleColor: "text-amber-500",
+      bgColor: "bg-[#1a75ce]",
+      titleColor: "text-[#9dc9e2]",
       textColor: "text-white",
     },
     {
       icon: "/icones/lampada.svg",
       title: "CFPC",
       description: `Supervisão e respaldo técnico\n do CFPC - Centro\n de Formação em\n Psicanálise Clínica`,
-      bgColor: "bg-white",
-      titleColor: "text-purple-800",
-      textColor: "text-purple-700",
+      bgColor: "bg-[#77b2de]",
+      titleColor: "text-[#1a75ce]",
+      textColor: "text-white",
     },
   ];
 
@@ -46,7 +46,7 @@ export default function AboutHeroSection() {
     <div className="w-full md:max-w-[60%] md:mr-12 pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col items-center md:items-end z-20 px-4">
       {/* Card informativo azul inicial */}
       <motion.div
-        className="bg-[#0A4C8A] rounded-4xl p-6 mb-10 shadow-lg z-50 w-full flex justify-center"
+        className="bg-[#1a75ce] rounded-4xl p-6 mb-10 shadow-lg z-50 w-full flex justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
@@ -134,7 +134,7 @@ export default function AboutHeroSection() {
 
       {/* Card informativo azul adicional mais abaixo */}
       <motion.div
-        className="bg-[#0A4C8A] rounded-xl p-4 shadow-lg shadow-blue-300 mt-2"
+        className="bg-[#1a75ce] rounded-xl p-4 shadow-lg shadow-blue-300 mt-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.8 }}

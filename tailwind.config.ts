@@ -45,6 +45,17 @@ export default {
         warning: "var(--color-warning)",
         error: "var(--color-error)",
         info: "var(--color-info)",
+        // Novas cores específicas do projeto
+        begeRosado: "#c5b2a1",
+        verdeAcinzentadoClaro: "#9ca995",
+        verdeMusgoMedio: "#587861",
+        verdePetroleoAcinzentado: "#5b7470",
+        azulClaroSuave: "#9dc9e2",
+        azulForteMedio: "#1a75ce",
+        azulClaroMedio: "#77b2de",
+        begeClaro: "#ded1c0",
+        begeQuaseOffWhite: "#e4ded2",
+        marromAcinzentado: "#987b6b",
       },
       fontFamily: {
         heading: ["var(--font-heading)"],

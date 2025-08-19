@@ -9,20 +9,20 @@ export default function ExpatriadosSection() {
       number: "25%",
       description:
         "dos expatriados\n brasileiros retornam\n precocemente por\n falta de suporte",
-      color: "text-[#73FDEA]",
-      bgColor: "bg-[#5F2101]",
+      color: "text-[#9dc9e2]",
+      bgColor: "bg-[#ded1c0]",
     },
     {
       number: "45%",
       description: "apresentam estresse\n moderado a severo\n antes do retorno",
-      color: "text-[#73FDEA]",
-      bgColor: "bg-[#5F2101]",
+      color: "text-[#9dc9e2]",
+      bgColor: "bg-[#e4ded2]",
     },
     {
       number: "30%",
       description: "Turnover de até\n 30% em 18 meses",
-      color: "text-[#56C1FF]",
-      bgColor: "bg-[#5F2101]",
+      color: "text-[#9dc9e2]",
+      bgColor: "bg-[#ded1c0]",
     },
   ];
 
@@ -42,16 +42,16 @@ export default function ExpatriadosSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-yellow-950 text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 font-medium text-start md:text-nowrap">
+          <h1 className="text-[#987b6b] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 font-medium text-start md:text-nowrap">
             Programa de cuidados com{" "}
-            <span className="text-sky-900 font-bold">
+            <span className="text-[#c5b2a1] font-bold">
               Saúde Mental
               <br />
             </span>{" "}
-            para <span className="text-sky-900 font-bold">Expatriados</span>
+            para <span className="text-[#c5b2a1] font-bold">Expatriados</span>
           </h1>
 
-          <p className="text-yellow-950 text-sm sm:text-lg md:text-[1.5vw] px-4 whitespace-normal font-medium text-start">
+          <p className="text-[#987b6b] text-sm sm:text-lg md:text-[1.5vw] px-4 whitespace-normal font-medium text-start">
             Ofereça aos seus talentos um suporte completo antes, durante e
             <br className="hidden md:block" /> após a missão internacional,
             reduzindo custos, impactos com
@@ -79,14 +79,14 @@ export default function ExpatriadosSection() {
               transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
               whileHover={{ y: -4, scale: 1.02 }}
             >
-              <div className="text-center flex flex-row sm:flex-col items-center gap-4 md:gap-0 p-2 md:p-0 pt-5">
+              <div className="text-center flex flex-row sm:flex-col items-center gap-4 md:gap-0 p-2 md:p-0 pt-3 sm:pt-5">
                 <h3
                   className={`text-center text-3xl sm:text-4xl md:text-[4.5vw] font-bold ${stat.color}`}
                 >
                   {stat.number}
                 </h3>
                 <p
-                  className={`text-sm sm:text-base md:text-[1.2vw] md:whitespace-pre-line text-start text-white italic${
+                  className={`text-sm sm:text-base md:text-[1.2vw] md:whitespace-pre-line text-start text-[#987b6b] italic -mt-2 sm:mt-0${
                     stat.number === "30%" ? " md:mt-4" : ""
                   }`}
                 >
@@ -104,7 +104,7 @@ export default function ExpatriadosSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h2 className="text-yellow-950 text-[2.2vw] font-bold italic text-start mb-1">
+          <h2 className="text-[#987b6b] text-[2.2vw] font-bold italic text-start mb-1">
             Benefícios Tangíveis:
           </h2>
 
@@ -116,7 +116,7 @@ export default function ExpatriadosSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
             >
-              <p className="text-red-950 font-medium text-sm md:text-[1.4vw] text-nowrap  text-center md:text-start">
+              <p className="text-[#987b6b] font-medium text-sm md:text-[1.4vw] text-nowrap  text-center md:text-start">
                 - {benefit}
               </p>
             </motion.div>
@@ -138,7 +138,7 @@ export default function ExpatriadosSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
           >
-            <div className="px-4 py-2 font-bold text-blue-950 text-xl rounded-full bg-white underline text-center">
+            <div className="px-4 py-2 font-bold text-[#987b6b] text-xl rounded-full bg-white underline text-center">
               contato@expatriamente.com
             </div>
             <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
@@ -147,7 +147,7 @@ export default function ExpatriadosSection() {
                 size={24}
                 aria-label="WhatsApp"
               />
-              <p className="text-blue-950 font-bold">+55 11 98221.0290</p>
+              <p className="text-[#987b6b] font-bold">+55 11 98221.0290</p>
             </div>
           </motion.div>
         </motion.div>
@@ -158,7 +158,7 @@ export default function ExpatriadosSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <h2 className="text-yellow-950 text-lg min-[1000px]:text-[2.5vw] font-bold italic text-start mb-1">
+        <h2 className="text-[#987b6b] text-lg min-[1000px]:text-[2.5vw] font-bold italic text-start mb-1">
           Benefícios Tangíveis:
         </h2>
 
@@ -170,7 +170,7 @@ export default function ExpatriadosSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
           >
-            <p className="text-red-950 font-medium text-[3vw] md:text-[2vw] md:text-start">
+            <p className="text-[#987b6b] font-medium text-[3vw] md:text-[2vw] md:text-start">
               - {benefit}
             </p>
           </motion.div>
@@ -198,11 +198,11 @@ export default function ExpatriadosSection() {
               size={24}
               aria-label="WhatsApp"
             />
-            <p className="text-blue-950 font-bold text-base sm:text-lg">
+            <p className="text-[#987b6b] font-bold text-base sm:text-lg">
               +55 11 98221.0290
             </p>
           </div>
-          <div className="px-4 py-2 font-bold text-blue-950 text-base sm:text-lg rounded-full bg-white underline text-center">
+          <div className="px-4 py-2 font-bold text-[#987b6b] text-base sm:text-lg rounded-full bg-white underline text-center">
             contato@expatriamente.com
           </div>
         </motion.div>

@@ -40,7 +40,7 @@ function HomeContent() {
         <HeroSection />
         <StoriesSection />
         <VideoCarouselSection />
-        <div className="bg-gradient-to-br from-[#A6C0B3] to-[#85A899]">
+        <div className="bg-[#e4ded2]">
           <PsychologistsSection />
           <FAQSection />
         </div>
