@@ -53,7 +53,7 @@ export default function StoriesSection() {
 
   return (
     <section
-      className="w-full py-12 sm:py-16 md:py-20 px-4 md:px-0 flex flex-col items-center justify-center relative overflow-hidden"
+      className="w-full pb-12 sm:py-16 md:py-20 px-4 md:px-0 flex flex-col items-center justify-center relative overflow-hidden"
       style={{
         background: getBackground(),
       }}
@@ -155,7 +155,7 @@ export default function StoriesSection() {
         {/* Mobile: layout otimizado */}
         <div className="md:hidden flex flex-col gap-6 w-full">
           <motion.div
-            className="font-akzidens text-xl sm:text-2xl text-[#ffffff] font-bold italic text-center leading-tight mb-8"
+            className="font-akzidens text-xl sm:text-2xl text-[#987b6b] font-bold italic text-center leading-tight mb-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -182,7 +182,7 @@ export default function StoriesSection() {
                 className="rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base font-medium leading-relaxed w-full min-h-[200px] flex items-center justify-center"
                 style={{
                   backgroundColor: bg,
-                  color: "white",
+                  color: bg === "#987b6b" ? "#fff" : "#987b6b",
                   boxShadow:
                     "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
                 }}

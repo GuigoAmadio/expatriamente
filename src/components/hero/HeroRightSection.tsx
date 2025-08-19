@@ -58,7 +58,7 @@ export default function HeroRightSection() {
         </motion.a>
         <motion.a
           href="#"
-          className="px-[3vw] py-[2.5vw] lg:px-[2vw] lg:py-[1vw] rounded-lg bg-[#ffffff] text-[#987b6b] font-akzidens font-bold shadow-lg hover:scale-105 hover:text-[#587861] hover:bg-gray-50 focus:ring-4 focus:ring-white/30 transition-all duration-400 outline-none border-none text-center text-[3.5vw] sm:text-[2vw] md:text-[1.8vw] lg:text-[1.2vw]"
+          className="px-[3vw] py-[2.5vw] lg:px-[2vw] lg:py-[1vw] rounded-lg bg-[#587861] text-[#ffffff] font-akzidens font-bold shadow-lg hover:scale-105 hover:text-[#587861] hover:bg-gray-50 focus:ring-4 focus:ring-white/30 transition-all duration-400 outline-none border-none text-center text-[3.5vw] sm:text-[2vw] md:text-[1.8vw] lg:text-[1.2vw]"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

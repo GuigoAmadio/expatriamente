@@ -139,7 +139,7 @@ export default function PsychologistsSection() {
   );
 
   return (
-    <section className="py-20 text-primary">
+    <section className="pt-20 text-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12"
@@ -172,7 +172,7 @@ export default function PsychologistsSection() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nome ou horário disponível..."
-            className="w-full max-w-md mx-auto rounded-lg bg-white border border-[#9dc9e2] px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#9dc9e2]"
+            className="w-full max-w-md mx-auto rounded-lg bg-white border border-[#987b6b] px-4 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-[#987b6b]"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -200,7 +200,7 @@ export default function PsychologistsSection() {
               <img
                 src={p.image}
                 alt={p.name}
-                className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-[#9dc9e2] shadow-md"
+                className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-[#987b6b] shadow-md"
                 style={{
                   width: "96px",
                   height: "96px",
@@ -208,10 +208,9 @@ export default function PsychologistsSection() {
                   objectPosition: "center",
                 }}
               />
-              <div className="font-akzidens text-xl text-[#9dc9e2] font-bold mb-1">
+              <div className="font-akzidens text-xl text-[#987b6b] font-bold mb-1">
                 {p.name}
               </div>
-              <div className="text-base text-[#5a5427] mb-2">{p.specialty}</div>
               <div
                 className="text-sm text-[#6B3F1D] mb-4 overflow-hidden"
                 style={{
@@ -225,7 +224,7 @@ export default function PsychologistsSection() {
                 {p.shortBio || p.availability}
               </div>
               <button
-                className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#9dc9e2] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#0e5a94] hover:to-[#1e6aa5] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20"
+                className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#0e5a94] hover:to-[#1e6aa5] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20"
                 onClick={(e) => {
                   e.stopPropagation();
                   router.push(`/psicanalistas/${p.id}`);
@@ -239,10 +238,10 @@ export default function PsychologistsSection() {
 
         {/* Paginação */}
         {totalPages > 1 && (
-          <div className="mt-10 flex flex-col items-center gap-4">
+          <div className="mt-28 flex flex-col items-center gap-4">
             <div className="flex items-center gap-3">
               <button
-                className="px-4 py-2 rounded-full bg-[#9dc9e2] text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-full bg-[#987b6b] text-white disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
                 aria-label="Página anterior"
@@ -250,7 +249,7 @@ export default function PsychologistsSection() {
                 Anterior
               </button>
               <button
-                className="px-4 py-2 rounded-full bg-[#9dc9e2] text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4 py-2 rounded-full bg-[#987b6b] text-white disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() =>
                   setCurrentPage((p) => Math.min(totalPages, p + 1))
                 }
@@ -269,7 +268,7 @@ export default function PsychologistsSection() {
                     key={page}
                     onClick={() => setCurrentPage(page)}
                     aria-label={`Ir para página ${page}`}
-                    className={`transition-all duration-200 rounded-full border border-[#9dc9e2]/30 ${
+                    className={`transition-all duration-200 rounded-full border border-[#987b6b]/30 ${
                       isActive
                         ? "bg-[#b7c8b1] scale-110 w-3.5 h-3.5"
                         : "bg-white/80 w-3 h-3 hover:scale-105"

@@ -33,7 +33,7 @@ export default function MissionVisionValues() {
 
   return (
     <section
-      className="py-20 px-4 relative overflow-hidden min-h-screen"
+      className="py-10 px-4 relative overflow-hidden min-h-screen"
       style={{
         background: `linear-gradient(
             to bottom,

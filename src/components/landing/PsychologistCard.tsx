@@ -104,7 +104,6 @@ export default function PsychologistCard({ data, onClick }: Props) {
         <div className="font-semibold text-lg text-center text-heading">
           {data.name}
         </div>
-        <div className="text-sm text-center text-accent">{data.specialty}</div>
       </div>
 
       {/* Painel de detalhes absoluto */}

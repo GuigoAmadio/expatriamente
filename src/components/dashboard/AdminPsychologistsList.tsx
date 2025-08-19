@@ -51,11 +51,6 @@ export function AdminPsychologistsList({
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
               {psych.name}
             </h2>
-            {psych.specialty && (
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                {psych.specialty}
-              </p>
-            )}
             {psych.description && (
               <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 text-center">
                 {psych.description}

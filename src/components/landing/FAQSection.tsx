@@ -60,10 +60,10 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="w-full py-20 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
+    <section className="w-full py-14 px-4 md:px-16 lg:px-32 flex flex-col items-center justify-center">
       <div className="max-w-4xl w-full flex flex-col items-center justify-center">
         <motion.h2
-          className="font-akzidens text-[5vw] md:text-[3.5vw] lg:text-[3vw] font-bold mb-[0.5vw] text-blue-900 text-center"
+          className="font-akzidens text-[5vw] md:text-[3.5vw] lg:text-[2.5vw] font-bold mb-[0.5vw] text-[#5b7470] text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -72,7 +72,7 @@ export default function FAQSection() {
           Dúvidas Frequentes
         </motion.h2>
         <motion.p
-          className="text-[3vw] w-5/6 xl:w-full md:text-[1.8vw] text-blue-900 font-medium mb-[4vw] text-center"
+          className="text-[3vw] w-5/6 md:text-[1vw] text-[#9dc9e2 ] font-medium mb-[4vw] text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -105,15 +105,15 @@ export default function FAQSection() {
                 {({ open }) => (
                   <div
                     className={`rounded-xl shadow group transition-all duration-300 bg-white border-2 ${
-                      open ? "border-[#01386F]" : "border-transparent"
+                      open ? "border-[#5b7470]" : "border-transparent"
                     }`}
                   >
-                    <Disclosure.Button className="flex w-full justify-between items-center px-[2.5vw] md:px-[1.8vw] py-[3vw] lg:py-[1.5vw] text-left font-akzidens text-[2.8vw] md:text-[1.6vw] lg:text-[1vw] text-[#01386F] font-bold focus:outline-none">
+                    <Disclosure.Button className="flex w-full justify-between items-center px-[2.5vw] md:px-[1.8vw] py-[3vw] lg:py-[1.5vw] text-left font-akzidens text-[2.8vw] md:text-[1.6vw] lg:text-[1vw] text-[#5b7470] font-bold focus:outline-none">
                       <span>{faq.question}</span>
                       <ChevronDownIcon
                         className={`h-5 w-5 ml-4 transition-transform duration-300 ${
                           open ? "rotate-180" : ""
-                        } text-[#01386F]`}
+                        } text-[#5b7470]`}
                       />
                     </Disclosure.Button>
                     <AnimatePresence initial={false}>
