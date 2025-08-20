@@ -84,26 +84,29 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const showToast = useCallback((toast: Omit<Toast, "id">) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const newToast = {
-      ...toast,
-      id,
-      title: toast.title ?? defaultTitle(toast.type),
-      duration: toast.duration || 5000,
-    };
-
-    setToasts((prev) => [...prev, newToast]);
-
-    // Auto-remove toast
-    setTimeout(() => {
-      hideToast(id);
-    }, newToast.duration);
-  }, []);
-
   const hideToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
+
+  const showToast = useCallback(
+    (toast: Omit<Toast, "id">) => {
+      const id = Math.random().toString(36).substr(2, 9);
+      const newToast = {
+        ...toast,
+        id,
+        title: toast.title ?? defaultTitle(toast.type),
+        duration: toast.duration || 5000,
+      };
+
+      setToasts((prev) => [...prev, newToast]);
+
+      // Auto-remove toast
+      setTimeout(() => {
+        hideToast(id);
+      }, newToast.duration);
+    },
+    [hideToast]
+  );
 
   const clearToasts = useCallback(() => {
     setToasts([]);

@@ -5,6 +5,7 @@ import Calendar from "@/components/landing/Calendar";
 import { registerAction } from "@/actions/auth";
 import { createAppointment } from "@/actions/appointments";
 import { getServicesByEmployee } from "@/actions/users";
+import { useFacebookPixel } from "@/hooks/useFacebookPixel";
 
 interface Appointment {
   data: string;
@@ -25,6 +26,7 @@ export default function PsicAppointmentClient({
     hora: string;
   } | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
+  const { trackCompleteRegistration } = useFacebookPixel();
 
   function handleSelect(dia: number, hora: string) {
     setSelecionado({ dia, hora });
@@ -38,14 +40,38 @@ export default function PsicAppointmentClient({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(`🔵 [Agendamento] Iniciando processo de agendamento`);
+
     const formData = new FormData(e.target as HTMLFormElement);
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+
     if (!name || !email || !password || !selecionado) {
+      console.warn(`⚠️ [Agendamento] Campos obrigatórios não preenchidos`);
       alert("Preencha todos os campos e selecione um horário!");
       return;
     }
+
+    console.log(`🔵 [Agendamento] Dados do formulário:`, {
+      name,
+      email,
+      employeeId,
+      serviceId,
+    });
+
+    // Rastrear evento de finalização de agendamento
+    console.log(`🔵 [Facebook Pixel] Rastreando finalização de agendamento`);
+    trackCompleteRegistration({
+      content_name: "Finalizar Agendamento",
+      content_category: "PsicAppointmentClient",
+      content_type: "form_submit",
+      psychologist_id: employeeId,
+      service_id: serviceId,
+      appointment_date: selecionado.dia,
+      appointment_time: selecionado.hora,
+    });
+
     // 1. Registrar usuário usando a action de auth
     const userResp = await registerAction({ name, email, password });
     if (!userResp.success || !userResp.user?.id) {
@@ -91,9 +117,17 @@ export default function PsicAppointmentClient({
       appointmentResp
     );
     if (!appointmentResp.success) {
+      console.error(
+        `❌ [Agendamento] Erro ao criar appointment:`,
+        appointmentResp
+      );
       alert("Erro ao criar appointment!");
       return;
     }
+
+    console.log(`✅ [Agendamento] Appointment criado com sucesso!`);
+    console.log(`🎉 [Agendamento] Processo finalizado com sucesso!`);
+
     // 4. Redirecionar para o dashboard de appointments
     window.location.href = "/dashboard/client/appointments";
   };

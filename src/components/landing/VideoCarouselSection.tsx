@@ -112,7 +112,7 @@ const VideoCard = React.memo<{
       video.addEventListener("loadedmetadata", handleLoadedMetadata);
       return () =>
         video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-    }, []);
+    }, [index, isPlaying, playingIndex]);
 
     const handleClick = useCallback(() => {
       onVideoClick(index);

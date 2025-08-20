@@ -56,7 +56,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
         setRefreshInterval(null);
       }
     }
-  }, [debugVisible]);
+  }, [debugVisible, refreshInterval]);
 
   // ✅ Toggle visibility
   if (!debugVisible) {

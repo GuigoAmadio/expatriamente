@@ -7,6 +7,7 @@ import { useTheme } from "@/context/ThemeContext";
 import PsychologistCard from "./PsychologistCard";
 import { useRouter } from "next/navigation";
 import { getPsicanalistas } from "@/actions/psicanalistas";
+import { useFacebookPixel } from "@/hooks/useFacebookPixel";
 
 interface Psychologist {
   id: string;
@@ -88,6 +89,7 @@ export default function PsychologistsSection() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const router = useRouter();
+  const { trackViewContent } = useFacebookPixel();
 
   useEffect(() => {
     getPsicanalistas().then((data) => {
@@ -190,7 +192,18 @@ export default function PsychologistsSection() {
             <motion.div
               key={p.id}
               className="bg-white relative rounded-2xl shadow-lg hover:shadow-xl p-6 flex flex-col items-center text-center cursor-pointer group transition-all duration-300 ease-in-out"
-              onClick={() => router.push(`/psicanalistas/${p.id}`)}
+              onClick={() => {
+                console.log(`🔵 [Psicanalistas] Card clicado:`, p.name);
+                trackViewContent({
+                  content_name: p.name,
+                  content_category: "Psychologist Card",
+                  content_type: "card_click",
+                  psychologist_id: p.id,
+                  psychologist_specialty: p.specialty,
+                  psychologist_price: p.price,
+                });
+                router.push(`/psicanalistas/${p.id}`);
+              }}
               style={{ minHeight: 400 }}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -227,6 +240,18 @@ export default function PsychologistsSection() {
                 className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#0e5a94] hover:to-[#1e6aa5] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20"
                 onClick={(e) => {
                   e.stopPropagation();
+                  console.log(
+                    `🔵 [Psicanalistas] Botão "Ver horários" clicado:`,
+                    p.name
+                  );
+                  trackViewContent({
+                    content_name: `${p.name} - Ver Horários`,
+                    content_category: "Psychologist Card",
+                    content_type: "button_click",
+                    psychologist_id: p.id,
+                    psychologist_specialty: p.specialty,
+                    psychologist_price: p.price,
+                  });
                   router.push(`/psicanalistas/${p.id}`);
                 }}
               >
