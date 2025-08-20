@@ -26,7 +26,7 @@ export default function PsicAppointmentClient({
     hora: string;
   } | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
-  const { trackCompleteRegistration } = useFacebookPixel();
+  const { trackCompleteRegistration, testServerEvent } = useFacebookPixel();
 
   function handleSelect(dia: number, hora: string) {
     setSelecionado({ dia, hora });
@@ -37,6 +37,25 @@ export default function PsicAppointmentClient({
       formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [selecionado]);
+
+  // ✅ NOVA FUNÇÃO: Testar evento do Facebook
+  const handleTestFacebookEvent = async () => {
+    try {
+      await testServerEvent("Schedule", {
+        content_name: "Teste de Agendamento",
+        content_category: "Psicologia",
+        content_type: "test_event",
+        psychologist_id: employeeId,
+        service_id: serviceId,
+        test_mode: true,
+        test_timestamp: new Date().toISOString(),
+      });
+
+      console.log("🧪 [Teste] Evento de teste enviado com sucesso!");
+    } catch (error) {
+      console.error("❌ [Teste] Erro ao enviar evento de teste:", error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,164 +94,175 @@ export default function PsicAppointmentClient({
     // 1. Registrar usuário usando a action de auth
     const userResp = await registerAction({ name, email, password });
     if (!userResp.success || !userResp.user?.id) {
-      alert("Erro ao registrar usuário!");
+      console.error(`❌ [Agendamento] Erro ao registrar usuário:`, userResp);
+      alert("Erro ao criar conta. Tente novamente.");
       return;
     }
-    const userId = userResp.user.id;
-    // O usuário já está logado automaticamente após o registro
-    // Agora vamos criar o appointment
-    // Buscar o serviceId do backend
-    // 2. Montar startTime e endTime ISO
-    const hoje = new Date();
-    const diaSemana = selecionado.dia;
-    // Encontrar a próxima data correspondente ao dia da semana selecionado
-    const diff = (diaSemana + 7 - hoje.getDay()) % 7;
-    const dataBase = new Date(hoje);
-    dataBase.setDate(hoje.getDate() + diff);
-    const [hora, minuto] = selecionado.hora.split(":");
-    dataBase.setHours(Number(hora), Number(minuto), 0, 0);
-    const startTime = dataBase.toISOString();
-    // Supondo duração de 1h
-    const endDate = new Date(dataBase);
-    endDate.setHours(endDate.getHours() + 1);
-    const endTime = endDate.toISOString();
-    console.log("[Appointment] Dados do appointment:", {
-      userId,
-      employeeId,
-      serviceId,
-      startTime,
-      endTime,
-      status: "SCHEDULED",
-    });
-    // 3. Criar appointment
-    const appointmentResp = await createAppointment({
-      userId,
-      employeeId,
-      serviceId,
-      startTime,
-      endTime,
-    });
+
     console.log(
-      "[Appointment] Resposta do createAppointment:",
-      appointmentResp
+      `✅ [Agendamento] Usuário registrado com sucesso:`,
+      userResp.user.id
     );
+
+    // 2. Buscar serviços disponíveis para o funcionário
+    const servicesResp = await getServicesByEmployee(employeeId);
+    if (
+      !servicesResp.success ||
+      !servicesResp.data ||
+      servicesResp.data.length === 0
+    ) {
+      console.error(`❌ [Agendamento] Erro ao buscar serviços:`, servicesResp);
+      alert("Erro ao buscar serviços disponíveis. Tente novamente.");
+      return;
+    }
+
+    const service = servicesResp.data[0]; // Usar o primeiro serviço disponível
+    console.log(`✅ [Agendamento] Serviço encontrado:`, service);
+
+    // 3. Criar agendamento
+    const appointmentResp = await createAppointment({
+      userId: userResp.user.id,
+      employeeId: employeeId,
+      serviceId: service.id,
+      date: new Date(selecionado.dia),
+      time: selecionado.hora,
+      status: "scheduled",
+    });
+
     if (!appointmentResp.success) {
       console.error(
-        `❌ [Agendamento] Erro ao criar appointment:`,
+        `❌ [Agendamento] Erro ao criar agendamento:`,
         appointmentResp
       );
-      alert("Erro ao criar appointment!");
+      alert("Erro ao criar agendamento. Tente novamente.");
       return;
     }
 
-    console.log(`✅ [Agendamento] Appointment criado com sucesso!`);
-    console.log(`🎉 [Agendamento] Processo finalizado com sucesso!`);
+    console.log(
+      `✅ [Agendamento] Agendamento criado com sucesso:`,
+      appointmentResp.data
+    );
 
-    // 4. Redirecionar para o dashboard de appointments
-    window.location.href = "/dashboard/client/appointments";
+    // 4. Sucesso - mostrar mensagem e limpar formulário
+    alert(
+      "Agendamento realizado com sucesso! Você receberá um email de confirmação."
+    );
+
+    // Limpar seleção
+    setSelecionado(null);
+
+    // Resetar formulário
+    const form = e.target as HTMLFormElement;
+    form.reset();
   };
 
   return (
-    <div className="w-full">
-      <Calendar appointments={appointments} onSelect={handleSelect} />
+    <div className="space-y-8">
+      {/* ✅ NOVO: Botão de teste do Facebook */}
+      <div className="text-center">
+        <button
+          onClick={handleTestFacebookEvent}
+          className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          title="Testar evento do Facebook Pixel"
+        >
+          🧪 Testar Evento Facebook
+        </button>
+        <p className="text-xs text-gray-500 mt-2">
+          Use para testar eventos com código TEST24945
+        </p>
+      </div>
+
+      {/* Calendário */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Selecione uma data e horário
+        </h3>
+        <Calendar
+          appointments={appointments}
+          onSelect={handleSelect}
+          selected={selecionado}
+        />
+      </div>
+
+      {/* Formulário de Agendamento */}
       <AnimatePresence>
         {selecionado && (
           <motion.div
             ref={formRef}
-            initial={{ opacity: 0, y: 32 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 32 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="w-full max-w-4xl mx-auto mt-8"
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-xl p-6 shadow-sm border border-gray-200"
           >
-            <div className="bg-gradient-to-br from-white to-[#f8f6f2] rounded-2xl shadow-xl p-6 lg:p-8 border border-[#e4ded2]">
-              <motion.div
-                className="text-center mb-6"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <h3 className="font-akzidens text-xl lg:text-2xl font-bold text-[#5b7470] mb-3">
-                  Crie uma conta e finalize o agendamento
-                </h3>
-                <p className="text-[#6B3F1D] text-sm">
-                  Preencha seus dados para confirmar a sessão
-                </p>
-              </motion.div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Finalizar Agendamento
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Data: {new Date(selecionado.dia).toLocaleDateString("pt-BR")} às{" "}
+              {selecionado.hora}
+            </p>
 
-              <form
-                className="w-full flex flex-col gap-6"
-                onSubmit={handleSubmit}
-              >
-                <motion.div
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  <label className="text-[#5b7470] font-akzidens font-semibold text-sm">
-                    Nome Completo
-                    <input
-                      type="text"
-                      name="name"
-                      className="w-full mt-2 px-4 py-3 border-2 border-[#e4ded2] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9dc9e2] focus:border-[#9dc9e2] bg-white transition-all duration-300 hover:border-[#c5b2a1] text-sm"
-                      placeholder="Seu nome completo"
-                      required
-                    />
-                  </label>
-                  <label className="text-[#5b7470] font-akzidens font-semibold text-sm">
-                    Email
-                    <input
-                      type="email"
-                      name="email"
-                      className="w-full mt-2 px-4 py-3 border-2 border-[#e4ded2] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9dc9e2] focus:border-[#9dc9e2] bg-white transition-all duration-300 hover:border-[#c5b2a1] text-sm"
-                      placeholder="seu@email.com"
-                      required
-                    />
-                  </label>
-                  <label className="text-[#5b7470] font-akzidens font-semibold text-sm sm:col-span-2 lg:col-span-1">
-                    Senha
-                    <input
-                      type="password"
-                      name="password"
-                      className="w-full mt-2 px-4 py-3 border-2 border-[#e4ded2] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9dc9e2] focus:border-[#9dc9e2] bg-white transition-all duration-300 hover:border-[#c5b2a1] text-sm"
-                      placeholder="Mínimo 6 caracteres"
-                      required
-                      minLength={6}
-                    />
-                  </label>
-                </motion.div>
+                  Nome Completo
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Digite seu nome completo"
+                />
+              </div>
 
-                <motion.div
-                  className="text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  <motion.button
-                    type="submit"
-                    className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#987b6b] to-[#587861] text-white font-akzidens font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-base hover:from-[#587861] hover:to-[#987b6b]"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    ✓ Finalizar Agendamento
-                  </motion.button>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Digite seu email"
+                />
+              </div>
 
-                  <div className="mt-4 text-xs text-[#6B3F1D]">
-                    <p>
-                      Ao criar sua conta, você concorda com nossos termos de uso
-                    </p>
-                    <p className="mt-1">
-                      Sua primeira sessão é{" "}
-                      <span className="font-semibold text-[#587861]">
-                        gratuita
-                      </span>
-                      !
-                    </p>
-                  </div>
-                </motion.div>
-              </form>
-            </div>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Senha
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  required
+                  minLength={6}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Crie uma senha (mín. 6 caracteres)"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+              >
+                Confirmar Agendamento
+              </button>
+            </form>
           </motion.div>
         )}
       </AnimatePresence>

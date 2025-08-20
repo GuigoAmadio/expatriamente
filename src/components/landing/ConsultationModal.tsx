@@ -50,32 +50,32 @@ export default function ConsultationModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative overflow-hidden"
+        className="bg-gradient-to-br from-white to-[#f8f6f2] border border-[#e4ded2] rounded-2xl shadow-2xl w-full max-w-3xl relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Decoração de fundo */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Gradiente blur de fundo - Mais intenso */}
-          <div className="absolute -top-8 -left-8 w-48 h-48 bg-gradient-to-br from-lime-200/60 to-transparent rounded-full blur-2xl"></div>
-          <div className="absolute -bottom-8 -right-8 w-56 h-56 bg-gradient-to-tl from-amber-500/30 to-transparent rounded-full blur-3xl"></div>
+          {/* Gradiente blur de fundo - harmonizado com a paleta da hero */}
+          <div className="absolute -top-8 -left-8 w-48 h-48 bg-gradient-to-br from-[#9ca995]/35 to-transparent rounded-full blur-2xl"></div>
+          <div className="absolute -bottom-8 -right-8 w-56 h-56 bg-gradient-to-tl from-[#6B3F1D]/15 to-transparent rounded-full blur-3xl"></div>
 
           {/* Gradientes adicionais para mais profundidade */}
-          <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-gradient-to-bl from-amber-600/20 to-transparent rounded-full blur-xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-40 h-40 bg-gradient-to-tr from-lime-200/40 to-transparent rounded-full blur-2xl"></div>
+          <div className="absolute top-1/4 right-1/4 w-32 h-32 bg-gradient-to-bl from-[#587861]/20 to-transparent rounded-full blur-xl"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-40 h-40 bg-gradient-to-tr from-[#e4ded2]/60 to-transparent rounded-full blur-2xl"></div>
 
-          {/* Bolinhas decorativas - Maiores e mais expressivas */}
-          <div className="absolute top-12 right-16 w-6 h-6 bg-lime-200/35 rounded-full"></div>
-          <div className="absolute top-20 right-24 w-4 h-4 bg-amber-500/45 rounded-full"></div>
-          <div className="absolute top-32 right-12 w-3 h-3 bg-lime-500/30 rounded-full"></div>
+          {/* Bolinhas decorativas - alinhadas à paleta */}
+          <div className="absolute top-12 right-16 w-6 h-6 bg-[#9ca995]/30 rounded-full"></div>
+          <div className="absolute top-20 right-24 w-4 h-4 bg-[#6B3F1D]/25 rounded-full"></div>
+          <div className="absolute top-32 right-12 w-3 h-3 bg-[#587861]/30 rounded-full"></div>
 
-          <div className="absolute bottom-24 left-12 w-8 h-8 bg-lime-200/40 rounded-full"></div>
-          <div className="absolute bottom-16 left-20 w-5 h-5 bg-amber-500/35 rounded-full"></div>
-          <div className="absolute bottom-36 left-16 w-3 h-3 bg-lime-200/45 rounded-full"></div>
+          <div className="absolute bottom-24 left-12 w-8 h-8 bg-[#e4ded2]/60 rounded-full"></div>
+          <div className="absolute bottom-16 left-20 w-5 h-5 bg-[#587861]/25 rounded-full"></div>
+          <div className="absolute bottom-36 left-16 w-3 h-3 bg-[#9ca995]/35 rounded-full"></div>
 
           {/* Bolinhas extras para mais dinâmica */}
-          <div className="absolute top-2/3 left-1/3 w-3.5 h-3.5 bg-lime-200/25 rounded-full"></div>
-          <div className="absolute top-1/4 left-12 w-2 h-2 bg-amber-500/50 rounded-full"></div>
-          <div className="absolute bottom-1/2 right-1/3 w-4 h-4 bg-lime-200/35 rounded-full"></div>
+          <div className="absolute top-2/3 left-1/3 w-3.5 h-3.5 bg-[#e4ded2]/50 rounded-full"></div>
+          <div className="absolute top-1/4 left-12 w-2 h-2 bg-[#6B3F1D]/25 rounded-full"></div>
+          <div className="absolute bottom-1/2 right-1/3 w-4 h-4 bg-[#9ca995]/30 rounded-full"></div>
         </div>
         {/* Botão de fechar */}
         <button
@@ -114,7 +114,7 @@ export default function ConsultationModal({
         {/* Conteúdo do modal */}
         <div className="p-20 flex flex-col items-center justify-around gap-10">
           {/* Título */}
-          <h2 className="font-inter text-xl font-thin text-[#6B3F1D] max-w-lg text-center italic mb-5">
+          <h2 className="font-inter text-xl font-thin text-[#5b7470] max-w-lg text-center italic mb-5">
             Deixe que nós encontremos o melhor psicanalista para você.
           </h2>
 
@@ -137,7 +137,7 @@ export default function ConsultationModal({
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="+1 (555) 123-4567"
-                className="w-full max-w-sm px-4 py-3 border border-[#e4ded2] rounded-lg focus:ring-2 focus:ring-[#9dc9e2] focus:border-transparent outline-none transition-all duration-200"
+                className="w-full max-w-sm px-4 py-3 border border-[#e4ded2] rounded-lg focus:ring-2 focus:ring-[#587861]/40 focus:border-[#587861]/40 outline-none transition-all duration-200"
                 required
               />
             </div>
@@ -146,7 +146,7 @@ export default function ConsultationModal({
               {/* Botão Enviar */}
               <button
                 type="submit"
-                className="shadow-amber-800 shadow-md hover:shadow- w-full bg-[#6B3F1D] hover:bg-[#9a7b66] text-[#ffffff] font-akzidens font-bold py-3 px-6 rounded-lg transition-colors duration-200 hover:cursor-pointer"
+                className="shadow-md hover:shadow-lg w-full bg-[#6B3F1D] hover:bg-[#8a6a55] text-[#ffffff] font-akzidens font-bold py-3 px-6 rounded-lg transition-colors duration-200 hover:cursor-pointer"
               >
                 Enviar
               </button>
@@ -155,7 +155,7 @@ export default function ConsultationModal({
               <button
                 type="button"
                 onClick={handleWhatsAppClick}
-                className="shadow-green-900 shadow-md hover:shadow- w-full bg-[#587861] hover:bg-[#74b68a] hover:cursor-pointer text-white font-akzidens font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                className="shadow-md hover:shadow-lg w-full bg-[#587861] hover:bg-[#6e8e77] hover:cursor-pointer text-white font-akzidens font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 <svg
                   className="w-5 h-5"
