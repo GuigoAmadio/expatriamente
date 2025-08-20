@@ -130,6 +130,18 @@ export const themes: Theme[] = [
       warning: "#FFC107", // amarelo
       error: "#DC3545", // vermelho
       info: "#17A2B8", // azul piscina
+
+      // Novas cores específicas
+      begeRosado: "#c5b2a1",
+      verdeAcinzentadoClaro: "#9ca995",
+      verdeMusgoMedio: "#587861",
+      verdePetroleoAcinzentado: "#5b7470",
+      azulClaroSuave: "#9dc9e2",
+      azulForteMedio: "#1a75ce",
+      azulClaroMedio: "#77b2de",
+      begeClaro: "#ded1c0",
+      begeQuaseOffWhite: "#e4ded2",
+      marromAcinzentado: "#987b6b",
     },
     fonts: {
       heading: "Inter, sans-serif",
@@ -163,6 +175,18 @@ export const themes: Theme[] = [
       warning: "#F59E0B", // amarelo alaranjado
       error: "#DC2626", // vermelho escuro
       info: "#6366F1", // azul violeta
+
+      // Novas cores específicas
+      begeRosado: "#c5b2a1",
+      verdeAcinzentadoClaro: "#9ca995",
+      verdeMusgoMedio: "#587861",
+      verdePetroleoAcinzentado: "#5b7470",
+      azulClaroSuave: "#9dc9e2",
+      azulForteMedio: "#1a75ce",
+      azulClaroMedio: "#77b2de",
+      begeClaro: "#ded1c0",
+      begeQuaseOffWhite: "#e4ded2",
+      marromAcinzentado: "#987b6b",
     },
     fonts: {
       heading: "Playfair Display, serif",
@@ -198,6 +222,18 @@ export const themes: Theme[] = [
       warning: "#F59E0B", // amarelo alaranjado
       error: "#EF4444", // vermelho vivo
       info: "#A9B388", // verde claro acinzentado
+
+      // Novas cores específicas
+      begeRosado: "#c5b2a1",
+      verdeAcinzentadoClaro: "#9ca995",
+      verdeMusgoMedio: "#587861",
+      verdePetroleoAcinzentado: "#5b7470",
+      azulClaroSuave: "#9dc9e2",
+      azulForteMedio: "#1a75ce",
+      azulClaroMedio: "#77b2de",
+      begeClaro: "#ded1c0",
+      begeQuaseOffWhite: "#e4ded2",
+      marromAcinzentado: "#987b6b",
     },
     fonts: {
       heading: "Mikela, serif",
@@ -231,6 +267,18 @@ export const themes: Theme[] = [
       warning: "#FFC107", // amarelo
       error: "#DC3545", // vermelho
       info: "#17A2B8", // azul piscina
+
+      // Novas cores específicas
+      begeRosado: "#c5b2a1",
+      verdeAcinzentadoClaro: "#9ca995",
+      verdeMusgoMedio: "#587861",
+      verdePetroleoAcinzentado: "#5b7470",
+      azulClaroSuave: "#9dc9e2",
+      azulForteMedio: "#1a75ce",
+      azulClaroMedio: "#77b2de",
+      begeClaro: "#ded1c0",
+      begeQuaseOffWhite: "#e4ded2",
+      marromAcinzentado: "#987b6b",
     },
     fonts: {
       heading: "Inter, sans-serif",
@@ -264,6 +312,18 @@ export const themes: Theme[] = [
       warning: "#F59E0B", // amarelo alaranjado
       error: "#DC2626", // vermelho escuro
       info: "#6366F1", // azul violeta
+
+      // Novas cores específicas
+      begeRosado: "#c5b2a1",
+      verdeAcinzentadoClaro: "#9ca995",
+      verdeMusgoMedio: "#587861",
+      verdePetroleoAcinzentado: "#5b7470",
+      azulClaroSuave: "#9dc9e2",
+      azulForteMedio: "#1a75ce",
+      azulClaroMedio: "#77b2de",
+      begeClaro: "#ded1c0",
+      begeQuaseOffWhite: "#e4ded2",
+      marromAcinzentado: "#987b6b",
     },
     fonts: {
       heading: "Playfair Display, serif",
