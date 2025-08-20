@@ -10,7 +10,7 @@ export const useFacebookPixel = () => {
   // Função para enviar evento para o Facebook Conversions API
   const sendToConversionsAPI = async (eventName: string, parameters?: any) => {
     try {
-      const token = process.env.NEXT_PUBLIC_FACEBOOK_CONVERSIONS_API_TOKEN;
+      const token = process.env.FACEBOOK_CONVERSIONS_API_TOKEN;
       if (!token) {
         console.warn("⚠️ [Facebook Conversions API] Token não encontrado");
         return;
@@ -67,11 +67,10 @@ export const useFacebookPixel = () => {
     }
   };
 
-
   // ✅ NOVA FUNÇÃO: Testar eventos do servidor com TEST24945
   const testServerEvent = async (eventName: string, parameters?: any) => {
     try {
-      const token = process.env.NEXT_PUBLIC_FACEBOOK_CONVERSIONS_API_TOKEN;
+      const token = process.env.FACEBOOK_CONVERSIONS_API_TOKEN;
       if (!token) {
         console.warn("⚠️ [Facebook Test Event] Token não encontrado");
         return;

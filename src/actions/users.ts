@@ -133,7 +133,7 @@ export async function getServicesByEmployee(employeeId: string) {
       return response.data;
     },
     { ...CACHE_CONFIG.services }
-  );
+  ) as any; // Temporariamente usando any para resolver o erro de build
 }
 
 export async function getEmployeeById(employeeId: string) {

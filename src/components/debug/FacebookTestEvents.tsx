@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useFacebookPixel } from "@/hooks/useFacebookPixel";
-import { Button } from "@/components/ui/Button";
+import Button from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export default function FacebookTestEvents() {

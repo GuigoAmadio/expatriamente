@@ -124,9 +124,8 @@ export default function PsicAppointmentClient({
       userId: userResp.user.id,
       employeeId: employeeId,
       serviceId: service.id,
-      date: new Date(selecionado.dia),
-      time: selecionado.hora,
-      status: "scheduled",
+      startTime: new Date(selecionado.dia).toISOString(),
+      endTime: new Date(new Date(selecionado.dia).getTime() + 60 * 60 * 1000).toISOString(), // +1 hora
     });
 
     if (!appointmentResp.success) {
@@ -180,7 +179,6 @@ export default function PsicAppointmentClient({
         <Calendar
           appointments={appointments}
           onSelect={handleSelect}
-          selected={selecionado}
         />
       </div>
 

@@ -91,7 +91,7 @@ Você pode criar qualquer evento personalizado digitando o nome na interface.
 ### **Variáveis de Ambiente Necessárias**
 ```bash
 # .env.local
-NEXT_PUBLIC_FACEBOOK_CONVERSIONS_API_TOKEN=seu_token_aqui
+FACEBOOK_CONVERSIONS_API_TOKEN=seu_token_aqui
 ```
 
 ### **Token do Facebook**
@@ -155,7 +155,7 @@ Todos os eventos são logados com prefixos claros:
 ```
 ⚠️ [Facebook Test Event] Token não encontrado
 ```
-**Solução:** Verifique se `NEXT_PUBLIC_FACEBOOK_CONVERSIONS_API_TOKEN` está definido no `.env.local`
+**Solução:** Verifique se `FACEBOOK_CONVERSIONS_API_TOKEN` está definido no `.env.local`
 
 ### **Erro de Rede**
 ```
