@@ -9,7 +9,7 @@ export default function MissionVisionValues() {
       title: "MISSÃO",
       icon: "/icones/alvo.svg",
       bgGradient:
-        "linear-gradient(135deg, #4CAF50 0%, #45a049 50%, #388e3c 100%)",
+        "linear-gradient(135deg, #587861 0%, #5b7470 50%, #4a6b55 100%)",
       description:
         "Proporcionar suporte psicanalítico de excelência a brasileiros no exterior, fortalecendo seu bem-estar e sua confiança para viver com plenitude.",
     },
@@ -17,7 +17,7 @@ export default function MissionVisionValues() {
       title: "VISÃO",
       icon: "/icones/olho.svg",
       bgGradient:
-        "linear-gradient(135deg, #4DD0E1 0%, #26c6da 50%, #00bcd4 100%)",
+        "linear-gradient(135deg, #81a7bd 0%, #77b2de 50%, #6ba8d9 100%)",
       description:
         "Ser referência internacional em psicanálise intercultural, reconhecida pela qualidade, ética e inovação no cuidado à saúde mental.",
     },
@@ -25,7 +25,7 @@ export default function MissionVisionValues() {
       title: "VALORES",
       icon: "/icones/diamante.svg",
       bgGradient:
-        "linear-gradient(135deg, #42A5F5 0%, #2196F3 50%, #1976D2 100%)",
+        "linear-gradient(135deg, #987b6b 0%, #a68b7b 50%, #8c7060 100%)",
       description:
         "Nosso maior valor é de auxiliá-los em uma jornada de transformação pessoal. Compromisso com o crescimento pessoal, para transformar sua jornada no exterior em uma oportunidade de autoconhecimento e fortalecimento emocional.",
     },
@@ -33,17 +33,14 @@ export default function MissionVisionValues() {
 
   return (
     <section
-      className="py-10 px-4 relative overflow-hidden min-h-screen"
+      className="py-10 px-4 relative overflow-hidden"
       style={{
         background: `linear-gradient(
             to bottom,
-            #e4ded2 0%,
-            #e4ded2 15%,
-            #e4ded2 30%,
-            #e4ded2 45%,
-            #e4ded2 60%,
-            #e4ded2 75%,
-            #e4ded2 100%
+            #ccb8a6 0%,
+            #ccb8a6 35%,
+            #ccb8a6 70%,
+            #ccb8a6 100%
           )`,
       }}
     >
@@ -80,11 +77,11 @@ export default function MissionVisionValues() {
               </div>
 
               {/* Texto abaixo */}
-              <div className="p-6 md:p-8 text-center bg-white h-full">
-                <h3 className="text-[#0A4C8A] font-bold text-lg md:text-xl mb-4 uppercase tracking-wide">
+              <div className="p-6 md:p-8 text-center bg-white/95 backdrop-blur-sm h-full rounded-b-2xl shadow-lg">
+                <h3 className="text-[#5b7470] font-bold text-lg md:text-xl mb-4 uppercase tracking-wide">
                   {section.title}
                 </h3>
-                <p className="text-gray-700 leading-relaxed text-sm md:text-sm">
+                <p className="text-[#6B3F1D] leading-relaxed text-sm md:text-sm">
                   {section.description}
                 </p>
               </div>

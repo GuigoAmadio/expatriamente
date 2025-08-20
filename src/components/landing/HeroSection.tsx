@@ -40,29 +40,9 @@ export default function HeroSection() {
         #8eb5cb 30%,         /* azul mais claro */
         #89b0c6 45%,         /* azul claro */
         #85acc1 60%,         /* azul médio-claro */
-        #81a7bd 75%,         /* azul médio */
-        rgba(122, 158, 179, 0.7) 75.1%, /* sombra azul escuro */
-        rgba(129, 167, 189, 0.8) 75.2%, /* sombra azul médio */
-        rgba(133, 172, 193, 0.9) 75.3%, /* sombra azul médio-claro */
-        rgba(137, 176, 198, 0.95) 75.4%, /* sombra azul claro */
-        #81a7bd 75.5%,         /* continua azul médio */
-        #81a7bd 85%,         /* continua azul médio */
-        #81a7bd 90%,         /* continua azul médio */
-        #f0eee8 95%,         /* início do chão - mais próximo do branco */
-        #f8f6f2 100%         /* chão claro - mais próximo do branco */
-      ), linear-gradient(
-        to right,
-        rgba(122, 158, 179, 0.6) 0%,   /* sombra azul escuro na esquerda */
-        rgba(129, 167, 189, 0.4) 30%,  /* sombra azul médio */
-        rgba(133, 172, 193, 0.2) 60%,  /* sombra azul médio-claro */
-        rgba(137, 176, 198, 0) 100%    /* transparente na direita */
-      ), linear-gradient(
-        to bottom left,
-        transparent 0%,
-        transparent 70%,
-        rgba(0,0,0,0.1) 80%,
-        rgba(0,0,0,0.2) 90%,
-        rgba(0,0,0,0.3) 100%
+        #81a7bd 79.5%,         /* azul médio */
+        #d9cdbf 80%,         /* transição para bege (mesmo inicio do bloco abaixo) */
+        #ccb8a6 100%         /* bege do próximo bloco */
       )`;
     }
     return `linear-gradient(
@@ -102,7 +82,12 @@ export default function HeroSection() {
           background: getBackground(),
         }}
       >
-        <Header />
+        <Header
+          backgroundColor={
+            currentSection === "intercambio" ? "#ded1c0" : undefined
+          }
+          textColor={currentSection === "intercambio" ? "#587861" : undefined}
+        />
         <div className="relative flex items-start justify-end">
           {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}
 

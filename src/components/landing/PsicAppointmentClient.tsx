@@ -145,17 +145,17 @@ export default function PsicAppointmentClient({
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className="w-full max-w-4xl mx-auto mt-8"
           >
-            <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 border border-blue-100">
+            <div className="bg-gradient-to-br from-white to-[#f8f6f2] rounded-2xl shadow-xl p-6 lg:p-8 border border-[#e4ded2]">
               <motion.div
-                className="text-center mb-6 sm:mb-8"
+                className="text-center mb-6"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                <h3 className="font-akzidens text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3">
+                <h3 className="font-akzidens text-xl lg:text-2xl font-bold text-[#5b7470] mb-3">
                   Crie uma conta e finalize o agendamento
                 </h3>
-                <p className="text-gray-600 text-sm sm:text-base">
+                <p className="text-[#6B3F1D] text-sm">
                   Preencha seus dados para confirmar a sessão
                 </p>
               </motion.div>
@@ -165,37 +165,37 @@ export default function PsicAppointmentClient({
                 onSubmit={handleSubmit}
               >
                 <motion.div
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  <label className="text-gray-700 font-semibold text-sm sm:text-base">
+                  <label className="text-[#5b7470] font-akzidens font-semibold text-sm">
                     Nome Completo
                     <input
                       type="text"
                       name="name"
-                      className="w-full mt-2 px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-300 hover:border-blue-300 text-sm sm:text-base"
+                      className="w-full mt-2 px-4 py-3 border-2 border-[#e4ded2] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9dc9e2] focus:border-[#9dc9e2] bg-white transition-all duration-300 hover:border-[#c5b2a1] text-sm"
                       placeholder="Seu nome completo"
                       required
                     />
                   </label>
-                  <label className="text-gray-700 font-semibold text-sm sm:text-base">
+                  <label className="text-[#5b7470] font-akzidens font-semibold text-sm">
                     Email
                     <input
                       type="email"
                       name="email"
-                      className="w-full mt-2 px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-300 hover:border-blue-300 text-sm sm:text-base"
+                      className="w-full mt-2 px-4 py-3 border-2 border-[#e4ded2] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9dc9e2] focus:border-[#9dc9e2] bg-white transition-all duration-300 hover:border-[#c5b2a1] text-sm"
                       placeholder="seu@email.com"
                       required
                     />
                   </label>
-                  <label className="text-gray-700 font-semibold text-sm sm:text-base sm:col-span-2 lg:col-span-1">
+                  <label className="text-[#5b7470] font-akzidens font-semibold text-sm sm:col-span-2 lg:col-span-1">
                     Senha
                     <input
                       type="password"
                       name="password"
-                      className="w-full mt-2 px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition-all duration-300 hover:border-blue-300 text-sm sm:text-base"
+                      className="w-full mt-2 px-4 py-3 border-2 border-[#e4ded2] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9dc9e2] focus:border-[#9dc9e2] bg-white transition-all duration-300 hover:border-[#c5b2a1] text-sm"
                       placeholder="Mínimo 6 caracteres"
                       required
                       minLength={6}
@@ -211,20 +211,20 @@ export default function PsicAppointmentClient({
                 >
                   <motion.button
                     type="submit"
-                    className="px-6 sm:px-10 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-akzidens font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-lg hover:from-blue-700 hover:to-blue-800"
+                    className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#987b6b] to-[#587861] text-white font-akzidens font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-base hover:from-[#587861] hover:to-[#987b6b]"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     ✓ Finalizar Agendamento
                   </motion.button>
 
-                  <div className="mt-4 text-xs sm:text-sm text-gray-600">
+                  <div className="mt-4 text-xs text-[#6B3F1D]">
                     <p>
                       Ao criar sua conta, você concorda com nossos termos de uso
                     </p>
                     <p className="mt-1">
                       Sua primeira sessão é{" "}
-                      <span className="font-semibold text-green-600">
+                      <span className="font-semibold text-[#587861]">
                         gratuita
                       </span>
                       !

@@ -1,6 +1,7 @@
 import { get } from "@/lib/api-client";
 import type { Appointment, EmployeesResponse } from "@/types/backend";
 import psicanalistasMockup from "@/psicanalistas.json";
+import formacaoData from "@/data/psicanalistas-formacao.json";
 
 interface AgendamentoPsicanalista {
   data: string;
@@ -9,6 +10,16 @@ interface AgendamentoPsicanalista {
 
 // Função para mapear dados mockup para o formato esperado
 function mapMockupToPsychologist(mockupData: any) {
+  // Buscar informações de formação correspondentes
+  const formacaoInfo = formacaoData.find(f => f.nome === mockupData.nome);
+  
+  // Criar as 3 linhas de formação para o card
+  const formacaoForCard = formacaoInfo ? 
+    formacaoInfo.formacao.slice(0, 3).map(item => {
+      // Separar faculdade e curso com " - "
+      return item;
+    }).join('\n') : "Formação não especificada";
+
   return {
     id: mockupData.nome.replace(/\s+/g, "-").toLowerCase(), // Criar ID baseado no nome
     name: mockupData.nome,
@@ -19,13 +30,15 @@ function mapMockupToPsychologist(mockupData: any) {
     price: "",
     location: "",
     languages: ["Português"],
-    bio: mockupData.observacoes || "",
-    education: "",
+    bio: formacaoForCard, // Usar informações de formação em vez das observações
+    education: formacaoInfo?.formacao.join('\n') || "",
     approach: "",
     availability: mockupData.horarios
       ? mockupData.horarios.join(", ")
       : "Horários não disponíveis",
     image: mockupData.foto || "/user-placeholder.svg",
+    observacoes: mockupData.observacoes || "", // Manter observações originais
+    notas: formacaoInfo?.notas || "", // Adicionar notas de formação
   };
 }
 

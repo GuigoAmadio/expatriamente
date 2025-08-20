@@ -53,7 +53,9 @@ export default function StoriesSection() {
 
   return (
     <section
-      className="w-full pb-12 sm:py-16 md:py-20 px-4 md:px-0 flex flex-col items-center justify-center relative overflow-hidden"
+      className={`w-full pb-12 sm:py-16 md:py-20 px-4 md:px-0 flex flex-col items-center justify-center relative overflow-hidden${
+        currentSection === "about" ? " pt-0 sm:pt-0 md:pt-0" : ""
+      }`}
       style={{
         background: getBackground(),
       }}

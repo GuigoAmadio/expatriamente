@@ -20,8 +20,10 @@ import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function Header({
   backgroundColor,
+  textColor,
 }: {
   backgroundColor?: string;
+  textColor?: string;
 }) {
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -118,15 +120,19 @@ export default function Header({
     );
   }
 
+  const navTextStyle = textColor ? { color: textColor } : undefined;
+  const navDefaultTextClass = textColor ? "" : "text-white";
+
   return (
     <header
       className={`bg-transparent shadow-none h-20 md:h-24 xl:h-28 z-50 relative pt-4 md:pt-8 xl:pt-12`}
+      style={{ backgroundColor: backgroundColor ?? "transparent" }}
     >
       <div className="flex items-start gap-5 h-full px-4 md:px-8 lg:px-20">
         {/* Esquerda: Logo */}
         <div className="flex items-center">
           <Image
-            src="/logoFinal.svg"
+            src="/logoFinalReal.svg"
             alt="Expatriamente Logo"
             width={100}
             height={100}
@@ -145,34 +151,48 @@ export default function Header({
               <button
                 onClick={() => handleNavigation("/")}
                 className={`hover:text-[#ffffff] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
-                  currentSection === "home" ? "text-white scale-105" : ""
+                  currentSection === "home"
+                    ? textColor
+                      ? "font-bold scale-105"
+                      : "text-white scale-105"
+                    : navDefaultTextClass
                 }`}
+                style={navTextStyle}
               >
                 Início
               </button>
               <button
                 onClick={() => handleNavigation("/sobre")}
-                className={`hover:text-[#ffffff] hover:scale-105 text-white border-none cursor-pointer transition-all duration-300 ease-in-out ${
+                className={`hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out ${
                   currentSection === "about"
-                    ? "font-bold text-white scale-105"
-                    : ""
+                    ? textColor
+                      ? "font-bold scale-105"
+                      : "font-bold text-white scale-105"
+                    : navDefaultTextClass
                 }`}
+                style={navTextStyle}
               >
                 Sobre Nós
               </button>
 
               {/* Dropdown Serviços */}
-              <div className="relative group">
+              <div
+                className="relative group"
+                onMouseEnter={() => setIsServicesDropdownOpen(true)}
+                onMouseLeave={() => setIsServicesDropdownOpen(false)}
+              >
                 <button
                   onClick={() => handleNavigation("/servicos")}
-                  onMouseEnter={() => setIsServicesDropdownOpen(true)}
-                  className={`hover:text-[#ffffff] hover:scale-105 text-white border-none cursor-pointer transition-all duration-300 ease-in-out flex items-center gap-1 ${
+                  className={`hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out flex items-center gap-1 ${
                     currentSection === "services" ||
                     currentSection === "intercambio" ||
                     currentSection === "expatriados"
-                      ? "font-bold text-white scale-105"
-                      : ""
+                      ? textColor
+                        ? "font-bold scale-105"
+                        : "font-bold text-white scale-105"
+                      : navDefaultTextClass
                   }`}
+                  style={navTextStyle}
                 >
                   Serviços
                   <FiChevronDown className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
@@ -190,14 +210,14 @@ export default function Header({
                         ease: "easeOut",
                       }}
                       className="absolute top-full left-0 mt-text-white rounded-xl shadow-2xl border border-gray-100 min-w-[220px] z-50 overflow-hidden backdrop-blur-sm"
-                      onMouseLeave={() => setIsServicesDropdownOpen(false)}
                     >
                       <motion.button
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.05 }}
                         onClick={() => handleNavigation("/intercambio")}
-                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:text-white hovetext-white hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-white border-b border-gray-50 last:border-b-0 relative group"
+                        className={`w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:bg-white hover:text-[#587681] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] ${navDefaultTextClass} border-b border-gray-50 last:border-b-0 relative group`}
+                        style={navTextStyle}
                       >
                         <span className="relative z-10">Intercâmbio</span>
                         <div className="absolute inset-0 bg-gradient-to-r text-white/text-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -207,7 +227,8 @@ export default function Header({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
                         onClick={() => handleNavigation("/expatriados")}
-                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:text-white hovetext-white hover:text-white hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-white border-b border-gray-50 last:border-b-0 relative group"
+                        className={`w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:bg-white hover:text-[#587681] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] ${navDefaultTextClass} border-b border-gray-50 last:border-b-0 relative group`}
+                        style={navTextStyle}
                       >
                         <span className="relative z-10">Expatriados</span>
                         <div className="absolute inset-0 bg-gradient-to-r text-white/text-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -219,7 +240,8 @@ export default function Header({
 
               <button
                 onClick={() => handleNavigation("/psicanalistas")}
-                className="hover:text-[#ffffff] hover:scale-105 text-white border-none cursor-pointer transition-all duration-300 ease-in-out"
+                className={`hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out ${navDefaultTextClass}`}
+                style={navTextStyle}
               >
                 Psicanalistas
               </button>

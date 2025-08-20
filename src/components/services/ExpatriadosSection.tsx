@@ -9,19 +9,19 @@ export default function ExpatriadosSection() {
       number: "25%",
       description:
         "dos expatriados\n brasileiros retornam\n precocemente por\n falta de suporte",
-      color: "text-[#9dc9e2]",
+      color: "text-[#5b7470]",
       bgColor: "bg-[#ded1c0]",
     },
     {
       number: "45%",
       description: "apresentam estresse\n moderado a severo\n antes do retorno",
-      color: "text-[#9dc9e2]",
+      color: "text-[#5b7470]",
       bgColor: "bg-[#e4ded2]",
     },
     {
       number: "30%",
       description: "Turnover de até\n 30% em 18 meses",
-      color: "text-[#9dc9e2]",
+      color: "text-[#5b7470]",
       bgColor: "bg-[#ded1c0]",
     },
   ];
@@ -42,16 +42,16 @@ export default function ExpatriadosSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-[#987b6b] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 font-medium text-start md:text-nowrap">
+          <h1 className="text-[#ffffff] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 font-medium text-start md:text-nowrap">
             Programa de cuidados com{" "}
-            <span className="text-[#c5b2a1] font-bold">
+            <span className="text-[#987b6b] font-bold">
               Saúde Mental
               <br />
             </span>{" "}
-            para <span className="text-[#c5b2a1] font-bold">Expatriados</span>
+            para <span className="text-[#987b6b] font-bold">Expatriados</span>
           </h1>
 
-          <p className="text-[#987b6b] text-sm sm:text-lg md:text-[1.5vw] px-4 whitespace-normal font-medium text-start">
+          <p className="text-[#ffffff] text-sm sm:text-lg md:text-[1.5vw] px-4 whitespace-normal font-medium text-start">
             Ofereça aos seus talentos um suporte completo antes, durante e
             <br className="hidden md:block" /> após a missão internacional,
             reduzindo custos, impactos com
@@ -86,7 +86,7 @@ export default function ExpatriadosSection() {
                   {stat.number}
                 </h3>
                 <p
-                  className={`text-sm sm:text-base md:text-[1.2vw] md:whitespace-pre-line text-start text-[#987b6b] italic -mt-2 sm:mt-0${
+                  className={`text-sm sm:text-base md:text-[1.2vw] md:whitespace-pre-line text-start text-[#5b7470] italic mt-2 sm:mt-0${
                     stat.number === "30%" ? " md:mt-4" : ""
                   }`}
                 >
@@ -116,7 +116,7 @@ export default function ExpatriadosSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
             >
-              <p className="text-[#987b6b] font-medium text-sm md:text-[1.4vw] text-nowrap  text-center md:text-start">
+              <p className="text-[#ffffff] font-medium text-sm md:text-[1.4vw] text-nowrap  text-center md:text-start">
                 - {benefit}
               </p>
             </motion.div>
@@ -143,7 +143,7 @@ export default function ExpatriadosSection() {
             </div>
             <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
               <FaWhatsapp
-                className="text-green-500"
+                className="text-white bg-green-500 rounded-full p-1"
                 size={24}
                 aria-label="WhatsApp"
               />
@@ -194,7 +194,7 @@ export default function ExpatriadosSection() {
         >
           <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
             <FaWhatsapp
-              className="text-green-500"
+              className="text-white bg-green-500 rounded-full p-1"
               size={24}
               aria-label="WhatsApp"
             />

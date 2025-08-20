@@ -141,7 +141,7 @@ export default function PsychologistsSection() {
   );
 
   return (
-    <section className="pt-20 text-primary">
+    <section id="psicanalistas" className="pt-20 text-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12"
@@ -225,16 +225,23 @@ export default function PsychologistsSection() {
                 {p.name}
               </div>
               <div
-                className="text-sm text-[#6B3F1D] mb-4 overflow-hidden"
+                className="text-sm text-[#6B3F1D] mb-4 overflow-hidden space-y-1"
                 style={{
                   maxHeight: "80px",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 4,
-                  WebkitBoxOrient: "vertical",
-                  textOverflow: "ellipsis",
+                  lineHeight: "1.3",
                 }}
               >
-                {p.shortBio || p.availability}
+                {p.bio && p.bio !== "Formação não especificada" ? (
+                  p.bio.split('\n').slice(0, 3).map((linha, idx) => (
+                    <div key={idx} className="text-xs">
+                      • {linha}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-xs">
+                    • Formação não especificada
+                  </div>
+                )}
               </div>
               <button
                 className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#0e5a94] hover:to-[#1e6aa5] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20"

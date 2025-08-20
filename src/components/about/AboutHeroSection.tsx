@@ -10,9 +10,9 @@ export default function AboutHeroSection() {
       title: "+20",
       description:
         "Corpo clínico com\n mais de 20\n psicanalistas\n experientes e\n especializados em dinâmica\n intercultural",
-      bgColor: "bg-[#1a75ce]",
-      titleColor: "text-[#9dc9e2]",
-      textColor: "text-white",
+      bgColor: "bg-[#ffffff]",
+      titleColor: "text-[#1a75ce]",
+      textColor: "text-[#1a75ce]",
     },
     {
       icon: "/icones/sinal.svg",
@@ -20,7 +20,7 @@ export default function AboutHeroSection() {
       description:
         "Atendimento\n online e\n personalizado,\n ajustado a\n diferentes fusos\n e horários",
       bgColor: "bg-[#77b2de]",
-      titleColor: "text-[#9dc9e2]",
+      titleColor: "text-[#ffffff]",
       textColor: "text-white",
     },
     {
@@ -28,16 +28,16 @@ export default function AboutHeroSection() {
       title: "ACOLHIMENTO",
       description:
         "Abordagem que\n integra história de\n vida, traços\n culturais e o\n contexto do país\n de acolhimento",
-      bgColor: "bg-[#1a75ce]",
-      titleColor: "text-[#9dc9e2]",
-      textColor: "text-white",
+      bgColor: "bg-[#ffffff]",
+      titleColor: "text-[#1a75ce]",
+      textColor: "text-[#1a75ce]",
     },
     {
       icon: "/icones/lampada.svg",
       title: "CFPC",
       description: `Supervisão e respaldo técnico\n do CFPC - Centro\n de Formação em\n Psicanálise Clínica`,
       bgColor: "bg-[#77b2de]",
-      titleColor: "text-[#1a75ce]",
+      titleColor: "text-[#ffffff]",
       textColor: "text-white",
     },
   ];
@@ -95,33 +95,31 @@ export default function AboutHeroSection() {
                 alt={feature.title}
                 width={0}
                 height={0}
-                className="w-[60px] h-[60px] md:w-[7vw] md:h-[7vw]"
+                className="w-[60px] h-[60px] md:w-[5vw] md:h-[5vw]"
               />
             </div>
 
             {/* Card com altura uniforme e layout flexível */}
             <div
-              className={`${feature.bgColor} text-center rounded-4xl p-4 shadow-lg max-w-40 md:max-w-44 h-full flex flex-col justify-between gap-4`}
+              className={`${feature.bgColor} text-center rounded-4xl p-4 shadow-lg max-w-40 md:max-w-44 h-full flex flex-col justify-start`}
             >
-              <div className="flex-1 flex flex-col justify-start">
-                {feature.title === "CFPC" ? (
-                  <div className="mb-2 flex items-center justify-center"></div>
-                ) : (
-                  <h3
-                    className={`font-normal text-center mb-2 ${
-                      feature.title === "+20"
-                        ? "m-0 p-0 text-7xl md:text-[6vw] font-condensed font-normal"
-                        : feature.title === "ACOLHIMENTO"
-                        ? "pt-6 text-[30px] md:text-[2.2vw] font-condensed"
-                        : "pt-3 text-[60px] md:text-[4.2vw] font-condensed"
-                    } ${feature.titleColor}`}
-                  >
-                    {feature.title}
-                  </h3>
-                )}
-              </div>
+              {feature.title === "CFPC" ? (
+                <div className="mb-2 flex items-center justify-center"></div>
+              ) : (
+                <h3
+                  className={`font-normal text-center mb-2 ${
+                    feature.title === "+20"
+                      ? "pt-5 text-7axl md:text-[6vw] font-condensed font-normal"
+                      : feature.title === "ACOLHIMENTO"
+                      ? "pt-7 text-[30px] md:text-[2.2vw] font-condensed"
+                      : "pt-3 text-[60px] md:text-[4.2vw] font-condensed"
+                  } ${feature.titleColor}`}
+                >
+                  {feature.title}
+                </h3>
+              )}
               <p
-                className={`text-xs italic font-lg font-body sm:text-[1.2vw] whitespace-pre-line flex-1 flex items-center justify-center ${
+                className={`text-xs italic font-lg font-body sm:text-[1.2vw] whitespace-pre-line ${
                   feature.title === "CFPC" ? "text-center" : "text-start"
                 } ${feature.textColor || "text-white"}`}
               >

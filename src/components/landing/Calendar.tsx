@@ -93,11 +93,11 @@ export default function Calendar({
     return (
       <div>
         {/* Paginação de Semanas */}
-        <div className="mb-4 bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="mb-4 bg-white rounded-xl border border-[#e4ded2] overflow-hidden shadow-lg">
           <div className="flex items-center justify-between p-3">
             <button
               onClick={() => navigateWeek("prev")}
-              className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-[#f8f6f2] hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-sm font-akzidens"
             >
               <svg
                 className="w-4 h-4"
@@ -116,7 +116,7 @@ export default function Calendar({
             </button>
 
             <div className="text-center">
-              <div className="text-sm font-semibold text-gray-900">
+              <div className="text-sm font-akzidens font-semibold text-[#5b7470]">
                 {currentWeekStart.toLocaleDateString("pt-BR", {
                   day: "2-digit",
                   month: "2-digit",
@@ -132,7 +132,7 @@ export default function Calendar({
               </div>
               <button
                 onClick={goToCurrentWeek}
-                className="text-xs text-blue-600 hover:text-blue-800 transition-colors mt-1"
+                className="text-xs text-[#9dc9e2] hover:text-[#77b2de] transition-colors mt-1 font-akzidens"
               >
                 Ir para hoje
               </button>
@@ -140,7 +140,7 @@ export default function Calendar({
 
             <button
               onClick={() => navigateWeek("next")}
-              className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-[#f8f6f2] hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-sm font-akzidens"
             >
               Próxima
               <svg
@@ -161,10 +161,12 @@ export default function Calendar({
         </div>
 
         {/* Grid de horários ultra-compacto (mobile) - Copiado exatamente do AdminAppointmentsList */}
-        <div className="grid grid-cols-8 gap-1 bg-gray-100 rounded-xl p-2">
+        <div className="grid grid-cols-8 gap-1 bg-[#f8f6f2] rounded-xl p-2">
           {/* Header */}
-          <div className="bg-white p-1 flex items-center justify-center rounded-md shadow-sm">
-            <span className="text-[8px] font-semibold text-gray-600">HORA</span>
+          <div className="bg-white p-1 flex items-center justify-center rounded-md shadow-sm border border-[#e4ded2]">
+            <span className="text-[8px] font-akzidens font-semibold text-[#5b7470]">
+              HORA
+            </span>
           </div>
           {Array.from({ length: 7 }, (_, i) => {
             const day = new Date(currentWeekStart);
@@ -174,13 +176,13 @@ export default function Calendar({
             return (
               <div
                 key={i}
-                className={`p-2 flex flex-col items-center justify-center text-[10px] font-semibold rounded-md shadow-sm min-h-[32px] ${
+                className={`p-2 flex flex-col items-center justify-center text-[10px] font-akzidens font-semibold rounded-md shadow-sm min-h-[32px] border border-[#e4ded2] ${
                   isToday
-                    ? "bg-blue-50 text-blue-700 ring-1 ring-blue-200"
-                    : "bg-white text-gray-600"
+                    ? "bg-[#9dc9e2] text-white ring-1 ring-[#9dc9e2]"
+                    : "bg-white text-[#5b7470]"
                 }`}
               >
-                <span className="text-[6px] font-medium text-gray-500 mb-1">
+                <span className="text-[6px] font-medium text-[#987b6b] mb-1">
                   {dayNames[i]}
                 </span>
                 <span>{day.getDate()}</span>
@@ -191,68 +193,66 @@ export default function Calendar({
           {/* Horários */}
           {workingHours.map((hora) => (
             <React.Fragment key={hora}>
-              <div className="bg-white p-1 flex items-center justify-center rounded-md shadow-sm">
-                <span className="text-[8px] font-medium text-gray-700">
+              <div className="bg-white p-1 flex items-center justify-center rounded-md shadow-sm border border-[#e4ded2]">
+                <span className="text-[8px] font-akzidens font-medium text-[#5b7470]">
                   {hora.substring(0, 2)}
                 </span>
               </div>
               {Array.from({ length: 7 }, (_, i) => {
                 const day = new Date(currentWeekStart);
                 day.setDate(currentWeekStart.getDate() + i);
-                const dayString = `${day.getFullYear()}-${(day.getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}-${day
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}`;
-
-                const isMarcado = agendados[i]?.[hora];
-                const isSelecionado =
-                  selecionado &&
-                  selecionado.dia === i &&
-                  selecionado.hora === hora;
-                const count = isMarcado ? 0 : 1; // Invertido: se marcado = ocupado (0), se não = disponível (1)
                 const isToday =
                   day.toDateString() === new Date().toDateString();
+                const isBooked = agendados[i]?.[hora];
+                const isSelected =
+                  selecionado?.dia === i && selecionado?.hora === hora;
 
                 return (
-                  <button
+                  <motion.button
                     key={i}
-                    className={`aspect-square flex items-center justify-center transition-all duration-150 rounded-md shadow-sm hover:shadow-md ${
-                      count > 0
-                        ? isSelecionado
-                          ? "bg-blue-600 text-white ring-2 ring-blue-300"
-                          : "bg-emerald-500 text-white hover:bg-emerald-600 hover:scale-105"
-                        : isSelecionado
-                        ? "bg-blue-100 text-blue-700 ring-2 ring-blue-300"
-                        : isToday
-                        ? "bg-blue-50 hover:bg-blue-100 ring-1 ring-blue-200"
-                        : "bg-white hover:bg-gray-50 hover:scale-105"
-                    }`}
                     onClick={() => {
-                      if (count > 0) {
-                        // Só permite clicar se disponível
+                      if (!isBooked) {
                         setSelecionado({ dia: i, hora });
                         onSelect?.(i, hora);
                       }
                     }}
+                    disabled={isBooked}
+                    className={`aspect-square flex items-center justify-center transition-all duration-150 rounded-md shadow-sm hover:shadow-md border ${
+                      isSelected
+                        ? "bg-[#987b6b] text-white ring-2 ring-[#c5b2a1]"
+                        : isBooked
+                        ? "bg-[#e4ded2] text-[#c5b2a1] cursor-not-allowed"
+                        : isToday
+                        ? "bg-[#f8f6f2] text-[#5b7470] ring-1 ring-[#9dc9e2] hover:bg-[#e4ded2]"
+                        : "bg-white text-[#5b7470] hover:bg-[#f8f6f2] hover:scale-105"
+                    }`}
+                    whileHover={!isBooked ? { scale: 1.05 } : {}}
+                    whileTap={!isBooked ? { scale: 0.95 } : {}}
+                    layout
                   >
-                    {isSelecionado && (
-                      <svg
-                        className="w-4 h-4 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={
+                          isBooked
+                            ? "ocupado"
+                            : isSelected
+                            ? "selecionado"
+                            : "disponivel"
+                        }
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-[8px] font-akzidens font-medium"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </button>
+                        {isBooked
+                          ? "Ocupado"
+                          : isSelected
+                          ? "✓ Selecionado"
+                          : "Livre"}
+                      </motion.span>
+                    </AnimatePresence>
+                  </motion.button>
                 );
               })}
             </React.Fragment>
@@ -262,40 +262,18 @@ export default function Calendar({
     );
   };
 
-  return (
-    <motion.div
-      className="bg-white rounded-2xl shadow-xl p-4 border border-gray-100"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
-      <motion.div
-        className="mb-6 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
-          Selecione seu horário
-        </h3>
-        <p className="text-xs sm:text-sm text-gray-600">
-          Clique em um horário disponível para agendar sua sessão
-        </p>
-      </motion.div>
+  // Versão desktop do calendário
+  const DesktopCalendar = () => {
+    const currentWeekStart = getWeekStart(currentWeek);
 
-      {/* Versão Mobile (até 1024px - igual ao admin) */}
-      <div className="block lg:hidden">
-        <MobileCalendar />
-      </div>
-
-      {/* Versão Desktop (1024px+) */}
-      <div className="hidden lg:block">
-        {/* Paginação de Semanas - Desktop */}
-        <div className="mb-4 bg-white rounded-xl border border-gray-200 overflow-hidden">
+    return (
+      <div>
+        {/* Paginação de Semanas */}
+        <div className="mb-4 bg-white rounded-xl border border-[#e4ded2] overflow-hidden shadow-lg">
           <div className="flex items-center justify-between p-3">
             <button
               onClick={() => navigateWeek("prev")}
-              className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-[#f8f6f2] hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-sm font-akzidens"
             >
               <svg
                 className="w-4 h-4"
@@ -314,14 +292,14 @@ export default function Calendar({
             </button>
 
             <div className="text-center">
-              <div className="text-sm font-semibold text-gray-900">
-                {getWeekStart(currentWeek).toLocaleDateString("pt-BR", {
+              <div className="text-sm font-akzidens font-semibold text-[#5b7470]">
+                {currentWeekStart.toLocaleDateString("pt-BR", {
                   day: "2-digit",
                   month: "2-digit",
                 })}{" "}
                 -{" "}
                 {new Date(
-                  getWeekStart(currentWeek).getTime() + 6 * 24 * 60 * 60 * 1000
+                  currentWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000
                 ).toLocaleDateString("pt-BR", {
                   day: "2-digit",
                   month: "2-digit",
@@ -330,7 +308,7 @@ export default function Calendar({
               </div>
               <button
                 onClick={goToCurrentWeek}
-                className="text-xs text-blue-600 hover:text-blue-800 transition-colors mt-1"
+                className="text-xs text-[#9dc9e2] hover:text-[#77b2de] transition-colors mt-1 font-akzidens"
               >
                 Ir para hoje
               </button>
@@ -338,7 +316,7 @@ export default function Calendar({
 
             <button
               onClick={() => navigateWeek("next")}
-              className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-lg transition-colors text-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-[#f8f6f2] hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-sm font-akzidens"
             >
               Próxima
               <svg
@@ -362,13 +340,13 @@ export default function Calendar({
           <table className="w-full border-separate border-spacing-y-3 border-spacing-x-1">
             <thead>
               <tr>
-                <th className="bg-transparent text-gray-800 font-semibold font-akzidens pb-4 text-[10px] xl:text-sm">
+                <th className="bg-transparent text-[#5b7470] font-semibold font-akzidens pb-4 text-[10px] xl:text-sm">
                   Horário
                 </th>
                 {DIAS.map((dia, i) => (
                   <motion.th
                     key={dia}
-                    className="bg-transparent text-gray-800 font-semibold font-akzidens pb-4 min-w-[120px] text-[10px]  xl:text-sm"
+                    className="bg-transparent text-[#5b7470] font-semibold font-akzidens pb-4 min-w-[120px] text-[10px] xl:text-sm"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: i * 0.05 }}
@@ -386,12 +364,12 @@ export default function Calendar({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: horaIdx * 0.02 }}
                 >
-                  <td className="bg-transparent text-gray-800 font-bold px-1 py-2 text-left font-akzidens text-[10px] xl:text-sm">
+                  <td className="bg-transparent text-[#5b7470] font-bold px-1 py-2 text-left font-akzidens text-[10px] xl:text-sm">
                     {hora}
                   </td>
                   {DIAS.map((_, diaIdx) => {
-                    const isMarcado = agendados[diaIdx]?.[hora];
-                    const isSelecionado =
+                    const isBooked = agendados[diaIdx]?.[hora];
+                    const isSelected =
                       selecionado &&
                       selecionado.dia === diaIdx &&
                       selecionado.hora === hora;
@@ -402,30 +380,30 @@ export default function Calendar({
                       >
                         <motion.div
                           className={`rounded-xl flex items-center justify-center h-8 w-full font-akzidens select-none border-2 transition-all duration-300 cursor-pointer text-[10px] xl:text-xs
-                              ${
-                                isMarcado
-                                  ? "bg-red-50 text-red-600 border-red-200 opacity-60 cursor-not-allowed"
-                                  : isSelecionado
-                                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-blue-600 shadow-lg transform scale-105"
-                                  : "bg-green-50 text-green-700 border-green-200 hover:bg-green-100 hover:border-green-300 hover:shadow-md hover:scale-102"
-                              }
-                            `}
+                            ${
+                              isBooked
+                                ? "bg-[#e4ded2] text-[#c5b2a1] border-[#e4ded2] opacity-60 cursor-not-allowed"
+                                : isSelected
+                                ? "bg-gradient-to-r from-[#987b6b] to-[#587861] text-white border-[#987b6b] shadow-lg transform scale-105"
+                                : "bg-[#f8f6f2] text-[#5b7470] border-[#e4ded2] hover:bg-[#e4ded2] hover:border-[#c5b2a1] hover:shadow-md hover:scale-102"
+                            }
+                          `}
                           onClick={() => {
-                            if (!isMarcado) {
+                            if (!isBooked) {
                               setSelecionado({ dia: diaIdx, hora });
                               onSelect?.(diaIdx, hora);
                             }
                           }}
-                          whileHover={!isMarcado ? { scale: 1.05 } : {}}
-                          whileTap={!isMarcado ? { scale: 0.95 } : {}}
+                          whileHover={!isBooked ? { scale: 1.05 } : {}}
+                          whileTap={!isBooked ? { scale: 0.95 } : {}}
                           layout
                         >
                           <AnimatePresence mode="wait">
                             <motion.span
                               key={
-                                isMarcado
+                                isBooked
                                   ? "ocupado"
-                                  : isSelecionado
+                                  : isSelected
                                   ? "selecionado"
                                   : "disponivel"
                               }
@@ -434,9 +412,9 @@ export default function Calendar({
                               exit={{ opacity: 0, scale: 0.8 }}
                               transition={{ duration: 0.2 }}
                             >
-                              {isMarcado
+                              {isBooked
                                 ? "Ocupado"
-                                : isSelecionado
+                                : isSelected
                                 ? "✓ Selecionado"
                                 : "Disponível"}
                             </motion.span>
@@ -451,21 +429,54 @@ export default function Calendar({
           </table>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <motion.div
+      className="bg-white rounded-2xl shadow-xl p-4 border border-[#e4ded2]"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <motion.div
+        className="mb-6 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <h3 className="text-lg sm:text-xl font-bold text-[#5b7470] mb-2 font-akzidens">
+          Selecione seu horário
+        </h3>
+        <p className="text-xs sm:text-sm text-[#6B3F1D]">
+          Clique em um horário disponível para agendar sua sessão
+        </p>
+      </motion.div>
+
+      {/* Versão Mobile (até 1024px - igual ao admin) */}
+      <div className="block lg:hidden">
+        <MobileCalendar />
+      </div>
+
+      {/* Versão Desktop (1024px+) */}
+      <div className="hidden lg:block">
+        <DesktopCalendar />
+      </div>
 
       {selecionado && (
         <motion.div
-          className="mt-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-xl text-center"
+          className="mt-6 p-3 sm:p-4 bg-[#f8f6f2] border border-[#e4ded2] rounded-xl text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <p className="text-blue-800 font-semibold text-sm sm:text-base">
+          <p className="text-[#5b7470] font-semibold text-sm sm:text-base font-akzidens">
             Horário selecionado:{" "}
             <span className="font-bold">
               {DIAS[selecionado.dia]} às {selecionado.hora}
             </span>
           </p>
-          <p className="text-blue-600 text-xs sm:text-sm mt-1">
+          <p className="text-[#987b6b] text-xs sm:text-sm mt-1">
             Preencha os dados abaixo para finalizar o agendamento
           </p>
         </motion.div>
