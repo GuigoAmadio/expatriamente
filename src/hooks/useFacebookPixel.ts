@@ -67,73 +67,6 @@ export const useFacebookPixel = () => {
     }
   };
 
-  // ✅ NOVA FUNÇÃO: Testar eventos do servidor com TEST24945
-  const testServerEvent = async (eventName: string, parameters?: any) => {
-    try {
-      const token = process.env.FACEBOOK_CONVERSIONS_API_TOKEN;
-      if (!token) {
-        console.warn("⚠️ [Facebook Test Event] Token não encontrado");
-        return;
-      }
-
-      // Adicionar o código de teste TEST24945
-      const testEventData = {
-        data: [
-          {
-            event_name: eventName,
-            event_time: Math.floor(Date.now() / 1000),
-            action_source: "website",
-            event_source_url: window.location.href,
-            user_data: {
-              client_ip_address: "127.0.0.1",
-              client_user_agent: navigator.userAgent,
-            },
-            custom_data: {
-              ...parameters,
-              test_event_code: "TEST24945", // Código de teste do Facebook
-            },
-          },
-        ],
-        access_token: token,
-      };
-
-      console.log(
-        `🧪 [Facebook Test Event] Enviando evento de teste: ${eventName}`,
-        testEventData
-      );
-
-      const response = await fetch(
-        "https://graph.facebook.com/v18.0/620735734130587/events",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(testEventData),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log(
-          `✅ [Facebook Test Event] Evento de teste ${eventName} enviado com sucesso!`,
-          result
-        );
-        console.log(
-          `🧪 [Facebook Test Event] Use o código TEST24945 para verificar o evento no Facebook Events Manager`
-        );
-      } else {
-        console.error(
-          `❌ [Facebook Test Event] Erro ao enviar evento de teste ${eventName}:`,
-          result
-        );
-      }
-    } catch (error) {
-      console.error(`❌ [Facebook Test Event] Erro na requisição:`, error);
-    }
-  };
-
   const trackEvent = (eventName: string, parameters?: any) => {
     console.log(
       `🔵 [Facebook Pixel] Tentando rastrear evento: ${eventName}`,
@@ -249,7 +182,6 @@ export const useFacebookPixel = () => {
     trackPurchase,
     trackAddToCart,
     trackInitiateCheckout,
-    testServerEvent, // ✅ Nova função para testar eventos
     sendToConversionsAPI,
   };
 };

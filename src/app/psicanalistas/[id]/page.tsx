@@ -41,11 +41,11 @@ export default async function PsicanalistaPage({
       psychologistName={psicanalista.name}
     >
       <div className="min-h-screen bg-[#A6C0B3] w-full">
-        <Header />
+        <Header backgroundColor="#A6C0B3" textColor="#4F200D" />
         <div className="w-full">
           {/* Container único: perfil + tópicos + calendário */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 w-[90%] max-w-[1500px] mx-auto mt-40">
-            <div className="flex items-center justify-around">
+          <div className="bg-white rounded-2xl shadow-xl p-8 w-[90%] max-w-[1500px] mx-auto mt-8">
+            <div className="flex flex-col md:flex-row items-center justify-around">
               <div className="flex flex-col lg:flex-row gap-8 border-b border-gray-200 pb-6 mb-6">
                 {/* Foto circular à esquerda */}
                 <div className="flex-shrink-0 flex flex-col items-center lg:items-start">
@@ -94,19 +94,10 @@ export default async function PsicanalistaPage({
                 </ul>
               </div>
             </div>
-            <div className="text-center mt-2 mb-6">
-              <h2 className="font-akzidens text-2xl font-bold text-[#5b7470] mb-2">
-                Selecione seu horário
-              </h2>
-              <p className="text-[#6B3F1D] text-sm">
-                Clique em um horário disponível para agendar sua sessão
-              </p>
-            </div>
-
             <PsicAppointmentClient
               appointments={appointmentsFormatted}
               employeeId={id}
-              serviceId="1"
+              serviceId="98796135-93a4-4063-9e09-0821f71e69e1"
             />
           </div>
         </div>

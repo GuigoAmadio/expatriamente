@@ -5,7 +5,7 @@ import { useCacheAndSSE, useCachePerformance } from "@/hooks/useCacheAndSSE";
 import { useRequestManager } from "@/hooks/useRequestManager";
 import { intelligentCache } from "@/lib/intelligent-cache";
 import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
-import FacebookTestEvents from "./FacebookTestEvents";
+
 
 interface CacheDebugProps {
   isVisible?: boolean;
@@ -14,7 +14,7 @@ interface CacheDebugProps {
 export function CacheDebug({ isVisible = false }: CacheDebugProps) {
   const [debugVisible, setDebugVisible] = useState(isVisible);
   const [activeTab, setActiveTab] = useState<
-    "cache" | "sse" | "requests" | "performance" | "facebook"
+    "cache" | "sse" | "requests" | "performance"
   >("cache");
 
   // ✅ Hooks de monitoramento
@@ -90,7 +90,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
 
       {/* ✅ Tabs */}
       <div className="flex border-b">
-        {(["cache", "sse", "requests", "performance", "facebook"] as const).map((tab) => (
+        {(["cache", "sse", "requests", "performance"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -104,7 +104,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
             {tab === "sse" && "📡 SSE"}
             {tab === "requests" && "🔄 Requests"}
             {tab === "performance" && "📊 Performance"}
-            {tab === "facebook" && "📘 Facebook"}
+            
           </button>
         ))}
       </div>
@@ -305,21 +305,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
           </div>
         )}
 
-        {/* Facebook Tab */}
-        {activeTab === "facebook" && (
-          <div className="space-y-3">
-            <div className="text-sm">
-              <div className="bg-blue-50 p-2 rounded text-xs">
-                <div className="font-medium">🧪 Teste de Eventos Facebook</div>
-                <div>Use o código TEST24945 para verificar eventos</div>
-              </div>
-            </div>
-            
-            <div className="max-h-48 overflow-y-auto">
-              <FacebookTestEvents />
-            </div>
-          </div>
-        )}
+
       </div>
 
       {/* ✅ Footer */}

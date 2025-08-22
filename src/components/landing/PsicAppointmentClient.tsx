@@ -26,7 +26,7 @@ export default function PsicAppointmentClient({
     hora: string;
   } | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
-  const { trackCompleteRegistration, testServerEvent } = useFacebookPixel();
+  const { trackCompleteRegistration } = useFacebookPixel();
 
   function handleSelect(dia: number, hora: string) {
     setSelecionado({ dia, hora });
@@ -37,25 +37,6 @@ export default function PsicAppointmentClient({
       formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [selecionado]);
-
-  // ✅ NOVA FUNÇÃO: Testar evento do Facebook
-  const handleTestFacebookEvent = async () => {
-    try {
-      await testServerEvent("Schedule", {
-        content_name: "Teste de Agendamento",
-        content_category: "Psicologia",
-        content_type: "test_event",
-        psychologist_id: employeeId,
-        service_id: serviceId,
-        test_mode: true,
-        test_timestamp: new Date().toISOString(),
-      });
-
-      console.log("🧪 [Teste] Evento de teste enviado com sucesso!");
-    } catch (error) {
-      console.error("❌ [Teste] Erro ao enviar evento de teste:", error);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,12 +101,27 @@ export default function PsicAppointmentClient({
     console.log(`✅ [Agendamento] Serviço encontrado:`, service);
 
     // 3. Criar agendamento
+    // Calcular a data correta baseada no dia da semana selecionado
+    const hoje = new Date();
+    const diaSemana = selecionado.dia;
+    const diff = (diaSemana + 7 - hoje.getDay()) % 7;
+    const dataBase = new Date(hoje);
+    dataBase.setDate(hoje.getDate() + diff);
+
+    // Definir o horário específico
+    const [hora, minuto] = selecionado.hora.split(":");
+    dataBase.setHours(Number(hora), Number(minuto), 0, 0);
+    const startTime = dataBase.toISOString();
+
+    // Calcular endTime (1 hora depois)
+    const endTime = new Date(dataBase.getTime() + 60 * 60 * 1000).toISOString();
+
     const appointmentResp = await createAppointment({
       userId: userResp.user.id,
       employeeId: employeeId,
       serviceId: service.id,
-      startTime: new Date(selecionado.dia).toISOString(),
-      endTime: new Date(new Date(selecionado.dia).getTime() + 60 * 60 * 1000).toISOString(), // +1 hora
+      startTime: startTime,
+      endTime: endTime,
     });
 
     if (!appointmentResp.success) {
@@ -156,111 +152,218 @@ export default function PsicAppointmentClient({
   };
 
   return (
-    <div className="space-y-8">
-      {/* ✅ NOVO: Botão de teste do Facebook */}
-      <div className="text-center">
-        <button
-          onClick={handleTestFacebookEvent}
-          className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-          title="Testar evento do Facebook Pixel"
-        >
-          🧪 Testar Evento Facebook
-        </button>
-        <p className="text-xs text-gray-500 mt-2">
-          Use para testar eventos com código TEST24945
-        </p>
-      </div>
-
-      {/* Calendário */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Selecione uma data e horário
-        </h3>
-        <Calendar
-          appointments={appointments}
-          onSelect={handleSelect}
-        />
-      </div>
+    <div className="space-y-8 mt-10">
+      <Calendar appointments={appointments} onSelect={handleSelect} />
 
       {/* Formulário de Agendamento */}
       <AnimatePresence>
         {selecionado && (
           <motion.div
             ref={formRef}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-200"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -30, scale: 0.95 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="relative"
           >
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Finalizar Agendamento
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Data: {new Date(selecionado.dia).toLocaleDateString("pt-BR")} às{" "}
-              {selecionado.hora}
-            </p>
+            {/* Background decorativo */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#f8f6f2] via-[#e4ded2] to-[#f8f6f2] rounded-2xl blur-sm opacity-50"></div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Nome Completo
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Digite seu nome completo"
-                />
+            {/* Card principal */}
+            <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-[#e4ded2]/50 overflow-hidden">
+              {/* Header com gradiente */}
+              <div className="bg-gradient-to-r from-[#987b6b] via-[#9ca995] to-[#587861] p-6 text-white">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <svg
+                      className="w-5 h-5 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m-7 0h8m-8 0V21a1 1 0 001 1h6a1 1 0 001-1V7"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-akzidens font-bold mb-1">
+                      Finalizar Agendamento
+                    </h3>
+                    <p className="text-white/90 text-xs">
+                      Crie sua conta e confirme o horário selecionado
+                    </p>
+                  </div>
+                </div>
+
+                {/* Info do agendamento */}
+                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-4 h-4 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-white font-akzidens font-semibold text-base">
+                        {(() => {
+                          const hoje = new Date();
+                          const diaSemana = selecionado.dia;
+                          const diff = (diaSemana + 7 - hoje.getDay()) % 7;
+                          const dataBase = new Date(hoje);
+                          dataBase.setDate(hoje.getDate() + diff);
+                          return dataBase.toLocaleDateString("pt-BR");
+                        })()}{" "}
+                        às {selecionado.hora}
+                      </p>
+                      <p className="text-white/80 text-xs">
+                        Sessão de 60 minutos
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Digite seu email"
-                />
-              </div>
+              {/* Formulário */}
+              <div className="p-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-xs font-akzidens font-semibold text-[#587861] mb-1"
+                      >
+                        Nome Completo
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        className="w-full px-3 py-2 bg-[#f8f6f2] border-2 border-[#e4ded2] rounded-lg font-akzidens text-sm
+                                 focus:outline-none focus:border-[#987b6b] focus:bg-white 
+                                 transition-all duration-300 hover:border-[#9ca995]"
+                        placeholder="Digite seu nome completo"
+                      />
+                    </div>
 
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Senha
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  required
-                  minLength={6}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Crie uma senha (mín. 6 caracteres)"
-                />
-              </div>
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-xs font-akzidens font-semibold text-[#587861] mb-1"
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        className="w-full px-3 py-2 bg-[#f8f6f2] border-2 border-[#e4ded2] rounded-lg font-akzidens text-sm
+                                 focus:outline-none focus:border-[#987b6b] focus:bg-white 
+                                 transition-all duration-300 hover:border-[#9ca995]"
+                        placeholder="Digite seu email"
+                      />
+                    </div>
 
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-              >
-                Confirmar Agendamento
-              </button>
-            </form>
+                    <div>
+                      <label
+                        htmlFor="password"
+                        className="block text-xs font-akzidens font-semibold text-[#587861] mb-1"
+                      >
+                        Senha
+                      </label>
+                      <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        minLength={6}
+                        className="w-full px-3 py-2 bg-[#f8f6f2] border-2 border-[#e4ded2] rounded-lg font-akzidens text-sm
+                                 focus:outline-none focus:border-[#987b6b] focus:bg-white 
+                                 transition-all duration-300 hover:border-[#9ca995]"
+                        placeholder="Mínimo 6 caracteres"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Info adicional */}
+                  <div className="bg-[#f8f6f2] rounded-xl p-3 border border-[#e4ded2]/50">
+                    <div className="flex items-start gap-2">
+                      <div className="w-6 h-6 bg-[#9ca995] rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-3 h-3 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <div className="text-xs text-[#587861]">
+                        <p className="font-akzidens font-semibold mb-1">
+                          Informações importantes:
+                        </p>
+                        <ul className="space-y-0.5 text-xs">
+                          <li>• Você receberá um email de confirmação</li>
+                          <li>
+                            • O link da sessão será enviado 15 minutos antes
+                          </li>
+                          <li>• Primeira consulta gratuita</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Botão */}
+                  <motion.button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-[#987b6b] via-[#9ca995] to-[#587861] 
+                             text-white font-akzidens font-bold py-3 px-6 rounded-lg
+                             shadow-md hover:shadow-lg transition-all duration-300
+                             hover:scale-[1.01] active:scale-[0.99]
+                             focus:outline-none focus:ring-2 focus:ring-[#987b6b]/30"
+                    whileHover={{ y: -1 }}
+                    whileTap={{ y: 0 }}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="text-sm">Confirmar Agendamento</span>
+                    </div>
+                  </motion.button>
+                </form>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

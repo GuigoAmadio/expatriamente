@@ -88,6 +88,7 @@ export default function PsychologistsSection() {
   const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [loadingCardId, setLoadingCardId] = useState<string | null>(null);
   const router = useRouter();
   const { trackViewContent } = useFacebookPixel();
 
@@ -140,8 +141,54 @@ export default function PsychologistsSection() {
     startIndex + itemsPerPage
   );
 
+  const handleCardClick = async (psychologist: Psychologist) => {
+    setLoadingCardId(psychologist.id);
+    console.log(`🔵 [Psicanalistas] Card clicado:`, psychologist.name);
+
+    trackViewContent({
+      content_name: psychologist.name,
+      content_category: "Psychologist Card",
+      content_type: "card_click",
+      psychologist_id: psychologist.id,
+      psychologist_specialty: psychologist.specialty,
+      psychologist_price: psychologist.price,
+    });
+
+    // Simular um pequeno delay para mostrar o loading
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    router.push(`/psicanalistas/${psychologist.id}`);
+  };
+
+  const handleButtonClick = async (
+    e: React.MouseEvent,
+    psychologist: Psychologist
+  ) => {
+    e.stopPropagation();
+    setLoadingCardId(psychologist.id);
+
+    console.log(
+      `🔵 [Psicanalistas] Botão "Ver horários" clicado:`,
+      psychologist.name
+    );
+
+    trackViewContent({
+      content_name: `${psychologist.name} - Ver Horários`,
+      content_category: "Psychologist Card",
+      content_type: "button_click",
+      psychologist_id: psychologist.id,
+      psychologist_specialty: psychologist.specialty,
+      psychologist_price: psychologist.price,
+    });
+
+    // Simular um pequeno delay para mostrar o loading
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    router.push(`/psicanalistas/${psychologist.id}`);
+  };
+
   return (
-    <section id="psicanalistas" className="pt-20 text-primary">
+    <section id="psicanalistas" className="pt-10 text-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12"
@@ -160,7 +207,7 @@ export default function PsychologistsSection() {
             Conheça nossos Psicanalistas e veja horários disponíveis
           </motion.h2>
           <motion.p
-            className="text-lg text-white font-medium mb-8"
+            className="text-lg text-[#935a3c] font-medium mb-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -192,18 +239,7 @@ export default function PsychologistsSection() {
             <motion.div
               key={p.id}
               className="bg-white relative rounded-2xl shadow-lg hover:shadow-xl p-6 flex flex-col items-center text-center cursor-pointer group transition-all duration-300 ease-in-out"
-              onClick={() => {
-                console.log(`🔵 [Psicanalistas] Card clicado:`, p.name);
-                trackViewContent({
-                  content_name: p.name,
-                  content_category: "Psychologist Card",
-                  content_type: "card_click",
-                  psychologist_id: p.id,
-                  psychologist_specialty: p.specialty,
-                  psychologist_price: p.price,
-                });
-                router.push(`/psicanalistas/${p.id}`);
-              }}
+              onClick={() => handleCardClick(p)}
               style={{ minHeight: 400 }}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -232,37 +268,31 @@ export default function PsychologistsSection() {
                 }}
               >
                 {p.bio && p.bio !== "Formação não especificada" ? (
-                  p.bio.split('\n').slice(0, 3).map((linha, idx) => (
-                    <div key={idx} className="text-xs">
-                      • {linha}
-                    </div>
-                  ))
+                  p.bio
+                    .split("\n")
+                    .slice(0, 3)
+                    .map((linha, idx) => (
+                      <div key={idx} className="text-xs">
+                        • {linha}
+                      </div>
+                    ))
                 ) : (
-                  <div className="text-xs">
-                    • Formação não especificada
-                  </div>
+                  <div className="text-xs">• Formação não especificada</div>
                 )}
               </div>
               <button
-                className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#0e5a94] hover:to-[#1e6aa5] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log(
-                    `🔵 [Psicanalistas] Botão "Ver horários" clicado:`,
-                    p.name
-                  );
-                  trackViewContent({
-                    content_name: `${p.name} - Ver Horários`,
-                    content_category: "Psychologist Card",
-                    content_type: "button_click",
-                    psychologist_id: p.id,
-                    psychologist_specialty: p.specialty,
-                    psychologist_price: p.price,
-                  });
-                  router.push(`/psicanalistas/${p.id}`);
-                }}
+                className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#9ca995] hover:to-[#9bb18e] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20 disabled:opacity-75 disabled:cursor-not-allowed disabled:scale-100"
+                onClick={(e) => handleButtonClick(e, p)}
+                disabled={loadingCardId === p.id}
               >
-                Ver horários
+                {loadingCardId === p.id ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Ver horários</span>
+                  </div>
+                ) : (
+                  "Ver horários"
+                )}
               </button>
             </motion.div>
           ))}
@@ -270,7 +300,7 @@ export default function PsychologistsSection() {
 
         {/* Paginação */}
         {totalPages > 1 && (
-          <div className="mt-28 flex flex-col items-center gap-4">
+          <div className="mt-16 flex flex-col items-center gap-4">
             <div className="flex items-center gap-3">
               <button
                 className="px-4 py-2 rounded-full bg-[#987b6b] text-white disabled:opacity-40 disabled:cursor-not-allowed"
@@ -302,7 +332,7 @@ export default function PsychologistsSection() {
                     aria-label={`Ir para página ${page}`}
                     className={`transition-all duration-200 rounded-full border border-[#987b6b]/30 ${
                       isActive
-                        ? "bg-[#b7c8b1] scale-110 w-3.5 h-3.5"
+                        ? "bg-[#c59c4a] scale-110 w-3.5 h-3.5"
                         : "bg-white/80 w-3 h-3 hover:scale-105"
                     }`}
                   />

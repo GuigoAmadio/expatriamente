@@ -78,7 +78,7 @@ export default function StoriesSection() {
               }}
             >
               <img
-                src="/logoFinal.svg"
+                src="/logoFinalReal.svg"
                 alt="Logo Expatriamente"
                 className="absolute w-20 h-20 -top-10 -left-10"
               />

@@ -45,7 +45,7 @@ export default function FooterSection() {
           priority
         />
         <motion.div
-          className="relative z-10 flex flex-col items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 px-1 sm:px-2 md:px-4 py-4 sm:py-6 md:py-8 lg:py-10 xl:py-12 h-full"
+          className="relative z-10 flex flex-col items-end sm:items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 px-1 sm:px-2 md:px-4 py-4 sm:py-6 md:py-8 lg:py-10 xl:py-12 h-full"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -66,7 +66,7 @@ export default function FooterSection() {
               viewport={{ once: true }}
             >
               <Image
-                src="/logoFinal.svg"
+                src="/logoFinalReal.svg"
                 alt="Expatriamente Logo"
                 width={60}
                 height={60}
@@ -186,7 +186,7 @@ export default function FooterSection() {
           priority
         />
         <motion.div
-          className="relative z-10 flex flex-col items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 px-1 sm:px-2 md:px-4 py-4 sm:py-6 md:py-8 lg:py-10 xl:py-12 h-full"
+          className="relative z-10 flex flex-col items-end sm:items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 px-1 sm:px-2 md:px-4 py-4 sm:py-6 md:py-8 lg:py-10 xl:py-12 h-full"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -207,7 +207,7 @@ export default function FooterSection() {
               viewport={{ once: true }}
             >
               <Image
-                src="/logoFinal.svg"
+                src="/logoFinalReal.svg"
                 alt="Expatriamente Logo"
                 width={80}
                 height={80}

@@ -360,35 +360,7 @@ const VideoCarouselSection: React.FC = () => {
   }, [currentIndex, isMobile]);
 
   return (
-    <section className="relative py-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 overflow-hidden">
-      {/* Enhanced Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute -top-96 -right-96 w-[800px] h-[800px] bg-gradient-to-br from-blue-400/10 to-indigo-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.1, 1],
-            rotate: [0, 90, 180],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        <motion.div
-          className="absolute -bottom-96 -left-96 w-[800px] h-[800px] bg-gradient-to-tr from-purple-400/10 to-pink-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1.1, 1, 1.1],
-            rotate: [180, 90, 0],
-          }}
-          transition={{
-            duration: 35,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </div>
-
+    <section className="relative pb-12 pt-8 bg-[#e4ded2] overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -399,7 +371,7 @@ const VideoCarouselSection: React.FC = () => {
           viewport={{ once: true }}
         >
           <motion.h2
-            className="text-4xl font-bold font-akzidens text-[#987b6b]"
+            className="text-3xl lg:text-4xl font-bold font-akzidens text-[#987b6b]"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}

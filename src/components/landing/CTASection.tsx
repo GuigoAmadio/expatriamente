@@ -87,7 +87,7 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-6">
             <motion.a
               href="#"
-              className="group px-6 py-3 bg-gradient-to-r from-[#987b6b] to-[#587861] text-white font-akzidens font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 text-sm md:text-base"
+              className="group px-6 py-3 bg-gradient-to-r from-[#9dc9e2] to-[#9ca995] text-white font-akzidens font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center gap-2 text-sm md:text-base"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -117,7 +117,9 @@ export default function CTASection() {
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-[#c5b2a1]/30">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#587861] rounded-full"></div>
-                <span className="font-akzidens font-bold text-[#987b6b] text-sm">Primeira sessão gratuita</span>
+                <span className="font-akzidens font-bold text-[#987b6b] text-sm">
+                  Primeira sessão gratuita
+                </span>
               </div>
               <p className="text-[#6B3F1D] text-xs">
                 Experimente sem compromisso e descubra como podemos ajudar você.
@@ -127,7 +129,9 @@ export default function CTASection() {
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-[#c5b2a1]/30">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#9dc9e2] rounded-full"></div>
-                <span className="font-akzidens font-bold text-[#987b6b] text-sm">Cancelamento gratuito</span>
+                <span className="font-akzidens font-bold text-[#987b6b] text-sm">
+                  Cancelamento gratuito
+                </span>
               </div>
               <p className="text-[#6B3F1D] text-xs">
                 Flexibilidade total para cancelar ou reagendar suas sessões.
@@ -137,10 +141,13 @@ export default function CTASection() {
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-[#c5b2a1]/30">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 bg-[#9ca995] rounded-full"></div>
-                <span className="font-akzidens font-bold text-[#987b6b] text-sm">Profissionais certificados</span>
+                <span className="font-akzidens font-bold text-[#987b6b] text-sm">
+                  Profissionais certificados
+                </span>
               </div>
               <p className="text-[#6B3F1D] text-xs">
-                Equipe especializada em psicanálise para brasileiros no exterior.
+                Equipe especializada em psicanálise para brasileiros no
+                exterior.
               </p>
             </div>
           </motion.div>
