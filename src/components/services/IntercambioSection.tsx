@@ -9,25 +9,25 @@ export default function IntercambioSection() {
       number: "57%",
       description: "dos intercambistas\n relatam sofrimento\n emocional",
       color: "text-[#ffffff]",
-      bgColor: "bg-[#77b2de]",
+      bgColor: "bg-[#7A9B8C]",
     },
     {
       number: "DOBRO",
       description: "Duas vezes mais\n risco de ansiedade\n severa e depressão",
       color: "text-[#ffffff]",
-      bgColor: "bg-[#9dc9e2]",
+      bgColor: "bg-[#A6C0B3]",
     },
     {
       number: "VULNERÁVEL",
       description:
         "Isolamento social,\n barreiras linguísticas\n e choque cultural\n aumentam a\n vulnerabilidade",
       color: "text-[#ffffff]",
-      bgColor: "bg-[#77b2de]",
+      bgColor: "bg-[#6B8E7F]",
     },
   ];
 
   return (
-    <div className="w-full flex flex-col items-center md:items-end bg-[#ded1c0]">
+    <div className="w-full flex flex-col items-center md:items-end bg-[#e4ded2]">
       <div className="lg:mr-20 pt-10 md:pt-12 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full max-w-full md:max-w-[60%]">
         {/* Título Principal */}
         <motion.div
@@ -36,17 +36,17 @@ export default function IntercambioSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-[#587681] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 md:text-nowrap">
-            <span className="text-[#587681]">Programa de </span>
+          <h1 className="text-[#6B8E7F] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 md:text-nowrap">
+            <span className="text-[#6B8E7F]">Programa de </span>
             <span className="font-bold">Bem estar Emocional </span>
-            <span className="text-[#1a75ce]">
+            <span className="text-[#7A9B8C]">
               para <br className="hidden md:inline" />
             </span>
             <span className="font-bold">Estudantes de </span>
-            <span className="text-[#1a75ce]">Intercâmbio</span>
+            <span className="text-[#7A9B8C]">Intercâmbio</span>
           </h1>
 
-          <p className="text-[#587681] text-sm sm:text-lg md:text-[1.5vw] px-4 md:text-nowrap font-medium">
+          <p className="text-[#7A6B5D] text-sm sm:text-lg md:text-[1.5vw] px-4 md:text-nowrap font-medium">
             Investir no bem-estar emocional{" "}
             <span className="font-bold">não é custo,</span> é{" "}
             <span className="font-bold">
@@ -62,7 +62,7 @@ export default function IntercambioSection() {
 
         {/* Cards de Estatísticas */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16 font-condensed w-full px-4 place-items-stretch items-start"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-8 md:mb-10 font-condensed w-full px-4 place-items-stretch items-start max-w-4xl"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -70,23 +70,23 @@ export default function IntercambioSection() {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className={`flex flex-col items-center justify-start max-w-sm md:max-w-none ${stat.bgColor} rounded-2xl md:rounded-4xl px-2 py-4 shadow-lg md:shadow-xl hover:shadow-2xl transition-all duration-300 h-full`}
+              className={`flex flex-col items-center justify-start max-w-xs md:max-w-sm ${stat.bgColor} rounded-xl md:rounded-2xl px-3 py-3  shadow-md hover:shadow-lg transition-all duration-300 h-full`}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-              whileHover={{ y: -4, scale: 1.02 }}
+              whileHover={{ y: -2, scale: 1.01 }}
             >
-              <div className="text-center flex flex-col items-center justify-start gap-4 md:gap-0 p-2 md:p-0 md:pt-5 h-full w-full">
+              <div className="text-center flex flex-col items-center justify-start gap-2 md:gap-1 p-1 md:p-2 h-full w-full">
                 <h3
                   className={`${
                     stat.number.toLowerCase().includes("vulnerável")
-                      ? "text-xl sm:text-2xl md:text-[43px] pt-3"
-                      : "text-4xl sm:text-5xl md:text-[6.4vw]"
-                  } mb-2 md:mb-3 ${stat.color}`}
+                      ? "text-lg sm:text-xl md:text-2xl pt-1"
+                      : "text-2xl sm:text-3xl md:text-4xl"
+                  } mb-1 md:mb-2 ${stat.color} font-bold`}
                 >
                   {stat.number}
                 </h3>
-                <p className="text-center font-body text-white text-[2.5vw] sm:text-[1.6vw] md:text-[1.2vw] italic md:whitespace-pre-line flex-1 flex items-center justify-center">
+                <p className="text-center font-body text-white text-xs sm:text-sm md:text-base italic md:whitespace-pre-line flex-1 flex items-center justify-center leading-tight">
                   {stat.description}
                 </p>
               </div>
@@ -101,13 +101,13 @@ export default function IntercambioSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h2 className="text-[#1a75ce] text-xl font-bold text-start mb-4 text-nowrap">
+          <h2 className="text-[#6B8E7F] text-xl font-bold text-start mb-4 text-nowrap">
             Programa Expatriamente para estudantes de intercâmbio:
           </h2>
 
           <div className="">
             <motion.div
-              className="text-[#587681] text-base md:text-lg"
+              className="text-[#7A6B5D] text-base md:text-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
@@ -117,7 +117,7 @@ export default function IntercambioSection() {
             </motion.div>
 
             <motion.div
-              className="text-[#587681] text-base md:text-lg"
+              className="text-[#7A6B5D] text-base md:text-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
@@ -127,7 +127,7 @@ export default function IntercambioSection() {
             </motion.div>
 
             <motion.div
-              className="text-[#587681] text-base md:text-lg"
+              className="text-[#7A6B5D] text-base md:text-lg"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
@@ -152,7 +152,7 @@ export default function IntercambioSection() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
             >
-              <div className="px-4 py-2 font-bold text-[#1a75ce] text-xl rounded-full bg-white underline">
+              <div className="px-4 py-2 font-bold text-[#6B8E7F] text-xl rounded-full bg-white underline">
                 contato@expatriamente.com
               </div>
               <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
@@ -161,7 +161,7 @@ export default function IntercambioSection() {
                   size={24}
                   aria-label="WhatsApp"
                 />
-                <p className="text-[#1a75ce] font-bold text-nowrap">
+                <p className="text-[#6B8E7F] font-bold text-nowrap">
                   +55 11 98221.0290
                 </p>
               </div>
@@ -176,13 +176,13 @@ export default function IntercambioSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <h2 className="text-[#1a75ce] text-[3.5vw] font-bold text-start mb-4">
+        <h2 className="text-[#6B8E7F] text-[3.5vw] font-bold text-start mb-4">
           Programa Expatriamente para estudantes de intercâmbio:
         </h2>
 
         <div className="">
           <motion.div
-            className="text-[#1a75ce] text-[2.5vw] sm:text-[2vw]"
+            className="text-[#7A6B5D] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
@@ -192,7 +192,7 @@ export default function IntercambioSection() {
           </motion.div>
 
           <motion.div
-            className="text-[#1a75ce] text-[2.5vw] sm:text-[2vw]"
+            className="text-[#7A6B5D] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.9 }}
@@ -202,7 +202,7 @@ export default function IntercambioSection() {
           </motion.div>
 
           <motion.div
-            className="text-[#1a75ce] text-[2.5vw] sm:text-[2vw]"
+            className="text-[#7A6B5D] text-[2.5vw] sm:text-[2vw]"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
@@ -233,9 +233,9 @@ export default function IntercambioSection() {
                 size={20}
                 aria-label="WhatsApp"
               />
-              <p className="text-[#1a75ce] font-bold">+55 11 98221.0290</p>
+              <p className="text-[#6B8E7F] font-bold">+55 11 98221.0290</p>
             </div>
-            <div className="px-4 py-2 font-bold text-[#1a75ce] text-base sm:text-lg rounded-full bg-white underline">
+            <div className="px-4 py-2 font-bold text-[#6B8E7F] text-base sm:text-lg rounded-full bg-white underline">
               contato@expatriamente.com
             </div>
           </motion.div>

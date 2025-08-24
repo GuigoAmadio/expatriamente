@@ -35,14 +35,12 @@ export default function HeroSection() {
     if (currentSection === "about") {
       return `linear-gradient(
         to bottom,
-        #96bfd4 0%,          /* azul muito claro */
-        #92bacf 15%,         /* azul bem claro */
-        #8eb5cb 30%,         /* azul mais claro */
-        #89b0c6 45%,         /* azul claro */
-        #85acc1 60%,         /* azul médio-claro */
-        #81a7bd 79.5%,         /* azul médio */
-        #d9cdbf 80%,         /* transição para bege (mesmo inicio do bloco abaixo) */
-        #ccb8a6 100%         /* bege do próximo bloco */
+        #9ca995 0%,          /* verde acinzentado harmonioso */
+        #A0AD99 15%,         /* verde próximo - menor distância */
+        #A4B19D 30%,         /* verde suave - menor distância */
+        #A8B5A1 84%,         /* verde gradual - menor distância */
+        #e0dace 86%,         /* transição para bege mais cedo */
+        #e0dace 88%         /* bege que conecta com a MissionVisionValues */
       )`;
     }
     return `linear-gradient(
@@ -84,9 +82,9 @@ export default function HeroSection() {
       >
         <Header
           backgroundColor={
-            currentSection === "intercambio" ? "#ded1c0" : undefined
+            currentSection === "intercambio" ? "#e4ded2" : undefined
           }
-          textColor={currentSection === "intercambio" ? "#587861" : undefined}
+          textColor={currentSection === "intercambio" ? "#6B8E7F" : undefined}
         />
         <div className="relative flex items-start justify-end">
           {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}

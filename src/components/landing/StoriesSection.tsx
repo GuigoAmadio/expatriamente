@@ -18,9 +18,9 @@ export default function StoriesSection() {
   // Depoimentos da imagem de referência
   const depoimentos = [
     "Viver no exterior trouxe desafios que eu não esperava. A terapia me ajudou a entender que é normal sentir saudades e que posso criar minha nova identidade sem perder minhas raízes.",
-    "Adaptação parecia só uma questão de tempo, mas me peguei sobrecarregado entre costumes diferentes, exigências acadêmicas e saudade de casa. Conversar na terapia foi essencial para organizar meus sentimentos, respeitar meus limites e perceber que me reinventar em outro país também é um ato de coragem.",
-    "Quando cheguei no exterior, achava que só precisava me adaptar ao idioma e à rotina. Mas, aos poucos, comecei a sentir um peso, uma tristeza constante que não conseguia explicar. A terapia me fez compreender que depressão não é fraqueza e que pedir ajuda foi o primeiro passo para resgatar meu bem-estar.",
-    "Antes de me mudar, minha maior preocupação era encaixar as malas no avião. Depois que cheguei, percebi que o medo e a ansiedade estavam em cada pequena decisão do dia a dia — desde pedir um café até socializar no trabalho. As sessões de terapia me ajudaram a respirar, priorizar o presente e entender que errar faz parte do processo.",
+    "Adaptação parecia só uma questão de tempo, mas percebi que estava sobrecarregado entre costumes diferentes, exigências acadêmicas e saudade de casa. Conversar na terapia foi essencial para organizar meus sentimentos, respeitar meus limites e perceber que me reinventar em outro país também é um ato de coragem…",
+    "Quando cheguei ao exterior, achava que só precisaria me adaptar ao idioma e à rotina. Mas, aos poucos, comecei a sentir um peso, uma tristeza constante que não conseguia explicar. A terapia me fez compreender que depressão não é fraqueza e que pedir ajuda foi o primeiro passo para resgatar meu bem-estar.",
+    "Antes de me mudar, minha maior preocupação era encaixar as malas no avião. Depois que cheguei, percebi que o medo e a ansiedade estavam em cada pequena decisão do dia a dia — desde pedir um café até socializar no trabalho. As sessões de terapia me ajudaram a respirar, priorizar o presente e entender que, mesmo em meio aos desafios, eu sou capaz de construir um novo lugar para mim.",
   ];
 
   // Determina o gradiente baseado na seção ativa
@@ -66,7 +66,7 @@ export default function StoriesSection() {
           {/* Layout responsivo: coluna em telas menores que xl, grid em xl+ */}
           <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full">
             <motion.div
-              className="relative bg-[#987b6b] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-white font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="relative bg-[#b1907e] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#fff7eb] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -85,7 +85,7 @@ export default function StoriesSection() {
               <span className="text-start font-body">"{depoimentos[0]}"</span>
             </motion.div>
             <motion.div
-              className="bg-[#ded1c0] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#987b6b] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#fff7eb] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#6a352c] font-semibold leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -102,7 +102,7 @@ export default function StoriesSection() {
 
           {/* Título no meio */}
           <motion.div
-            className="font-akzidens text-3xl text-[#987b6b] font-bold italic text-center"
+            className="font-akzidens text-3xl text-[#495443] font-bold italic text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -112,10 +112,10 @@ export default function StoriesSection() {
             }}
           >
             <h2>
-              Conheça <span className="text-[#B2412D]">histórias reais </span>
+              Conheça <span className="text-[#a17b67]">histórias reais </span>
               de brasileiros que encontraram acolhimento e crescimento pessoal
               através da psicanálise,{" "}
-              <span className="text-[#B2412D]">
+              <span className="text-[#a17b67]">
                 mesmo estando longe de casa.
               </span>
             </h2>
@@ -124,7 +124,7 @@ export default function StoriesSection() {
           {/* Segunda linha: dois cards */}
           <div className="flex flex-col xl:grid xl:grid-cols-2 gap-8 w-3/4 xl:w-full  ">
             <motion.div
-              className="bg-[#ded1c0] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#987b6b] font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#fff7eb] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#6a352c] font-semibold leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
@@ -138,7 +138,7 @@ export default function StoriesSection() {
               <span className="text-start font-body">"{depoimentos[2]}"</span>
             </motion.div>
             <motion.div
-              className="bg-[#987b6b] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-white font-medium leading-relaxed h-[200px] flex items-center justify-center"
+              className="bg-[#b1907e] rounded-2xl shadow-lg shadow-amber-300 p-5 text-base text-[#fff7eb] font-medium leading-relaxed h-[200px] flex items-center justify-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
@@ -157,7 +157,7 @@ export default function StoriesSection() {
         {/* Mobile: layout otimizado */}
         <div className="md:hidden flex flex-col gap-6 w-full">
           <motion.div
-            className="font-akzidens text-xl sm:text-2xl text-[#987b6b] font-bold italic text-center leading-tight mb-8"
+            className="font-akzidens text-xl sm:text-2xl text-[#495443] font-bold italic text-center leading-tight mb-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -167,24 +167,25 @@ export default function StoriesSection() {
             }}
           >
             <h2>
-              Conheça <span className="text-[#B2412D]">histórias reais </span>
+              Conheça <span className="text-[#a17b67]">histórias reais </span>
               de brasileiros que encontraram acolhimento e crescimento pessoal
               através da psicanálise,{" "}
-              <span className="text-[#B2412D]">
+              <span className="text-[#a17b67]">
                 mesmo estando longe de casa.
               </span>
             </h2>
           </motion.div>
           {depoimentos.map((texto, idx) => {
-            const bgColors = ["#987b6b", "#ded1c0", "#987b6b", "#ded1c0"]; // segue a ordem dos cards no desktop
+            const bgColors = ["#b1907e", "#fff7eb", "#b1907e", "#fff7eb"]; // segue a ordem dos cards no desktop
             const bg = bgColors[idx % bgColors.length];
             return (
               <motion.div
                 key={idx}
-                className="rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base font-medium leading-relaxed w-full min-h-[200px] flex items-center justify-center"
+                className="rounded-2xl shadow-lg p-6 sm:p-8 text-sm sm:text-base leading-relaxed w-full min-h-[200px] flex items-center justify-center"
                 style={{
                   backgroundColor: bg,
-                  color: bg === "#987b6b" ? "#fff" : "#987b6b",
+                  color: bg === "#b1907e" ? "#fff7eb" : "#6a352c",
+                  fontWeight: bg === "#b1907e" ? 500 : 600,
                   boxShadow:
                     "0 8px 32px rgba(0,0,0,0.15), 0 4px 16px rgba(237, 215, 120, 0.3)",
                 }}

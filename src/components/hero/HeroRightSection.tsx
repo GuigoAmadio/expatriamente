@@ -29,7 +29,7 @@ export default function HeroRightSection() {
 
   const handleAgendarConsulta = () => {
     console.log(`🔵 [Hero] Botão "Agendar Consulta" clicado`);
-    
+
     trackSchedule({
       content_name: "Agendar Consulta",
       content_category: "Hero Section",
@@ -74,7 +74,7 @@ export default function HeroRightSection() {
           </div>
         </motion.h1>
         <motion.p
-          className="py-[2vw] text-white text-[2.2vw] sm:text-[1.3vw]  font-normal mb-[2vw] leading-relaxed text-center lg:text-left max-w-[80vw] sm:max-w-[50vw]"
+          className="py-[2vw] text-white text-[2.8vw] sm:text-[1.3vw]  font-normal mb-[2vw] leading-relaxed text-center lg:text-left max-w-[80vw] sm:max-w-[50vw]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -110,10 +110,7 @@ export default function HeroRightSection() {
       </motion.div>
 
       {/* Modal de Consulta */}
-      <ConsultationModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
+      <ConsultationModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }

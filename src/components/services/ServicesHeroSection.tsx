@@ -11,15 +11,15 @@ export default function ServicesHeroSection() {
     {
       title: "INTERCÂMBIO",
       icon: "/icones/intercambio.svg",
-      color: "text-[#1a75ce]",
-      bgColor: "bg-[#9dc9e2]",
+      color: "text-[#6B8E7F]",
+      bgColor: "bg-[#A6C0B3]",
       onClick: () => setCurrentSection("intercambio"),
     },
     {
       title: "EXPATRIADOS",
       icon: "/icones/expatriados.svg",
-      color: "text-[#6B3F1D]",
-      bgColor: "bg-[#ded1c0]",
+      color: "text-[#7A6B5D]",
+      bgColor: "bg-[#C4B1A0]",
       onClick: () => setCurrentSection("expatriados"),
     },
   ];
@@ -77,18 +77,18 @@ export default function ServicesHeroSection() {
               {service.title === "INTERCÂMBIO" ? (
                 <p className="text-white text-[8px] sm:text-xs xl:text-sm leading-relaxed text-center">
                   Programa de{" "}
-                  <span className="font-semibold text-[#1a75ce]">
+                  <span className="font-semibold text-[#ffffff]">
                     Bem-estar Emocional <br />
                   </span>{" "}
                   para{" "}
-                  <span className="font-semibold text-[#1a75ce]">
+                  <span className="font-semibold text-[#ffffff]">
                     Estudantes{" "}
                   </span>
                   de
                   <span className="font-semibold"> Intercâmbio</span>
                 </p>
               ) : service.title === "EXPATRIADOS" ? (
-                <p className="text-[#6B3F1D] text-[8px] sm:text-xs xl:text-sm leading-relaxed text-center">
+                <p className="text-[#ffffff] text-[8px] sm:text-xs xl:text-sm leading-relaxed text-center">
                   Programa de <span className="font-semibold">Cuidados </span>
                   com <br />
                   <span className="font-semibold"> Saúde Mental</span> para{" "}

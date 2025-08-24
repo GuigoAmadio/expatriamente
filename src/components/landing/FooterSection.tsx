@@ -74,7 +74,7 @@ export default function FooterSection() {
               />
             </motion.div>
             <motion.span
-              className="font-akzidens text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-[#4B2A13] font-bold leading-none tracking-tight text-center px-1"
+              className="font-akzidens text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl text-[#495443] font-bold leading-none tracking-tight text-center px-1"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -83,7 +83,7 @@ export default function FooterSection() {
               Expatriamente
             </motion.span>
             <motion.span
-              className="font-akzidens text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-[#1A6CB4] font-normal leading-none tracking-tight mb-0.5 sm:mb-1 text-center px-1 sm:px-2 max-w-[200px] md:max-w-full"
+              className="font-akzidens text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-[#3f390c] font-normal leading-none tracking-tight mb-0.5 sm:mb-1 text-center px-1 sm:px-2 max-w-[200px] md:max-w-full"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -92,7 +92,7 @@ export default function FooterSection() {
               Psicanálise para brasileiros no exterior
             </motion.span>
             <motion.div
-              className="w-full border-b-2 border-[#1A6CB4] mt-0.5 sm:mt-1 mb-1 sm:mb-2"
+              className="w-full border-b-2 border-[#3f390c] mt-0.5 sm:mt-1 mb-1 sm:mb-2"
               initial={{ opacity: 0, scaleX: 0 }}
               whileInView={{ opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
@@ -215,7 +215,7 @@ export default function FooterSection() {
               />
             </motion.div>
             <motion.span
-              className="font-akzidens text-[4.5vw] lg:text-3xl xl:text-4xl 2xl:text-5xl text-[#4B2A13] font-bold leading-none tracking-tight text-center px-1"
+              className="font-akzidens text-[4.5vw] lg:text-3xl xl:text-4xl 2xl:text-5xl text-[#495443] font-bold leading-none tracking-tight text-center px-1"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -224,7 +224,7 @@ export default function FooterSection() {
               Expatriamente
             </motion.span>
             <motion.span
-              className="font-akzidens text-[3vw] sm:text-sm md:text-base lg:text-lg xl:text-xl text-[#1A6CB4] font-normal leading-none tracking-tight mb-0.5 sm:mb-1 text-center px-1 sm:px-2 max-w-[200px] md:max-w-full"
+              className="font-akzidens text-[3vw] sm:text-sm md:text-base lg:text-lg xl:text-xl text-[#3f390c] font-normal leading-none tracking-tight mb-0.5 sm:mb-1 text-center px-1 sm:px-2 max-w-[200px] md:max-w-full"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -233,7 +233,7 @@ export default function FooterSection() {
               Psicanálise para brasileiros no exterior
             </motion.span>
             <motion.div
-              className="w-full border-b-2 border-[#1A6CB4] mt-0.5 sm:mt-1 mb-1 sm:mb-2"
+              className="w-full border-b-2 border-[#3f390c] mt-0.5 sm:mt-1 mb-1 sm:mb-2"
               initial={{ opacity: 0, scaleX: 0 }}
               whileInView={{ opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}

@@ -131,7 +131,7 @@ export default function Calendar({
       <div className="space-y-4">
         {/* Mês atual - grande e destacado */}
         <div className="text-center">
-          <h2 className="text-2xl font-akzidens font-bold capitalize bg-gradient-to-r from-[#99ae55] via-[#9ca995] to-[#408f57] bg-clip-text text-transparent">
+          <h2 className="text-2xl font-akzidens font-bold capitalize text-[#5b7470] bg-clip-text">
             {getCurrentMonth()}
           </h2>
         </div>
@@ -140,7 +140,8 @@ export default function Calendar({
         <div className="flex w-full items-center justify-between gap-2 mb-10">
           <button
             onClick={() => navigateWeek("prev")}
-            className="flex items-center gap-2 px-2 py-2 min-w-28 bg-[#ffffff] shadow-lg hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-xs font-body font-medium border-[0.5px] border-lime-200"
+            className="flex items-center gap-2 px-2 py-2 min-w-28 bg-[#ffffff] shadow-lg hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-xs font-body font-medium border-[0.5px] border-[#5b7470
+5b7470]"
           >
             <svg
               className="w-4 h-4"
@@ -160,7 +161,8 @@ export default function Calendar({
 
           <button
             onClick={() => navigateWeek("next")}
-            className="flex items-center gap-2 px-2 py-2 min-w-28 bg-[#ffffff] shadow-lg hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-xs font-body font-medium border-[0.5px] border-lime-300"
+            className="flex items-center gap-2 px-2 py-2 min-w-28 bg-[#ffffff] shadow-lg hover:bg-[#e4ded2] text-[#5b7470] rounded-lg transition-colors text-xs font-body font-medium border-[0.5px] border-[#5b7470
+5b7470]"
           >
             Próxima Semana
             <svg
@@ -180,7 +182,7 @@ export default function Calendar({
         </div>
 
         {/* Grid de dias da semana - 2 linhas (4+3) */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           {/* Primeira linha - 4 dias */}
           {Array.from({ length: 4 }, (_, i) => {
             const day = new Date(currentWeekStart);
@@ -201,10 +203,10 @@ export default function Calendar({
                 onClick={() => handleDaySelect(i)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`aspect-square w-16 flex flex-col items-center justify-center rounded-xl shadow-md transition-all duration-200 border-2 ${
+                className={`aspect-square w-16 flex flex-col items-center justify-center rounded-xl shadow-md transition-all duration-200 border-1 ${
                   isSelected
                     ? "bg-[#81ba95] text-white border-[#81ba95]"
-                    : "bg-white text-[#5b7470] border-[#e4ded2] hover:border-[#9ca995]"
+                    : "bg-white text-[#5b7470] border-[#5b7470] hover:border-[#9ca995]"
                 }`}
               >
                 <span className="text-xs font-akzidens font-medium mb-1">
@@ -238,10 +240,10 @@ export default function Calendar({
                 onClick={() => handleDaySelect(dayIndex)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`aspect-square w-16 flex flex-col items-center justify-center rounded-xl shadow-md transition-all duration-200 border-2 ${
+                className={`aspect-square w-16 flex flex-col items-center justify-center rounded-xl shadow-md transition-all duration-200 border-1 ${
                   isSelected
                     ? "bg-[#587861] text-white border-[#587861]"
-                    : "bg-white text-[#5b7470] border-[#e4ded2] hover:border-[#9ca995]"
+                    : "bg-white text-[#5b7470] border-[#5b7470] hover:border-[#9ca995]"
                 }`}
               >
                 <span className="text-xs font-akzidens font-medium mb-1">
@@ -280,7 +282,7 @@ export default function Calendar({
                       whileTap={{ scale: 0.95 }}
                       className={`px-4 py-3 rounded-lg font-akzidens font-medium transition-all duration-200 ${
                         isSelected
-                          ? "bg-[#987b6b] text-white shadow-lg"
+                          ? "bg-[#81ba95] text-white shadow-lg"
                           : "bg-[#f8f6f2] text-[#587861] border-2 border-[#e4ded2] hover:border-[#9ca995] hover:bg-[#e4ded2]"
                       }`}
                     >

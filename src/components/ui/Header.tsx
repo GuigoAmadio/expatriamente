@@ -149,30 +149,42 @@ export default function Header({
       <div className="flex items-start gap-5 h-full px-4 md:px-8 lg:px-20">
         {/* Esquerda: Logo */}
         <div className="flex items-center">
-          <Image
-            src="/logoFinalReal.svg"
-            alt="Expatriamente Logo"
-            width={100}
-            height={100}
-            className="object-contain w-[14vw] h-[14vw] lg:w-[10vw] lg:h-[10vw]"
-            priority
-          />
+          <button
+            onClick={() => handleNavigation("/")}
+            className="hover:scale-105 transition-transform duration-300 cursor-pointer"
+          >
+            <Image
+              src="/logoFinalReal.svg"
+              alt="Expatriamente Logo"
+              width={100}
+              height={100}
+              className="object-contain w-[14vw] h-[14vw] lg:w-[10vw] lg:h-[10vw]"
+              priority
+            />
+          </button>
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex flex-col flex-1">
           <div className="flex flex-row items-center">
-            <span className="font-akzidens text-[2.8vw] text-[#587861] leading-none tracking-tight">
+            <button
+              onClick={() => handleNavigation("/")}
+              className="font-akzidens text-[2.8vw] leading-none tracking-tight hover:scale-105 transition-transform duration-300 cursor-pointer"
+              style={navTextStyle || { color: "#587861" }}
+            >
               Expatriamente
-            </span>
-            <nav className="font-akzidens text-[1.2vw] font-medium text-white flex-1 flex justify-around items-center gap-[2vw] ml-[2vw]">
+            </button>
+            <nav
+              className={`font-akzidens text-[1.2vw] font-medium flex-1 flex justify-around items-center gap-[2vw] ml-[2vw] ${navDefaultTextClass}`}
+            >
               <button
                 onClick={() => handleNavigation("/")}
                 className={`hover:text-[#ffffff] hover:scale-105 bg-transparent border-none cursor-pointer transition-all duration-300 ease-in-out ${
                   currentSection === "home"
-                    ? "font-bold scale-105 text-white"
-                    : "text-white"
+                    ? `font-bold scale-105 ${navDefaultTextClass}`
+                    : navDefaultTextClass
                 }`}
+                style={navTextStyle}
               >
                 Início
               </button>
@@ -180,9 +192,10 @@ export default function Header({
                 onClick={() => handleNavigation("/sobre")}
                 className={`hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out ${
                   currentSection === "about"
-                    ? "font-bold scale-105 text-white"
-                    : "text-white"
+                    ? `font-bold scale-105 ${navDefaultTextClass}`
+                    : navDefaultTextClass
                 }`}
+                style={navTextStyle}
               >
                 Sobre Nós
               </button>
@@ -199,9 +212,10 @@ export default function Header({
                     currentSection === "services" ||
                     currentSection === "intercambio" ||
                     currentSection === "expatriados"
-                      ? "font-bold scale-105 text-white"
-                      : "text-white"
+                      ? `font-bold scale-105 ${navDefaultTextClass}`
+                      : navDefaultTextClass
                   }`}
+                  style={navTextStyle}
                 >
                   Serviços
                   <FiChevronDown className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
@@ -247,7 +261,8 @@ export default function Header({
 
               <button
                 onClick={() => handleNavigation("/psicanalistas")}
-                className="hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out text-white"
+                className={`hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out ${navDefaultTextClass}`}
+                style={navTextStyle}
               >
                 Psicanalistas
               </button>
@@ -255,7 +270,7 @@ export default function Header({
 
             {/* Ícone de login à extrema direita com loading */}
             <button
-              className="ml-auto flex items-center justify-center w-10 h-10 text-white lg:w-12 lg:h-12 rounded-full transition-colors duration-500 hover:cursor-pointer ease-in-out hover:text-white/80"
+              className="ml-auto flex items-center justify-center w-10 h-10 text-[#495443] lg:w-12 lg:h-12 rounded-full transition-colors duration-500 hover:cursor-pointer ease-in-out hover:text-white/80"
               title={user ? "Ir para o dashboard" : "Entrar"}
               onClick={handleLoginClick}
               disabled={isLoginLoading}
@@ -270,9 +285,17 @@ export default function Header({
 
           {/* Linha horizontal alinhada apenas com textos e menu */}
           <div className="w-full flex flex-row">
-            <div className="border-b border-white flex-1" />
+            <div
+              className={`border-b flex-1 ${
+                textColor ? "border-current" : "border-white"
+              }`}
+              style={navTextStyle}
+            />
           </div>
-          <span className="font-akzidens text-[1.04vw] ml-[0.2vw] text-white text-opacity-80 leading-none tracking-tight mt-[0.5vw] font-medium">
+          <span
+            className={`font-akzidens text-[1.04vw] ml-[0.2vw] leading-none tracking-tight mt-[0.5vw] font-medium ${navDefaultTextClass} opacity-80`}
+            style={navTextStyle}
+          >
             Psicanálise para brasileiros no exterior
           </span>
         </div>
@@ -280,9 +303,13 @@ export default function Header({
         {/* Mobile Navigation */}
         <div className="md:hidden flex flex-col flex-1 mobile-menu-container">
           <div className="flex flex-row items-center justify-between">
-            <span className="font-akzidens text-[5.4vw] sm:text-[4vw] text-[#ffffff] leading-none tracking-tight">
+            <button
+              onClick={() => handleNavigation("/")}
+              className="font-akzidens text-[5.4vw] sm:text-[4vw] leading-none tracking-tight hover:scale-105 transition-transform duration-300 cursor-pointer"
+              style={navTextStyle || { color: "#587861" }}
+            >
               Expatriamente
-            </span>
+            </button>
 
             {/* Hamburger Menu Button */}
             <button

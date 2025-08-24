@@ -198,7 +198,7 @@ export default function PsychologistsSection() {
           viewport={{ once: true }}
         >
           <motion.h2
-            className="font-akzidens text-3xl md:text-4xl font-bold mb-4 text-[#987b6b]"
+            className="font-akzidens text-2xl md:text-4xl font-bold mb-4 text-[#495443]"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -207,7 +207,7 @@ export default function PsychologistsSection() {
             Conheça nossos Psicanalistas e veja horários disponíveis
           </motion.h2>
           <motion.p
-            className="text-lg text-[#935a3c] font-medium mb-8"
+            className="text-sm text-[#6a352c] font-medium mb-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
@@ -229,7 +229,7 @@ export default function PsychologistsSection() {
           />
         </motion.div>
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 place-items-center"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
@@ -238,9 +238,8 @@ export default function PsychologistsSection() {
           {paginatedPsychologists.map((p, idx) => (
             <motion.div
               key={p.id}
-              className="bg-white relative rounded-2xl shadow-lg hover:shadow-xl p-6 flex flex-col items-center text-center cursor-pointer group transition-all duration-300 ease-in-out"
+              className="bg-white relative w-full h-full max-w-sm rounded-2xl shadow-lg hover:shadow-xl py-10 px-5 flex flex-col items-center text-center cursor-pointer group transition-all duration-300 ease-in-out"
               onClick={() => handleCardClick(p)}
-              style={{ minHeight: 400 }}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.05 }}
@@ -257,31 +256,14 @@ export default function PsychologistsSection() {
                   objectPosition: "center",
                 }}
               />
-              <div className="font-akzidens text-xl text-[#987b6b] font-bold mb-1">
+              <div className="font-akzidens text-xl text-[#495443] font-bold mb-1">
                 {p.name}
               </div>
-              <div
-                className="text-sm text-[#6B3F1D] mb-4 overflow-hidden space-y-1"
-                style={{
-                  maxHeight: "80px",
-                  lineHeight: "1.3",
-                }}
-              >
-                {p.bio && p.bio !== "Formação não especificada" ? (
-                  p.bio
-                    .split("\n")
-                    .slice(0, 3)
-                    .map((linha, idx) => (
-                      <div key={idx} className="text-xs">
-                        • {linha}
-                      </div>
-                    ))
-                ) : (
-                  <div className="text-xs">• Formação não especificada</div>
-                )}
+              <div className="text-lg text-[#6B3F1D] mb-5">
+                Psicanalista Clinico
               </div>
               <button
-                className="absolute bottom-10 px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#9ca995] hover:to-[#9bb18e] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20 disabled:opacity-75 disabled:cursor-not-allowed disabled:scale-100"
+                className="px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#9ca995] hover:to-[#9bb18e] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20 disabled:opacity-75 disabled:cursor-not-allowed disabled:scale-100"
                 onClick={(e) => handleButtonClick(e, p)}
                 disabled={loadingCardId === p.id}
               >

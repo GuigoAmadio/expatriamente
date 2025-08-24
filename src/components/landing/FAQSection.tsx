@@ -103,11 +103,7 @@ export default function FAQSection() {
             >
               <Disclosure>
                 {({ open }) => (
-                  <div
-                    className={`rounded-xl shadow group transition-all duration-300 bg-white border-2 ${
-                      open ? "border-[#5b7470]" : "border-transparent"
-                    }`}
-                  >
+                  <div className="rounded-xl shadow group transition-all duration-300 bg-white">
                     <Disclosure.Button className="flex w-full justify-between items-center px-[2.5vw] md:px-[1.8vw] py-[3vw] lg:py-[1.5vw] text-left font-akzidens text-[2.8vw] md:text-[1.6vw] lg:text-[1vw] text-[#5b7470] font-bold focus:outline-none">
                       <span>{faq.question}</span>
                       <ChevronDownIcon
@@ -129,7 +125,7 @@ export default function FAQSection() {
                           }}
                           className="overflow-hidden"
                         >
-                          <div className="px-[1.8vw] py-[1.2vw] text-[#5a5427] text-xs sm:text-[1.1vw] border-t border-[#d6cfae]">
+                          <div className="px-[1.8vw] py-[1.2vw] text-[#3f390c] text-xs sm:text-[1.1vw] border-t border-[#d6cfae]">
                             {faq.answer}
                           </div>
                         </motion.div>
