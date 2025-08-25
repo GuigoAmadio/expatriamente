@@ -5,6 +5,10 @@ export class RequestManager {
   private requestCounters = new Map<string, number>();
   private abortControllers = new Map<string, AbortController>();
 
+  // ✅ Adicionar a propriedade API_BASE_URL
+  private API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
+
   // ✅ Prevenir múltiplas chamadas simultâneas
   async executeRequest<T>(
     key: string,
@@ -183,26 +187,13 @@ export class RequestManager {
       console.log(`✅ [Request] Todas as requisições terminaram`);
     }
   }
-}
 
-// Instância global
-export const requestManager = new RequestManager();
-
-// ✅ Tipos para melhor TypeScript
-export interface RequestOptions {
-  deduplicate?: boolean;
-  timeout?: number;
-  retries?: number;
-}
-
-// ✅ Helper para requisições mais comuns
-export const requestHelpers = {
-  // Login com proteção contra múltiplos clicks
+  // ✅ Mover as funções helper para dentro da classe
   async login(credentials: any): Promise<any> {
-    return requestManager.executeRequest(
+    return this.executeRequest(
       "auth:login",
       async (signal) => {
-        const response = await fetch("/api/auth/login", {
+        const response = await fetch(`${this.API_BASE_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(credentials),
@@ -217,21 +208,23 @@ export const requestHelpers = {
       },
       { timeout: 10000, retries: 1 }
     );
-  },
+  }
 
-  // Fetch de dados com cache automático
   async fetchWithCache<T>(
     url: string,
     cacheKey: string,
     options?: RequestOptions
   ): Promise<T> {
-    return requestManager.executeRequest(
+    return this.executeRequest(
       cacheKey,
       async (signal) => {
-        const response = await fetch(url, {
-          headers: { "Cache-Control": "no-cache" },
-          signal,
-        });
+        const response = await fetch(
+          url || `${this.API_BASE_URL}/${cacheKey.split(":")[0]}`,
+          {
+            headers: { "Cache-Control": "no-cache" },
+            signal,
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Fetch failed: ${response.status}`);
@@ -241,19 +234,21 @@ export const requestHelpers = {
       },
       options
     );
-  },
+  }
 
-  // CRUD operations com proteção
   async create<T>(url: string, data: any, entityType: string): Promise<T> {
-    return requestManager.executeRequest(
+    return this.executeRequest(
       `${entityType}:create`,
       async (signal) => {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-          signal,
-        });
+        const response = await fetch(
+          url || `${this.API_BASE_URL}/${entityType}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            signal,
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Create failed: ${response.status}`);
@@ -263,7 +258,7 @@ export const requestHelpers = {
       },
       { timeout: 15000, retries: 1 }
     );
-  },
+  }
 
   async update<T>(
     url: string,
@@ -271,15 +266,18 @@ export const requestHelpers = {
     entityType: string,
     id: string
   ): Promise<T> {
-    return requestManager.executeRequest(
+    return this.executeRequest(
       `${entityType}:update:${id}`,
       async (signal) => {
-        const response = await fetch(url, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-          signal,
-        });
+        const response = await fetch(
+          url || `${this.API_BASE_URL}/${entityType}/${id}`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            signal,
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Update failed: ${response.status}`);
@@ -289,16 +287,19 @@ export const requestHelpers = {
       },
       { timeout: 15000, retries: 1 }
     );
-  },
+  }
 
   async delete<T>(url: string, entityType: string, id: string): Promise<T> {
-    return requestManager.executeRequest(
+    return this.executeRequest(
       `${entityType}:delete:${id}`,
       async (signal) => {
-        const response = await fetch(url, {
-          method: "DELETE",
-          signal,
-        });
+        const response = await fetch(
+          url || `${this.API_BASE_URL}/${entityType}/${id}`,
+          {
+            method: "DELETE",
+            signal,
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Delete failed: ${response.status}`);
@@ -308,5 +309,31 @@ export const requestHelpers = {
       },
       { timeout: 10000, retries: 1 }
     );
-  },
+  }
+}
+
+// Instância global
+export const requestManager = new RequestManager();
+
+// ✅ Tipos para melhor TypeScript
+export interface RequestOptions {
+  deduplicate?: boolean;
+  timeout?: number;
+  retries?: number;
+}
+
+// ✅ Exportar as funções helper através da instância
+export const requestHelpers = {
+  login: (credentials: any) => requestManager.login(credentials),
+  fetchWithCache: <T>(
+    url: string,
+    cacheKey: string,
+    options?: RequestOptions
+  ) => requestManager.fetchWithCache<T>(url, cacheKey, options),
+  create: <T>(url: string, data: any, entityType: string) =>
+    requestManager.create<T>(url, data, entityType),
+  update: <T>(url: string, data: any, entityType: string, id: string) =>
+    requestManager.update<T>(url, data, entityType, id),
+  delete: <T>(url: string, entityType: string, id: string) =>
+    requestManager.delete<T>(url, entityType, id),
 };

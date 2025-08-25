@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { requestManager, RequestOptions } from "@/lib/request-manager";
+import { apiClient } from "@/lib/api-client";
+
+// ✅ Adicionar a constante API_BASE_URL no topo do arquivo
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
 
 // ✅ Hook para gerenciar requisições com loading states
 export const useRequestManager = () => {
@@ -200,11 +205,14 @@ export const useCrudOperations = (entityType: string) => {
         const result = await executeRequest(
           `${entityType}:create`,
           async () => {
-            const response = await fetch(url || `/api/${entityType}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            });
+            const response = await fetch(
+              url || `${API_BASE_URL}/${entityType}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              }
+            );
 
             if (!response.ok) {
               throw new Error(
@@ -248,11 +256,14 @@ export const useCrudOperations = (entityType: string) => {
         const result = await executeRequest(
           `${entityType}:update:${id}`,
           async () => {
-            const response = await fetch(url || `/api/${entityType}/${id}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            });
+            const response = await fetch(
+              url || `${API_BASE_URL}/${entityType}/${id}`,
+              {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+              }
+            );
 
             if (!response.ok) {
               throw new Error(
@@ -297,9 +308,12 @@ export const useCrudOperations = (entityType: string) => {
         await executeRequest(
           `${entityType}:delete:${id}`,
           async () => {
-            const response = await fetch(url || `/api/${entityType}/${id}`, {
-              method: "DELETE",
-            });
+            const response = await fetch(
+              url || `${API_BASE_URL}/${entityType}/${id}`,
+              {
+                method: "DELETE",
+              }
+            );
 
             if (!response.ok) {
               throw new Error(
