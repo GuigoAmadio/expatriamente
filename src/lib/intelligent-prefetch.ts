@@ -18,6 +18,10 @@ export class IntelligentPrefetch {
   private prefetchPriorities = new Map<string, "high" | "medium" | "low">();
   private isActive = false;
 
+  // Adicionar no topo do arquivo
+  API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
+
   // ✅ Prefetch essencial (alta prioridade) - carrega imediatamente
   async prefetchEssential(userRole: string): Promise<void> {
     if (this.isActive) {
@@ -287,80 +291,82 @@ export class IntelligentPrefetch {
 
   // ✅ Funções de fetch específicas
   private async fetchDashboardStats(): Promise<any> {
-    const response = await fetch("/api/dashboard/stats");
+    const response = await fetch(`${this.API_BASE_URL}/dashboard/stats`);
     if (!response.ok) throw new Error("Failed to fetch dashboard stats");
     return response.json();
   }
 
   private async fetchCurrentProfile(): Promise<any> {
-    const response = await fetch("/api/auth/profile");
+    const response = await fetch(`${this.API_BASE_URL}/auth/profile`);
     if (!response.ok) throw new Error("Failed to fetch profile");
     return response.json();
   }
 
   private async fetchTodayAppointments(): Promise<any> {
     const today = new Date().toISOString().split("T")[0];
-    const response = await fetch(`/api/appointments?date=${today}`);
+    const response = await fetch(
+      `${this.API_BASE_URL}/appointments?date=${today}`
+    );
     if (!response.ok) throw new Error("Failed to fetch today appointments");
     return response.json();
   }
 
   private async fetchMyAppointments(): Promise<any> {
-    const response = await fetch("/api/appointments/my");
+    const response = await fetch(`${this.API_BASE_URL}/appointments/my`);
     if (!response.ok) throw new Error("Failed to fetch my appointments");
     return response.json();
   }
 
   private async fetchEmployees(): Promise<any> {
-    const response = await fetch("/api/employees");
+    const response = await fetch(`${this.API_BASE_URL}/employees`);
     if (!response.ok) throw new Error("Failed to fetch employees");
     return response.json();
   }
 
   private async fetchMyClients(): Promise<any> {
-    const response = await fetch("/api/clients/my");
+    const response = await fetch(`${this.API_BASE_URL}/clients/my`);
     if (!response.ok) throw new Error("Failed to fetch my clients");
     return response.json();
   }
 
   private async fetchAllClients(): Promise<any> {
-    const response = await fetch("/api/clients");
+    const response = await fetch(`${this.API_BASE_URL}/clients`);
     if (!response.ok) throw new Error("Failed to fetch all clients");
     return response.json();
   }
 
   private async fetchAvailableServices(): Promise<any> {
-    const response = await fetch("/api/services/available");
+    const response = await fetch(`${this.API_BASE_URL}/services/available`);
     if (!response.ok) throw new Error("Failed to fetch available services");
     return response.json();
   }
 
   private async fetchAllServices(): Promise<any> {
-    const response = await fetch("/api/services");
+    const response = await fetch(`${this.API_BASE_URL}/services`);
     if (!response.ok) throw new Error("Failed to fetch all services");
     return response.json();
   }
 
   private async fetchAppSettings(): Promise<any> {
-    const response = await fetch("/api/settings");
+    const response = await fetch(`${this.API_BASE_URL}/settings`);
     if (!response.ok) throw new Error("Failed to fetch app settings");
     return response.json();
   }
 
   private async fetchMonthlyAnalytics(): Promise<any> {
-    const response = await fetch("/api/analytics/monthly");
+    const response = await fetch(`${this.API_BASE_URL}/analytics/monthly`);
     if (!response.ok) throw new Error("Failed to fetch monthly analytics");
     return response.json();
   }
 
   private async fetchPersonalAnalytics(): Promise<any> {
-    const response = await fetch("/api/analytics/personal");
+    const response = await fetch(`${this.API_BASE_URL}/analytics/personal`);
     if (!response.ok) throw new Error("Failed to fetch personal analytics");
     return response.json();
   }
 
   private async fetchAvailableEmployees(): Promise<any> {
-    const response = await fetch("/api/employees/available");
+    const response = await fetch(`${this.API_BASE_URL}/employees/available`);
     if (!response.ok) throw new Error("Failed to fetch available employees");
     return response.json();
   }
@@ -398,11 +404,7 @@ export class IntelligentPrefetch {
       console.log(`🔄 [Prefetch] Prefetch para rota: ${route}`);
 
       const promises = keysToPrefetch.map((key) =>
-        this.prefetchWithPriority(
-          key,
-          this.getFetchFnForKey(key),
-          "medium"
-        )
+        this.prefetchWithPriority(key, this.getFetchFnForKey(key), "medium")
       );
 
       await Promise.allSettled(promises);
