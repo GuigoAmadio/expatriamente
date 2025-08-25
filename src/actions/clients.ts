@@ -42,7 +42,7 @@ async function serverFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "https://72.60.1.234/api/v1";
   const fullUrl = `${baseUrl}${url}`;
 
   const headers: HeadersInit = {
