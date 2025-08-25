@@ -25,7 +25,7 @@ export default function ServicesHeroSection() {
   ];
 
   return (
-    <div className="w-full md:max-w-[60%] md:mr-12 pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center md:items-end z-20 px-4">
+    <div className="min-h-screen w-full md:max-w-[60%] md:mr-12 pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-start items-center md:items-end z-20 px-4">
       <div className="flex gap-8 xl:gap-24 items-center justify-center md:justify-end w-full max-w-6xl">
         {services.map((service, index) => (
           <motion.div

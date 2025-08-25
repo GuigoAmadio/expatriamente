@@ -27,8 +27,8 @@ export default function IntercambioSection() {
   ];
 
   return (
-    <div className="w-full flex flex-col items-center md:items-end bg-[#e4ded2]">
-      <div className="lg:mr-20 pt-10 md:pt-12 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full max-w-full md:max-w-[60%]">
+    <div className="w-full flex flex-col items-center sm:items-end bg-[#e4ded2]">
+      <div className="lg:mr-12 pt-10 md:pt-12 pb-10 flex flex-col justify-center items-center sm:items-start z-20 px-4 w-full max-w-full sm:max-w-[60%]">
         {/* Título Principal */}
         <motion.div
           className="text-start mb-8 md:mb-12"
@@ -36,7 +36,7 @@ export default function IntercambioSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-[#6B8E7F] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 md:text-nowrap">
+          <h1 className="text-[#6B8E7F] text-lg sm:text-xl md:text-[2.3vw] mb-4 md:mb-6 px-4 md:text-nowrap">
             <span className="text-[#6B8E7F]">Programa de </span>
             <span className="font-bold">Bem estar Emocional </span>
             <span className="text-[#7A9B8C]">
@@ -46,7 +46,7 @@ export default function IntercambioSection() {
             <span className="text-[#7A9B8C]">Intercâmbio</span>
           </h1>
 
-          <p className="text-[#7A6B5D] text-sm sm:text-lg md:text-[1.5vw] px-4 md:text-nowrap font-medium">
+          <p className="text-[#7A6B5D] text-sm md:text-[1.5vw] px-4 md:text-nowrap font-medium">
             Investir no bem-estar emocional{" "}
             <span className="font-bold">não é custo,</span> é{" "}
             <span className="font-bold">
@@ -57,12 +57,12 @@ export default function IntercambioSection() {
             internacional.
           </p>
           {/* Espaço reservado para a imagem no mobile, garantindo a ordem visual: Título, Subtítulo, Mulher, Cards */}
-          <div className="block md:hidden h-[320px]" aria-hidden="true" />
+          <div className="block sm:hidden h-[320px]" aria-hidden="true" />
         </motion.div>
 
         {/* Cards de Estatísticas */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-8 md:mb-10 font-condensed w-full px-4 place-items-stretch items-start max-w-4xl"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-8 md:mb-10 font-condensed w-full px-4 place-items-center items-start max-w-4xl"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -70,7 +70,7 @@ export default function IntercambioSection() {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className={`flex flex-col items-center justify-start max-w-xs md:max-w-sm ${stat.bgColor} rounded-xl md:rounded-2xl px-3 py-3  shadow-md hover:shadow-lg transition-all duration-300 h-full`}
+              className={`flex flex-col items-center justify-start max-w-xs md:max-w-sm ${stat.bgColor} rounded-xl md:rounded-2xl px-3 py-3 md:px-2 md:py-2 shadow-md hover:shadow-lg transition-all duration-300 h-full`}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
@@ -86,7 +86,7 @@ export default function IntercambioSection() {
                 >
                   {stat.number}
                 </h3>
-                <p className="text-center font-body text-white text-xs sm:text-sm md:text-base italic md:whitespace-pre-line flex-1 flex items-center justify-center leading-tight">
+                <p className="text-center font-body text-white text-xs md:text-sm italic md:whitespace-pre-line flex-1 flex items-center justify-center leading-tight">
                   {stat.description}
                 </p>
               </div>
@@ -101,13 +101,13 @@ export default function IntercambioSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h2 className="text-[#6B8E7F] text-xl font-bold text-start mb-4 text-nowrap">
+          <h2 className="text-[#6B8E7F] text-sm lg:text-xl font-bold text-start mb-4 text-nowrap">
             Programa Expatriamente para estudantes de intercâmbio:
           </h2>
 
           <div className="">
             <motion.div
-              className="text-[#7A6B5D] text-base md:text-lg"
+              className="text-[#7A6B5D] text-base md:text-sm lg:text-base"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
@@ -117,7 +117,7 @@ export default function IntercambioSection() {
             </motion.div>
 
             <motion.div
-              className="text-[#7A6B5D] text-base md:text-lg"
+              className="text-[#7A6B5D] text-base md:text-sm lg:text-base text-nowrap"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
@@ -127,7 +127,7 @@ export default function IntercambioSection() {
             </motion.div>
 
             <motion.div
-              className="text-[#7A6B5D] text-base md:text-lg"
+              className="text-[#7A6B5D] text-base md:text-sm lg:text-base"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
@@ -171,7 +171,7 @@ export default function IntercambioSection() {
       </div>
       {/* Seção do Programa - Mobile (<1000px) */}
       <motion.div
-        className="w-full max-w-6xl px-4 md:hidden pl-4"
+        className="w-full max-w-6xl px-4 md:hidden pl-4 mt-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}

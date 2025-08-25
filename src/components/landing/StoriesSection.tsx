@@ -102,7 +102,7 @@ export default function StoriesSection() {
 
           {/* Título no meio */}
           <motion.div
-            className="font-akzidens text-3xl text-[#495443] font-bold italic text-center"
+            className="font-akzidens text-2xl lg:text-3xl text-[#495443] font-bold italic text-center max-w-[80%]"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}

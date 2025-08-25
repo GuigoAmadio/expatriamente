@@ -33,25 +33,28 @@ export default function ExpatriadosSection() {
   ];
 
   return (
-    <div className="w-full flex flex-col items-center md:items-end">
-      <div className="mr-0 xl:mr-20 pt-10 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full max-w-full md:max-w-[60%]">
+    <div className="w-full flex flex-col items-center sm:items-end">
+      <div className="mr-0 xl:mr-20 pt-12 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full max-w-full sm:max-w-[60%]">
         {/* Título Principal */}
         <motion.div
-          className="text-start mb-4 md:mb-6 w-full font-body"
+          className="flex flex-col items-center text-start mb-4 md:mb-6 w-full font-body"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-[#ffffff] text-lg sm:text-3xl md:text-[2.3vw] mb-4 md:mb-6 px-4 font-medium text-start md:text-nowrap">
-            Programa de cuidados com{" "}
-            <span className="text-[#987b6b] font-bold">
+          <h1 className="text-[#ffffff] text-[5vw] sm:text-[3vw] md:text-[2.3vw] mb-4 md:mb-6 px-4 font-medium text-center sm:text-start md:text-nowrap">
+            Programa de cuidados com
+            <br className="block sm:hidden" />
+            <span className="text-[#6a352c] font-bold">
+              <span className="hidden sm:inline">
+                <br />
+              </span>
               Saúde Mental
-              <br />
             </span>{" "}
-            para <span className="text-[#987b6b] font-bold">Expatriados</span>
+            para <span className="text-[#6a352c] font-bold">Expatriados</span>
           </h1>
 
-          <p className="text-[#ffffff] text-sm sm:text-lg md:text-[1.5vw] px-4 whitespace-normal font-medium text-start">
+          <p className="text-[#ffffff] text-[3vw] sm:text-[2vw] md:text-[1.5vw] px-4 whitespace-normal font-medium text-center sm:text-start max-w-[98%]">
             Ofereça aos seus talentos um suporte completo antes, durante e
             <br className="hidden md:block" /> após a missão internacional,
             reduzindo custos, impactos com
@@ -60,12 +63,12 @@ export default function ExpatriadosSection() {
             engajamento:
           </p>
           {/* Espaço reservado para a imagem no mobile, garantindo a ordem visual: Título, Subtítulo, Mulher, Cards */}
-          <div className="block md:hidden h-[320px]" aria-hidden="true" />
+          <div className="block sm:hidden h-[320px]" aria-hidden="true" />
         </motion.div>
 
         {/* Cards de Estatísticas */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-10 mb-8 md:max-w-[53vw] md:mb-10 px-4 font-body"
+          className="place-items-center grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-10 mb-8 md:max-w-[53vw] md:mb-10 px-4 font-body"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -73,20 +76,20 @@ export default function ExpatriadosSection() {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className={`flex items-center md:items-start md:justify-center ${stat.bgColor} px-1 pt-4 rounded-2xl md:rounded-3xl shadow-lg pb-2 md:shadow-xl hover:shadow-2xl transition-all duration-300`}
+              className={`flex items-center sm:items-start sm:justify-center ${stat.bgColor} px-1 pt-1 rounded-2xl md:rounded-3xl shadow-lg pb-2 md:shadow-xl hover:shadow-2xl transition-all duration-300 max-w-sm w-full h-full`}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
               whileHover={{ y: -4, scale: 1.02 }}
             >
-              <div className="text-center flex flex-row sm:flex-col items-center gap-4 md:gap-0 p-2 md:p-0 pt-3 sm:pt-5">
+              <div className="text-center flex flex-row sm:flex-col items-center gap-4 sm:gap-0 p-2 lg:p-0 sm:pt-2">
                 <h3
-                  className={`text-center text-3xl sm:text-4xl md:text-[4.5vw] font-bold ${stat.color}`}
+                  className={`text-center text-3xl sm:text-4xl md:text-[4.5vw] xl:text-5xl font-bold ${stat.color}`}
                 >
                   {stat.number}
                 </h3>
                 <p
-                  className={`text-sm sm:text-base md:text-[1.2vw] md:whitespace-pre-line text-start text-[#5b7470] italic mt-2 sm:mt-0${
+                  className={`text-sm md:text-[1.2vw] xl:text-base md:whitespace-pre-line text-start text-[#5b7470] italic mt-2 sm:mt-0${
                     stat.number === "30%" ? " md:mt-4" : ""
                   }`}
                 >
@@ -104,7 +107,7 @@ export default function ExpatriadosSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <h2 className="text-[#987b6b] text-[2.2vw] font-bold italic text-start mb-1">
+          <h2 className="text-[#6a352c] text-[2.2vw] font-bold italic text-start mb-1">
             Benefícios Tangíveis:
           </h2>
 
@@ -138,7 +141,7 @@ export default function ExpatriadosSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
           >
-            <div className="px-4 py-2 font-bold text-[#987b6b] text-xl rounded-full bg-white underline text-center">
+            <div className="px-4 py-2 font-bold text-[#6a352c] text-xl rounded-full bg-white underline text-center">
               contato@expatriamente.com
             </div>
             <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
@@ -147,18 +150,18 @@ export default function ExpatriadosSection() {
                 size={24}
                 aria-label="WhatsApp"
               />
-              <p className="text-[#987b6b] font-bold">+55 11 98221.0290</p>
+              <p className="text-[#6a352c] font-bold">+55 11 98221.0290</p>
             </div>
           </motion.div>
         </motion.div>
       </div>
       <motion.div
-        className="px-4 font-body w-full pl-5 md:pl-20 md:hidden"
+        className="px-4 font-body w-full pl-5 md:pl-20 md:hidden mt-10"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
       >
-        <h2 className="text-[#987b6b] text-lg min-[1000px]:text-[2.5vw] font-bold italic text-start mb-1">
+        <h2 className="text-[#6a352c] text-lg min-[1000px]:text-[2.5vw] font-bold italic text-start mb-1">
           Benefícios Tangíveis:
         </h2>
 
@@ -170,7 +173,7 @@ export default function ExpatriadosSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
           >
-            <p className="text-[#987b6b] font-medium text-[3vw] md:text-[2vw] md:text-start">
+            <p className="text-[#ffffff] font-medium text-[3vw] md:text-[2vw] md:text-start">
               - {benefit}
             </p>
           </motion.div>
@@ -198,11 +201,11 @@ export default function ExpatriadosSection() {
               size={24}
               aria-label="WhatsApp"
             />
-            <p className="text-[#987b6b] font-bold text-base sm:text-lg">
+            <p className="text-[#6a352c] font-bold text-base sm:text-lg">
               +55 11 98221.0290
             </p>
           </div>
-          <div className="px-4 py-2 font-bold text-[#987b6b] text-base sm:text-lg rounded-full bg-white underline text-center">
+          <div className="px-4 py-2 font-bold text-[#6a352c] text-base sm:text-lg rounded-full bg-white underline text-center">
             contato@expatriamente.com
           </div>
         </motion.div>

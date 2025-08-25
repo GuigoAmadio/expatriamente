@@ -109,7 +109,7 @@ export default function AboutHeroSection() {
                 <h3
                   className={`font-normal text-center mb-2 ${
                     feature.title === "+20"
-                      ? "pt-5 text-7axl md:text-[6vw] font-condensed font-normal"
+                      ? "pt-5 text-7xl md:text-[6vw] font-condensed font-normal"
                       : feature.title === "ACOLHIMENTO"
                       ? "pt-7 text-[30px] md:text-[2.2vw] font-condensed"
                       : "pt-3 text-[60px] md:text-[4.2vw] font-condensed"

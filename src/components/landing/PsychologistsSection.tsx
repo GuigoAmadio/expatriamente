@@ -256,10 +256,10 @@ export default function PsychologistsSection() {
                   objectPosition: "center",
                 }}
               />
-              <div className="font-akzidens text-xl text-[#495443] font-bold mb-1">
+              <div className="font-akzidens text-sm xl:text-lg text-[#495443] font-bold mb-1 text-nowrap">
                 {p.name}
               </div>
-              <div className="text-lg text-[#6B3F1D] mb-5">
+              <div className="text-xs xl:text-base text-[#6B3F1D] mb-5">
                 Psicanalista Clinico
               </div>
               <button

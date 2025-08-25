@@ -75,7 +75,7 @@ export default function HeroSection() {
   return (
     <>
       <section
-        className="relative min-h-screen flex flex-col transition-colors duration-300 overflow-visible w-full"
+        className="relative flex flex-col transition-colors duration-300 overflow-visible w-full"
         style={{
           background: getBackground(),
         }}
@@ -94,7 +94,7 @@ export default function HeroSection() {
             alt="Hero Mulher"
             width={500}
             height={80}
-            className="absolute left-[118px] md:left-20 drop-shadow-2xl z-10 top-48 md:top-0 object-contain w-[200px] sm:w-[250px] md:w-[300px] lg:w-[350px] xl:w-[550px] pointer-events-none select-none translate-y-5 sm:translate-y-6 md:translate-y-8 lg:translate-y-10 xl:translate-y-12"
+            className="absolute left-[28vw] sm:left-10 drop-shadow-2xl z-10 top-48 sm:top-0 object-contain w-[50vw] sm:w-[350px] md:w-[50%] lg:w-[500px] xl:w-[550px] pointer-events-none select-none translate-y-5 sm:translate-y-6 md:translate-y-8 lg:translate-y-10 xl:translate-y-12"
             priority
           />
 
