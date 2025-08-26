@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 
 // ✅ Adicionar a constante API_BASE_URL no topo do arquivo
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
 
 // ✅ Hook para gerenciar requisições com loading states - TEMPORARILY DISABLED FOR PROJECT DELIVERY
 export const useRequestManager = () => {

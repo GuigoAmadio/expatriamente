@@ -230,7 +230,7 @@ export class IntelligentCache {
         console.log(`🔄 [Cache] Validando freshness para: ${item.cacheKey}`);
 
         const API_BASE_URL =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+          process.env.NEXT_PUBLIC_API_URL || "http://api.expatriamente.com/api/v1";
         const response = await fetch(
           `${API_BASE_URL}/cache/metadata/${cacheType}`,
           {

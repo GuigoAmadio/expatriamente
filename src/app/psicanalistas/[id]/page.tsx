@@ -75,7 +75,7 @@ export default async function PsicanalistaPage({
             <PsicAppointmentClient
               appointments={appointmentsFormatted}
               employeeId={id}
-              serviceId="98796135-93a4-4063-9e09-0821f71e69e1"
+              serviceId="d542a142-6884-4b1f-be00-7c47887ad544"
             />
           </div>
         </div>
