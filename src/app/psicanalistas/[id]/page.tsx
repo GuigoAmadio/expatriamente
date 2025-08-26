@@ -76,6 +76,12 @@ export default async function PsicanalistaPage({
               appointments={appointmentsFormatted}
               employeeId={id}
               serviceId="d542a142-6884-4b1f-be00-7c47887ad544"
+              psychologist={{
+                id: psicanalista.id,
+                name: psicanalista.name,
+                specialty: psicanalista.specialty,
+                image: psicanalista.image,
+              }}
             />
           </div>
         </div>

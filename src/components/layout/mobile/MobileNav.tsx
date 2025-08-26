@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   CalendarDays,
   Users2,
@@ -9,12 +9,28 @@ import {
   Plus,
   UserCircle2,
   House,
+  LogOut,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useCallback } from "react";
 
 export function MobileNav() {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await logout();
+      router.push("/auth/signin");
+      router.refresh();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+      // Em caso de erro, tentar limpeza manual e redirecionamento
+      localStorage.removeItem("auth-token");
+      window.location.href = "/auth/signin";
+    }
+  }, [logout, router]);
 
   // Map de rotas conforme regra pedida para o dashboard (funcionário, agendamentos, painel, usuários, configurações)
   const base =
@@ -37,7 +53,6 @@ export function MobileNav() {
         },
         { href: base, icon: House, label: "Painel", isPrimary: true },
         { href: `${base}/clients`, icon: UserCircle2, label: "Usuários" },
-        { href: `${base}/services`, icon: Settings, label: "Config" },
       ];
     }
     if (user?.role === "EMPLOYEE") {
@@ -49,7 +64,6 @@ export function MobileNav() {
           label: "Agendamentos",
         },
         { href: base, icon: House, label: "Painel", isPrimary: true },
-        { href: `${base}/clients`, icon: UserCircle2, label: "Usuários" },
         { href: `${base}/settings`, icon: Settings, label: "Config" },
       ];
     }
@@ -62,11 +76,10 @@ export function MobileNav() {
           label: "Agendamentos",
         },
         { href: base, icon: House, label: "Painel", isPrimary: true },
-        { href: `${base}/psychologists`, icon: UserCircle2, label: "Usuários" },
         { href: `${base}/settings`, icon: Settings, label: "Config" },
       ];
     }
-    // Fallback com 5 itens fixos
+    // Fallback com 4 itens fixos
     return [
       { href: `/dashboard/home`, icon: Users2, label: "Início" },
       {
@@ -75,7 +88,6 @@ export function MobileNav() {
         label: "Agendamentos",
       },
       { href: `/dashboard`, icon: House, label: "Painel", isPrimary: true },
-      { href: `/dashboard/users`, icon: UserCircle2, label: "Usuários" },
       { href: `/dashboard/settings`, icon: Settings, label: "Config" },
     ];
   })();
@@ -110,6 +122,16 @@ export function MobileNav() {
               </li>
             );
           })}
+          {/* Botão de Logout */}
+          <li className="flex justify-center">
+            <button
+              onClick={handleLogout}
+              aria-label="Sair"
+              className="h-14 w-14 rounded-xl flex items-center justify-center transition-colors text-red-500 hover:text-red-700 hover:bg-red-50"
+            >
+              <LogOut className="h-5 w-5" />
+            </button>
+          </li>
         </ul>
       </div>
     </nav>

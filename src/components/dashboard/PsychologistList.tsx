@@ -307,10 +307,10 @@ export default function PsychologistList({
                 {/* Botão - Altura fixa e alinhado na parte inferior */}
                 <div className="mt-auto pt-4">
                   <a
-                    href={`/psicanalistas/${psych.id}`}
-                    className="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                    href={`/dashboard/client/appointments/create?psychologistId=${psych.id}`}
+                    className="inline-flex items-center justify-center w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
                   >
-                    Ver perfil
+                    📅 Agendar Consulta
                   </a>
                 </div>
               </div>

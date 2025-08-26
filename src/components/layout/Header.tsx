@@ -2,13 +2,49 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { BackendUser } from "@/types/backend";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import { ChevronDown, LogOut, User, Settings } from "lucide-react";
 
 interface HeaderProps {
   user: BackendUser | null;
 }
 
 export const Header = React.memo(function Header({ user }: HeaderProps) {
+  const { logout } = useAuth();
+  const router = useRouter();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await logout();
+      router.push("/auth/signin");
+      router.refresh();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+      // Em caso de erro, tentar limpeza manual e redirecionamento
+      localStorage.removeItem("auth-token");
+      window.location.href = "/auth/signin";
+    }
+  }, [logout, router]);
+
+  // Fechar dropdown quando clicar fora
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const getRoleIcon = (role: string) => {
     switch (role) {
       case "ADMIN":
@@ -121,14 +157,75 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
               </p>
             </div>
 
-            {/* Avatar melhorado */}
-            <div className="relative group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 group-hover:shadow-xl group-hover:scale-105">
-                <span className="text-white text-sm sm:text-base font-semibold">
-                  {user?.name?.charAt(0)?.toUpperCase() || "U"}
-                </span>
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+            {/* Avatar com dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="relative group">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 group-hover:shadow-xl group-hover:scale-105">
+                    <span className="text-white text-sm sm:text-base font-semibold">
+                      {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                    </span>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                </div>
+                <ChevronDown
+                  className={`h-4 w-4 text-gray-500 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {user?.name}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      // Implementar navegação para perfil se existir
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <User className="h-4 w-4" />
+                    Meu Perfil
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      // Implementar navegação para configurações se existir
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <Settings className="h-4 w-4" />
+                    Configurações
+                  </button>
+
+                  <div className="border-t border-gray-100 mt-1 pt-1">
+                    <button
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Sair
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

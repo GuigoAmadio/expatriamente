@@ -151,8 +151,11 @@ export async function loginAction(data: LoginInput) {
   } catch (error: unknown) {
     console.error("❌ Expatriamente - Erro no login:", error);
     console.error("❌ Erro completo:", JSON.stringify(error, null, 2));
-    const errorMessage =
-      error instanceof Error ? error.message : "Erro interno do servidor";
+
+    // Usar o sistema de sanitização de erros
+    const { extractErrorMessage } = await import("@/lib/error-utils");
+    const errorMessage = extractErrorMessage(error);
+
     return {
       success: false,
       message: errorMessage,
@@ -269,8 +272,11 @@ export async function registerAction(data: {
   } catch (error: unknown) {
     console.error("❌ Expatriamente - Erro no registro:", error);
     console.error("❌ Erro completo:", JSON.stringify(error, null, 2));
-    const errorMessage =
-      error instanceof Error ? error.message : "Erro interno do servidor";
+
+    // Usar o sistema de sanitização de erros
+    const { extractErrorMessage } = await import("@/lib/error-utils");
+    const errorMessage = extractErrorMessage(error);
+
     return {
       success: false,
       message: errorMessage,

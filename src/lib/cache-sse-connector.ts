@@ -57,11 +57,11 @@ export class CacheSSEConnector {
 
       // Construir URL com auth token via query parameter
       const token = this.getAuthToken();
-      const API_BASE_URL = "http://api.expatriamente.com/api/v1";
+      const API_BASE_URL = "https://api.expatriamente.com/api/v1";
 
       // Esta linha cria um novo objeto URL apontando para o endpoint "/cache-events/stream" usando a base da API definida em API_BASE_URL.
       // Ou seja, ela monta a URL completa para onde a conexão SSE será aberta, por exemplo:
-      // Se API_BASE_URL for "http://api.expatriamente.com/api/v1", o resultado será "http://api.expatriamente.com/api/v1/cache-events/stream".
+      // Se API_BASE_URL for "https://api.expatriamente.com/api/v1", o resultado será "https://api.expatriamente.com/api/v1/cache-events/stream".
       const url = new URL(`${API_BASE_URL}/cache-events/stream`);
       // Adicionar token como query parameter
       if (token) {

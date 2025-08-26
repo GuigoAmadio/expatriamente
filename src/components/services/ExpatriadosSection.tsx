@@ -144,14 +144,21 @@ export default function ExpatriadosSection() {
             <div className="px-4 py-2 font-bold text-[#6a352c] text-xl rounded-full bg-white underline text-center">
               contato@expatriamente.com
             </div>
-            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl">
+            <a
+              href="https://wa.me/5511982210290"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-white rounded-full px-4 py-2 text-xl hover:bg-green-50 transition"
+            >
               <FaWhatsapp
                 className="text-white bg-green-500 rounded-full p-1"
                 size={24}
                 aria-label="WhatsApp"
               />
-              <p className="text-[#6a352c] font-bold">+55 11 98221.0290</p>
-            </div>
+              <span className="text-[#6a352c] font-bold">
+                +55 11 98221.0290
+              </span>
+            </a>
           </motion.div>
         </motion.div>
       </div>
@@ -201,9 +208,14 @@ export default function ExpatriadosSection() {
               size={24}
               aria-label="WhatsApp"
             />
-            <p className="text-[#6a352c] font-bold text-base sm:text-lg">
+            <a
+              href="https://wa.me/5511982210290"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#6a352c] font-bold text-base sm:text-lg hover:underline focus:underline"
+            >
               +55 11 98221.0290
-            </p>
+            </a>
           </div>
           <div className="px-4 py-2 font-bold text-[#6a352c] text-base sm:text-lg rounded-full bg-white underline text-center">
             contato@expatriamente.com

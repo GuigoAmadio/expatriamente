@@ -2,9 +2,9 @@
 
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BackendUser } from "@/types/backend";
-import React from "react";
+import React, { useCallback } from "react";
 
 interface SidebarProps {
   user: BackendUser | null;
@@ -12,6 +12,21 @@ interface SidebarProps {
 
 export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
+  const { logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await logout();
+      router.push("/auth/signin");
+      router.refresh();
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+      // Em caso de erro, tentar limpeza manual e redirecionamento
+      localStorage.removeItem("auth-token");
+      window.location.href = "/auth/signin";
+    }
+  }, [logout, router]);
 
   const getMenuItems = () => {
     switch (user?.role) {
@@ -100,12 +115,8 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
 
       <div className="absolute bottom-0 w-full p-4">
         <button
-          onClick={() => {
-            // Implementar logout
-            localStorage.removeItem("auth-token");
-            window.location.href = "/auth/signin";
-          }}
-          className="w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+          onClick={handleLogout}
+          className="w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors hover:bg-red-50 hover:text-red-700"
         >
           <span className="mr-3">🚪</span>
           Sair

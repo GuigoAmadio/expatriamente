@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Calendar from "@/components/landing/Calendar";
-import { registerAction } from "@/actions/auth";
+import { registerAction, loginAction } from "@/actions/auth";
 import { createAppointment } from "@/actions/appointments";
 import { getServicesByEmployee } from "@/actions/users";
 import { useFacebookPixel } from "@/hooks/useFacebookPixel";
@@ -12,19 +12,31 @@ interface Appointment {
   horarios: string[];
 }
 
+interface Psychologist {
+  id: string;
+  name: string;
+  specialty?: string;
+  image?: string;
+}
+
+interface PsicAppointmentClientProps {
+  appointments: Appointment[];
+  employeeId: string;
+  serviceId: string;
+  psychologist?: Psychologist;
+}
+
 export default function PsicAppointmentClient({
   appointments,
   employeeId,
   serviceId,
-}: {
-  appointments: Appointment[];
-  employeeId: string;
-  serviceId: string;
-}) {
+  psychologist,
+}: PsicAppointmentClientProps) {
   const [selecionado, setSelecionado] = useState<{
     dia: number;
     hora: string;
   } | null>(null);
+  const [isLogin, setIsLogin] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
   const { trackCompleteRegistration } = useFacebookPixel();
 
@@ -47,10 +59,23 @@ export default function PsicAppointmentClient({
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    if (!name || !email || !password || !selecionado) {
-      console.warn(`⚠️ [Agendamento] Campos obrigatórios não preenchidos`);
-      alert("Preencha todos os campos e selecione um horário!");
-      return;
+    // Validação baseada no modo (login ou registro)
+    if (isLogin) {
+      if (!email || !password || !selecionado) {
+        console.warn(
+          `⚠️ [Agendamento] Campos obrigatórios não preenchidos (login)`
+        );
+        alert("Preencha email, senha e selecione um horário!");
+        return;
+      }
+    } else {
+      if (!name || !email || !password || !selecionado) {
+        console.warn(
+          `⚠️ [Agendamento] Campos obrigatórios não preenchidos (registro)`
+        );
+        alert("Preencha todos os campos e selecione um horário!");
+        return;
+      }
     }
 
     console.log(`🔵 [Agendamento] Dados do formulário:`, {
@@ -72,18 +97,33 @@ export default function PsicAppointmentClient({
       appointment_time: selecionado.hora,
     });
 
-    // 1. Registrar usuário usando a action de auth
-    const userResp = await registerAction({ name, email, password });
-    if (!userResp.success || !userResp.user?.id) {
-      console.error(`❌ [Agendamento] Erro ao registrar usuário:`, userResp);
-      alert("Erro ao criar conta. Tente novamente.");
-      return;
+    // 1. Fazer login ou registro dependendo da opção escolhida
+    let userResp;
+    if (isLogin) {
+      // Fazer login
+      userResp = await loginAction({ email, password });
+      if (!userResp.success || !userResp.user?.id) {
+        console.error(`❌ [Agendamento] Erro ao fazer login:`, userResp);
+        alert(`Erro ao fazer login: ${userResp.message || "Tente novamente."}`);
+        return;
+      }
+      console.log(
+        `✅ [Agendamento] Login realizado com sucesso:`,
+        userResp.user.id
+      );
+    } else {
+      // Registrar novo usuário
+      userResp = await registerAction({ name, email, password });
+      if (!userResp.success || !userResp.user?.id) {
+        console.error(`❌ [Agendamento] Erro ao registrar usuário:`, userResp);
+        alert(`Erro ao criar conta: ${userResp.message || "Tente novamente."}`);
+        return;
+      }
+      console.log(
+        `✅ [Agendamento] Usuário registrado com sucesso:`,
+        userResp.user.id
+      );
     }
-
-    console.log(
-      `✅ [Agendamento] Usuário registrado com sucesso:`,
-      userResp.user.id
-    );
 
     // 2. Buscar serviços disponíveis para o funcionário
     const servicesResp = await getServicesByEmployee(employeeId);
@@ -138,17 +178,25 @@ export default function PsicAppointmentClient({
       appointmentResp.data
     );
 
-    // 4. Sucesso - mostrar mensagem e limpar formulário
-    alert(
-      "Agendamento realizado com sucesso! Você receberá um email de confirmação."
-    );
+    // 4. Sucesso - mostrar mensagem e redirecionar ou limpar formulário
+    if (isLogin) {
+      alert(
+        "Agendamento realizado com sucesso! Redirecionando para seu dashboard..."
+      );
+      // Redirecionar para o dashboard se fez login
+      window.location.href = "/dashboard/client/appointments";
+    } else {
+      alert(
+        "Agendamento realizado com sucesso! Você receberá um email de confirmação."
+      );
 
-    // Limpar seleção
-    setSelecionado(null);
+      // Limpar seleção
+      setSelecionado(null);
 
-    // Resetar formulário
-    const form = e.target as HTMLFormElement;
-    form.reset();
+      // Resetar formulário
+      const form = e.target as HTMLFormElement;
+      form.reset();
+    }
   };
 
   return (
@@ -194,7 +242,9 @@ export default function PsicAppointmentClient({
                       Finalizar Agendamento
                     </h3>
                     <p className="text-white/90 text-xs">
-                      Crie sua conta e confirme o horário selecionado
+                      {isLogin
+                        ? "Faça login e confirme o horário selecionado"
+                        : "Crie sua conta e confirme o horário selecionado"}
                     </p>
                   </div>
                 </div>
@@ -239,26 +289,54 @@ export default function PsicAppointmentClient({
 
               {/* Formulário */}
               <div className="p-6">
+                {/* Toggle Login/Registro */}
+                <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
+                  <button
+                    type="button"
+                    onClick={() => setIsLogin(false)}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                      !isLogin
+                        ? "bg-white text-[#987b6b] shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    🆕 Criar Conta
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsLogin(true)}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
+                      isLogin
+                        ? "bg-white text-[#987b6b] shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    🔑 Fazer Login
+                  </button>
+                </div>
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-2">
-                      <label
-                        htmlFor="name"
-                        className="block text-xs font-akzidens font-semibold text-[#587861] mb-1"
-                      >
-                        Nome Completo
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        required
-                        className="w-full px-3 py-2 bg-[#f8f6f2] border-2 border-[#e4ded2] rounded-lg font-akzidens text-sm
-                                 focus:outline-none focus:border-[#987b6b] focus:bg-white 
-                                 transition-all duration-300 hover:border-[#9ca995]"
-                        placeholder="Digite seu nome completo"
-                      />
-                    </div>
+                    {!isLogin && (
+                      <div className="md:col-span-2">
+                        <label
+                          htmlFor="name"
+                          className="block text-xs font-akzidens font-semibold text-[#587861] mb-1"
+                        >
+                          Nome Completo
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          required={!isLogin}
+                          className="w-full px-3 py-2 bg-[#f8f6f2] border-2 border-[#e4ded2] rounded-lg font-akzidens text-sm
+                                   focus:outline-none focus:border-[#987b6b] focus:bg-white 
+                                   transition-all duration-300 hover:border-[#9ca995]"
+                          placeholder="Digite seu nome completo"
+                        />
+                      </div>
+                    )}
 
                     <div>
                       <label
@@ -358,7 +436,11 @@ export default function PsicAppointmentClient({
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-sm">Confirmar Agendamento</span>
+                      <span className="text-sm">
+                        {isLogin
+                          ? "Fazer Login e Agendar"
+                          : "Criar Conta e Agendar"}
+                      </span>
                     </div>
                   </motion.button>
                 </form>
