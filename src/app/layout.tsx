@@ -44,36 +44,59 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Verificar se está em modo de desenvolvimento
+  const isDevelopment = process.env.NODE_ENV === "development";
+
   return (
     <html lang="pt" suppressHydrationWarning>
       <head>
-        <Script
-          id="facebook-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            !function(f,b,e,v,n,t,s)
-            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1456405978885544');
-            fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=620735734130587&ev=PageView&noscript=1"
-            alt=""
+        {/* Facebook Pixel - apenas em produção */}
+        {!isDevelopment && (
+          <>
+            <Script
+              id="facebook-pixel"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                n.queue=[];t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '1456405978885544');
+                fbq('track', 'PageView');
+                `,
+              }}
+            />
+            <noscript>
+              <img
+                height="1"
+                width="1"
+                style={{ display: "none" }}
+                src="https://www.facebook.com/tr?id=620735734130587&ev=PageView&noscript=1"
+                alt=""
+              />
+            </noscript>
+          </>
+        )}
+        {isDevelopment && (
+          <Script
+            id="facebook-pixel-dev"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+              console.log('🚫 [Facebook Pixel] Modo desenvolvimento - Script desabilitado');
+              // Mock fbq function para evitar erros
+              window.fbq = function() {
+                console.log('🚫 [Facebook Pixel] Mock fbq chamado em desenvolvimento:', arguments);
+              };
+              `,
+            }}
           />
-        </noscript>
+        )}
       </head>
       <body
         className={`antialiased ${playfair.variable} ${montserrat.variable} ${bebas.variable}`}

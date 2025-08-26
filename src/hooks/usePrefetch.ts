@@ -1,8 +1,18 @@
 import { useEffect } from "react";
-import { cacheUtils } from "@/lib/cache";
+// TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// import { cacheUtils } from "@/lib/cache";
 
-// Hook para prefetch de dados principais
+// Hook para prefetch de dados principais - TEMPORARILY DISABLED FOR PROJECT DELIVERY
 export const usePrefetch = () => {
+  // FALLBACK VALUES FOR TEMPORARY DISABLE
+  return {
+    prefetchMainData: () => Promise.resolve(),
+  };
+};
+
+/*
+// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
+export const usePrefetch_DISABLED = () => {
   const prefetchMainData = async () => {
     try {
       console.log("🚀 Iniciando prefetch de dados principais...");
@@ -61,9 +71,21 @@ export const usePrefetch = () => {
     prefetchMainData,
   };
 };
+*/
 
-// Hook para prefetch específico por página
+// Hook para prefetch específico por página - TEMPORARILY DISABLED FOR PROJECT DELIVERY
 export const usePagePrefetch = (
+  pageType: "dashboard" | "appointments" | "services" | "employees" | "clients"
+) => {
+  // FALLBACK VALUES FOR TEMPORARY DISABLE
+  return {
+    prefetchPageData: () => Promise.resolve(),
+  };
+};
+
+/*
+// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
+export const usePagePrefetch_DISABLED = (
   pageType: "dashboard" | "appointments" | "services" | "employees" | "clients"
 ) => {
   const prefetchPageData = async () => {
@@ -119,3 +141,4 @@ export const usePagePrefetch = (
     prefetchPageData,
   };
 };
+*/

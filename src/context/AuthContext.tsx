@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loadUser = useCallback(async () => {
     try {
       // Usar Server Action para buscar usuário (acessa cookies HttpOnly)
-    const { getAuthUser } = await import("@/actions/auth");
+      const { getAuthUser } = await import("@/actions/auth");
       const user = await getAuthUser();
 
       console.log("Usuário carregado via Server Action:", user);
@@ -86,14 +86,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             error: result.message || "Erro ao fazer login",
           };
         } else {
+          // Salvar token no localStorage para SSE - TEMPORARILY DISABLED
+          /*
+        if (result.token && typeof window !== "undefined") {
+          localStorage.setItem("auth_token", result.token);
+          console.log("🔑 [Auth] Token salvo no localStorage para SSE");
+        }
+        */
+
           // Recarregar o usuário após login bem-sucedido
           await loadUser();
 
           // role pode ser ADMIN, EMPLOYEE, CLIENT, etc
           const role = result.user?.role?.toUpperCase() || "CLIENT";
           let dashboardRoute = "/dashboard";
-          if (role === "EMPLOYEE") dashboardRoute = "/dashboard/employee";
-          else if (role === "ADMIN") dashboardRoute = "/dashboard/admin";
+          if (role === "SUPER_ADMIN" || role === "ADMIN")
+            dashboardRoute = "/dashboard/admin";
+          else if (role === "EMPLOYEE") dashboardRoute = "/dashboard/employee";
           else if (role === "CLIENT") dashboardRoute = "/dashboard/client";
 
           console.log(`Redirecionando para: ${dashboardRoute}`);
@@ -112,6 +121,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const { logoutAction } = await import("@/actions/auth");
       await logoutAction();
+
+      // Limpar token do localStorage - TEMPORARILY DISABLED
+      /*
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("auth_token");
+          console.log("🧹 [Auth] Token removido do localStorage");
+        }
+        */
+
       setUser(null);
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
@@ -130,7 +148,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           await loadUser();
           // Redirecionar para o dashboard correto
           const role = response.user?.role?.toUpperCase() || "CLIENT";
-          const dashboardRoute = DASHBOARD_ROUTE_BY_ROLE[role] || "/dashboard";
+          let dashboardRoute = "/dashboard";
+          if (role === "SUPER_ADMIN" || role === "ADMIN")
+            dashboardRoute = "/dashboard/admin";
+          else if (role === "EMPLOYEE") dashboardRoute = "/dashboard/employee";
+          else if (role === "CLIENT") dashboardRoute = "/dashboard/client";
           router.push(dashboardRoute);
           return { success: true };
         } else {

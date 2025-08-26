@@ -7,8 +7,16 @@ declare global {
 }
 
 export const useFacebookPixel = () => {
+  // Verificar se está em modo de desenvolvimento
+  const isDevelopment = process.env.NODE_ENV === "development";
+  
   // Função para enviar evento para o Facebook Conversions API
   const sendToConversionsAPI = async (eventName: string, parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - Conversions API desabilitado para evento: ${eventName}`);
+      return;
+    }
+
     try {
       const token = process.env.FACEBOOK_CONVERSIONS_API_TOKEN;
       if (!token) {
@@ -68,6 +76,11 @@ export const useFacebookPixel = () => {
   };
 
   const trackEvent = (eventName: string, parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - Evento desabilitado: ${eventName}`, parameters);
+      return;
+    }
+
     console.log(
       `🔵 [Facebook Pixel] Tentando rastrear evento: ${eventName}`,
       parameters
@@ -96,6 +109,11 @@ export const useFacebookPixel = () => {
   };
 
   const trackPageView = () => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - PageView desabilitado`);
+      return;
+    }
+
     console.log(`🔵 [Facebook Pixel] Tentando rastrear PageView`);
     if (typeof window !== "undefined" && window.fbq) {
       console.log(`✅ [Facebook Pixel] Enviando PageView`);
@@ -113,11 +131,19 @@ export const useFacebookPixel = () => {
   };
 
   const trackSchedule = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - Schedule desabilitado:`, parameters);
+      return;
+    }
     console.log(`📅 [Facebook Pixel] Rastreando Schedule:`, parameters);
     trackEvent("Schedule", parameters);
   };
 
   const trackCompleteRegistration = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - CompleteRegistration desabilitado:`, parameters);
+      return;
+    }
     console.log(
       `✅ [Facebook Pixel] Rastreando CompleteRegistration:`,
       parameters
@@ -126,32 +152,57 @@ export const useFacebookPixel = () => {
   };
 
   const trackViewContent = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - ViewContent desabilitado:`, parameters);
+      return;
+    }
     console.log(`👁️ [Facebook Pixel] Rastreando ViewContent:`, parameters);
     trackEvent("ViewContent", parameters);
   };
 
   const trackLead = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - Lead desabilitado:`, parameters);
+      return;
+    }
     console.log(`🎯 [Facebook Pixel] Rastreando Lead:`, parameters);
     trackEvent("Lead", parameters);
   };
 
   const trackPurchase = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - Purchase desabilitado:`, parameters);
+      return;
+    }
     console.log(`💰 [Facebook Pixel] Rastreando Purchase:`, parameters);
     trackEvent("Purchase", parameters);
   };
 
   const trackAddToCart = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - AddToCart desabilitado:`, parameters);
+      return;
+    }
     console.log(`🛒 [Facebook Pixel] Rastreando AddToCart:`, parameters);
     trackEvent("AddToCart", parameters);
   };
 
   const trackInitiateCheckout = (parameters?: any) => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - InitiateCheckout desabilitado:`, parameters);
+      return;
+    }
     console.log(`💳 [Facebook Pixel] Rastreando InitiateCheckout:`, parameters);
     trackEvent("InitiateCheckout", parameters);
   };
 
-  // Verificar se o Facebook Pixel está carregado
+  // Verificar se o Facebook Pixel está carregado (apenas em produção)
   useEffect(() => {
+    if (isDevelopment) {
+      console.log(`🚫 [Facebook Pixel] Modo desenvolvimento - Verificação de carregamento desabilitada`);
+      return;
+    }
+
     const checkFacebookPixel = () => {
       if (typeof window !== "undefined") {
         if (window.fbq) {
@@ -170,7 +221,7 @@ export const useFacebookPixel = () => {
     const timer = setTimeout(checkFacebookPixel, 2000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isDevelopment]);
 
   return {
     trackEvent,

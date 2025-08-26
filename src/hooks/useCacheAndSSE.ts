@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { cacheSSE } from "@/lib/cache-sse-connector";
-import { intelligentCache, cacheUtils } from "@/lib/intelligent-cache";
-import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
+// TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// import { cacheSSE } from "@/lib/cache-sse-connector";
+// import { intelligentCache, cacheUtils } from "@/lib/intelligent-cache";
+// import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
 
 interface SSEConnectionStatus {
   isConnected: boolean;
@@ -17,8 +18,31 @@ interface CacheUpdateEvent {
   metadata?: any;
 }
 
-// ✅ Hook principal para Cache e SSE
-export const useCacheAndSSE = () => {
+// ✅ Hook principal para Cache e SSE - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+export const useCacheAndSSE = (user?: any) => {
+  // FALLBACK VALUES FOR TEMPORARY DISABLE
+  return {
+    isSSEConnected: false,
+    connectionStatus: {
+      isConnected: false,
+      reconnectAttempts: 0,
+      readyState: 0,
+    },
+    lastCacheUpdate: null,
+    cacheStats: { memorySize: 0, localStorageSize: 0, totalSize: 0 },
+    forceReconnect: () => {},
+    resetHook: () => {},
+    invalidateCache: () => Promise.resolve(),
+    invalidateCacheByType: () => Promise.resolve(),
+    clearAllCache: () => Promise.resolve(),
+    getCachedData: () => Promise.resolve(null),
+    setCachedData: () => Promise.resolve(),
+  };
+};
+
+/*
+// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
+export const useCacheAndSSE_DISABLED = (user?: any) => {
   const [connectionStatus, setConnectionStatus] = useState<SSEConnectionStatus>(
     {
       isConnected: false,
@@ -30,12 +54,27 @@ export const useCacheAndSSE = () => {
   const [cacheStats, setCacheStats] = useState(intelligentCache.getStats());
   const isInitialized = useRef(false);
 
-  // ✅ Conectar SSE automaticamente
+  // ✅ Conectar SSE automaticamente quando usuário estiver autenticado
   useEffect(() => {
+    // ✅ Verificar se já está inicializado
     if (isInitialized.current) {
       console.log("⚠️ [useCacheAndSSE] Hook já inicializado, pulando...");
       return;
     }
+
+    // ✅ Só conectar se o usuário estiver autenticado
+    if (!user) {
+      console.log("👤 [useCacheAndSSE] Usuário não autenticado, aguardando...");
+      return;
+    }
+
+    // ✅ Verificar se o SSE não está desabilitado
+    const status = cacheSSE.getConnectionStatus();
+    if (status.reconnectAttempts >= 5) {
+      console.log("🚫 [useCacheAndSSE] SSE com muitas tentativas, pulando...");
+      return;
+    }
+
     isInitialized.current = true;
 
     console.log("🚀 [useCacheAndSSE] Inicializando hook de cache e SSE...");
@@ -111,12 +150,24 @@ export const useCacheAndSSE = () => {
         handleCacheUpdate as EventListener
       );
     };
-  }, []);
+  }, [user]);
 
   // ✅ Forçar reconexão SSE
   const forceReconnect = useCallback(() => {
     console.log("🔄 [Cache Hook] Forçando reconexão SSE...");
     cacheSSE.forceReconnect();
+  }, []);
+
+  // ✅ Resetar hook (útil para logout/login)
+  const resetHook = useCallback(() => {
+    console.log("🔄 [Cache Hook] Resetando hook...");
+    isInitialized.current = false;
+    setConnectionStatus({
+      isConnected: false,
+      reconnectAttempts: 0,
+    });
+    setLastCacheUpdate(null);
+    setCacheStats(intelligentCache.getStats());
   }, []);
 
   // ✅ Invalidar cache específico
@@ -168,6 +219,7 @@ export const useCacheAndSSE = () => {
 
     // Funções de controle
     forceReconnect,
+    resetHook,
     invalidateCache,
     invalidateCacheByType,
     clearAllCache,
@@ -175,9 +227,24 @@ export const useCacheAndSSE = () => {
     setCachedData,
   };
 };
+*/
 
-// ✅ Hook para prefetch inteligente
+// ✅ Hook para prefetch inteligente - TEMPORARILY DISABLED FOR PROJECT DELIVERY
 export const usePrefetch = () => {
+  // FALLBACK VALUES FOR TEMPORARY DISABLE
+  return {
+    prefetchEssential: () => Promise.resolve(),
+    prefetchSecondary: () => Promise.resolve(),
+    prefetchByRoute: () => Promise.resolve(),
+    cancelAllPrefetches: () => {},
+    prefetchStats: { queueSize: 0, isActive: false },
+    isInitialized: false,
+  };
+};
+
+/*
+// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
+export const usePrefetch_DISABLED = () => {
   const [prefetchStats, setPrefetchStats] = useState(
     intelligentPrefetch.getStats()
   );
@@ -243,9 +310,22 @@ export const usePrefetch = () => {
     isInitialized,
   };
 };
+*/
 
-// ✅ Hook para validação de cache
+// ✅ Hook para validação de cache - TEMPORARILY DISABLED FOR PROJECT DELIVERY
 export const useCacheValidation = () => {
+  // FALLBACK VALUES FOR TEMPORARY DISABLE
+  return {
+    validateCacheAfterLogin: () => Promise.resolve(),
+    validateSpecificCache: () => Promise.resolve(false),
+    isValidating: false,
+    lastValidation: null,
+  };
+};
+
+/*
+// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
+export const useCacheValidation_DISABLED = () => {
   const [isValidating, setIsValidating] = useState(false);
   const [lastValidation, setLastValidation] = useState<Date | null>(null);
 
@@ -311,9 +391,26 @@ export const useCacheValidation = () => {
     lastValidation,
   };
 };
+*/
 
-// ✅ Hook para monitoramento de performance
+// ✅ Hook para monitoramento de performance - TEMPORARILY DISABLED FOR PROJECT DELIVERY
 export const useCachePerformance = () => {
+  // FALLBACK VALUES FOR TEMPORARY DISABLE
+  return {
+    performanceMetrics: {
+      hitRate: 0,
+      missRate: 0,
+      avgResponseTime: 0,
+      totalRequests: 0,
+    },
+    recordRequestTime: () => {},
+    requestTimes: [],
+  };
+};
+
+/*
+// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
+export const useCachePerformance_DISABLED = () => {
   const [performanceMetrics, setPerformanceMetrics] = useState({
     hitRate: 0,
     missRate: 0,
@@ -376,3 +473,4 @@ export const useCachePerformance = () => {
     requestTimes: requestTimes.slice(-10), // Últimos 10 para debug
   };
 };
+*/

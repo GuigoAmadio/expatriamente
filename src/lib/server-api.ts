@@ -5,7 +5,7 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "https://api.expatriamente.com/api/v1", // Backend NestJS local na porta 3001
+    "http://localhost:3000/api/v1", // Backend NestJS local na porta 3001
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
     "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
@@ -21,7 +21,7 @@ async function getHeaders(): Promise<HeadersInit> {
   let token: string | undefined;
 
   try {
-    console.log("🔍 [server-api] Iniciando busca do token...");
+    // console.log("🔍 [server-api] Iniciando busca do token..."); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
 
     // Verificar se estamos no contexto de uma requisição
     if (typeof window === "undefined") {
@@ -30,36 +30,36 @@ async function getHeaders(): Promise<HeadersInit> {
         const { cookies } = await import("next/headers");
         const cookieStore = await cookies();
 
-        console.log("🔍 [server-api] Cookie store obtido:", cookieStore);
+        // console.log("🔍 [server-api] Cookie store obtido:", cookieStore); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
 
         const authCookie = cookieStore.get("auth_token");
-        console.log(
-          "🔍 [server-api] Cookie auth_token encontrado:",
-          authCookie
-        );
+        // console.log(
+        //   "🔍 [server-api] Cookie auth_token encontrado:",
+        //   authCookie
+        // ); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
 
         if (authCookie) {
           token = authCookie.value;
-          console.log(
-            "✅ [server-api] Token extraído com sucesso:",
-            token ? `${token.substring(0, 20)}...` : "null"
-          );
+          // console.log(
+          //   "✅ [server-api] Token extraído com sucesso:",
+          //   token ? `${token.substring(0, 20)}...` : "null"
+          // ); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
         } else {
           console.log("❌ [server-api] Cookie auth_token não encontrado");
 
           // Listar todos os cookies para debug
           const allCookies = cookieStore.getAll();
-          console.log(
-            "🔍 [server-api] Todos os cookies disponíveis:",
-            allCookies.map((c) => c.name)
-          );
+          // console.log(
+          //   "🔍 [server-api] Todos os cookies disponíveis:",
+          //   allCookies.map((c) => c.name)
+          // ); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
         }
       } catch (error) {
         console.error(
           "❌ [server-api] Erro ao acessar cookies (fora do contexto de requisição):",
           error
         );
-        console.log("🔍 [server-api] Tentando método alternativo...");
+        // console.log("🔍 [server-api] Tentando método alternativo..."); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
 
         // Método alternativo: usar headers da requisição
         try {
@@ -104,14 +104,14 @@ async function getHeaders(): Promise<HeadersInit> {
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
-    console.log("✅ [server-api] Authorization header adicionado");
+    // console.log("✅ [server-api] Authorization header adicionado"); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
   } else {
     console.log(
       "❌ [server-api] Nenhum token disponível - requisição sem autenticação"
     );
   }
 
-  console.log("🔍 [server-api] Headers finais:", headers);
+  // console.log("🔍 [server-api] Headers finais:", headers); // TEMPORARILY DISABLED FOR PROJECT DELIVERY
   return headers;
 }
 

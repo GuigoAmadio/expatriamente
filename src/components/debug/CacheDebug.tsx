@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useCacheAndSSE, useCachePerformance } from "@/hooks/useCacheAndSSE";
-import { useRequestManager } from "@/hooks/useRequestManager";
-import { intelligentCache } from "@/lib/intelligent-cache";
-import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
-
+// TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// import { useCacheAndSSE, useCachePerformance } from "@/hooks/useCacheAndSSE";
+// import { useRequestManager } from "@/hooks/useRequestManager";
+// import { intelligentCache } from "@/lib/intelligent-cache";
+// import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
 
 interface CacheDebugProps {
   isVisible?: boolean;
@@ -17,7 +17,8 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
     "cache" | "sse" | "requests" | "performance"
   >("cache");
 
-  // ✅ Hooks de monitoramento
+  // ✅ Hooks de monitoramento - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+  /*
   const {
     isSSEConnected,
     connectionStatus,
@@ -36,11 +37,37 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
   const [prefetchStats, setPrefetchStats] = useState(
     intelligentPrefetch.getStats()
   );
+  */
+
+  // ✅ TEMPORARY FALLBACK VALUES
+  const isSSEConnected = false;
+  const connectionStatus = { readyState: 0, reconnectAttempts: 0 };
+  const cacheStats = { memorySize: 0, localStorageSize: 0, totalSize: 0 };
+  const lastCacheUpdate = null;
+  const forceReconnect = () => {};
+  const clearAllCache = () => {};
+  const invalidateCache = () => {};
+  const hasAnyLoading = false;
+  const loadingStates: Record<string, boolean> = {};
+  const requestCounts: Record<string, number> = {};
+  const cancelAllRequests = () => {};
+  const performanceMetrics = {
+    hitRate: 0,
+    missRate: 0,
+    avgResponseTime: 0,
+    totalRequests: 0,
+  };
+  const requestTimes: any[] = [];
+  const [prefetchStats, setPrefetchStats] = useState({
+    queueSize: 0,
+    isActive: false,
+  });
   const [refreshInterval, setRefreshInterval] = useState<NodeJS.Timeout | null>(
     null
   );
 
-  // ✅ Atualizar estatísticas em tempo real
+  // ✅ Atualizar estatísticas em tempo real - TEMPORARILY DISABLED
+  /*
   useEffect(() => {
     if (debugVisible) {
       const interval = setInterval(() => {
@@ -58,6 +85,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
       }
     }
   }, [debugVisible, refreshInterval]);
+  */
 
   // ✅ Toggle visibility
   if (!debugVisible) {
@@ -104,13 +132,21 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
             {tab === "sse" && "📡 SSE"}
             {tab === "requests" && "🔄 Requests"}
             {tab === "performance" && "📊 Performance"}
-            
           </button>
         ))}
       </div>
 
       {/* ✅ Content */}
       <div className="p-4 overflow-y-auto max-h-64">
+        {/* ✅ TEMPORARY DISABLED MESSAGE */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
+          <p className="text-sm text-yellow-800 font-medium">
+            ⚠️ Cache e SSE temporariamente desabilitados para entrega do projeto
+          </p>
+          <p className="text-xs text-yellow-600 mt-1">
+            Funcionalidades de debug não estão disponíveis no momento.
+          </p>
+        </div>
         {/* Cache Tab */}
         {activeTab === "cache" && (
           <div className="space-y-3">
@@ -133,6 +169,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
               </div>
             </div>
 
+            {/* TEMPORARILY DISABLED
             {lastCacheUpdate && (
               <div className="bg-yellow-50 p-2 rounded text-xs">
                 <div className="font-medium">Última Atualização:</div>
@@ -144,6 +181,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
                 </div>
               </div>
             )}
+            */}
 
             <div className="space-y-2">
               <button
@@ -153,12 +191,14 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
                 🗑️ Limpar Todo Cache
               </button>
 
+              {/* TEMPORARILY DISABLED
               <button
                 onClick={() => invalidateCache("employees")}
                 className="w-full bg-orange-500 text-white text-sm py-2 px-3 rounded hover:bg-orange-600"
               >
                 🗑️ Invalidar Employees
               </button>
+              */}
             </div>
           </div>
         )}
@@ -197,6 +237,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
               </button>
             )}
 
+            {/* TEMPORARILY DISABLED
             {lastCacheUpdate && (
               <div className="bg-blue-50 p-2 rounded text-xs">
                 <div className="font-medium">Último Evento SSE:</div>
@@ -208,6 +249,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
                 </div>
               </div>
             )}
+            */}
           </div>
         )}
 
@@ -304,8 +346,6 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
             )}
           </div>
         )}
-
-
       </div>
 
       {/* ✅ Footer */}

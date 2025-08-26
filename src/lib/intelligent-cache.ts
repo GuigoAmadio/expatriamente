@@ -1,4 +1,5 @@
-// ✅ Sistema de Cache Inteligente com Validação da Tabela de Metadata
+// ✅ Sistema de Cache Inteligente com Validação da Tabela de Metadata - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+/*
 interface CacheItem<T> {
   data: T;
   timestamp: number;
@@ -22,7 +23,9 @@ interface CacheConfigWithoutValidation extends BaseCacheConfig {
   version?: string;
 }
 
-type IntelligentCacheConfig = CacheConfigWithValidation | CacheConfigWithoutValidation;
+type IntelligentCacheConfig =
+  | CacheConfigWithValidation
+  | CacheConfigWithoutValidation;
 
 // ✅ Configurações de TTL otimizadas para diferentes tipos de dados
 export const CACHE_CONFIG: Record<string, IntelligentCacheConfig> = {
@@ -137,7 +140,10 @@ export class IntelligentCache {
   }
 
   // ✅ Cache com validação baseada na tabela de metadata
-  async get<T>(key: string, config?: IntelligentCacheConfig): Promise<T | null> {
+  async get<T>(
+    key: string,
+    config?: IntelligentCacheConfig
+  ): Promise<T | null> {
     try {
       console.log(`🔍 [IntelligentCache] Buscando chave: ${key}`);
       console.log(
@@ -223,11 +229,16 @@ export class IntelligentCache {
       if (config && config.validateOnAccess === true) {
         console.log(`🔄 [Cache] Validando freshness para: ${item.cacheKey}`);
 
-        const response = await fetch(`/api/cache/metadata/${cacheType}`, {
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        });
+        const API_BASE_URL =
+          process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+        const response = await fetch(
+          `${API_BASE_URL}/cache/metadata/${cacheType}`,
+          {
+            headers: {
+              "Cache-Control": "no-cache",
+            },
+          }
+        );
 
         if (!response.ok) {
           console.warn(
@@ -263,7 +274,11 @@ export class IntelligentCache {
   }
 
   // ✅ Salvar em ambas as camadas
-  async set<T>(key: string, data: T, config?: IntelligentCacheConfig): Promise<void> {
+  async set<T>(
+    key: string,
+    data: T,
+    config?: IntelligentCacheConfig
+  ): Promise<void> {
     try {
       const ttl = config?.ttl || CACHE_CONFIG.dashboard.ttl;
       const layer = config?.layer || "memory";
@@ -507,6 +522,163 @@ export const cacheUtils = {
   // Obter estatísticas
   getStats() {
     return intelligentCache.getStats();
+  },
+};
+
+// Hook para usar cache em componentes React
+export const useCache = () => {
+  return {
+    get: intelligentCache.get.bind(intelligentCache),
+    set: intelligentCache.set.bind(intelligentCache),
+    delete: intelligentCache.delete.bind(intelligentCache),
+    invalidatePattern: cacheUtils.invalidatePattern,
+    getCachedData: cacheUtils.getCachedData,
+    invalidateByType: cacheUtils.invalidateByType,
+    clear: cacheUtils.clear,
+    getStats: cacheUtils.getStats,
+  };
+};
+*/
+
+// ✅ TEMPORARY FALLBACK IMPLEMENTATION FOR PROJECT DELIVERY
+export const CACHE_CONFIG = {
+  dashboard: { ttl: 5 * 60 * 1000, layer: "memory", validateOnAccess: false },
+  appointments: {
+    ttl: 3 * 60 * 1000,
+    layer: "memory",
+    validateOnAccess: false,
+  },
+  notifications: {
+    ttl: 1 * 60 * 1000,
+    layer: "memory",
+    validateOnAccess: false,
+  },
+  employees: {
+    ttl: 2 * 60 * 60 * 1000,
+    layer: "localStorage",
+    validateOnAccess: true,
+  },
+  clients: {
+    ttl: 4 * 60 * 60 * 1000,
+    layer: "localStorage",
+    validateOnAccess: true,
+  },
+  services: {
+    ttl: 12 * 60 * 60 * 1000,
+    layer: "localStorage",
+    validateOnAccess: true,
+  },
+  profile: {
+    ttl: 60 * 60 * 1000,
+    layer: "localStorage",
+    validateOnAccess: false,
+  },
+  settings: {
+    ttl: 24 * 60 * 60 * 1000,
+    layer: "localStorage",
+    validateOnAccess: false,
+  },
+  analytics: { ttl: 30 * 60 * 1000, layer: "memory", validateOnAccess: false },
+  system: { ttl: 15 * 60 * 1000, layer: "memory", validateOnAccess: false },
+  users: {
+    ttl: 4 * 60 * 60 * 1000,
+    layer: "localStorage",
+    validateOnAccess: true,
+  },
+  logs: { ttl: 5 * 60 * 1000, layer: "memory", validateOnAccess: false },
+};
+
+export class IntelligentCache {
+  async get<T>(key: string, config?: any): Promise<T | null> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - get: ${key}`
+    );
+    return null;
+  }
+
+  async set<T>(key: string, data: T, config?: any): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - set: ${key}`
+    );
+  }
+
+  async invalidatePattern(pattern: string): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - invalidatePattern: ${pattern}`
+    );
+  }
+
+  async invalidateByType(type: any): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - invalidateByType: ${type}`
+    );
+  }
+
+  async delete(key: string): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - delete: ${key}`
+    );
+  }
+
+  async clear(): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - clear`
+    );
+  }
+
+  getStats() {
+    return { memorySize: 0, localStorageSize: 0, totalSize: 0 };
+  }
+
+  destroy() {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - destroy`
+    );
+  }
+}
+
+// Instância global do cache
+export const intelligentCache = new IntelligentCache();
+
+// ✅ Funções utilitárias para facilitar o uso
+export const cacheUtils = {
+  async getCachedData<T>(
+    key: string,
+    fetchFn: () => Promise<T>,
+    config?: any
+  ): Promise<T> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - getCachedData: ${key}`
+    );
+    return await fetchFn();
+  },
+
+  async invalidateByType(type: any): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - invalidateByType: ${type}`
+    );
+  },
+
+  async invalidatePattern(pattern: string): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - invalidatePattern: ${pattern}`
+    );
+  },
+
+  async delete(key: string): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - delete: ${key}`
+    );
+  },
+
+  async clear(): Promise<void> {
+    console.log(
+      `⚠️ [Cache] Desabilitado temporariamente para entrega do projeto - clear`
+    );
+  },
+
+  getStats() {
+    return { memorySize: 0, localStorageSize: 0, totalSize: 0 };
   },
 };
 

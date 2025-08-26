@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-// ✅ Imports dos hooks de cache
-import {
-  useCacheAndSSE,
-  usePrefetch,
-  useCacheValidation,
-} from "@/hooks/useCacheAndSSE";
-import { useRequestManager } from "@/hooks/useRequestManager";
+import { useAuth } from "@/context/AuthContext";
+// ✅ Imports dos hooks de cache - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// import {
+//   useCacheAndSSE,
+//   usePrefetch,
+//   useCacheValidation,
+// } from "@/hooks/useCacheAndSSE";
+// import { useRequestManager } from "@/hooks/useRequestManager";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -16,17 +17,20 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
   const [userRole, setUserRole] = useState<string>("");
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
-  // ✅ Hooks de cache
+  // ✅ Hooks de cache - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+  /*
   const {
     isSSEConnected,
     connectionStatus,
     lastCacheUpdate,
     cacheStats,
     forceReconnect,
-  } = useCacheAndSSE();
+  } = useCacheAndSSE(user);
 
   const {
     prefetchEssential,
@@ -38,19 +42,40 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { validateCacheAfterLogin, isValidating } = useCacheValidation();
 
   const { hasAnyLoading, loadingStates } = useRequestManager();
+  */
+
+  // ✅ TEMPORARY FALLBACK VALUES
+  const isSSEConnected = false;
+  const connectionStatus = { reconnectAttempts: 0, readyState: 0 };
+  const lastCacheUpdate = null;
+  const cacheStats = { totalSize: 0, memorySize: 0, localStorageSize: 0 };
+  const forceReconnect = () => {};
+  const prefetchEssential = () => {};
+  const prefetchSecondary = () => {};
+  const prefetchByRoute = () => {};
+  const prefetchStats = { queueSize: 0, isActive: false };
+  const validateCacheAfterLogin = () => Promise.resolve();
+  const isValidating = false;
+  const hasAnyLoading = false;
+  const loadingStates = {};
+
+  // ✅ Verificar se está no cliente para evitar problemas de hidratação
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // ✅ Inicialização após login
   useEffect(() => {
     const initializeDashboard = async () => {
-      if (isInitialized) return;
+      if (isInitialized || !user) return;
 
       try {
-        // Simular obtenção do role do usuário
-        // Em um caso real, isso viria do contexto de auth ou localStorage
-        const user = getUserFromAuth(); // Implementar esta função
-        const role = user?.role || "CLIENT";
+        // Obter role do usuário do contexto de autenticação
+        const role = user?.role?.toUpperCase() || "CLIENT";
         setUserRole(role);
 
+        // TEMPORARILY DISABLED FOR PROJECT DELIVERY
+        /*
         console.log("🚀 [Dashboard] Inicializando sistema de cache...");
 
         // 1. Validar cache após login
@@ -67,6 +92,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
         setIsInitialized(true);
         console.log("✅ [Dashboard] Sistema de cache inicializado");
+        */
+
+        // ✅ TEMPORARY: Simple initialization without cache/prefetch
+        console.log(
+          "🚀 [Dashboard] Inicializando dashboard (cache/prefetch desabilitado)"
+        );
+        setIsInitialized(true);
+        console.log("✅ [Dashboard] Dashboard inicializado");
       } catch (error) {
         console.error("❌ [Dashboard] Erro ao inicializar:", error);
       }
@@ -76,21 +109,26 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }, [
     isInitialized,
     pathname,
-    validateCacheAfterLogin,
-    prefetchEssential,
-    prefetchSecondary,
-    prefetchByRoute,
+    user,
+    // TEMPORARILY DISABLED DEPENDENCIES
+    // validateCacheAfterLogin,
+    // prefetchEssential,
+    // prefetchSecondary,
+    // prefetchByRoute,
   ]);
 
-  // ✅ Prefetch baseado na mudança de rota
+  // ✅ Prefetch baseado na mudança de rota - TEMPORARILY DISABLED
+  /*
   useEffect(() => {
     if (isInitialized && pathname) {
       console.log(`📍 [Dashboard] Rota mudou para: ${pathname}`);
       prefetchByRoute(pathname);
     }
   }, [pathname, isInitialized, prefetchByRoute]);
+  */
 
-  // ✅ Reconectar SSE se necessário
+  // ✅ Reconectar SSE se necessário - TEMPORARILY DISABLED
+  /*
   useEffect(() => {
     if (!isSSEConnected && connectionStatus.reconnectAttempts >= 3) {
       console.log("🔄 [Dashboard] Tentando reconectar SSE...");
@@ -109,23 +147,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       }
     }
   }, [lastCacheUpdate]);
-
-  // ✅ Função auxiliar para obter usuário (implementar conforme sua auth)
-  const getUserFromAuth = () => {
-    try {
-      // Exemplo de implementação
-      const userString =
-        localStorage.getItem("user") || sessionStorage.getItem("user");
-      return userString ? JSON.parse(userString) : null;
-    } catch (error) {
-      return null;
-    }
-  };
+  */
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* ✅ Status Bar de Debug (só em desenvolvimento) */}
-      {process.env.NODE_ENV === "development" && (
+      {/* ✅ Status Bar de Debug (só em desenvolvimento) - TEMPORARILY DISABLED */}
+      {/*
+      {process.env.NODE_ENV === "development" && isClient && (
         <div className="bg-blue-900 text-white text-xs p-2 flex justify-between items-center">
           <div className="flex space-x-4">
             <span>
@@ -152,6 +180,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
       )}
+      */}
 
       {/* ✅ Loading Global */}
       {!isInitialized && (
@@ -159,14 +188,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="bg-white rounded-lg p-6 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Inicializando sistema...</p>
-            {isValidating && (
+            {/* TEMPORARILY DISABLED */}
+            {/* {isValidating && (
               <p className="text-sm text-gray-500">Validando cache...</p>
-            )}
+            )} */}
           </div>
         </div>
       )}
 
-      {/* ✅ Notificação de Reconexão SSE */}
+      {/* ✅ Notificação de Reconexão SSE - TEMPORARILY DISABLED */}
+      {/*
       {!isSSEConnected && isInitialized && (
         <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4">
           <div className="flex items-center">
@@ -194,12 +225,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
       )}
+      */}
 
       {/* ✅ Conteúdo Principal */}
       <main className="container mx-auto px-4 py-6">{children}</main>
 
-      {/* ✅ Footer com Stats (desenvolvimento) */}
-      {process.env.NODE_ENV === "development" && (
+      {/* ✅ Footer com Stats (desenvolvimento) - TEMPORARILY DISABLED */}
+      {/*
+      {process.env.NODE_ENV === "development" && isClient && (
         <footer className="bg-gray-800 text-gray-300 text-xs p-4">
           <div className="grid grid-cols-4 gap-4">
             <div>
@@ -231,6 +264,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </footer>
       )}
+      */}
     </div>
   );
 }

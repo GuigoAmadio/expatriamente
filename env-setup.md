@@ -6,7 +6,7 @@ Para que a aplicação funcione corretamente, você precisa criar um arquivo `.e
 
 ```env
 # NextAuth Configuration
-NEXTAUTH_URL=http://localhost:3001
+NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=seu-secret-super-seguro-aqui-mude-em-producao
 ```
 
@@ -28,7 +28,7 @@ GOOGLE_CLIENT_SECRET=seu-google-client-secret
 ## Exemplo Completo do .env.local
 
 ```env
-NEXTAUTH_URL=http://localhost:3001
+NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=expatriamente-dev-secret-change-in-production
 
 # Opcional - apenas se quiser testar login com Google

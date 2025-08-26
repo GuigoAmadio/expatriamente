@@ -146,6 +146,7 @@ export async function loginAction(data: LoginInput) {
       message: "Login realizado com sucesso",
       user: (responseData as any).user,
       clientId: (responseData as any).client_id,
+      token: (responseData as any).token, // Incluir token para localStorage
     };
   } catch (error: unknown) {
     console.error("❌ Expatriamente - Erro no login:", error);

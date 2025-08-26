@@ -1,4 +1,24 @@
 // ✅ Request Manager com Deduplication e Loading States
+import {
+  serverFetch,
+  serverGet,
+  serverPost,
+  serverPatch,
+  serverDelete,
+} from "./server-api";
+
+// ✅ Importar Server Actions para uso no servidor - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+/*
+import {
+  serverRequestGet,
+  serverRequestPost,
+  serverRequestPatch,
+  serverRequestPut,
+  serverRequestDelete,
+  serverRequest,
+} from "../actions/request-manager";
+*/
+
 export class RequestManager {
   private pendingRequests = new Map<string, Promise<any>>();
   private loadingStates = new Map<string, boolean>();
@@ -7,7 +27,7 @@ export class RequestManager {
 
   // ✅ Adicionar a propriedade API_BASE_URL
   private API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
 
   // ✅ Prevenir múltiplas chamadas simultâneas
   async executeRequest<T>(
@@ -171,6 +191,22 @@ export class RequestManager {
     return this.pendingRequests.size > 0;
   }
 
+  // ✅ Obter token de autenticação do localStorage
+  private getAuthToken(): string | null {
+    try {
+      if (typeof window !== "undefined") {
+        return (
+          localStorage.getItem("auth_token") ||
+          sessionStorage.getItem("auth_token")
+        );
+      }
+      return null;
+    } catch (error) {
+      console.error("❌ [Request] Erro ao obter token:", error);
+      return null;
+    }
+  }
+
   // ✅ Obter todas as requisições em andamento
   getPendingRequests(): string[] {
     return Array.from(this.pendingRequests.keys());
@@ -193,9 +229,14 @@ export class RequestManager {
     return this.executeRequest(
       "auth:login",
       async (signal) => {
+        // ✅ Login sempre usa fetch direto (não precisa de autenticação)
+        console.log(`🔄 [Request] Fazendo login...`);
         const response = await fetch(`${this.API_BASE_URL}/auth/login`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-client-id": "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
+          },
           body: JSON.stringify(credentials),
           signal,
         });
@@ -218,10 +259,32 @@ export class RequestManager {
     return this.executeRequest(
       cacheKey,
       async (signal) => {
+        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
+        /*
+        if (typeof window === "undefined") {
+          console.log(`🔄 [Request] Usando Server Actions para: ${cacheKey}`);
+          const endpoint = url || `/${cacheKey.split(":")[0]}`;
+          const response = await serverRequestGet<T>(endpoint);
+          return response.data;
+        }
+        */
+
+        // ✅ Fallback para cliente com headers de autenticação
+        console.log(`🔄 [Request] Usando fetch do cliente para: ${cacheKey}`);
+        const token = this.getAuthToken();
+        const headers: HeadersInit = {
+          "Cache-Control": "no-cache",
+          "x-client-id": "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
         const response = await fetch(
           url || `${this.API_BASE_URL}/${cacheKey.split(":")[0]}`,
           {
-            headers: { "Cache-Control": "no-cache" },
+            headers,
             signal,
           }
         );
@@ -240,11 +303,37 @@ export class RequestManager {
     return this.executeRequest(
       `${entityType}:create`,
       async (signal) => {
+        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
+        /*
+        if (typeof window === "undefined") {
+          console.log(
+            `🔄 [Request] Usando Server Actions para criar: ${entityType}`
+          );
+          const endpoint = url || `/${entityType}`;
+          const response = await serverRequestPost<T>(endpoint, data);
+          return response.data;
+        }
+        */
+
+        // ✅ Fallback para cliente com headers de autenticação
+        console.log(
+          `🔄 [Request] Usando fetch do cliente para criar: ${entityType}`
+        );
+        const token = this.getAuthToken();
+        const headers: HeadersInit = {
+          "Content-Type": "application/json",
+          "x-client-id": "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
         const response = await fetch(
           url || `${this.API_BASE_URL}/${entityType}`,
           {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers,
             body: JSON.stringify(data),
             signal,
           }
@@ -269,11 +358,37 @@ export class RequestManager {
     return this.executeRequest(
       `${entityType}:update:${id}`,
       async (signal) => {
+        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
+        /*
+        if (typeof window === "undefined") {
+          console.log(
+            `🔄 [Request] Usando Server Actions para atualizar: ${entityType}/${id}`
+          );
+          const endpoint = url || `/${entityType}/${id}`;
+          const response = await serverRequestPatch<T>(endpoint, data);
+          return response.data;
+        }
+        */
+
+        // ✅ Fallback para cliente com headers de autenticação
+        console.log(
+          `🔄 [Request] Usando fetch do cliente para atualizar: ${entityType}/${id}`
+        );
+        const token = this.getAuthToken();
+        const headers: HeadersInit = {
+          "Content-Type": "application/json",
+          "x-client-id": "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
         const response = await fetch(
           url || `${this.API_BASE_URL}/${entityType}/${id}`,
           {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers,
             body: JSON.stringify(data),
             signal,
           }
@@ -293,10 +408,36 @@ export class RequestManager {
     return this.executeRequest(
       `${entityType}:delete:${id}`,
       async (signal) => {
+        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
+        /*
+        if (typeof window === "undefined") {
+          console.log(
+            `🔄 [Request] Usando Server Actions para deletar: ${entityType}/${id}`
+          );
+          const endpoint = url || `/${entityType}/${id}`;
+          const response = await serverRequestDelete<T>(endpoint);
+          return response.data;
+        }
+        */
+
+        // ✅ Fallback para cliente com headers de autenticação
+        console.log(
+          `🔄 [Request] Usando fetch do cliente para deletar: ${entityType}/${id}`
+        );
+        const token = this.getAuthToken();
+        const headers: HeadersInit = {
+          "x-client-id": "2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8",
+        };
+
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
         const response = await fetch(
           url || `${this.API_BASE_URL}/${entityType}/${id}`,
           {
             method: "DELETE",
+            headers,
             signal,
           }
         );

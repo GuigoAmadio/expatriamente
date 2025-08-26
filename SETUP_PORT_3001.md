@@ -23,7 +23,7 @@ NEXT_PUBLIC_DEFAULT_CLIENT_ID=expatriamente-default-client-id
 
 # Configurações de Autenticação NextAuth
 NEXTAUTH_SECRET=expatriamente-secret-key-2024
-NEXTAUTH_URL=http://localhost:3001
+NEXTAUTH_URL=http://localhost:3000
 
 # Configurações de Autenticação
 NEXT_PUBLIC_ENABLE_AUTH=false
@@ -55,7 +55,7 @@ npm install
 npm run dev
 ```
 
-O projeto será iniciado em: **http://localhost:3001**
+O projeto será iniciado em: **http://localhost:3000**
 
 ## 🔧 Configurações Importantes
 
@@ -66,20 +66,20 @@ O projeto será iniciado em: **http://localhost:3001**
 
 ### Frontend
 
-- **URL**: http://localhost:3001
+- **URL**: http://localhost:3000
 - **Porta**: 3001 (Next.js)
 
 ### Autenticação
 
-- **NextAuth URL**: http://localhost:3001
+- **NextAuth URL**: http://localhost:3000
 - **Client ID**: expatriamente-default-client-id
 - **Modo Dev**: Autenticação desabilitada para desenvolvimento
 
 ## 🎯 URLs Importantes
 
-- **Homepage**: http://localhost:3001
-- **Login**: http://localhost:3001/auth/signin
-- **Dashboard**: http://localhost:3001/dashboard
+- **Homepage**: http://localhost:3000
+- **Login**: http://localhost:3000/auth/signin
+- **Dashboard**: http://localhost:3000/dashboard
 - **API Backend**: http://localhost:3000/api/v1
 
 ## ✅ Checklist de Verificação
@@ -88,7 +88,7 @@ O projeto será iniciado em: **http://localhost:3001**
 - [ ] Dependências instaladas (`npm install`)
 - [ ] Backend rodando na porta 3000
 - [ ] Frontend iniciado (`npm run dev`)
-- [ ] Acessível em http://localhost:3001
+- [ ] Acessível em http://localhost:3000
 
 ## 🚨 Troubleshooting
 

@@ -32,7 +32,7 @@ const API_CONFIG = {
   baseURL:
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
-    "https://api.expatriamente.com/api/v1", // Backend NestJS na porta 3000
+    "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
   timeout: 5000,
   defaultClientId:
     process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
@@ -94,8 +94,20 @@ export const api = axios.create({
 // Interceptor para requisições
 api.interceptors.request.use(
   (config) => {
-    const defaultHeaders = getDefaultHeaders();
+    // Obter token do localStorage se disponível
+    let token: string | undefined;
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem("auth_token") || undefined;
+    }
+
+    const defaultHeaders = getDefaultHeaders({ token });
     Object.assign(config.headers, defaultHeaders);
+
+    console.log("🔑 [API Interceptor] Headers enviados:", {
+      "x-client-id": defaultHeaders["x-client-id"],
+      Authorization: token ? "Bearer [TOKEN]" : "undefined",
+    });
+
     return config;
   },
   (error) => Promise.reject(error)

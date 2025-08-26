@@ -12,7 +12,7 @@ NEXT_PUBLIC_DEFAULT_CLIENT_ID=bac29d84-612d-4c2d-a576-fdc0e50f8e2d
 
 # Configurações de Autenticação NextAuth
 NEXTAUTH_SECRET=expatriamente-secret-key-2024
-NEXTAUTH_URL=http://localhost:3001
+NEXTAUTH_URL=http://localhost:3000
 
 # Configurações de Autenticação
 NEXT_PUBLIC_ENABLE_AUTH=false
@@ -62,7 +62,7 @@ Após criar o arquivo, execute:
 npm run dev
 ```
 
-O projeto deve iniciar em: **http://localhost:3001**
+O projeto deve iniciar em: **http://localhost:3000**
 
 ## 🔍 Troubleshooting:
 
@@ -89,8 +89,8 @@ Se ainda houver erro de autenticação:
 
 ## 🎯 URLs Importantes:
 
-- **Frontend**: http://localhost:3001
+- **Frontend**: http://localhost:3000
 - **Backend**: http://localhost:3000
 - **API**: http://localhost:3000/api/v1
-- **Login**: http://localhost:3001/auth/signin
-- **Dashboard**: http://localhost:3001/dashboard
+- **Login**: http://localhost:3000/auth/signin
+- **Dashboard**: http://localhost:3000/dashboard

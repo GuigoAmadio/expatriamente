@@ -1,6 +1,9 @@
-// ✅ SSE Connector para Cache Events em Tempo Real
+// ✅ SSE Connector para Cache Events em Tempo Real - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+/*
 import { intelligentCache } from "./intelligent-cache";
+*/
 
+/*
 interface CacheEvent {
   type: "invalidate" | "invalidate_type" | "update" | "delete";
   pattern: string;
@@ -14,11 +17,27 @@ export class CacheSSEConnector {
   private maxReconnectAttempts = 5;
   private isConnected = false;
   private reconnectTimeout: NodeJS.Timeout | null = null;
+  private isConnecting = false; // ✅ Prevenir múltiplas conexões simultâneas
+  private isDisabled = false; // ✅ Flag para desabilitar completamente
 
   // ✅ Conectar ao SSE
   connect() {
+    // ✅ Verificar se está desabilitado
+    if (this.isDisabled) {
+      console.log("🚫 [CacheSSE] SSE desabilitado, ignorando conexão");
+      return;
+    }
+
     if (typeof window === "undefined") {
       console.log("🚫 [CacheSSE] Ambiente não é browser, ignorando conexão");
+      return;
+    }
+
+    // ✅ Prevenir múltiplas conexões simultâneas
+    if (this.isConnecting || this.isConnected) {
+      console.log(
+        "🔄 [CacheSSE] Já conectando ou conectado, ignorando nova tentativa"
+      );
       return;
     }
 
@@ -29,26 +48,39 @@ export class CacheSSEConnector {
     }
 
     try {
+      this.isConnecting = true; // ✅ Marcar como conectando
+
       console.log("🔌 [CacheSSE] Iniciando conexão SSE...");
       console.log(
         `📊 [CacheSSE] Estado atual: conectado=${this.isConnected}, tentativas=${this.reconnectAttempts}`
       );
 
-      // Construir URL com auth token
+      // Construir URL com auth token via query parameter
       const token = this.getAuthToken();
-      const url = new URL("/api/cache-events/stream", window.location.origin);
+      const API_BASE_URL = "http://localhost:3000/api/v1";
 
+      // Esta linha cria um novo objeto URL apontando para o endpoint "/cache-events/stream" usando a base da API definida em API_BASE_URL.
+      // Ou seja, ela monta a URL completa para onde a conexão SSE será aberta, por exemplo:
+      // Se API_BASE_URL for "http://localhost:3000/api/v1", o resultado será "http://localhost:3000/api/v1/cache-events/stream".
+      const url = new URL(`${API_BASE_URL}/cache-events/stream`);
+      // Adicionar token como query parameter
+      if (token) {
+        url.searchParams.append("token", token);
+      }
+      console.log("aAAAAAA URLLLLLLLLLLLLL", API_BASE_URL);
       console.log(`🌐 [CacheSSE] URL de conexão: ${url.toString()}`);
       console.log(`🔑 [CacheSSE] Token presente: ${!!token}`);
 
-      this.eventSource = new EventSource(url.toString(), {
-        withCredentials: true,
-      });
+      // Criar EventSource
+      // Nota: EventSource nativo não suporta withCredentials, mas cookies HTTP-only
+      // são enviados automaticamente pelo navegador se o domínio for o mesmo
+      this.eventSource = new EventSource(url.toString());
 
       console.log(`✅ [CacheSSE] EventSource criado, configurando handlers...`);
       this.setupEventHandlers();
     } catch (error) {
       console.error("❌ [CacheSSE] Erro ao conectar:", error);
+      this.isConnecting = false; // ✅ Resetar flag de conexão
       this.handleReconnection();
     }
   }
@@ -60,6 +92,7 @@ export class CacheSSEConnector {
     this.eventSource.onopen = () => {
       console.log("✅ [SSE] Conectado para atualizações em tempo real");
       this.isConnected = true;
+      this.isConnecting = false; // ✅ Resetar flag de conexão
       this.reconnectAttempts = 0;
 
       // Limpar timeout de reconexão se existir
@@ -92,6 +125,7 @@ export class CacheSSEConnector {
     this.eventSource.onerror = (error) => {
       console.error("❌ [SSE] Erro na conexão:", error);
       this.isConnected = false;
+      this.isConnecting = false; // ✅ Resetar flag de conexão
       this.emitConnectionEvent("error");
       this.handleReconnection();
     };
@@ -101,35 +135,51 @@ export class CacheSSEConnector {
   private async handleCacheEvent(event: CacheEvent) {
     try {
       console.log(`🎯 [CacheSSE] Processando evento de cache:`);
-      console.log(`📋 [CacheSSE] Tipo: ${event.type}, Padrão: ${event.pattern}, Timestamp: ${event.timestamp}`);
+      console.log(
+        `📋 [CacheSSE] Tipo: ${event.type}, Padrão: ${event.pattern}, Timestamp: ${event.timestamp}`
+      );
       console.log(`🏷️ [CacheSSE] Metadata:`, event.metadata);
 
       switch (event.type) {
         case "invalidate":
-          console.log(`🔄 [CacheSSE] Invalidando cache por padrão: ${event.pattern}`);
+          console.log(
+            `🔄 [CacheSSE] Invalidando cache por padrão: ${event.pattern}`
+          );
           await intelligentCache.invalidatePattern(event.pattern);
-          console.log(`✅ [CacheSSE] Cache invalidado com sucesso: ${event.pattern}`);
+          console.log(
+            `✅ [CacheSSE] Cache invalidado com sucesso: ${event.pattern}`
+          );
           break;
 
         case "invalidate_type":
-          console.log(`🔄 [CacheSSE] Invalidando cache por tipo: ${event.pattern}`);
+          console.log(
+            `🔄 [CacheSSE] Invalidando cache por tipo: ${event.pattern}`
+          );
           await intelligentCache.invalidateByType(event.pattern as any);
-          console.log(`✅ [CacheSSE] Tipo de cache invalidado com sucesso: ${event.pattern}`);
+          console.log(
+            `✅ [CacheSSE] Tipo de cache invalidado com sucesso: ${event.pattern}`
+          );
           break;
 
         case "update":
           console.log(`🔄 [CacheSSE] Cache atualizado: ${event.pattern}`);
-          console.log(`ℹ️ [CacheSSE] Implementação específica de atualização pode ser adicionada aqui`);
+          console.log(
+            `ℹ️ [CacheSSE] Implementação específica de atualização pode ser adicionada aqui`
+          );
           break;
 
         case "delete":
           console.log(`🗑️ [CacheSSE] Deletando cache: ${event.pattern}`);
           await intelligentCache.delete(event.pattern);
-          console.log(`✅ [CacheSSE] Cache deletado com sucesso: ${event.pattern}`);
+          console.log(
+            `✅ [CacheSSE] Cache deletado com sucesso: ${event.pattern}`
+          );
           break;
 
         default:
-          console.warn(`⚠️ [CacheSSE] Tipo de evento desconhecido: ${event.type}`);
+          console.warn(
+            `⚠️ [CacheSSE] Tipo de evento desconhecido: ${event.type}`
+          );
       }
 
       // Emitir evento customizado para componentes
@@ -184,11 +234,18 @@ export class CacheSSEConnector {
 
   // ✅ Lidar com reconexão
   private handleReconnection() {
+    // ✅ Verificar se está desabilitado
+    if (this.isDisabled) {
+      console.log("🚫 [SSE] SSE desabilitado, não tentando reconectar");
+      return;
+    }
+
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
       console.error(
         `❌ [SSE] Máximo de tentativas de reconexão atingido (${this.maxReconnectAttempts})`
       );
       this.emitConnectionEvent("error");
+      this.isDisabled = true; // ✅ Desabilitar após máximo de tentativas
       return;
     }
 
@@ -219,6 +276,7 @@ export class CacheSSEConnector {
     }
 
     this.isConnected = false;
+    this.isConnecting = false; // ✅ Resetar flag de conexão
     this.reconnectAttempts = 0;
 
     if (emitEvent) {
@@ -269,14 +327,74 @@ export class CacheSSEConnector {
     console.log("🔄 [SSE] Forçando reconexão...");
     this.disconnect(false);
     this.reconnectAttempts = 0;
+    this.isDisabled = false; // ✅ Reabilitar se estava desabilitado
     this.connect();
+  }
+
+  // ✅ Habilitar/Desabilitar SSE
+  enable() {
+    console.log("✅ [SSE] Habilitando SSE...");
+    this.isDisabled = false;
+  }
+
+  disable() {
+    console.log("🚫 [SSE] Desabilitando SSE...");
+    this.isDisabled = true;
+    this.disconnect(false);
+  }
+}
+
+// Instância global
+export const cacheSSE = new CacheSSEConnector();
+}
+*/
+
+// ✅ TEMPORARY FALLBACK IMPLEMENTATION FOR PROJECT DELIVERY
+export class CacheSSEConnector {
+  connect() {
+    console.log(
+      "⚠️ [SSE] Desabilitado temporariamente para entrega do projeto"
+    );
+  }
+
+  disconnect(emitEvent = true) {
+    console.log(
+      "⚠️ [SSE] Desabilitado temporariamente para entrega do projeto"
+    );
+  }
+
+  getConnectionStatus() {
+    return {
+      isConnected: false,
+      reconnectAttempts: 0,
+      readyState: 0,
+    };
+  }
+
+  forceReconnect() {
+    console.log(
+      "⚠️ [SSE] Desabilitado temporariamente para entrega do projeto"
+    );
+  }
+
+  enable() {
+    console.log(
+      "⚠️ [SSE] Desabilitado temporariamente para entrega do projeto"
+    );
+  }
+
+  disable() {
+    console.log(
+      "⚠️ [SSE] Desabilitado temporariamente para entrega do projeto"
+    );
   }
 }
 
 // Instância global
 export const cacheSSE = new CacheSSEConnector();
 
-// ✅ Auto-conectar quando possível
+// ✅ Auto-conectar quando possível - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+/*
 if (typeof window !== "undefined") {
   // Conectar após login
   window.addEventListener("storage", (event) => {
@@ -303,3 +421,4 @@ if (typeof window !== "undefined") {
     cacheSSE.disconnect(false);
   });
 }
+*/

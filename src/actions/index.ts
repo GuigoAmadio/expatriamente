@@ -51,3 +51,37 @@ export {
   reportIssue,
   searchApp,
 } from "./app";
+
+// ✅ Prefetch actions
+export {
+  prefetchDashboardStats,
+  prefetchCurrentProfile,
+  prefetchTodayAppointments,
+  prefetchMyAppointments,
+  prefetchEmployees,
+  prefetchMyClients,
+  prefetchAllClients,
+  prefetchAvailableServices,
+  prefetchAllServices,
+  prefetchAppSettings,
+  prefetchMonthlyAnalytics,
+  prefetchPersonalAnalytics,
+  prefetchAvailableEmployees,
+  prefetchDetailedAnalytics,
+  prefetchSystemHealth,
+  prefetchAllUsers,
+  prefetchRecentLogs,
+  clearCacheAction,
+  getCacheStatsAction,
+  invalidateCachePatternAction,
+} from "./prefetch";
+
+// ✅ Request Manager actions
+export {
+  serverRequestGet,
+  serverRequestPost,
+  serverRequestPatch,
+  serverRequestPut,
+  serverRequestDelete,
+  serverRequest,
+} from "./request-manager";

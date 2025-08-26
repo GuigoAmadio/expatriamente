@@ -83,7 +83,7 @@ Crie um arquivo `.env.local` na raiz do projeto:
 
 ```env
 # Configuração da API Backend
-NEXT_PUBLIC_API_URL=http://localhost:3001/v1
+NEXT_PUBLIC_API_URL=http://localhost:3000/v1
 
 # Configurações de Autenticação
 NEXTAUTH_SECRET=your-secret-key-here
@@ -201,7 +201,7 @@ npm install
 cp env.example .env.local
 
 # Editar variáveis de ambiente
-# NEXT_PUBLIC_API_URL=http://localhost:3001/v1
+# NEXT_PUBLIC_API_URL=http://localhost:3000/v1
 ```
 
 ### **2. Executar o Projeto**
@@ -251,7 +251,7 @@ npm start
 
 - Verifique se o backend está rodando na porta 3001
 - Confirme a URL no arquivo `.env.local`
-- Teste a conectividade com `curl http://localhost:3001/v1/auth/me`
+- Teste a conectividade com `curl http://localhost:3000/v1/auth/me`
 
 ### **Erro de Autenticação**
 
