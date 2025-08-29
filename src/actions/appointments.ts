@@ -47,15 +47,31 @@ export async function getAppointmentsCount(
     if (params.endDate) queryParams.append("endDate", params.endDate);
     if (params.status) queryParams.append("status", params.status);
 
-    const response = await serverGet<GetAppointmentsCountResponse>(
-      `/appointments/count?${queryParams.toString()}`
+    // ✅ Adicionar cache para evitar chamadas repetidas
+    const cacheKey = `appointments:count:${params.startDate || "all"}:${
+      params.endDate || "all"
+    }:${params.status || "all"}`;
+
+    const data = await cacheUtils.getCachedData(
+      cacheKey,
+      async () => {
+        console.log(
+          "🔄 [getAppointmentsCount] Cache miss - buscando dados frescos do backend..."
+        );
+        const response = await serverGet<GetAppointmentsCountResponse>(
+          `/appointments/count?${queryParams.toString()}`
+        );
+
+        if (response.success && response.data?.count !== undefined) {
+          return response.data.count;
+        }
+
+        return 0;
+      },
+      CACHE_CONFIG.appointments
     );
 
-    if (response.success && response.data?.count !== undefined) {
-      return response.data.count;
-    }
-
-    return 0;
+    return data || 0;
   } catch (error) {
     console.error("Erro ao obter quantidade de appointments:", error);
     return 0;
@@ -199,7 +215,7 @@ export async function getAppointment(id: string) {
 export async function createAppointment(data: CreateAppointmentData) {
   try {
     console.log("🆕 [createAppointment] Criando novo agendamento...");
-    console.log("📋 [createAppointment] Dados:", { ...data, userId: "***" });
+    console.log("�� [createAppointment] Dados:", { ...data, userId: "***" });
     const result = await serverPost<Appointment>("/appointments", data);
 
     // ✅ Invalidar cache de appointments

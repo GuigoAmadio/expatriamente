@@ -1,233 +1,79 @@
-// TEMPORARILY DISABLED FOR PROJECT DELIVERY
-/*
-'use server';
+"use server";
 
-import { serverGet } from '@/lib/server-api';
-import { cacheUtils, CACHE_CONFIG } from '@/lib/intelligent-cache';
-*/
+import { serverGet } from "@/lib/server-api";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
-// ✅ Dashboard Stats - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// ✅ Dashboard Stats
 export async function prefetchDashboardStats() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-/*
-// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
-export async function prefetchDashboardStats_DISABLED() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchDashboardStats()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchDashboardStats()"
+    );
     return await cacheUtils.getCachedData(
-      'dashboard:stats',
+      "dashboard:stats",
       async () => {
-        const result = await serverGet('/dashboard/stats');
-        console.log('✅ [Prefetch Server Action] Dashboard stats carregados');
+        const result = await serverGet("/dashboard/stats");
+        console.log("✅ [Prefetch Server Action] Dashboard stats carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.dashboard
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchDashboardStats:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchDashboardStats:",
+      error
+    );
     throw error;
   }
 }
-*/
 
-// ✅ Current Profile - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// ✅ Current Profile
 export async function prefetchCurrentProfile() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-/*
-// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED  
-export async function prefetchCurrentProfile_DISABLED() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchCurrentProfile()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchCurrentProfile()"
+    );
     return await cacheUtils.getCachedData(
-      'profile:current',
+      "profile:current",
       async () => {
-        const result = await serverGet('/auth/profile');
-        console.log('✅ [Prefetch Server Action] Profile carregado');
+        const result = await serverGet("/auth/profile");
+        console.log("✅ [Prefetch Server Action] Profile carregado:", result);
         return result.data;
       },
       CACHE_CONFIG.profile
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchCurrentProfile:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchCurrentProfile:",
+      error
+    );
     throw error;
   }
 }
-*/
 
-// ✅ Today Appointments - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// ✅ Today Appointments
 export async function prefetchTodayAppointments() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ My Appointments - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchMyAppointments() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Employees - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchEmployees() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ My Clients - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchMyClients() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ All Clients - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchAllClients() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Available Services - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchAvailableServices() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ All Services - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchAllServices() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ App Settings - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchAppSettings() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Monthly Analytics - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchMonthlyAnalytics() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Personal Analytics - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchPersonalAnalytics() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Available Employees - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchAvailableEmployees() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Detailed Analytics - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchDetailedAnalytics() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ System Health - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchSystemHealth() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ All Users - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchAllUsers() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Recent Logs - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchRecentLogs() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return null;
-}
-
-// ✅ Clear Cache - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function clearCacheAction() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return { success: false, message: "Desabilitado temporariamente" };
-}
-
-// ✅ Get Cache Stats - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function getCacheStatsAction() {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: { memorySize: 0, localStorageSize: 0, totalSize: 0 },
-  };
-}
-
-// ✅ Invalidate Cache Pattern - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function invalidateCachePatternAction(pattern: string) {
-  console.log(
-    "⚠️ [Prefetch Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return { success: false, message: "Desabilitado temporariamente" };
-}
-
-/*
-// ALL ORIGINAL IMPLEMENTATIONS - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function prefetchTodayAppointments_DISABLED() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchTodayAppointments()');
-    const today = new Date().toISOString().split('T')[0];
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchTodayAppointments()"
+    );
     return await cacheUtils.getCachedData(
-      'appointments:today',
+      "appointments:today",
       async () => {
-        const result = await serverGet(`/appointments?date=${today}`);
-        console.log('✅ [Prefetch Server Action] Today appointments carregados');
+        const result = await serverGet("/appointments/today");
+        console.log(
+          "✅ [Prefetch Server Action] Appointments today carregados:",
+          result
+        );
         return result.data;
       },
       CACHE_CONFIG.appointments
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchTodayAppointments:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchTodayAppointments:",
+      error
+    );
     throw error;
   }
 }
@@ -235,18 +81,23 @@ export async function prefetchTodayAppointments_DISABLED() {
 // ✅ My Appointments
 export async function prefetchMyAppointments() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchMyAppointments()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchMyAppointments()"
+    );
     return await cacheUtils.getCachedData(
-      'appointments:my',
+      "appointments:my",
       async () => {
-        const result = await serverGet('/appointments/my');
-        console.log('✅ [Prefetch Server Action] My appointments carregados');
+        const result = await serverGet("/appointments/my");
+        console.log("✅ [Prefetch Server Action] My appointments carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.appointments
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchMyAppointments:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchMyAppointments:",
+      error
+    );
     throw error;
   }
 }
@@ -254,18 +105,21 @@ export async function prefetchMyAppointments() {
 // ✅ Employees
 export async function prefetchEmployees() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchEmployees()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchEmployees()");
     return await cacheUtils.getCachedData(
-      'employees:list',
+      "employees:list",
       async () => {
-        const result = await serverGet('/employees');
-        console.log('✅ [Prefetch Server Action] Employees carregados');
+        const result = await serverGet("/employees");
+        console.log("✅ [Prefetch Server Action] Employees carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.employees
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchEmployees:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchEmployees:",
+      error
+    );
     throw error;
   }
 }
@@ -273,18 +127,21 @@ export async function prefetchEmployees() {
 // ✅ My Clients
 export async function prefetchMyClients() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchMyClients()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchMyClients()");
     return await cacheUtils.getCachedData(
-      'clients:my',
+      "clients:my",
       async () => {
-        const result = await serverGet('/clients/my');
-        console.log('✅ [Prefetch Server Action] My clients carregados');
+        const result = await serverGet("/clients/my");
+        console.log("✅ [Prefetch Server Action] My clients carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.clients
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchMyClients:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchMyClients:",
+      error
+    );
     throw error;
   }
 }
@@ -292,18 +149,21 @@ export async function prefetchMyClients() {
 // ✅ All Clients
 export async function prefetchAllClients() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchAllClients()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchAllClients()");
     return await cacheUtils.getCachedData(
-      'clients:list',
+      "clients:all",
       async () => {
-        const result = await serverGet('/clients');
-        console.log('✅ [Prefetch Server Action] All clients carregados');
+        const result = await serverGet("/clients");
+        console.log("✅ [Prefetch Server Action] All clients carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.clients
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchAllClients:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchAllClients:",
+      error
+    );
     throw error;
   }
 }
@@ -311,18 +171,26 @@ export async function prefetchAllClients() {
 // ✅ Available Services
 export async function prefetchAvailableServices() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchAvailableServices()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchAvailableServices()"
+    );
     return await cacheUtils.getCachedData(
-      'services:available',
+      "services:available",
       async () => {
-        const result = await serverGet('/services/available');
-        console.log('✅ [Prefetch Server Action] Available services carregados');
+        const result = await serverGet("/services/public");
+        console.log(
+          "✅ [Prefetch Server Action] Available services carregados:",
+          result
+        );
         return result.data;
       },
       CACHE_CONFIG.services
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchAvailableServices:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchAvailableServices:",
+      error
+    );
     throw error;
   }
 }
@@ -330,18 +198,21 @@ export async function prefetchAvailableServices() {
 // ✅ All Services
 export async function prefetchAllServices() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchAllServices()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchAllServices()");
     return await cacheUtils.getCachedData(
-      'services:list',
+      "services:all",
       async () => {
-        const result = await serverGet('/services');
-        console.log('✅ [Prefetch Server Action] All services carregados');
+        const result = await serverGet("/services");
+        console.log("✅ [Prefetch Server Action] All services carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.services
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchAllServices:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchAllServices:",
+      error
+    );
     throw error;
   }
 }
@@ -349,18 +220,21 @@ export async function prefetchAllServices() {
 // ✅ App Settings
 export async function prefetchAppSettings() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchAppSettings()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchAppSettings()");
     return await cacheUtils.getCachedData(
-      'settings:app',
+      "settings:app",
       async () => {
-        const result = await serverGet('/settings');
-        console.log('✅ [Prefetch Server Action] App settings carregados');
+        const result = await serverGet("/settings/app");
+        console.log("✅ [Prefetch Server Action] App settings carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.settings
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchAppSettings:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchAppSettings:",
+      error
+    );
     throw error;
   }
 }
@@ -368,18 +242,23 @@ export async function prefetchAppSettings() {
 // ✅ Monthly Analytics
 export async function prefetchMonthlyAnalytics() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchMonthlyAnalytics()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchMonthlyAnalytics()"
+    );
     return await cacheUtils.getCachedData(
-      'analytics:monthly',
+      "analytics:monthly",
       async () => {
-        const result = await serverGet('/analytics/monthly');
-        console.log('✅ [Prefetch Server Action] Monthly analytics carregados');
+        const result = await serverGet("/analytics/monthly");
+        console.log("✅ [Prefetch Server Action] Monthly analytics carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.analytics
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchMonthlyAnalytics:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchMonthlyAnalytics:",
+      error
+    );
     throw error;
   }
 }
@@ -387,18 +266,26 @@ export async function prefetchMonthlyAnalytics() {
 // ✅ Personal Analytics
 export async function prefetchPersonalAnalytics() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchPersonalAnalytics()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchPersonalAnalytics()"
+    );
     return await cacheUtils.getCachedData(
-      'analytics:personal',
+      "analytics:personal",
       async () => {
-        const result = await serverGet('/analytics/personal');
-        console.log('✅ [Prefetch Server Action] Personal analytics carregados');
+        const result = await serverGet("/analytics/personal");
+        console.log(
+          "✅ [Prefetch Server Action] Personal analytics carregados:",
+          result
+        );
         return result.data;
       },
       CACHE_CONFIG.analytics
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchPersonalAnalytics:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchPersonalAnalytics:",
+      error
+    );
     throw error;
   }
 }
@@ -406,39 +293,53 @@ export async function prefetchPersonalAnalytics() {
 // ✅ Available Employees
 export async function prefetchAvailableEmployees() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchAvailableEmployees()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchAvailableEmployees()"
+    );
     return await cacheUtils.getCachedData(
-      'employees:available',
+      "employees:available",
       async () => {
-        const result = await serverGet('/employees/available');
-        console.log('✅ [Prefetch Server Action] Available employees carregados');
+        const result = await serverGet("/employees/available");
+        console.log(
+            "✅ [Prefetch Server Action] Available employees carregados:",
+          result
+        );
         return result.data;
       },
       CACHE_CONFIG.employees
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchAvailableEmployees:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchAvailableEmployees:",
+      error
+    );
     throw error;
   }
 }
 
-// ✅ SUPER_ADMIN Functions
-
 // ✅ Detailed Analytics
 export async function prefetchDetailedAnalytics() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchDetailedAnalytics()');
+    console.log(
+      "🚀 [Prefetch Server Action] Iniciando prefetchDetailedAnalytics()"
+    );
     return await cacheUtils.getCachedData(
-      'analytics:detailed',
+      "analytics:detailed",
       async () => {
-        const result = await serverGet('/analytics/detailed');
-        console.log('✅ [Prefetch Server Action] Detailed analytics carregados');
+        const result = await serverGet("/analytics/detailed");
+        console.log(
+          "✅ [Prefetch Server Action] Detailed analytics carregados:",
+          result
+        );
         return result.data;
       },
       CACHE_CONFIG.analytics
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchDetailedAnalytics:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchDetailedAnalytics:",
+      error
+    );
     throw error;
   }
 }
@@ -446,18 +347,21 @@ export async function prefetchDetailedAnalytics() {
 // ✅ System Health
 export async function prefetchSystemHealth() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchSystemHealth()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchSystemHealth()");
     return await cacheUtils.getCachedData(
-      'system:health',
+      "system:health",
       async () => {
-        const result = await serverGet('/system/health');
-        console.log('✅ [Prefetch Server Action] System health carregado');
+        const result = await serverGet("/system/health");
+        console.log("✅ [Prefetch Server Action] System health carregado:", result);
         return result.data;
       },
       CACHE_CONFIG.system
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchSystemHealth:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchSystemHealth:",
+      error
+    );
     throw error;
   }
 }
@@ -465,18 +369,21 @@ export async function prefetchSystemHealth() {
 // ✅ All Users
 export async function prefetchAllUsers() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchAllUsers()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchAllUsers()");
     return await cacheUtils.getCachedData(
-      'users:all',
+      "users:all",
       async () => {
-        const result = await serverGet('/users');
-        console.log('✅ [Prefetch Server Action] All users carregados');
+        const result = await serverGet("/users");
+        console.log("✅ [Prefetch Server Action] All users carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.users
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchAllUsers:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchAllUsers:",
+      error
+    );
     throw error;
   }
 }
@@ -484,58 +391,69 @@ export async function prefetchAllUsers() {
 // ✅ Recent Logs
 export async function prefetchRecentLogs() {
   try {
-    console.log('🚀 [Prefetch Server Action] Iniciando prefetchRecentLogs()');
+    console.log("🚀 [Prefetch Server Action] Iniciando prefetchRecentLogs()");
     return await cacheUtils.getCachedData(
-      'logs:recent',
+      "logs:recent",
       async () => {
-        const result = await serverGet('/logs/recent');
-        console.log('✅ [Prefetch Server Action] Recent logs carregados');
+        const result = await serverGet("/logs/recent");
+        console.log("✅ [Prefetch Server Action] Recent logs carregados:", result);
         return result.data;
       },
       CACHE_CONFIG.logs
     );
   } catch (error) {
-    console.error('❌ [Prefetch Server Action] Erro em prefetchRecentLogs:', error);
+    console.error(
+      "❌ [Prefetch Server Action] Erro em prefetchRecentLogs:",
+      error
+    );
     throw error;
   }
 }
 
-// ✅ Cache Management Functions
-
 // ✅ Clear Cache
-export async function clearCacheAction() {
+export async function clearCache() {
   try {
-    console.log('🧹 [Cache Action] Limpando cache...');
+    console.log("🚀 [Prefetch Server Action] Iniciando clearCache()");
     await cacheUtils.clear();
-    console.log('✅ [Cache Action] Cache limpo com sucesso');
-    return { success: true, message: 'Cache limpo com sucesso' };
+    return { success: true, message: "Cache limpo com sucesso" };
   } catch (error) {
-    console.error('❌ [Cache Action] Erro ao limpar cache:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Erro desconhecido' };
+    console.error("❌ [Prefetch Server Action] Erro em clearCache:", error);
+    throw error;
   }
 }
 
 // ✅ Get Cache Stats
-export async function getCacheStatsAction() {
+export async function getCacheStats() {
   try {
+    console.log("🚀 [Prefetch Server Action] Iniciando getCacheStats()");
     const stats = cacheUtils.getStats();
-    return { success: true, data: stats };
+    console.log("✅ [Prefetch Server Action] Cache stats obtidos:", stats);
+    return stats;
   } catch (error) {
-    console.error('❌ [Cache Action] Erro ao obter estatísticas:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Erro desconhecido' };
+    console.error("❌ [Prefetch Server Action] Erro em getCacheStats:", error);
+    throw error;
   }
 }
 
 // ✅ Invalidate Cache Pattern
-export async function invalidateCachePatternAction(pattern: string) {
+export async function invalidateCachePattern(pattern: string) {
   try {
-    console.log(`🔄 [Cache Action] Invalidando padrão: ${pattern}`);
+    console.log(
+      `🚀 [Prefetch Server Action] Iniciando invalidateCachePattern(${pattern})`
+    );
     await cacheUtils.invalidatePattern(pattern);
-    console.log(`✅ [Cache Action] Padrão invalidado: ${pattern}`);
-    return { success: true, message: `Padrão ${pattern} invalidado` };
+    console.log(
+      `✅ [Prefetch Server Action] Cache pattern ${pattern} invalidado`
+    );
+    return {
+      success: true,
+      message: `Pattern ${pattern} invalidado com sucesso`,
+    };
   } catch (error) {
-    console.error('❌ [Cache Action] Erro ao invalidar padrão:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Erro desconhecido' };
+    console.error(
+      "❌ [Prefetch Server Action] Erro em invalidateCachePattern:",
+      error
+    );
+    throw error;
   }
 }
-*/

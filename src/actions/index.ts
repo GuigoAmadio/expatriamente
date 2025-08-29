@@ -71,9 +71,9 @@ export {
   prefetchSystemHealth,
   prefetchAllUsers,
   prefetchRecentLogs,
-  clearCacheAction,
-  getCacheStatsAction,
-  invalidateCachePatternAction,
+  clearCache,
+  getCacheStats,
+  invalidateCachePattern,
 } from "./prefetch";
 
 // ✅ Request Manager actions

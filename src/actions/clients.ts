@@ -42,7 +42,7 @@ async function serverFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
   const fullUrl = `${baseUrl}${url}`;
 
   const headers: HeadersInit = {
@@ -72,15 +72,25 @@ async function serverFetch<T>(
 
 export async function getClientsCount(): Promise<number> {
   try {
-    const response = await serverFetch<GetClientsCountResponse>(
-      "/clients/count"
+    // ✅ Adicionar cache para evitar chamadas repetidas
+    const data = await cacheUtils.getCachedData(
+      "clients:count",
+      async () => {
+        console.log("🔄 [getClientsCount] Cache miss - buscando dados frescos do backend...");
+        const response = await serverFetch<GetClientsCountResponse>(
+          "/clients/count"
+        );
+
+        if (response.success) {
+          return response.data.count;
+        }
+
+        return 0;
+      },
+      CACHE_CONFIG.clients
     );
 
-    if (response.success) {
-      return response.data.count;
-    }
-
-    return 0;
+    return data || 0;
   } catch (error) {
     console.error("Erro ao obter quantidade de clientes:", error);
     return 0;

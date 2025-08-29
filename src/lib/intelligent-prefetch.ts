@@ -1,15 +1,11 @@
-// ✅ Sistema de Prefetch Inteligente - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-/*
+// ✅ Sistema de Prefetch Inteligente
 import {
   intelligentCache,
   CACHE_CONFIG,
   cacheUtils,
 } from "./intelligent-cache";
 import { requestManager } from "./request-manager";
-*/
 
-// ✅ Importar Server Actions - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-/*
 import {
   prefetchDashboardStats,
   prefetchCurrentProfile,
@@ -29,9 +25,7 @@ import {
   prefetchAllUsers,
   prefetchRecentLogs,
 } from "../actions/prefetch";
-*/
 
-/*
 interface PrefetchItem {
   key: string;
   priority: "high" | "medium" | "low";
@@ -174,10 +168,7 @@ export class IntelligentPrefetch {
       console.log(`🔄 [Prefetch] Carregando ${key}...`);
 
       // Verificar se já está em cache
-      const cacheType = key.split(":")[0] as keyof typeof CACHE_CONFIG;
-      const config = CACHE_CONFIG[cacheType];
-
-      const cached = await intelligentCache.get(key, config);
+      const cached = await intelligentCache.get(key);
       if (cached) {
         console.log(`✅ [Prefetch] ${key} já está em cache, pulando`);
         return;
@@ -191,7 +182,7 @@ export class IntelligentPrefetch {
       );
 
       // Salvar no cache
-      await intelligentCache.set(key, data, config);
+      await intelligentCache.set(key, data);
       console.log(`✅ [Prefetch] ${key} carregado e salvo no cache`);
     } catch (error) {
       console.error(`❌ [Prefetch] Erro ao carregar ${key}:`, error);
@@ -616,42 +607,6 @@ export class IntelligentPrefetch {
     this.prefetchQueue.clear();
     this.prefetchPriorities.clear();
     this.isActive = false;
-  }
-}
-
-// Instância global
-export const intelligentPrefetch = new IntelligentPrefetch();
-}
-*/
-
-// ✅ TEMPORARY FALLBACK IMPLEMENTATION FOR PROJECT DELIVERY
-export class IntelligentPrefetch {
-  getStats() {
-    return { queueSize: 0, isActive: false, priorities: {} };
-  }
-
-  async prefetchEssential(userRole: string): Promise<void> {
-    console.log(
-      `⚠️ [Prefetch] Desabilitado temporariamente para entrega do projeto - userRole: ${userRole}`
-    );
-  }
-
-  async prefetchSecondary(userRole: string): Promise<void> {
-    console.log(
-      `⚠️ [Prefetch] Desabilitado temporariamente para entrega do projeto - userRole: ${userRole}`
-    );
-  }
-
-  async prefetchByRoute(route: string): Promise<void> {
-    console.log(
-      `⚠️ [Prefetch] Desabilitado temporariamente para entrega do projeto - route: ${route}`
-    );
-  }
-
-  cancelAllPrefetches(): void {
-    console.log(
-      "⚠️ [Prefetch] Desabilitado temporariamente para entrega do projeto"
-    );
   }
 }
 

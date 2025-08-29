@@ -260,7 +260,7 @@ export default function PsychologistsSection() {
                 {p.name}
               </div>
               <div className="text-xs xl:text-base text-[#6B3F1D] mb-5">
-                Psicanalista Clinico
+                Psicanalista Clínico
               </div>
               <button
                 className="px-8 py-3 rounded-xl bg-[#987b6b] text-white font-akzidens font-bold shadow-lg hover:bg-gradient-to-r hover:from-[#9ca995] hover:to-[#9bb18e] hover:scale-110 hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer border-2 border-transparent hover:border-white/20 disabled:opacity-75 disabled:cursor-not-allowed disabled:scale-100"

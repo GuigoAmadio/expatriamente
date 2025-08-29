@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { LoginInput, User } from "@/types";
 import { serverPost, serverGet, serverPut } from "@/lib/server-api";
-import { cacheUtils, CACHE_CONFIG } from "@/lib/cache";
+import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
 // Interfaces para tipar os dados da API
 interface LoginApiResponse {
@@ -36,6 +36,244 @@ interface AuthMeResponse {
     status: string;
   };
 }
+
+// ... existing code ...
+
+// ✅ Função otimizada para executar prefetchs baseados na role
+async function executeRoleBasedPrefetch(userRole: string) {
+  try {
+    console.log(`🚀 [Auth] Executando prefetchs para role: ${userRole}`);
+
+    // Importar prefetchs dinamicamente para evitar circular dependencies
+    const {
+      prefetchDashboardStats,
+      prefetchCurrentProfile,
+      prefetchTodayAppointments,
+      prefetchMyAppointments,
+      prefetchEmployees,
+      prefetchAvailableServices,
+      prefetchAllServices,
+    } = await import("@/actions/prefetch");
+
+    // ✅ Função de retry simples
+    const retryOnce = async (promise: Promise<any>, prefetchName: string) => {
+      try {
+        return await promise;
+      } catch (error) {
+        console.log(`🔄 [Auth] Retry para ${prefetchName}...`);
+        try {
+          return await promise;
+        } catch (retryError) {
+          console.error(
+            `❌ [Auth] ${prefetchName} falhou após retry:`,
+            retryError
+          );
+          throw retryError;
+        }
+      }
+    };
+
+    const prefetchConfigs: Array<{
+      name: string;
+      fn: () => Promise<any>;
+      essential: boolean;
+    }> = [];
+
+    // ✅ Prefetchs ESSENCIAIS para todos os usuários
+    const essentialPrefetches = [
+      {
+        name: "prefetchCurrentProfile",
+        fn: prefetchCurrentProfile,
+        essential: true,
+      },
+    ];
+
+    // ✅ Prefetchs BASEADOS NO ROLE
+    if (userRole === "SUPER_ADMIN" || userRole === "ADMIN") {
+      // Admins: Dashboard completo + todas as entidades
+      const adminPrefetches = [
+        {
+          name: "prefetchDashboardStats",
+          fn: prefetchDashboardStats,
+          essential: false,
+        },
+        {
+          name: "prefetchTodayAppointments",
+          fn: prefetchTodayAppointments,
+          essential: false,
+        },
+        { name: "prefetchEmployees", fn: prefetchEmployees, essential: false },
+        {
+          name: "prefetchAllServices",
+          fn: prefetchAllServices,
+          essential: false,
+        },
+        {
+          name: "prefetchAvailableServices",
+          fn: prefetchAvailableServices,
+          essential: false,
+        },
+      ];
+      prefetchConfigs.push(...adminPrefetches);
+      console.log(
+        `🔑 [Auth] Prefetchs ADMIN: ${adminPrefetches
+          .map((p) => p.name)
+          .join(", ")}`
+      );
+    } else if (userRole === "EMPLOYEE") {
+      // Funcionários: Seus próprios dados + serviços
+      const employeePrefetches = [
+        {
+          name: "prefetchMyAppointments",
+          fn: prefetchMyAppointments,
+          essential: false,
+        },
+        {
+          name: "prefetchTodayAppointments",
+          fn: prefetchTodayAppointments,
+          essential: false,
+        },
+        {
+          name: "prefetchAvailableServices",
+          fn: prefetchAvailableServices,
+          essential: false,
+        },
+      ];
+      prefetchConfigs.push(...employeePrefetches);
+      console.log(
+        `��‍💼 [Auth] Prefetchs EMPLOYEE: ${employeePrefetches
+          .map((p) => p.name)
+          .join(", ")}`
+      );
+    } else {
+      // Clientes: Apenas seus próprios dados
+      const clientPrefetches = [
+        {
+          name: "prefetchMyAppointments",
+          fn: prefetchMyAppointments,
+          essential: false,
+        },
+        {
+          name: "prefetchAvailableServices",
+          fn: prefetchAvailableServices,
+          essential: false,
+        },
+      ];
+      prefetchConfigs.push(...clientPrefetches);
+      console.log(
+        `👤 [Auth] Prefetchs CLIENT: ${clientPrefetches
+          .map((p) => p.name)
+          .join(", ")}`
+      );
+    }
+
+    // ✅ Adicionar prefetchs essenciais
+    prefetchConfigs.push(...essentialPrefetches);
+    console.log(
+      `⭐ [Auth] Prefetchs ESSENCIAIS: ${essentialPrefetches
+        .map((p) => p.name)
+        .join(", ")}`
+    );
+
+    // ✅ Executar todos os prefetchs em paralelo com timeout otimizado
+    const startTime = Date.now();
+    const totalPrefetches = prefetchConfigs.length;
+
+    console.log(
+      `\n📊 [Auth] Iniciando ${totalPrefetches} prefetchs em paralelo...`
+    );
+
+    const results = await Promise.allSettled(
+      prefetchConfigs.map(async (config, index) => {
+        const prefetchStartTime = Date.now();
+        try {
+          // ✅ Timeout aumentado para 15 segundos + retry
+          const result = await Promise.race([
+            retryOnce(config.fn(), config.name),
+            new Promise((_, reject) =>
+              setTimeout(
+                () => reject(new Error("Prefetch timeout (15s)")),
+                15000
+              )
+            ),
+          ]);
+
+          const prefetchDuration = Date.now() - prefetchStartTime;
+          console.log(
+            `✅ [Auth] ${config.name} concluído em ${prefetchDuration}ms`
+          );
+          return result;
+        } catch (error) {
+          const prefetchDuration = Date.now() - prefetchStartTime;
+          console.error(
+            `❌ [Auth] ${config.name} falhou em ${prefetchDuration}ms:`,
+            error
+          );
+          throw error;
+        }
+      })
+    );
+
+    const duration = Date.now() - startTime;
+    const successCount = results.filter((r) => r.status === "fulfilled").length;
+    const failureCount = results.filter((r) => r.status === "rejected").length;
+
+    // ✅ Log detalhado de cada prefetch
+    console.log(`\n📊 [Auth] Relatório detalhado dos prefetchs:`);
+    console.log(`⏱️  Duração total: ${duration}ms`);
+    console.log(`✅ Sucessos: ${successCount}/${totalPrefetches}`);
+    console.log(`❌ Falhas: ${failureCount}/${totalPrefetches}`);
+
+    // ✅ Listar prefetchs que falharam
+    if (failureCount > 0) {
+      console.log(`\n❌ [Auth] Prefetchs que falharam:`);
+      results.forEach((result, index) => {
+        if (result.status === "rejected") {
+          const config = prefetchConfigs[index];
+          const isEssential = config?.essential ? " (ESSENCIAL)" : "";
+          console.log(
+            `  - ${config?.name}${isEssential}: ${
+              result.reason?.message || result.reason
+            }`
+          );
+        }
+      });
+    }
+
+    // ✅ Verificar se prefetchs essenciais falharam
+    const essentialFailures = results.filter((result, index) => {
+      const config = prefetchConfigs[index];
+      return result.status === "rejected" && config?.essential;
+    });
+
+    if (essentialFailures.length > 0) {
+      console.warn(
+        `⚠️ [Auth] ${essentialFailures.length} prefetchs essenciais falharam!`
+      );
+    }
+
+    console.log(
+      `✅ [Auth] Prefetchs concluídos em ${duration}ms: ${successCount} sucessos, ${failureCount} falhas`
+    );
+
+    return {
+      success: true,
+      totalPrefetches,
+      successCount,
+      failureCount,
+      essentialFailures: essentialFailures.length,
+      duration,
+    };
+  } catch (error) {
+    console.error("❌ [Auth] Erro ao executar prefetchs:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Erro desconhecido",
+    };
+  }
+}
+
+// ... existing code ...
 
 // Login do usuário
 export async function loginAction(data: LoginInput) {
@@ -139,6 +377,30 @@ export async function loginAction(data: LoginInput) {
         { ...CACHE_CONFIG.profile, ttl: 30 * 60 * 1000 } // 30 minutos para dados de perfil
       );
       console.log("✅ [Auth] Dados do usuário salvos no cache");
+    }
+
+    // ✅ EXECUTAR PREFETCHS BASEADOS NA ROLE
+    if ((responseData as any)?.user?.role) {
+      const userRole = (responseData as any).user.role.toUpperCase();
+      console.log(`🚀 [Auth] Iniciando prefetchs para role: ${userRole}`);
+
+      // Executar prefetchs em background (não bloquear o login)
+      executeRoleBasedPrefetch(userRole)
+        .then((prefetchResult) => {
+          if (prefetchResult.success) {
+            console.log(
+              `✅ [Auth] Prefetchs concluídos: ${prefetchResult.successCount}/${prefetchResult.totalPrefetches} em ${prefetchResult.duration}ms`
+            );
+          } else {
+            console.error(
+              `❌ [Auth] Erro nos prefetchs:`,
+              prefetchResult.error
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("❌ [Auth] Erro ao executar prefetchs:", error);
+        });
     }
 
     return {
@@ -263,6 +525,35 @@ export async function registerAction(data: {
       console.log("✅ [Auth] Dados do usuário registrado salvos no cache");
     }
 
+    // ✅ EXECUTAR PREFETCHS BASEADOS NA ROLE (registro)
+    if ((responseData as any)?.user?.role) {
+      const userRole = (responseData as any).user.role.toUpperCase();
+      console.log(
+        `🚀 [Auth] Iniciando prefetchs para usuário registrado com role: ${userRole}`
+      );
+
+      // Executar prefetchs em background (não bloquear o registro)
+      executeRoleBasedPrefetch(userRole)
+        .then((prefetchResult) => {
+          if (prefetchResult.success) {
+            console.log(
+              `✅ [Auth] Prefetchs de registro concluídos: ${prefetchResult.successCount}/${prefetchResult.totalPrefetches} em ${prefetchResult.duration}ms`
+            );
+          } else {
+            console.error(
+              `❌ [Auth] Erro nos prefetchs de registro:`,
+              prefetchResult.error
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(
+            "❌ [Auth] Erro ao executar prefetchs de registro:",
+            error
+          );
+        });
+    }
+
     return {
       success: true,
       message: "Registro realizado com sucesso",
@@ -354,6 +645,7 @@ export async function getAuthUser(): Promise<User | null> {
         // NÃO cachear tokens ou dados sensíveis
         const userForCache = {
           id: user.id,
+          clientId: user.clientId,
           employeeId: user.employeeId,
           name: user.name,
           email: user.email,

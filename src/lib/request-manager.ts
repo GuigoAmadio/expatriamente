@@ -7,8 +7,6 @@ import {
   serverDelete,
 } from "./server-api";
 
-// ✅ Importar Server Actions para uso no servidor - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-/*
 import {
   serverRequestGet,
   serverRequestPost,
@@ -17,7 +15,6 @@ import {
   serverRequestDelete,
   serverRequest,
 } from "../actions/request-manager";
-*/
 
 export class RequestManager {
   private pendingRequests = new Map<string, Promise<any>>();
@@ -27,7 +24,7 @@ export class RequestManager {
 
   // ✅ Adicionar a propriedade API_BASE_URL
   private API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
 
   // ✅ Prevenir múltiplas chamadas simultâneas
   async executeRequest<T>(
@@ -259,15 +256,13 @@ export class RequestManager {
     return this.executeRequest(
       cacheKey,
       async (signal) => {
-        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
-        /*
+        // ✅ Usar Server Actions quando possível (no servidor)
         if (typeof window === "undefined") {
           console.log(`🔄 [Request] Usando Server Actions para: ${cacheKey}`);
           const endpoint = url || `/${cacheKey.split(":")[0]}`;
           const response = await serverRequestGet<T>(endpoint);
           return response.data;
         }
-        */
 
         // ✅ Fallback para cliente com headers de autenticação
         console.log(`🔄 [Request] Usando fetch do cliente para: ${cacheKey}`);
@@ -303,8 +298,7 @@ export class RequestManager {
     return this.executeRequest(
       `${entityType}:create`,
       async (signal) => {
-        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
-        /*
+        // ✅ Usar Server Actions quando possível (no servidor)
         if (typeof window === "undefined") {
           console.log(
             `🔄 [Request] Usando Server Actions para criar: ${entityType}`
@@ -313,7 +307,6 @@ export class RequestManager {
           const response = await serverRequestPost<T>(endpoint, data);
           return response.data;
         }
-        */
 
         // ✅ Fallback para cliente com headers de autenticação
         console.log(
@@ -358,8 +351,7 @@ export class RequestManager {
     return this.executeRequest(
       `${entityType}:update:${id}`,
       async (signal) => {
-        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
-        /*
+        // ✅ Usar Server Actions quando possível (no servidor)
         if (typeof window === "undefined") {
           console.log(
             `🔄 [Request] Usando Server Actions para atualizar: ${entityType}/${id}`
@@ -368,7 +360,6 @@ export class RequestManager {
           const response = await serverRequestPatch<T>(endpoint, data);
           return response.data;
         }
-        */
 
         // ✅ Fallback para cliente com headers de autenticação
         console.log(
@@ -408,8 +399,7 @@ export class RequestManager {
     return this.executeRequest(
       `${entityType}:delete:${id}`,
       async (signal) => {
-        // ✅ Usar Server Actions quando possível (no servidor) - TEMPORARILY DISABLED
-        /*
+        // ✅ Usar Server Actions quando possível (no servidor)
         if (typeof window === "undefined") {
           console.log(
             `🔄 [Request] Usando Server Actions para deletar: ${entityType}/${id}`
@@ -418,7 +408,6 @@ export class RequestManager {
           const response = await serverRequestDelete<T>(endpoint);
           return response.data;
         }
-        */
 
         // ✅ Fallback para cliente com headers de autenticação
         console.log(

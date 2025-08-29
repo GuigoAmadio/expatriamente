@@ -1,5 +1,3 @@
-"use client";
-
 import { FiCalendar, FiUsers, FiUser, FiDollarSign } from "react-icons/fi";
 
 interface AdminDashboardProps {

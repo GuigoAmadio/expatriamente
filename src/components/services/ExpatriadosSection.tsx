@@ -54,7 +54,7 @@ export default function ExpatriadosSection() {
             para <span className="text-[#6a352c] font-bold">Expatriados</span>
           </h1>
 
-          <p className="text-[#ffffff] text-[3vw] sm:text-[2vw] md:text-[1.5vw] px-4 whitespace-normal font-medium text-center sm:text-start max-w-[98%]">
+          <p className="text-[#ffffff] text-[3.4vw] sm:text-[2vw] md:text-[1.5vw] px-4 whitespace-normal font-medium text-center sm:text-start max-w-[98%]">
             Ofereça aos seus talentos um suporte completo antes, durante e
             <br className="hidden md:block" /> após a missão internacional,
             reduzindo custos, impactos com

@@ -59,7 +59,8 @@ export default async function AdminServicesPage({
           }
         }
         initialStats={
-          (statsResponse as any)?.data || statsResponse || {
+          (statsResponse as any)?.data ||
+          statsResponse || {
             totalServices: 0,
             activeServices: 0,
             inactiveServices: 0,

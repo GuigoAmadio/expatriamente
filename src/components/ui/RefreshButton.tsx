@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { advancedCache } from "@/lib/cache";
+import { intelligentCache } from "@/lib/intelligent-cache";
 import { useRouter } from "next/navigation";
 
 interface RefreshButtonProps {
@@ -33,12 +33,12 @@ export function RefreshButton({
       // Limpar todo o cache se solicitado
       if (clearAllCache) {
         console.log("🗑️ [RefreshButton] Limpando todo o cache...");
-        await advancedCache.clear();
+        await intelligentCache.clear();
       }
       // Invalidar cache por padrão se fornecido
       else if (cachePattern) {
         console.log(`🗑️ [RefreshButton] Invalidando cache: ${cachePattern}`);
-        await advancedCache.invalidatePattern(cachePattern);
+        await intelligentCache.invalidatePattern(cachePattern);
       }
 
       // Limpar cache do localStorage também

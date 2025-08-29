@@ -51,7 +51,7 @@ export default function AboutHeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
       >
-        <p className="text-white text-[2.5vw] sm:text-[1.3vw] italic leading-relaxed font-body">
+        <p className="text-white text-[2.8vw] sm:text-[1.3vw] leading-relaxed font-body">
           Somos uma <span className="font-bold">Clínica de Psicanálise</span>,
           dedicada exclusivamente ao{" "}
           <span className="font-bold">

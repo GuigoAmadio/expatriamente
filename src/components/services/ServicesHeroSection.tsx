@@ -11,14 +11,14 @@ export default function ServicesHeroSection() {
     {
       title: "INTERCÂMBIO",
       icon: "/icones/intercambio.svg",
-      color: "text-[#6B8E7F]",
+      color: "text-[#20672a]",
       bgColor: "bg-[#A6C0B3]",
       onClick: () => setCurrentSection("intercambio"),
     },
     {
       title: "EXPATRIADOS",
       icon: "/icones/expatriados.svg",
-      color: "text-[#7A6B5D]",
+      color: "text-[#764848]",
       bgColor: "bg-[#C4B1A0]",
       onClick: () => setCurrentSection("expatriados"),
     },
@@ -42,7 +42,7 @@ export default function ServicesHeroSection() {
           >
             {/* Título */}
             <motion.h2
-              className={`text-base sm:text-lg lg:text-xl xl:text-2xl font-bold font-body mb-4 lg:mb-6 ${service.color}`}
+              className={`text-lg lg:text-xl xl:text-2xl font-bold font-body mb-4 lg:mb-6 ${service.color}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }}
@@ -68,31 +68,36 @@ export default function ServicesHeroSection() {
 
             {/* Caixa de descrição */}
             <motion.div
-              className={`${service.bgColor} rounded-xl px-3 py-4 lg:px-4 lg:py-5 shadow-lg font-body text-center w-full max-w-xs lg:max-w-sm`}
+              className={`${service.bgColor} rounded-xl px-2 py-2 lg:px-4 lg:py-5 shadow-lg font-body text-center w-full max-w-xs lg:max-w-sm`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 + index * 0.2 }}
               whileHover={{ y: -5 }}
             >
               {service.title === "INTERCÂMBIO" ? (
-                <p className="text-white text-[8px] sm:text-xs xl:text-sm leading-relaxed text-center">
+                <p className="text-[#20672a] text-[10px] sm:text-xs xl:text-sm leading-relaxed text-center font-semibold md:font-normal">
                   Programa de{" "}
-                  <span className="font-semibold text-[#ffffff]">
-                    Bem-estar Emocional <br />
+                  <span className="font-semibold text-[#000000]">
+                    Bem-estar Emocional <br className="hidden sm:block" />
                   </span>{" "}
                   para{" "}
-                  <span className="font-semibold text-[#ffffff]">
+                  <span className="font-semibold text-[#000000]">
                     Estudantes{" "}
                   </span>
                   de
                   <span className="font-semibold"> Intercâmbio</span>
                 </p>
               ) : service.title === "EXPATRIADOS" ? (
-                <p className="text-[#ffffff] text-[8px] sm:text-xs xl:text-sm leading-relaxed text-center">
-                  Programa de <span className="font-semibold">Cuidados </span>
-                  com <br />
+                <p className="text-[#764848] text-[10px] sm:text-xs xl:text-sm leading-relaxed text-center font-semibold md:font-normal">
+                  Programa de{" "}
+                  <span className="font-semibold text-[#000000]">
+                    Cuidados{" "}
+                  </span>
+                  com <br className="hidden sm:block" />
                   <span className="font-semibold"> Saúde Mental</span> para{" "}
-                  <span className="font-semibold">Expatriados</span>
+                  <span className="font-semibold text-[#000000]">
+                    Expatriados
+                  </span>
                 </p>
               ) : null}
             </motion.div>

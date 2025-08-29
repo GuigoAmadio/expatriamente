@@ -86,13 +86,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             error: result.message || "Erro ao fazer login",
           };
         } else {
-          // Salvar token no localStorage para SSE - TEMPORARILY DISABLED
-          /*
-        if (result.token && typeof window !== "undefined") {
-          localStorage.setItem("auth_token", result.token);
-          console.log("🔑 [Auth] Token salvo no localStorage para SSE");
-        }
-        */
+          // Salvar token no localStorage para SSE
+          if (result.token && typeof window !== "undefined") {
+            localStorage.setItem("auth_token", result.token);
+            console.log("🔑 [Auth] Token salvo no localStorage para SSE");
+          }
 
           // Recarregar o usuário após login bem-sucedido
           await loadUser();
@@ -122,13 +120,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { logoutAction } = await import("@/actions/auth");
       await logoutAction();
 
-      // Limpar token do localStorage - TEMPORARILY DISABLED
-      /*
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("auth_token");
-          console.log("🧹 [Auth] Token removido do localStorage");
-        }
-        */
+      // Limpar token do localStorage
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("auth_token");
+        console.log("🧹 [Auth] Token removido do localStorage");
+      }
 
       setUser(null);
     } catch (error) {

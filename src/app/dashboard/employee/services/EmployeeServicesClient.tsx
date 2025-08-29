@@ -157,21 +157,21 @@ export function EmployeeServicesClient({
             ))}
           </div>
 
-                     {/* Paginação */}
-           {initialMeta.totalPages > 1 && (
-             <div className="flex justify-center mt-8">
-               <Pagination
-                 currentPage={initialMeta.page}
-                 totalItems={initialMeta.totalItems}
-                 itemsPerPage={initialMeta.limit}
-                 onPageChange={(page) => {
-                   const params = new URLSearchParams(searchParams.toString());
-                   params.set("page", page.toString());
-                   router.push(`?${params.toString()}`);
-                 }}
-               />
-             </div>
-           )}
+          {/* Paginação */}
+          {initialMeta.totalPages > 1 && (
+            <div className="flex justify-center mt-8">
+              <Pagination
+                currentPage={initialMeta.page}
+                totalItems={initialMeta.totalItems}
+                itemsPerPage={initialMeta.limit}
+                onPageChange={(page) => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  params.set("page", page.toString());
+                  router.push(`?${params.toString()}`);
+                }}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

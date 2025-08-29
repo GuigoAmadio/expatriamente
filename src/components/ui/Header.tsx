@@ -239,7 +239,7 @@ export default function Header({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.05 }}
                         onClick={() => handleNavigation("/intercambio")}
-                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:bg-white hover:text-[#587681] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-white border-b border-gray-50 last:border-b-0 relative group"
+                        className="w-full bg-white px-5 py-4 text-left hover:bg-gradient-to-r hover:bg-white hover:text-[#587681] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#6B8E7F] border-b border-gray-50 last:border-b-0 relative group"
                       >
                         <span className="relative z-10">Intercâmbio</span>
                         <div className="absolute inset-0 bg-gradient-to-r text-white/text-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -249,7 +249,7 @@ export default function Header({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
                         onClick={() => handleNavigation("/expatriados")}
-                        className="w-full px-5 py-4 text-left hover:bg-gradient-to-r hover:bg-white hover:text-[#587681] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-white border-b border-gray-50 last:border-b-0 relative group"
+                        className="w-full bg-white px-5 py-4 text-left hover:bg-gradient-to-r hover:bg-white hover:text-[#587681] hover:cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out font-akzidens text-[1.1vw] text-[#6B8E7F] borer-b border-gray-50 last:border-b-0 relative group"
                       >
                         <span className="relative z-10">Expatriados</span>
                         <div className="absolute inset-0 bg-gradient-to-r text-white/text-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -260,7 +260,7 @@ export default function Header({
               </div>
 
               <button
-                onClick={() => handleNavigation("/psicanalistas")}
+                onClick={() => handleNav("psicanalistas")}
                 className={`hover:text-[#ffffff] hover:scale-105 border-none cursor-pointer transition-all duration-300 ease-in-out ${navDefaultTextClass}`}
                 style={navTextStyle}
               >
@@ -395,7 +395,7 @@ export default function Header({
                 </div>
 
                 <button
-                  onClick={() => handleNavigation("/psicanalistas")}
+                  onClick={() => handleNav("psicanalistas")}
                   className="px-6 py-3 text-left font-akzidens text-base font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors"
                 >
                   Psicanalistas

@@ -10,6 +10,9 @@ import { Employee as BackendEmployee } from "@/types/backend";
 // ✅ Imports para cache inteligente
 import { cacheUtils, CACHE_CONFIG } from "@/lib/intelligent-cache";
 
+// ✅ Importar o prefetch existente
+import { prefetchEmployees } from "./prefetch";
+
 // Re-exportar o tipo do backend para manter compatibilidade
 export type Employee = BackendEmployee;
 
@@ -41,6 +44,23 @@ export interface GetEmployeeCountResponse {
   };
 }
 
+// ✅ Interface para a resposta da API do prefetch
+interface EmployeesApiResponse {
+  success: boolean;
+  data: {
+    data: Employee[];
+    meta: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+      hasNext: boolean;
+      hasPrevious: boolean;
+    };
+  };
+  message: string;
+}
+
 // Obter quantidade de employees com filtro opcional por status
 export async function getEmployeesCount(isActive?: boolean): Promise<number> {
   try {
@@ -50,15 +70,31 @@ export async function getEmployeesCount(isActive?: boolean): Promise<number> {
       queryParams.append("isActive", isActive.toString());
     }
 
-    const response = await serverGet<any>(
-      `/employees/count?${queryParams.toString()}`
+    // ✅ Adicionar cache para evitar chamadas repetidas
+    const cacheKey = `employees:count:${
+      isActive !== undefined ? isActive.toString() : "all"
+    }`;
+
+    const data = await cacheUtils.getCachedData(
+      cacheKey,
+      async () => {
+        console.log(
+          "🔄 [getEmployeesCount] Cache miss - buscando dados frescos do backend..."
+        );
+        const response = await serverGet<any>(
+          `/employees/count?${queryParams.toString()}`
+        );
+
+        if (response.success && response.data && response.data.count) {
+          return response.data.count as number;
+        }
+
+        return 0;
+      },
+      CACHE_CONFIG.employees
     );
 
-    if (response.success && response.data && response.data.count) {
-      return response.data.count as number;
-    }
-
-    return 0;
+    return data || 0;
   } catch (error) {
     console.error("Erro ao obter quantidade de employees:", error);
     return 0;
@@ -68,13 +104,29 @@ export async function getEmployeesCount(isActive?: boolean): Promise<number> {
 // Obter quantidade de employees ativos
 export async function getActiveEmployeeCount(): Promise<number> {
   try {
-    const response = await serverGet<any>("/employees/count/active");
+    // ✅ Adicionar cache para evitar chamadas repetidas
+    const data = await cacheUtils.getCachedData(
+      "employees:count:active",
+      async () => {
+        console.log(
+          "🔄 [getActiveEmployeeCount] Cache miss - buscando dados frescos do backend..."
+        );
+        const response = await serverGet<any>("/employees/count/active");
 
-    if (response.success && response.data.data && response.data.data.count) {
-      return response.data.data.count;
-    }
+        if (
+          response.success &&
+          response.data.data &&
+          response.data.data.count
+        ) {
+          return response.data.data.count;
+        }
 
-    return 0;
+        return 0;
+      },
+      CACHE_CONFIG.employees
+    );
+
+    return data || 0;
   } catch (error) {
     console.error("Erro ao obter quantidade de employees ativos:", error);
     return 0;
@@ -84,106 +136,90 @@ export async function getActiveEmployeeCount(): Promise<number> {
 // Obter quantidade de employees inativos
 export async function getInactiveEmployeeCount(): Promise<number> {
   try {
-    const response = await serverGet<any>("/employees/count/inactive");
+    // ✅ Adicionar cache para evitar chamadas repetidas
+    const data = await cacheUtils.getCachedData(
+      "employees:count:inactive",
+      async () => {
+        console.log(
+          "🔄 [getInactiveEmployeeCount] Cache miss - buscando dados frescos do backend..."
+        );
+        const response = await serverGet<any>("/employees/count/inactive");
 
-    if (response.success && response.data && response.data.count) {
-      return response.data.count;
-    }
+        if (response.success && response.data && response.data.count) {
+          return response.data.count;
+        }
 
-    return 0;
+        return 0;
+      },
+      CACHE_CONFIG.employees
+    );
+
+    return data || 0;
   } catch (error) {
     console.error("Erro ao obter quantidade de employees inativos:", error);
     return 0;
   }
 }
 
+// ✅ Função unificada que usa o prefetch existente
 export async function getEmployees(): Promise<Employee[]> {
   try {
-    console.log("🔍 [getEmployees] Iniciando busca de funcionários...");
-    
-    // ✅ Usar cache inteligente com validação
-    return await cacheUtils.getCachedData(
-      "employees:list",
-      async () => {
-        console.log("🔄 [getEmployees] Cache miss - buscando dados frescos do backend...");
+    console.log("🔍 [getEmployees] Buscando funcionários via prefetch...");
 
-        const response = await serverGet<{
-          success: boolean;
-          data: {
-            success: boolean;
-            data: { data: Employee[]; meta: any };
-            timestamp: string;
-            path: string;
-            method: string;
-          };
-          message: string;
-        }>("/employees");
+    // ✅ Usar o prefetch existente
+    const result = await prefetchEmployees();
 
-        // A resposta tem estrutura: response.data.data.data (array de funcionários)
-        if (
-          response.data?.data?.data &&
-          Array.isArray(response.data.data.data)
-        ) {
-          return response.data.data.data;
-        }
+    // ✅ Tipagem adequada para extrair dados
+    const apiResponse = result as EmployeesApiResponse;
 
-        // Fallback para resposta direta (array)
-        if (Array.isArray(response.data)) {
-          return response.data;
-        }
+    if (apiResponse?.data?.data && Array.isArray(apiResponse.data.data)) {
+      return apiResponse.data.data;
+    }
 
-        console.warn("Resposta inesperada da API:", response.data);
-        return [];
-      },
-      CACHE_CONFIG.employees
-    );
+    // ✅ Fallback para resposta direta
+    if (Array.isArray(result)) {
+      return result;
+    }
+
+    console.warn("Resposta inesperada do prefetch:", result);
+    return [];
   } catch (error) {
     console.error("Erro ao buscar funcionários:", error);
     return [];
   }
 }
 
+// ✅ Função que usa o prefetch existente
 export async function getEmployeesWithMeta(): Promise<{
   data: Employee[];
   meta: any;
 }> {
   try {
-    const response = await serverGet<{
-      success: boolean;
-      data: {
-        success: boolean;
-        data: { data: Employee[]; meta: any };
-        meta: any;
-        timestamp: string;
-        path: string;
-        method: string;
-      };
-      message: string;
-    }>("/employees");
+    console.log(
+      "🔍 [getEmployeesWithMeta] Buscando funcionários via prefetch..."
+    );
 
-    // A resposta tem estrutura: response.data.data.data (array de funcionários) e response.data.data.meta
-    if (response.data?.data?.data && Array.isArray(response.data.data.data)) {
+    // ✅ Usar o prefetch existente
+    const result = await prefetchEmployees();
+
+    // ✅ Tipagem adequada para extrair dados
+    const apiResponse = result as EmployeesApiResponse;
+
+    if (apiResponse?.data?.data && apiResponse?.data?.meta) {
       return {
-        data: response.data.data.data,
-        meta: response.data.data.meta || {
-          page: 1,
-          limit: 10,
-          total: response.data.data.data.length,
-          totalPages: 1,
-          hasNext: false,
-          hasPrevious: false,
-        },
+        data: apiResponse.data.data,
+        meta: apiResponse.data.meta,
       };
     }
 
-    // Fallback para resposta direta (array)
-    if (Array.isArray(response.data)) {
+    // ✅ Fallback para resposta direta
+    if (Array.isArray(result)) {
       return {
-        data: response.data,
+        data: result,
         meta: {
           page: 1,
           limit: 10,
-          total: response.data.length,
+          total: result.length,
           totalPages: 1,
           hasNext: false,
           hasPrevious: false,
@@ -191,7 +227,7 @@ export async function getEmployeesWithMeta(): Promise<{
       };
     }
 
-    console.warn("Resposta inesperada da API:", response.data);
+    console.warn("Resposta inesperada do prefetch:", result);
     return {
       data: [],
       meta: {

@@ -1,5 +1,3 @@
-// TEMPORARILY DISABLED FOR PROJECT DELIVERY
-/*
 'use server';
 
 import { 
@@ -10,86 +8,9 @@ import {
   serverDelete,
   serverFetch 
 } from '@/lib/server-api';
-*/
 
-// ✅ GET Request - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// ✅ GET Request
 export async function serverRequestGet<T>(endpoint: string) {
-  console.log(
-    "⚠️ [Request Manager Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: null,
-    message: "Desabilitado temporariamente",
-  };
-}
-
-// ✅ POST Request - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function serverRequestPost<T>(endpoint: string, body: any) {
-  console.log(
-    "⚠️ [Request Manager Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: null,
-    message: "Desabilitado temporariamente",
-  };
-}
-
-// ✅ PUT Request - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function serverRequestPut<T>(endpoint: string, body: any) {
-  console.log(
-    "⚠️ [Request Manager Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: null,
-    message: "Desabilitado temporariamente",
-  };
-}
-
-// ✅ PATCH Request - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function serverRequestPatch<T>(endpoint: string, body: any) {
-  console.log(
-    "⚠️ [Request Manager Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: null,
-    message: "Desabilitado temporariamente",
-  };
-}
-
-// ✅ DELETE Request - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function serverRequestDelete<T>(endpoint: string) {
-  console.log(
-    "⚠️ [Request Manager Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: null,
-    message: "Desabilitado temporariamente",
-  };
-}
-
-// ✅ Generic Request - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function serverRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-) {
-  console.log(
-    "⚠️ [Request Manager Server Action] Desabilitado temporariamente para entrega do projeto"
-  );
-  return {
-    success: false,
-    data: null,
-    message: "Desabilitado temporariamente",
-  };
-}
-
-/*
-// ALL ORIGINAL IMPLEMENTATIONS - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export async function serverRequestGet_DISABLED<T>(endpoint: string) {
   try {
     console.log(`🚀 [Request Manager Server Action] GET ${endpoint}`);
     const result = await serverGet<T>(endpoint);
@@ -101,7 +22,8 @@ export async function serverRequestGet_DISABLED<T>(endpoint: string) {
   }
 }
 
-export async function serverRequestPost_DISABLED<T>(endpoint: string, body: any) {
+// ✅ POST Request
+export async function serverRequestPost<T>(endpoint: string, body: any) {
   try {
     console.log(`🚀 [Request Manager Server Action] POST ${endpoint}`);
     const result = await serverPost<T>(endpoint, body);
@@ -113,7 +35,8 @@ export async function serverRequestPost_DISABLED<T>(endpoint: string, body: any)
   }
 }
 
-export async function serverRequestPut_DISABLED<T>(endpoint: string, body: any) {
+// ✅ PUT Request
+export async function serverRequestPut<T>(endpoint: string, body: any) {
   try {
     console.log(`🚀 [Request Manager Server Action] PUT ${endpoint}`);
     const result = await serverPut<T>(endpoint, body);
@@ -125,7 +48,8 @@ export async function serverRequestPut_DISABLED<T>(endpoint: string, body: any) 
   }
 }
 
-export async function serverRequestPatch_DISABLED<T>(endpoint: string, body: any) {
+// ✅ PATCH Request
+export async function serverRequestPatch<T>(endpoint: string, body: any) {
   try {
     console.log(`🚀 [Request Manager Server Action] PATCH ${endpoint}`);
     const result = await serverPatch<T>(endpoint, body);
@@ -137,7 +61,8 @@ export async function serverRequestPatch_DISABLED<T>(endpoint: string, body: any
   }
 }
 
-export async function serverRequestDelete_DISABLED<T>(endpoint: string) {
+// ✅ DELETE Request
+export async function serverRequestDelete<T>(endpoint: string) {
   try {
     console.log(`🚀 [Request Manager Server Action] DELETE ${endpoint}`);
     const result = await serverDelete<T>(endpoint);
@@ -149,7 +74,11 @@ export async function serverRequestDelete_DISABLED<T>(endpoint: string) {
   }
 }
 
-export async function serverRequest_DISABLED<T>(endpoint: string, options: RequestInit = {}) {
+// ✅ Generic Request
+export async function serverRequest<T>(
+  endpoint: string,
+  options: RequestInit = {}
+) {
   try {
     console.log(`🚀 [Request Manager Server Action] ${options.method || 'GET'} ${endpoint}`);
     const result = await serverFetch<T>(endpoint, options);
@@ -160,4 +89,3 @@ export async function serverRequest_DISABLED<T>(endpoint: string, options: Reque
     throw error;
   }
 }
-*/

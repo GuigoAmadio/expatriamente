@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
 
   // Configurações de otimização
-  swcMinify: true,
+  // swcMinify removido (não suportado no Next 15)
 
   // Configurações de imagens
   images: {

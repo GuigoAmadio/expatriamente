@@ -1,144 +1,105 @@
-import { useEffect } from "react";
-// TEMPORARILY DISABLED FOR PROJECT DELIVERY
-// import { cacheUtils } from "@/lib/cache";
+import { useState, useEffect, useCallback } from "react";
+import { intelligentPrefetch } from "@/lib/intelligent-prefetch";
 
-// Hook para prefetch de dados principais - TEMPORARILY DISABLED FOR PROJECT DELIVERY
+// Hook para prefetch de dados principais
 export const usePrefetch = () => {
-  // FALLBACK VALUES FOR TEMPORARY DISABLE
-  return {
-    prefetchMainData: () => Promise.resolve(),
-  };
-};
+  const [prefetchStats, setPrefetchStats] = useState(
+    intelligentPrefetch.getStats()
+  );
+  const [isInitialized, setIsInitialized] = useState(false);
 
-/*
-// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
-export const usePrefetch_DISABLED = () => {
-  const prefetchMainData = async () => {
-    try {
-      console.log("🚀 Iniciando prefetch de dados principais...");
-
-      // Prefetch de dados em paralelo
-      const prefetchPromises = [
-        // Dashboard stats
-        cacheUtils.getCachedData("dashboard:stats", async () => {
-          // Esta função será chamada apenas se não estiver em cache
-          console.log("📊 Prefetching dashboard stats...");
-          return null; // Placeholder - será preenchido quando acessado
-        }),
-
-        // Appointments today
-        cacheUtils.getCachedData("appointments:today", async () => {
-          console.log("📅 Prefetching appointments today...");
-          return null;
-        }),
-
-        // Services list
-        cacheUtils.getCachedData("services:list", async () => {
-          console.log("🔧 Prefetching services list...");
-          return null;
-        }),
-
-        // Employees list
-        cacheUtils.getCachedData("employees:list", async () => {
-          console.log("👥 Prefetching employees list...");
-          return null;
-        }),
-
-        // Active employees
-        cacheUtils.getCachedData("employees:active", async () => {
-          console.log("✅ Prefetching active employees...");
-          return null;
-        }),
-      ];
-
-      await Promise.allSettled(prefetchPromises);
-      console.log("✅ Prefetch concluído com sucesso!");
-    } catch (error) {
-      console.error("❌ Erro durante prefetch:", error);
-    }
-  };
-
-  // Prefetch automático após login
+  // Atualizar estatísticas periodicamente
   useEffect(() => {
-    // Verificar se o usuário está logado
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      prefetchMainData();
-    }
+    const interval = setInterval(() => {
+      setPrefetchStats(intelligentPrefetch.getStats());
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ Executar prefetch essencial
+  const prefetchEssential = useCallback(
+    async (userRole: string) => {
+      if (isInitialized) {
+        console.log("⏭️ [Prefetch Hook] Prefetch já inicializado, ignorando");
+        return;
+      }
+
+      setIsInitialized(true);
+
+      console.log(
+        `🚀 [Prefetch Hook] Iniciando prefetch essencial para: ${userRole}`
+      );
+      await intelligentPrefetch.prefetchEssential(userRole);
+      setPrefetchStats(intelligentPrefetch.getStats());
+    },
+    [isInitialized]
+  );
+
+  // ✅ Executar prefetch secundário
+  const prefetchSecondary = useCallback(async (userRole: string) => {
+    console.log(
+      `🔄 [Prefetch Hook] Iniciando prefetch secundário para: ${userRole}`
+    );
+    await intelligentPrefetch.prefetchSecondary(userRole);
+    setPrefetchStats(intelligentPrefetch.getStats());
+  }, []);
+
+  // ✅ Prefetch por rota
+  const prefetchByRoute = useCallback(async (route: string) => {
+    console.log(`📍 [Prefetch Hook] Prefetch para rota: ${route}`);
+    await intelligentPrefetch.prefetchByRoute(route);
+    setPrefetchStats(intelligentPrefetch.getStats());
+  }, []);
+
+  // ✅ Cancelar todos os prefetches
+  const cancelAllPrefetches = useCallback(() => {
+    console.log("❌ [Prefetch Hook] Cancelando todos os prefetches...");
+    intelligentPrefetch.cancelAllPrefetches();
+    setPrefetchStats(intelligentPrefetch.getStats());
   }, []);
 
   return {
-    prefetchMainData,
-  };
-};
-*/
-
-// Hook para prefetch específico por página - TEMPORARILY DISABLED FOR PROJECT DELIVERY
-export const usePagePrefetch = (
-  pageType: "dashboard" | "appointments" | "services" | "employees" | "clients"
-) => {
-  // FALLBACK VALUES FOR TEMPORARY DISABLE
-  return {
-    prefetchPageData: () => Promise.resolve(),
+    prefetchEssential,
+    prefetchSecondary,
+    prefetchByRoute,
+    cancelAllPrefetches,
+    prefetchStats,
+    isInitialized,
   };
 };
 
-/*
-// ORIGINAL IMPLEMENTATION - TEMPORARILY DISABLED
-export const usePagePrefetch_DISABLED = (
-  pageType: "dashboard" | "appointments" | "services" | "employees" | "clients"
-) => {
-  const prefetchPageData = async () => {
-    try {
-      console.log(`🚀 Prefetching dados para página: ${pageType}`);
+// Hook para prefetch específico por página
+export const usePagePrefetch = (pageKey: string) => {
+  const [isPrefetching, setIsPrefetching] = useState(false);
+  const [prefetchError, setPrefetchError] = useState<string | null>(null);
 
-      switch (pageType) {
-        case "dashboard":
-          await Promise.allSettled([
-            cacheUtils.getCachedData("dashboard:stats", async () => null),
-            cacheUtils.getCachedData(
-              "dashboard:appointment-stats",
-              async () => null
-            ),
-            cacheUtils.getCachedData("appointments:today", async () => null),
-          ]);
-          break;
-
-        case "appointments":
-          await Promise.allSettled([
-            cacheUtils.getCachedData("appointments:all", async () => null),
-            cacheUtils.getCachedData("appointments:today", async () => null),
-          ]);
-          break;
-
-        case "services":
-          await Promise.allSettled([
-            cacheUtils.getCachedData("services:list", async () => null),
-          ]);
-          break;
-
-        case "employees":
-          await Promise.allSettled([
-            cacheUtils.getCachedData("employees:list", async () => null),
-            cacheUtils.getCachedData("employees:active", async () => null),
-          ]);
-          break;
-
-        case "clients":
-          await Promise.allSettled([
-            cacheUtils.getCachedData("clients:list", async () => null),
-          ]);
-          break;
-      }
-
-      console.log(`✅ Prefetch para ${pageType} concluído!`);
-    } catch (error) {
-      console.error(`❌ Erro durante prefetch de ${pageType}:`, error);
+  // ✅ Executar prefetch para página específica
+  const executePagePrefetch = useCallback(async () => {
+    if (isPrefetching) {
+      console.log(`⏭️ [Page Prefetch] ${pageKey} já está sendo carregado`);
+      return;
     }
-  };
+
+    setIsPrefetching(true);
+    setPrefetchError(null);
+
+    try {
+      console.log(`🚀 [Page Prefetch] Iniciando prefetch para: ${pageKey}`);
+      await intelligentPrefetch.prefetchByRoute(`/dashboard/${pageKey}`);
+      console.log(`✅ [Page Prefetch] Prefetch concluído para: ${pageKey}`);
+    } catch (error: any) {
+      const errorMessage = error?.message || "Erro no prefetch";
+      console.error(`❌ [Page Prefetch] Erro para ${pageKey}:`, errorMessage);
+      setPrefetchError(errorMessage);
+    } finally {
+      setIsPrefetching(false);
+    }
+  }, [pageKey, isPrefetching]);
 
   return {
-    prefetchPageData,
+    executePagePrefetch,
+    isPrefetching,
+    prefetchError,
   };
 };
-*/

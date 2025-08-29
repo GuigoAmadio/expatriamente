@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useFacebookPixel } from "@/hooks/useFacebookPixel";
 import { useState } from "react";
-import ConsultationModal from "@/components/landing/ConsultationModal";
+import CtaConsultationModal from "@/components/landing/CtaConsultationModal";
 
 export default function HeroRightSection() {
   const { trackViewContent, trackSchedule } = useFacebookPixel();
@@ -134,8 +134,8 @@ export default function HeroRightSection() {
         </motion.div>
       </motion.div>
 
-      {/* Modal de Consulta */}
-      <ConsultationModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      {/* Modal de Consulta (reutilizando o da CTA) */}
+      <CtaConsultationModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 }

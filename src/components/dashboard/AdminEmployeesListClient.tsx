@@ -10,6 +10,7 @@ import {
   toggleEmployeeStatus,
 } from "@/actions/employees";
 import { useToasts, Toast } from "@/components/ui/Toast";
+import { useCached } from "@/hooks/useCached";
 
 interface AdminEmployeesListClientProps {
   employees?: Employee[];
@@ -38,6 +39,11 @@ export default function AdminEmployeesListClient({
   const [currentStatusFilter, setCurrentStatusFilter] = useState(statusFilter);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Leitura instantânea do cache com revalidação em background
+  const { data: cachedEmployees, loading: cacheLoading } = useCached<
+    Employee[]
+  >("employees:list", async () => await getEmployees(), "employees");
+
   const loadEmployees = useCallback(async () => {
     try {
       setLoading(true);
@@ -54,12 +60,16 @@ export default function AdminEmployeesListClient({
     }
   }, [addToast]);
 
-  // Se não recebeu employees iniciais, carrega
+  // Inicializar com cachedEmployees quando disponível
   useEffect(() => {
-    if (initialEmployees.length === 0 && !initialLoading) {
+    if (cachedEmployees && Array.isArray(cachedEmployees)) {
+      setEmployees(cachedEmployees);
+      setLoading(false);
+    } else if (initialEmployees.length === 0 && !initialLoading) {
+      // Fallback para buscar caso não haja seed nem cache
       loadEmployees();
     }
-  }, [initialEmployees.length, initialLoading, loadEmployees]);
+  }, [cachedEmployees, initialEmployees.length, initialLoading, loadEmployees]);
 
   const onAddEmployee = () => router.push("/dashboard/admin/employees/new");
   const onViewEmployee = (emp: Employee) =>
@@ -148,7 +158,7 @@ export default function AdminEmployeesListClient({
     // Implementar lógica de paginação se necessário
   };
 
-  if (loading) {
+  if (loading || cacheLoading) {
     return (
       <div className="p-6">
         <div className="animate-pulse">
