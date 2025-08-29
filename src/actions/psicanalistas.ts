@@ -180,7 +180,6 @@ export async function getPsicanalistas() {
     if (!response.success || !employees.length) {
       throw new Error("Nenhum funcionário encontrado no servidor");
     }
-    console.log("employeesSSSSSSSS", employees);
     const mapped = employees.map((emp: any) => ({
       id: emp.id,
       name: emp.name,
