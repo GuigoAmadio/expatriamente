@@ -172,7 +172,7 @@ export function CacheDebug({ isVisible = false }: CacheDebugProps) {
             <div>
               API Base:{" "}
               {process.env.NEXT_PUBLIC_API_URL ||
-                "https://api.expatriamente.com/api/v1"}
+                "http://localhost:3000/api/v1"}
             </div>
             <div>Ambiente: {process.env.NODE_ENV}</div>
             <div>

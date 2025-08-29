@@ -11,14 +11,18 @@ interface AgendamentoPsicanalista {
 // Função para mapear dados mockup para o formato esperado
 function mapMockupToPsychologist(mockupData: any) {
   // Buscar informações de formação correspondentes
-  const formacaoInfo = formacaoData.find(f => f.nome === mockupData.nome);
-  
+  const formacaoInfo = formacaoData.find((f) => f.nome === mockupData.nome);
+
   // Criar as 3 linhas de formação para o card
-  const formacaoForCard = formacaoInfo ? 
-    formacaoInfo.formacao.slice(0, 3).map(item => {
-      // Separar faculdade e curso com " - "
-      return item;
-    }).join('\n') : "Formação não especificada";
+  const formacaoForCard = formacaoInfo
+    ? formacaoInfo.formacao
+        .slice(0, 3)
+        .map((item) => {
+          // Separar faculdade e curso com " - "
+          return item;
+        })
+        .join("\n")
+    : "Formação não especificada";
 
   return {
     id: mockupData.nome.replace(/\s+/g, "-").toLowerCase(), // Criar ID baseado no nome
@@ -31,7 +35,7 @@ function mapMockupToPsychologist(mockupData: any) {
     location: "",
     languages: ["Português"],
     bio: formacaoForCard, // Usar informações de formação em vez das observações
-    education: formacaoInfo?.formacao.join('\n') || "",
+    education: formacaoInfo?.formacao.join("\n") || "",
     approach: "",
     availability: mockupData.horarios
       ? mockupData.horarios.join(", ")
@@ -176,6 +180,7 @@ export async function getPsicanalistas() {
     if (!response.success || !employees.length) {
       throw new Error("Nenhum funcionário encontrado no servidor");
     }
+    console.log("employeesSSSSSSSS", employees);
     const mapped = employees.map((emp: any) => ({
       id: emp.id,
       name: emp.name,
