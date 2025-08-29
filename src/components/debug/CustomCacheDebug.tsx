@@ -166,7 +166,7 @@ export default function CustomCacheDebug() {
             <div>
               API Base:{" "}
               {process.env.NEXT_PUBLIC_API_URL ||
-                "http://localhost:3000/api/v1"}
+                "https://api.expatriamente.com/api/v1"}
             </div>
             <div>Ambiente: {process.env.NODE_ENV}</div>
             <div>

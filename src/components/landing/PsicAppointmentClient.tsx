@@ -125,21 +125,6 @@ export default function PsicAppointmentClient({
       );
     }
 
-    // 2. Buscar serviços disponíveis para o funcionário
-    const servicesResp = await getServicesByEmployee(employeeId);
-    if (
-      !servicesResp.success ||
-      !servicesResp.data ||
-      servicesResp.data.length === 0
-    ) {
-      console.error(`❌ [Agendamento] Erro ao buscar serviços:`, servicesResp);
-      alert("Erro ao buscar serviços disponíveis. Tente novamente.");
-      return;
-    }
-
-    const service = servicesResp.data[0]; // Usar o primeiro serviço disponível
-    console.log(`✅ [Agendamento] Serviço encontrado:`, service);
-
     // 3. Criar agendamento
     // Calcular a data correta baseada no dia da semana selecionado
     const hoje = new Date();
@@ -159,7 +144,7 @@ export default function PsicAppointmentClient({
     const appointmentResp = await createAppointment({
       userId: userResp.user.id,
       employeeId: employeeId,
-      serviceId: service.id,
+      serviceId: serviceId,
       startTime: startTime,
       endTime: endTime,
     });
