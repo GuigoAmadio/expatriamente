@@ -42,7 +42,7 @@ async function serverFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const baseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
   const fullUrl = `${baseUrl}${url}`;
 
   const headers: HeadersInit = {
@@ -76,7 +76,9 @@ export async function getClientsCount(): Promise<number> {
     const data = await cacheUtils.getCachedData(
       "clients:count",
       async () => {
-        console.log("🔄 [getClientsCount] Cache miss - buscando dados frescos do backend...");
+        console.log(
+          "🔄 [getClientsCount] Cache miss - buscando dados frescos do backend..."
+        );
         const response = await serverFetch<GetClientsCountResponse>(
           "/clients/count"
         );

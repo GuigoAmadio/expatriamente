@@ -103,7 +103,7 @@ yarn install
 
 ```bash
 # Crie um arquivo .env.local
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=https://api.expatriamente.com
 NEXTAUTH_SECRET=seu-secret-super-seguro-aqui
 
 # Para Google OAuth (opcional)
@@ -120,7 +120,7 @@ yarn dev
 ```
 
 5. **Acesse a aplicação**
-   Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+   Abra [https://api.expatriamente.com](https://api.expatriamente.com) no seu navegador.
 
 ## 🔑 Credenciais de Teste
 

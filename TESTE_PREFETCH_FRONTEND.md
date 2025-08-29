@@ -9,7 +9,7 @@ Arquivo `.env.local` criado com:
 ```
 NEXT_PUBLIC_SSE_DEBUG=true
 NEXT_PUBLIC_SSE_VERBOSE=true
-NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
+NEXT_PUBLIC_API_URL=https://api.expatriamente.com/api/v1
 NEXT_PUBLIC_DEFAULT_CLIENT_ID=2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8
 ```
 
@@ -24,7 +24,7 @@ NEXT_PUBLIC_DEFAULT_CLIENT_ID=2a2ad019-c94a-4f35-9dc8-dd877b3e8ec8
 
 ### Passo 1: Acessar o Dashboard
 
-1. Abrir `http://localhost:3000/dashboard`
+1. Abrir `https://api.expatriamente.com/dashboard`
 2. Fazer login
 3. Abrir **DevTools** (F12) → **Console**
 

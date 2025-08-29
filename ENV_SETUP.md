@@ -4,15 +4,15 @@
 
 ```env
 # Configuração da API Backend
-NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
-API_URL=http://localhost:3000/api/v1
+NEXT_PUBLIC_API_URL=https://api.expatriamente.com/api/v1
+API_URL=https://api.expatriamente.com/api/v1
 
 # Client ID padrão para o projeto Expatriamente
 NEXT_PUBLIC_DEFAULT_CLIENT_ID=bac29d84-612d-4c2d-a576-fdc0e50f8e2d
 
 # Configurações de Autenticação NextAuth
 NEXTAUTH_SECRET=expatriamente-secret-key-2024
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=https://api.expatriamente.com
 
 # Configurações de Autenticação
 NEXT_PUBLIC_ENABLE_AUTH=false
@@ -62,7 +62,7 @@ Após criar o arquivo, execute:
 npm run dev
 ```
 
-O projeto deve iniciar em: **http://localhost:3000**
+O projeto deve iniciar em: **https://api.expatriamente.com**
 
 ## 🔍 Troubleshooting:
 
@@ -71,13 +71,13 @@ Se ainda houver erro de autenticação:
 1. **Verifique se o backend está rodando:**
 
    ```bash
-   curl http://localhost:3000/api/v1/health
+   curl https://api.expatriamente.com/api/v1/health
    ```
 
 2. **Teste a rota de login:**
 
    ```bash
-   curl -X POST http://localhost:3000/api/v1/auth/login \
+   curl -X POST https://api.expatriamente.com/api/v1/auth/login \
      -H "Content-Type: application/json" \
      -H "x-client-id: bac29d84-612d-4c2d-a576-fdc0e50f8e2d" \
      -d '{"email":"admin@expatriamente.com","password":"password123"}'
@@ -89,8 +89,8 @@ Se ainda houver erro de autenticação:
 
 ## 🎯 URLs Importantes:
 
-- **Frontend**: http://localhost:3000
-- **Backend**: http://localhost:3000
-- **API**: http://localhost:3000/api/v1
-- **Login**: http://localhost:3000/auth/signin
-- **Dashboard**: http://localhost:3000/dashboard
+- **Frontend**: https://api.expatriamente.com
+- **Backend**: https://api.expatriamente.com
+- **API**: https://api.expatriamente.com/api/v1
+- **Login**: https://api.expatriamente.com/auth/signin
+- **Dashboard**: https://api.expatriamente.com/dashboard

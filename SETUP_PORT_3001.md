@@ -15,15 +15,15 @@ Crie um arquivo `.env.local` na raiz do projeto com o seguinte conteúdo:
 
 ```env
 # Configuração da API Backend
-NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
-API_URL=http://localhost:3000/api/v1
+NEXT_PUBLIC_API_URL=https://api.expatriamente.com/api/v1
+API_URL=https://api.expatriamente.com/api/v1
 
 # Client ID padrão para o projeto Expatriamente
 NEXT_PUBLIC_DEFAULT_CLIENT_ID=expatriamente-default-client-id
 
 # Configurações de Autenticação NextAuth
 NEXTAUTH_SECRET=expatriamente-secret-key-2024
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=https://api.expatriamente.com
 
 # Configurações de Autenticação
 NEXT_PUBLIC_ENABLE_AUTH=false
@@ -55,32 +55,32 @@ npm install
 npm run dev
 ```
 
-O projeto será iniciado em: **http://localhost:3000**
+O projeto será iniciado em: **https://api.expatriamente.com**
 
 ## 🔧 Configurações Importantes
 
 ### Backend
 
-- **URL**: http://localhost:3000/api/v1
+- **URL**: https://api.expatriamente.com/api/v1
 - **Porta**: 3000 (backend NestJS)
 
 ### Frontend
 
-- **URL**: http://localhost:3000
+- **URL**: https://api.expatriamente.com
 - **Porta**: 3001 (Next.js)
 
 ### Autenticação
 
-- **NextAuth URL**: http://localhost:3000
+- **NextAuth URL**: https://api.expatriamente.com
 - **Client ID**: expatriamente-default-client-id
 - **Modo Dev**: Autenticação desabilitada para desenvolvimento
 
 ## 🎯 URLs Importantes
 
-- **Homepage**: http://localhost:3000
-- **Login**: http://localhost:3000/auth/signin
-- **Dashboard**: http://localhost:3000/dashboard
-- **API Backend**: http://localhost:3000/api/v1
+- **Homepage**: https://api.expatriamente.com
+- **Login**: https://api.expatriamente.com/auth/signin
+- **Dashboard**: https://api.expatriamente.com/dashboard
+- **API Backend**: https://api.expatriamente.com/api/v1
 
 ## ✅ Checklist de Verificação
 
@@ -88,7 +88,7 @@ O projeto será iniciado em: **http://localhost:3000**
 - [ ] Dependências instaladas (`npm install`)
 - [ ] Backend rodando na porta 3000
 - [ ] Frontend iniciado (`npm run dev`)
-- [ ] Acessível em http://localhost:3000
+- [ ] Acessível em https://api.expatriamente.com
 
 ## 🚨 Troubleshooting
 

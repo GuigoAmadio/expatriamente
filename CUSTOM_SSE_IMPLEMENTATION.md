@@ -64,14 +64,14 @@ graph TD
 export class CustomSSEConnector {
   private abortController: AbortController | null = null;
   private reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
-  
+
   async connect(): Promise<void> {
     // 1. Criar AbortController
     // 2. Fazer fetch com streaming
     // 3. Configurar reader
     // 4. Iniciar leitura do stream
   }
-  
+
   private async readStream(): Promise<void> {
     // 1. Ler chunks do stream
     // 2. Decodificar Uint8Array
@@ -85,7 +85,8 @@ export class CustomSSEConnector {
 
 ```typescript
 export const SSE_CONFIG = {
-  API_BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1',
+  API_BASE_URL:
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1",
   RECONNECTION: {
     MAX_ATTEMPTS: 5,
     BASE_DELAY: 1000,
@@ -102,13 +103,13 @@ export const SSE_CONFIG = {
 
 ```typescript
 export interface SSEConnectionEvent {
-  status: 'connected' | 'disconnected' | 'error' | 'max_attempts_reached';
+  status: "connected" | "disconnected" | "error" | "max_attempts_reached";
   timestamp: string;
   attempts: number;
 }
 
 export interface CacheUpdateEvent {
-  type: 'invalidate' | 'invalidate_type' | 'update' | 'delete' | 'heartbeat';
+  type: "invalidate" | "invalidate_type" | "update" | "delete" | "heartbeat";
   pattern: string;
   timestamp: string;
   metadata?: any;
@@ -174,7 +175,7 @@ export function Dashboard() {
 import { CacheDebug } from "@/components/debug/CacheDebug";
 
 // ✅ Componente visual para debug
-<CacheDebug isVisible={showDebug} />
+<CacheDebug isVisible={showDebug} />;
 
 // ✅ Logs no console para troubleshooting
 console.log("📡 [CustomSSE] Status da conexão:", status);
@@ -196,10 +197,10 @@ SSE_CONFIG.HEARTBEAT.INTERVAL = 30000;
 ### ✅ **Scripts de Teste Disponíveis:**
 
 ```typescript
-import { 
-  testCustomSSE, 
+import {
+  testCustomSSE,
   testFetchImplementation,
-  runAllTests 
+  runAllTests,
 } from "@/lib/test-custom-sse";
 
 // ✅ Teste completo da implementação

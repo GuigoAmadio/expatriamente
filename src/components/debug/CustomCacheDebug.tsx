@@ -123,7 +123,8 @@ export default function CustomCacheDebug() {
 
           {!isSSEConnected && (
             <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
-              ⚠️ SSE desconectado. Verifique se o usuário está logado e o backend está rodando.
+              ⚠️ SSE desconectado. Verifique se o usuário está logado e o
+              backend está rodando.
             </div>
           )}
 
@@ -132,7 +133,10 @@ export default function CustomCacheDebug() {
               <div className="font-medium">Último Evento SSE:</div>
               <div>Tipo: {lastCacheUpdate.type}</div>
               <div>Padrão: {lastCacheUpdate.pattern}</div>
-              <div>Timestamp: {new Date(lastCacheUpdate.timestamp).toLocaleTimeString()}</div>
+              <div>
+                Timestamp:{" "}
+                {new Date(lastCacheUpdate.timestamp).toLocaleTimeString()}
+              </div>
             </div>
           )}
         </div>
@@ -159,9 +163,16 @@ export default function CustomCacheDebug() {
       {activeTab === "requests" && (
         <div className="space-y-3">
           <div className="text-sm space-y-1">
-            <div>API Base: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'}</div>
+            <div>
+              API Base:{" "}
+              {process.env.NEXT_PUBLIC_API_URL ||
+                "https://api.expatriamente.com/api/v1"}
+            </div>
             <div>Ambiente: {process.env.NODE_ENV}</div>
-            <div>Protocolo: {typeof window !== 'undefined' ? window.location.protocol : 'N/A'}</div>
+            <div>
+              Protocolo:{" "}
+              {typeof window !== "undefined" ? window.location.protocol : "N/A"}
+            </div>
           </div>
 
           <div className="bg-gray-50 p-2 rounded text-xs">
@@ -179,7 +190,10 @@ export default function CustomCacheDebug() {
           <div className="text-sm space-y-1">
             <div>Reconexões: {reconnectAttempts}</div>
             <div>Estado: {getReadyStateText(readyState)}</div>
-            <div>Última Atividade: {lastEvent ? lastEvent.toLocaleTimeString() : 'N/A'}</div>
+            <div>
+              Última Atividade:{" "}
+              {lastEvent ? lastEvent.toLocaleTimeString() : "N/A"}
+            </div>
           </div>
 
           <div className="bg-gray-50 p-2 rounded text-xs">

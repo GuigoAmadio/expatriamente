@@ -130,7 +130,7 @@ app.enableCors({
 ### **Logs do Frontend**
 
 ```
-🌐 [CacheSSE] URL de conexão: http://localhost:3000/api/v1/cache-events/stream?token=...
+🌐 [CacheSSE] URL de conexão: https://api.expatriamente.com/api/v1/cache-events/stream?token=...
 🔑 [CacheSSE] Token presente: true
 ✅ [SSE] Conectado para atualizações em tempo real
 ```

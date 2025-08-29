@@ -2,7 +2,7 @@
 export const SSE_CONFIG = {
   // ✅ URLs base por ambiente
   API_BASE_URL:
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1",
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1",
 
   // ✅ Endpoints SSE
   ENDPOINTS: {

@@ -2,7 +2,9 @@
 import { customSSE } from "./custom-sse-connector";
 
 export async function testCustomSSE() {
-  console.log("🧪 [Test] Iniciando testes do Custom SSE (Implementação do Zero)...");
+  console.log(
+    "🧪 [Test] Iniciando testes do Custom SSE (Implementação do Zero)..."
+  );
 
   // ✅ Teste 1: Verificar se o usuário está logado
   console.log("📋 [Test] 1. Verificando se usuário está logado...");
@@ -29,7 +31,7 @@ export async function testCustomSSE() {
   console.log("📋 [Test] 2. Verificando URL de conexão...");
 
   const apiBaseUrl =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
   const expectedUrl = `${apiBaseUrl}/cache-events/stream?token=${mockToken}&client_id=${mockUser.clientId}`;
 
   console.log(`🌐 [Test] URL esperada: ${expectedUrl}`);
@@ -136,17 +138,23 @@ export async function testFetchImplementation() {
 
   try {
     // Simular uma requisição fetch para o SSE
-    const response = await fetch("http://localhost:3000/api/v1/cache-events/stream?token=test&client_id=test", {
-      method: 'GET',
-      headers: {
-        'Accept': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    });
+    const response = await fetch(
+      "https://api.expatriamente.com/api/v1/cache-events/stream?token=test&client_id=test",
+      {
+        method: "GET",
+        headers: {
+          Accept: "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        },
+      }
+    );
 
     console.log("📡 [Test] Response status:", response.status);
-    console.log("📡 [Test] Response headers:", Object.fromEntries(response.headers.entries()));
+    console.log(
+      "📡 [Test] Response headers:",
+      Object.fromEntries(response.headers.entries())
+    );
 
     if (response.body) {
       const reader = response.body.getReader();
@@ -156,7 +164,7 @@ export async function testFetchImplementation() {
       let chunkCount = 0;
       while (chunkCount < 3) {
         const { done, value } = await reader.read();
-        
+
         if (done) {
           console.log("📡 [Test] Stream finalizado");
           break;
@@ -173,7 +181,6 @@ export async function testFetchImplementation() {
         }
       }
     }
-
   } catch (error) {
     console.error("❌ [Test] Erro ao testar fetch:", error);
   }
@@ -181,7 +188,9 @@ export async function testFetchImplementation() {
 
 // ✅ Função para executar todos os testes
 export async function runAllTests() {
-  console.log("🚀 [Test] Executando todos os testes do Custom SSE (Implementação do Zero)...");
+  console.log(
+    "🚀 [Test] Executando todos os testes do Custom SSE (Implementação do Zero)..."
+  );
 
   await testCustomSSE();
 

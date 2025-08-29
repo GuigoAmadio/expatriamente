@@ -83,11 +83,11 @@ Crie um arquivo `.env.local` na raiz do projeto:
 
 ```env
 # Configuração da API Backend
-NEXT_PUBLIC_API_URL=http://localhost:3000/v1
+NEXT_PUBLIC_API_URL=https://api.expatriamente.com/v1
 
 # Configurações de Autenticação
 NEXTAUTH_SECRET=your-secret-key-here
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=https://api.expatriamente.com
 ```
 
 ### **2. Dependências**
@@ -201,7 +201,7 @@ npm install
 cp env.example .env.local
 
 # Editar variáveis de ambiente
-# NEXT_PUBLIC_API_URL=http://localhost:3000/v1
+# NEXT_PUBLIC_API_URL=https://api.expatriamente.com/v1
 ```
 
 ### **2. Executar o Projeto**
@@ -217,7 +217,7 @@ npm start
 
 ### **3. Testar as Funcionalidades**
 
-1. Acesse `http://localhost:3000/login`
+1. Acesse `https://api.expatriamente.com/login`
 2. Faça login com credenciais válidas
 3. O sistema redirecionará automaticamente para o dashboard correto baseado na role
 4. Teste as funcionalidades específicas de cada role
@@ -251,7 +251,7 @@ npm start
 
 - Verifique se o backend está rodando na porta 3001
 - Confirme a URL no arquivo `.env.local`
-- Teste a conectividade com `curl http://localhost:3000/v1/auth/me`
+- Teste a conectividade com `curl https://api.expatriamente.com/v1/auth/me`
 
 ### **Erro de Autenticação**
 

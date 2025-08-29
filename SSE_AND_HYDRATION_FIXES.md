@@ -96,7 +96,7 @@ useEffect(() => {
 **Problema:**
 
 ```
-Access to fetch at 'http://localhost:3000/api/v1/cache/metadata/employees' from origin 'http://localhost:3001' has been blocked by CORS policy: Request header field cache-control is not allowed by Access-Control-Allow-Headers in preflight response.
+Access to fetch at 'https://api.expatriamente.com/api/v1/cache/metadata/employees' from origin 'http://localhost:3001' has been blocked by CORS policy: Request header field cache-control is not allowed by Access-Control-Allow-Headers in preflight response.
 ```
 
 **Solução:**

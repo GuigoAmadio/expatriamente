@@ -24,7 +24,7 @@ export class RequestManager {
 
   // ✅ Adicionar a propriedade API_BASE_URL
   private API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+    process.env.NEXT_PUBLIC_API_URL || "https://api.expatriamente.com/api/v1";
 
   // ✅ Prevenir múltiplas chamadas simultâneas
   async executeRequest<T>(
