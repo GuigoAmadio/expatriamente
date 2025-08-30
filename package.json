@@ -21,6 +21,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/bcryptjs": "^2.4.6",
     "@use-gesture/react": "^10.3.1",
+    "autoprefixer": "^10.4.21",
     "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
@@ -45,6 +46,7 @@
     "recharts": "^3.1.0",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.2.10",
+    "postcss": "^8.5.6",
     "zod": "^3.25.67"
   },
   "devDependencies": {
@@ -54,10 +56,8 @@
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19",
     "@types/react-window": "^1.8.8",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
-    "postcss": "^8.5.6",
     "tailwindcss": "^4.1.10",
     "typescript": "^5"
   }
