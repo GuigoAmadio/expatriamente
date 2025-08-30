@@ -1,13 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Desabilitar Turbopack para resolver problemas com fontes
-  experimental: {
-    // turbo: false, // Comentado para evitar erro de tipo
+  // Configurações de compilação
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
   },
-
-  // Configurações de otimização
-  // swcMinify removido (não suportado no Next 15)
 
   // Configurações de imagens
   images: {
@@ -15,10 +12,11 @@ const nextConfig: NextConfig = {
     unoptimized: false,
   },
 
-  // Configurações de compilação
-  compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
-  },
+  // Configuração para produção
+  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
+
+  // Configurações específicas para o Vercel
+  serverExternalPackages: [],
 
   // ✅ ADICIONAR HEADERS PARA EVITAR CACHE
   async headers() {

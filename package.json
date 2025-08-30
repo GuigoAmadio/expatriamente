@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",

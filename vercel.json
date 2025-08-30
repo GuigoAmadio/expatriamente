@@ -1,0 +1,18 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "SKIP_ENV_VALIDATION": "1"
+    }
+  },
+  "functions": {
+    "src/app/**/*.{ts,tsx}": {
+      "maxDuration": 60
+    }
+  },
+  "crons": []
+}
