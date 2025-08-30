@@ -1,8 +1,6 @@
-@import "tailwindcss";
-
-@theme {
-  --color-custom-yellow: #ffffff;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Smooth scrolling */
 html {

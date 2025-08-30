@@ -4,11 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -p 3001",
-    "css": "npx tailwindcss -i ./styles/input.css -o ./styles/output.css --watch",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "next lint",
-    "vercel-build": "next build"
+    "lint": "next lint"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -17,7 +15,6 @@
     "@react-spring/web": "^10.0.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/line-clamp": "^0.4.4",
-    "@tailwindcss/postcss": "^4.1.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/bcryptjs": "^2.4.6",
     "@use-gesture/react": "^10.3.1",
@@ -47,6 +44,7 @@
     "slick-carousel": "^1.8.1",
     "swiper": "^11.2.10",
     "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.16",
     "zod": "^3.25.67"
   },
   "devDependencies": {
@@ -58,7 +56,6 @@
     "@types/react-window": "^1.8.8",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
-    "tailwindcss": "^4.1.10",
     "typescript": "^5"
   }
 }
