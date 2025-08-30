@@ -25,9 +25,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fdfaf0]">
       <LazySidebar user={user} />
-      <div className="lg:pl-64 pb-20 lg:pb-0">
+      <div className="lg:pl-48 pb-20 lg:pb-0">
         <LazyHeader user={user} />
         <main className="">{children}</main>
       </div>

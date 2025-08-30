@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-custom-yellow: #ffffff;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
@@ -226,8 +230,7 @@ body {
 
 /* Cards com melhor hierarquia */
 .card-elevated {
-  background: var(--color-background-secondary);
-  border: 1px solid var(--color-border);
+  background: #fffff4;
   box-shadow: var(--shadow-md);
   border-radius: 1rem;
 }

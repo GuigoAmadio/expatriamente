@@ -124,12 +124,12 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4 sticky top-0 z-40">
+    <header className="bg-[#fdfaf0] px-4 lg:px-6 py-3 lg:py-4 sticky top-0 z-40">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-sm sm:text-xl font-semibold text-gray-900">
-              Bem-vindo, {user?.name?.split(" ")[0] || "Usuário"}
+              Bem-vindo!
             </h2>
             <div
               className={`hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getRoleBadgeColor(
@@ -164,7 +164,7 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
                 className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="relative group">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 group-hover:shadow-xl group-hover:scale-105">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-stone-500 to-stone-600 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 group-hover:shadow-xl group-hover:scale-105">
                     <span className="text-white text-sm sm:text-base font-semibold">
                       {user?.name?.charAt(0)?.toUpperCase() || "U"}
                     </span>

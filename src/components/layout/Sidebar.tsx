@@ -5,6 +5,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BackendUser } from "@/types/backend";
 import React, { useCallback } from "react";
+import {
+  Home,
+  Users,
+  CalendarDays,
+  UserRound,
+  Settings,
+  LogOut,
+} from "lucide-react";
 
 interface SidebarProps {
   user: BackendUser | null;
@@ -33,46 +41,66 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
       case "ADMIN":
       case "SUPER_ADMIN":
         return [
-          { label: "Dashboard", href: "/dashboard/admin", icon: "🏠" },
+          {
+            label: "Dashboard",
+            href: "/dashboard/admin",
+            icon: <Home className="w-4 h-4 text-[#a8b093]" />,
+          },
           {
             label: "Psicanalistas",
             href: "/dashboard/admin/employees",
-            icon: "👥",
+            icon: <Users className="w-4 h-4 text-[#a8b093]" />,
           },
           {
             label: "Agendamentos",
             href: "/dashboard/admin/appointments",
-            icon: "📅",
+            icon: <CalendarDays className="w-4 h-4 text-[#a8b093]" />,
           },
-          { label: "Usuários", href: "/dashboard/admin/clients", icon: "👤" },
-          { label: "Serviços", href: "/dashboard/admin/services", icon: "⚙️" },
+          {
+            label: "Usuários",
+            href: "/dashboard/admin/clients",
+            icon: <UserRound className="w-4 h-4 text-[#a8b093]" />,
+          },
+          {
+            label: "Serviços",
+            href: "/dashboard/admin/services",
+            icon: <Settings className="w-4 h-4 text-[#a8b093]" />,
+          },
         ];
       case "EMPLOYEE":
         return [
-          { label: "Dashboard", href: "/dashboard/employee", icon: "🏠" },
+          {
+            label: "Dashboard",
+            href: "/dashboard/employee",
+            icon: <Home className="w-4 h-4 text-[#a8b093]" />,
+          },
           {
             label: "Meus Clientes",
             href: "/dashboard/employee/clients",
-            icon: "👥",
+            icon: <Users className="w-4 h-4 text-[#a8b093]" />,
           },
           {
             label: "Meus Agendamentos",
             href: "/dashboard/employee/appointments",
-            icon: "📅",
+            icon: <CalendarDays className="w-4 h-4 text-[#a8b093]" />,
           },
         ];
       case "CLIENT":
         return [
-          { label: "Dashboard", href: "/dashboard/client", icon: "🏠" },
+          {
+            label: "Dashboard",
+            href: "/dashboard/client",
+            icon: <Home className="w-4 h-4 text-[#a8b093]" />,
+          },
           {
             label: "Meus Agendamentos",
             href: "/dashboard/client/appointments",
-            icon: "📅",
+            icon: <CalendarDays className="w-4 h-4 text-[#a8b093]" />,
           },
           {
             label: "Ver Psiquiatras",
             href: "/dashboard/client/psychologists",
-            icon: "👤",
+            icon: <UserRound className="w-4 h-4 text-[#a8b093]" />,
           },
         ];
       default:
@@ -83,14 +111,9 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
   const menuItems = getMenuItems();
 
   return (
-    <nav className="hidden lg:block fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-50">
+    <nav className="hidden lg:block fixed left-0 top-0 h-full w-48 bg-[#fbf5e0] z-50 border-r border-lime-100">
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-gray-900">Expatriamente</h1>
-        {user && (
-          <p className="text-sm text-gray-600 mt-2">
-            {user.name} ({user.role})
-          </p>
-        )}
+        <h1 className="text-lg font-bold text-stone-600">Expatriamente</h1>
       </div>
 
       <div className="px-4">
@@ -99,9 +122,9 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`flex items-center px-4 py-3 text-gray-700 rounded-lg transition-colors ${
+                className={`flex items-center px-4 py-3 text-gray-700 text-xs rounded-lg font-body font-medium transition-colors ${
                   pathname === item.href
-                    ? "bg-blue-100 text-blue-700"
+                    ? "bg-white text-blue-700"
                     : "hover:bg-gray-100"
                 }`}
               >
@@ -116,9 +139,9 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
       <div className="absolute bottom-0 w-full p-4">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors hover:bg-red-50 hover:text-red-700"
+          className="w-full flex items-center px-4 py-3 text-gray-700 rounded-lg transition-colors hover:bg-red-50 hover:text-red-700"
         >
-          <span className="mr-3">🚪</span>
+          <LogOut className="w-4 h-4 text-[#a8b093] mr-3" />
           Sair
         </button>
       </div>
