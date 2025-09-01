@@ -170,7 +170,7 @@ export default function Header({
             <button
               onClick={() => handleNavigation("/")}
               className="font-akzidens text-[2.8vw] leading-none tracking-tight hover:scale-105 transition-transform duration-300 cursor-pointer"
-              style={navTextStyle || { color: "#587861" }}
+              style={navTextStyle || { color: "#61320e" }}
             >
               Expatriamente
             </button>
@@ -270,7 +270,7 @@ export default function Header({
 
             {/* Ícone de login à extrema direita com loading */}
             <button
-              className="ml-auto flex items-center justify-center w-10 h-10 text-[#495443] lg:w-12 lg:h-12 rounded-full transition-colors duration-500 hover:cursor-pointer ease-in-out hover:text-white/80"
+              className="ml-auto flex items-center justify-center w-10 h-10 text-[#61320e] lg:w-12 lg:h-12 rounded-full transition-colors duration-500 hover:cursor-pointer ease-in-out hover:text-white/80"
               title={user ? "Ir para o dashboard" : "Entrar"}
               onClick={handleLoginClick}
               disabled={isLoginLoading}
@@ -293,8 +293,7 @@ export default function Header({
             />
           </div>
           <span
-            className={`font-akzidens text-[1.04vw] ml-[0.2vw] leading-none tracking-tight mt-[0.5vw] font-medium ${navDefaultTextClass} opacity-80`}
-            style={navTextStyle}
+            className={`font-akzidens text-[1.04vw] ml-[0.2vw] leading-none tracking-tight mt-[0.5vw] font-medium text-[#61320e] opacity-80`}
           >
             Psicanálise para brasileiros no exterior
           </span>
@@ -306,7 +305,7 @@ export default function Header({
             <button
               onClick={() => handleNavigation("/")}
               className="font-akzidens text-[5.4vw] sm:text-[4vw] leading-none tracking-tight hover:scale-105 transition-transform duration-300 cursor-pointer"
-              style={navTextStyle || { color: "#587861" }}
+              style={navTextStyle || { color: "#61320e" }}
             >
               Expatriamente
             </button>
@@ -314,22 +313,22 @@ export default function Header({
             {/* Hamburger Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="flex items-center justify-center pb-1 rounded-full hover:bg-[#4F200D]/20 transition-colors"
+              className="flex items-center justify-center pb-1 rounded-full hover:bg-[#61320e]/20 transition-colors"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <FiX size={24} className="text-[#4F200D]" />
+                <FiX size={24} className="text-[#61320e]" />
               ) : (
-                <FiMenu size={24} className="text-[#4F200D]" />
+                <FiMenu size={24} className="text-[#61320e]" />
               )}
             </button>
           </div>
 
           {/* Linha horizontal e texto no mobile */}
           <div className="w-full flex flex-row">
-            <div className="border-b border-[#4F200D] flex-1" />
+            <div className="border-b border-[#61320e] flex-1" />
           </div>
-          <span className="font-akzidens text-[2.5vw] sm:text-[2vw] ml-[0.2vw] text-[#587681] text-opacity-70 leading-none tracking-tight mt-[0.5vw] font-medium">
+          <span className="font-akzidens text-[2.5vw] sm:text-[2vw] ml-[0.2vw] text-[#61320e] text-opacity-70 leading-none tracking-tight mt-[0.5vw] font-medium">
             Psicanálise para brasileiros no exterior
           </span>
 
@@ -340,42 +339,42 @@ export default function Header({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg border-b border-[#4F200D]/20 z-50"
+              className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg border-b border-[#61320e]/20 z-50"
             >
               <nav className="flex flex-col py-4">
                 <button
                   onClick={() => handleNavigation("/")}
-                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors ${
-                    currentSection === "home" ? "bg-[#4F200D]/20" : ""
+                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors ${
+                    currentSection === "home" ? "bg-[#61320e]/20" : ""
                   }`}
                 >
                   Início
                 </button>
                 <button
                   onClick={() => handleNavigation("/sobre")}
-                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors ${
-                    currentSection === "about" ? "bg-[#4F200D]/20" : ""
+                  className={`px-6 py-3 text-left font-akzidens text-base font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors ${
+                    currentSection === "about" ? "bg-[#61320e]/20" : ""
                   }`}
                 >
                   Sobre Nós
                 </button>
 
                 {/* Mobile Serviços com submenu */}
-                <div className="border-t border-[#4F200D]/10">
+                <div className="border-t border-[#61320e]/10">
                   <button
                     onClick={() => handleNavigation("/servicos")}
-                    className={`w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors ${
-                      currentSection === "services" ? "bg-[#4F200D]/20" : ""
+                    className={`w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors ${
+                      currentSection === "services" ? "bg-[#61320e]/20" : ""
                     }`}
                   >
                     Serviços
                   </button>
-                  <div className="bg-[#4F200D]/5">
+                  <div className="bg-[#61320e]/5">
                     <button
                       onClick={() => handleNavigation("/intercambio")}
-                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors ${
+                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors ${
                         currentSection === "intercambio"
-                          ? "bg-[#4F200D]/20"
+                          ? "bg-[#61320e]/20"
                           : ""
                       }`}
                     >
@@ -383,9 +382,9 @@ export default function Header({
                     </button>
                     <button
                       onClick={() => handleNavigation("/expatriados")}
-                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors ${
+                      className={`w-full px-8 py-2 text-left font-akzidens text-sm font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors ${
                         currentSection === "expatriados"
-                          ? "bg-[#4F200D]/20"
+                          ? "bg-[#61320e]/20"
                           : ""
                       }`}
                     >
@@ -396,17 +395,17 @@ export default function Header({
 
                 <button
                   onClick={() => handleNav("psicanalistas")}
-                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors"
+                  className="px-6 py-3 text-left font-akzidens text-base font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors"
                 >
                   Psicanalistas
                 </button>
 
                 {/* Login button no mobile menu */}
-                <div className="border-t border-[#4F200D]/10">
+                <div className="border-t border-[#61320e]/10">
                   <button
                     onClick={handleLoginClick}
                     disabled={isLoginLoading}
-                    className="w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#4F200D] hover:bg-[#4F200D]/10 transition-colors flex items-center gap-2"
+                    className="w-full px-6 py-3 text-left font-akzidens text-base font-medium text-[#61320e] hover:bg-[#61320e]/10 transition-colors flex items-center gap-2"
                   >
                     {isLoginLoading ? (
                       <>

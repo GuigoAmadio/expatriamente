@@ -6,6 +6,7 @@ import {
   FaFacebook,
   FaInstagram,
 } from "react-icons/fa6";
+import { FaYoutube } from "react-icons/fa";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import Image from "next/image";
@@ -139,6 +140,12 @@ export default function FooterSection() {
                 text: "contato@expatriamente.com",
                 color: "text-black",
                 delay: 1.4,
+              },
+              {
+                icon: FaYoutube,
+                text: "contato@expatriamente.com",
+                color: "text-black",
+                delay: 1.5,
               },
             ].map((item, index) => (
               <motion.div
@@ -311,6 +318,18 @@ export default function FooterSection() {
                   contato@expatriamente.com
                 </span>
               </motion.div>
+              <motion.div
+                className="flex items-center gap-1.5 sm:gap-2 md:gap-3"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 1.5 }}
+                viewport={{ once: true }}
+              >
+                <FaYoutube className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-[#ff0000] flex-shrink-0" />
+                <span className="text-black text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-normal break-all leading-tight">
+                  contato@expatriamente.com
+                </span>
+              </motion.div>
             </motion.div>
           )}
 
@@ -323,8 +342,11 @@ export default function FooterSection() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
               viewport={{ once: true }}
             >
-              <motion.div
-                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300"
+              <motion.a
+                href="mailto:contato@expatriamente.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1.0 }}
@@ -332,10 +354,13 @@ export default function FooterSection() {
                 whileHover={{ scale: 1.1, y: -2 }}
               >
                 <FaEnvelope className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#7db6f7]" />
-              </motion.div>
+              </motion.a>
 
-              <motion.div
-                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300"
+              <motion.a
+                href="https://wa.me/17543087970"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1.1 }}
@@ -343,10 +368,13 @@ export default function FooterSection() {
                 whileHover={{ scale: 1.1, y: -2 }}
               >
                 <FaWhatsapp className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#25d366]" />
-              </motion.div>
+              </motion.a>
 
-              <motion.div
-                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300"
+              <motion.a
+                href="https://www.tiktok.com/@expatriamente?_t=ZP-8zGIfLR6zR1&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1.2 }}
@@ -354,10 +382,13 @@ export default function FooterSection() {
                 whileHover={{ scale: 1.1, y: -2 }}
               >
                 <FaTiktok className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-black" />
-              </motion.div>
+              </motion.a>
 
-              <motion.div
-                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300"
+              <motion.a
+                href="https://www.facebook.com/share/19hLbW2FSZ/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1.3 }}
@@ -365,10 +396,13 @@ export default function FooterSection() {
                 whileHover={{ scale: 1.1, y: -2 }}
               >
                 <FaFacebook className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#1877f3]" />
-              </motion.div>
+              </motion.a>
 
-              <motion.div
-                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300"
+              <motion.a
+                href="https://www.instagram.com/expatriamente?igsh=ZmhmZ3F6ZDBwamU5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 1.4 }}
@@ -376,7 +410,21 @@ export default function FooterSection() {
                 whileHover={{ scale: 1.1, y: -2 }}
               >
                 <FaInstagram className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#a259c6]" />
-              </motion.div>
+              </motion.a>
+
+              <motion.a
+                href="https://youtube.com/@cuidadoparaexpatriados?si=9hOESDAaXhVVcstr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 1.5 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.1, y: -2 }}
+              >
+                <FaYoutube className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#ff0000]" />
+              </motion.a>
             </motion.div>
           )}
         </motion.div>

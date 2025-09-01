@@ -34,10 +34,10 @@ export default function ExpatriadosSection() {
 
   return (
     <div className="w-full flex flex-col items-center sm:items-end">
-      <div className="mr-0 xl:mr-20 pt-12 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center z-20 px-4 w-full max-w-full sm:max-w-[60%]">
+      <div className="mr-0 xl:mr-20 pt-12 md:pt-12 xl:pt-20 pb-10 flex flex-col justify-center items-center sm:items-start z-20 px-4 w-full max-w-full sm:max-w-[60%]">
         {/* Título Principal */}
         <motion.div
-          className="flex flex-col items-center text-start mb-4 md:mb-6 w-full font-body"
+          className="flex flex-col items-center sm:items-start text-start mb-4 md:mb-6 w-full font-body"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}

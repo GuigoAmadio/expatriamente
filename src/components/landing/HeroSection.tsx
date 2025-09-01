@@ -90,7 +90,7 @@ export default function HeroSection() {
           {/* Imagem da mulher - POSICIONAMENTO ORIGINAL mas com overflow */}
 
           <Image
-            src="/pf1.png"
+            src="/aa.png"
             alt="Hero Mulher"
             width={500}
             height={80}

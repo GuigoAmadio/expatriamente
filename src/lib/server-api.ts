@@ -48,7 +48,7 @@ async function getHeaders(): Promise<HeadersInit> {
           console.log("❌ [server-api] Cookie auth_token não encontrado");
 
           // Listar todos os cookies para debug
-          const allCookies = cookieStore.getAll();
+         // const allCookies = cookieStore.getAll();
           //  console.log(
           //    "🔍 [server-api] Todos os cookies disponíveis:",
           //    allCookies.map((c) => c.name)
@@ -61,7 +61,13 @@ async function getHeaders(): Promise<HeadersInit> {
         );
         console.log("🔍 [server-api] Tentando método alternativo...");
 
-        // Método alternativo: usar headers da requisição
+        // Método alternativo: usar os headers da requisição HTTP para tentar obter o cookie manualmente.
+        // Isso é útil em contextos onde o objeto "cookies" do Next não está disponível (por exemplo, fora de Server Actions ou Middleware).
+        // Em quais casos isso é necessário? 
+        // Esse método alternativo é útil quando estamos em um contexto de servidor (Node.js) mas o objeto "cookies" do Next.js não está disponível.
+        // Isso pode acontecer, por exemplo, fora de Server Actions, Middleware ou em funções utilitárias chamadas em SSR/SSG, onde não temos acesso direto ao contexto da requisição do Next.
+        // Nesses casos, ainda podemos tentar acessar os cookies manualmente através do header "cookie" da requisição HTTP.
+        // Portanto, é útil como fallback para garantir que tentamos obter o token de autenticação mesmo em contextos menos comuns ou edge cases do Next.js.
         try {
           const { headers: requestHeaders } = await import("next/headers");
           const headersList = await requestHeaders();

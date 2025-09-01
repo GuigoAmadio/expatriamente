@@ -348,17 +348,6 @@ export async function loginAction(data: LoginInput) {
       });
     }
 
-    console.log("🍪 Expatriamente - Cookies salvos com sucesso!");
-    console.log(
-      "- auth_token:",
-      cookieStore.get("auth_token") ? "Salvo" : "ERRO"
-    );
-    console.log("- client_id:", cookieStore.get("client_id")?.value);
-    console.log(
-      "- refresh_token:",
-      cookieStore.get("refresh_token") ? "Salvo" : "N/A"
-    );
-
     // Cache do usuário logado (sem dados sensíveis)
     if ((responseData as any)?.user) {
       console.log("💾 [Auth] Salvando dados do usuário no cache...");
@@ -385,22 +374,22 @@ export async function loginAction(data: LoginInput) {
       console.log(`🚀 [Auth] Iniciando prefetchs para role: ${userRole}`);
 
       // Executar prefetchs em background (não bloquear o login)
-      executeRoleBasedPrefetch(userRole)
-        .then((prefetchResult) => {
-          if (prefetchResult.success) {
-            console.log(
-              `✅ [Auth] Prefetchs concluídos: ${prefetchResult.successCount}/${prefetchResult.totalPrefetches} em ${prefetchResult.duration}ms`
-            );
-          } else {
-            console.error(
-              `❌ [Auth] Erro nos prefetchs:`,
-              prefetchResult.error
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("❌ [Auth] Erro ao executar prefetchs:", error);
-        });
+           executeRoleBasedPrefetch(userRole)
+             .then((prefetchResult) => {
+               if (prefetchResult.success) {
+                 console.log(
+                   `✅ [Auth] Prefetchs concluídos: ${prefetchResult.successCount}/${prefetchResult.totalPrefetches} em ${prefetchResult.duration}ms`
+                 );
+               } else {
+                 console.error(
+                   `❌ [Auth] Erro nos prefetchs:`,
+                   prefetchResult.error
+                 );
+               }
+             })
+             .catch((error) => {
+               console.error("❌ [Auth] Erro ao executar prefetchs:", error);
+             });
     }
 
     return {

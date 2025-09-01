@@ -109,7 +109,7 @@ export default function HeroRightSection() {
           <motion.button
             onClick={handleConhecerPsicanalistas}
             className={`
-              w-xs px-[2vw] py-[2vw] md:px-3 md:py-[15px] rounded-lg bg-white text-[#587861] font-akzidens font-bold border-2 border-white shadow-lg 
+            w-xs px-[2vw] py-[2vw] md:px-3 md:py-[15px] rounded-lg bg-white text-[#587861] font-akzidens font-bold border-2 border-white shadow-lg 
               hover:scale-105 hover:bg-[#587861] hover:text-white 
               focus:ring-4 focus:ring-white/20 transition-all duration-400 outline-none text-center 
               text-[3.2vw] 
