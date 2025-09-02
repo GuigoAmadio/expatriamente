@@ -22,7 +22,8 @@ interface AdminClientsListNewProps {
   onStatusFilterChange: (status: string) => void;
   onPageChange: (page: number) => void;
   onSelectClient: (client: Client) => void;
-  onClientDeleted?: () => void;
+  onEditClient: (client: Client) => Promise<boolean>;
+  onClientDeleted: (id: string) => Promise<boolean>;
 }
 
 export default function AdminClientsListNew({
@@ -131,23 +132,40 @@ export default function AdminClientsListNew({
       key: "view",
       icon: <FiEye size={18} />,
       label: "Visualizar",
-      onClick: (client: Client) => onSelectClient(client),
+      onClick: (client: Client) => {
+        window.location.href = `/dashboard/admin/clients/${client.id}`;
+      },
       className: "text-blue-600 hover:bg-blue-50",
     },
     {
       key: "edit",
       icon: <FiEdit size={18} />,
       label: "Editar",
-      onClick: (client: Client) => onSelectClient(client),
-      className: "text-green-600 hover:bg-green-50",
+      onClick: (client: Client) => {
+        window.location.href = `/dashboard/admin/clients/${client.id}/edit`;
+      },
+      className: "text-green-600 hSover:bg-green-50",
     },
     {
       key: "delete",
       icon: <FiTrash2 size={18} />,
       label: "Excluir",
       onClick: (client: Client) => {
-        // Aqui você pode implementar a lógica de delete
-        console.log("Delete client:", client.id);
+        if (
+          confirm(`Tem certeza que deseja excluir o cliente ${client.name}?`)
+        ) {
+          console.log("Excluindo cliente:", client.id);
+          onClientDeleted(client.id).then((result) => {
+            if (result) {
+              alert("Cliente excluído com sucesso");
+              window.location.reload();
+            } else {
+              alert("Cliente não excluído");
+            }
+          });
+        } else {
+          alert("Cliente não excluído");
+        }
       },
       className: "text-red-600 hover:bg-red-50",
     },

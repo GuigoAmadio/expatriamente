@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useToasts } from "@/components/ui/Toast";
 import { Client } from "@/types/backend";
 import AdminClientsListNew from "./AdminClientsListNew";
+import { deleteClient } from "@/actions/clients";
 
 interface AdminClientsListClientProps {
   clients: Client[];
@@ -49,9 +50,27 @@ export default function AdminClientsListClient({
     console.log("Cliente selecionado:", client);
   };
 
-  const handleClientDeleted = () => {
-    // Recarregar a página para atualizar a lista após deletar
+  const handleEditClient = (client: Client): Promise<boolean> => {
+    // Recarregar a página para atualizar a lista após editar
     window.location.reload();
+    return Promise.resolve(true);
+  };
+
+  const handleDeleteClient = async (id: string): Promise<boolean> => {
+    // Recarregar a página para atualizar a lista após deletar
+    try {
+      const result = await deleteClient(id);
+      if (result) {
+        window.location.reload();
+      } else {
+        alert("Erro ao cancelar agendamento");
+      }
+    } catch (error) {
+      console.error("Erro ao cancelar agendamento:", error);
+      alert("Erro ao cancelar agendamento");
+      return Promise.resolve(false);
+    }
+    return Promise.resolve(true);
   };
 
   return (
@@ -66,7 +85,8 @@ export default function AdminClientsListClient({
       onStatusFilterChange={handleStatusFilterChange}
       onPageChange={handlePageChange}
       onSelectClient={handleSelectClient}
-      onClientDeleted={handleClientDeleted}
+      onEditClient={handleEditClient}
+      onClientDeleted={handleDeleteClient}
     />
   );
 }
