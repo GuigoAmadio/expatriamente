@@ -183,7 +183,6 @@ export default function PsychologistsSection() {
 
     // Simular um pequeno delay para mostrar o loading
     await new Promise((resolve) => setTimeout(resolve, 800));
-
     router.push(`/psicanalistas/${psychologist.id}`);
   };
 

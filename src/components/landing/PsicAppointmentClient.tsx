@@ -174,6 +174,7 @@ export default function PsicAppointmentClient({
       alert(
         "Agendamento realizado com sucesso! Você receberá um email de confirmação."
       );
+      window.location.href = "/dashboard/client";
 
       // Limpar seleção
       setSelecionado(null);
