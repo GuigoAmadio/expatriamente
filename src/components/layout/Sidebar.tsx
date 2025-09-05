@@ -12,6 +12,7 @@ import {
   UserRound,
   Settings,
   LogOut,
+  Clock,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -83,6 +84,11 @@ export const Sidebar = React.memo(function Sidebar({ user }: SidebarProps) {
             label: "Meus Agendamentos",
             href: "/dashboard/employee/appointments",
             icon: <CalendarDays className="w-4 h-4 text-[#a8b093]" />,
+          },
+          {
+            label: "Meus Horários",
+            href: "/dashboard/employee/schedule",
+            icon: <Clock className="w-4 h-4 text-[#a8b093]" />,
           },
         ];
       case "CLIENT":

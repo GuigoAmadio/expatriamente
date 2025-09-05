@@ -1,6 +1,10 @@
 "use client";
 
 import { Appointment } from "@/types/backend";
+import { CalendarDays, Clock, Users } from "lucide-react";
+import { StatCard } from "@/components/ui/cards/StatCard";
+import { SectionCard } from "@/components/ui/cards/SectionCard";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface EmployeeDashboardProps {
   appointments: Appointment[];
@@ -22,79 +26,50 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
     .slice(0, 5);
 
   return (
-    <div className="space-y-5 p-5">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6">
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-full bg-blue-100">
-              <span className="text-2xl">📅</span>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">
-                Agendamentos Hoje
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {todayAppointments.length}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-full bg-green-100">
-              <span className="text-2xl">⏰</span>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">
-                Próximos Agendamentos
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {upcomingAppointments.length}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-full bg-yellow-100">
-              <span className="text-2xl">👥</span>
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">
-                Total de Clientes
-              </p>
-              <p className="text-2xl font-bold text-gray-900">
-                {new Set(appointments.map((apt) => apt.userId)).size}
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="p-5 space-y-6">
+      {/* Cards principais */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <StatCard
+          label="Agendamentos Hoje"
+          value={todayAppointments.length}
+          icon={<CalendarDays className="w-6 h-6 text-stone-600" />}
+        />
+        <StatCard
+          label="Próximos Agendamentos"
+          value={upcomingAppointments.length}
+          icon={<Clock className="w-6 h-6 text-stone-600" />}
+        />
+        <StatCard
+          label="Total de Clientes"
+          value={new Set(appointments.map((apt) => apt.userId)).size}
+          icon={<Users className="w-6 h-6 text-stone-600" />}
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Appointments Hoje
-          </h3>
+      {/* Listas lado a lado */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Agendamentos de hoje */}
+        <SectionCard
+          title="Agendamentos de Hoje"
+          icon={<CalendarDays className="w-5 h-5 text-stone-600" />}
+        >
           <div className="space-y-3">
             {todayAppointments.length > 0 ? (
               todayAppointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
+                  className="flex items-center justify-between p-3 bg-stone-50 rounded-lg border border-stone-200"
                 >
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-stone-900">
                       {appointment.user?.name || "Cliente"}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-stone-600">
                       {appointment.service?.name || "Serviço"}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-stone-900">
                       {new Date(appointment.startTime).toLocaleTimeString(
                         "pt-BR",
                         {
@@ -103,46 +78,45 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
                         }
                       )}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-stone-500">
                       {appointment.status}
                     </p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                Nenhum appointment para hoje
-              </p>
+              <EmptyState subtitle="Nenhum agendamento para hoje" />
             )}
           </div>
-        </div>
+        </SectionCard>
 
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Próximos Appointments
-          </h3>
+        {/* Próximos agendamentos */}
+        <SectionCard
+          title="Próximos Agendamentos"
+          icon={<Clock className="w-5 h-5 text-stone-600" />}
+        >
           <div className="space-y-3">
             {upcomingAppointments.length > 0 ? (
               upcomingAppointments.map((appointment) => (
                 <div
                   key={appointment.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
+                  className="flex items-center justify-between p-3 bg-stone-50 rounded-lg border border-stone-200"
                 >
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-stone-900">
                       {appointment.user?.name || "Cliente"}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-stone-600">
                       {appointment.service?.name || "Serviço"}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-stone-500">
                       {new Date(appointment.startTime).toLocaleDateString(
                         "pt-BR"
                       )}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-stone-900">
                       {new Date(appointment.startTime).toLocaleTimeString(
                         "pt-BR",
                         {
@@ -151,19 +125,17 @@ export function EmployeeDashboard({ appointments }: EmployeeDashboardProps) {
                         }
                       )}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-stone-500">
                       {appointment.status}
                     </p>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                Nenhum appointment futuro
-              </p>
+              <EmptyState subtitle="Nenhum agendamento futuro" />
             )}
           </div>
-        </div>
+        </SectionCard>
       </div>
     </div>
   );

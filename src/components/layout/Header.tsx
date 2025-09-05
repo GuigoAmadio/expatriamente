@@ -105,7 +105,7 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
       case "SUPER_ADMIN":
         return "Painel Administrativo";
       case "EMPLOYEE":
-        return "Painel do Funcionário";
+        return "Painel do Psicanalista";
       default:
         return "Painel do Cliente";
     }
@@ -117,7 +117,7 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
       case "SUPER_ADMIN":
         return "bg-purple-100 text-purple-700";
       case "EMPLOYEE":
-        return "bg-blue-100 text-blue-700";
+        return "bg-green-100 text-green-700";
       default:
         return "bg-green-100 text-green-700";
     }
@@ -193,7 +193,17 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
                   <button
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      // Implementar navegação para perfil se existir
+                      // Navegar para perfil baseado no role
+                      if (user?.role === "EMPLOYEE") {
+                        router.push("/dashboard/employee/profile");
+                      } else if (user?.role === "CLIENT") {
+                        router.push("/dashboard/client/profile");
+                      } else if (
+                        user?.role === "ADMIN" ||
+                        user?.role === "SUPER_ADMIN"
+                      ) {
+                        router.push("/dashboard/admin/profile");
+                      }
                     }}
                     className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                   >
@@ -204,7 +214,17 @@ export const Header = React.memo(function Header({ user }: HeaderProps) {
                   <button
                     onClick={() => {
                       setIsDropdownOpen(false);
-                      // Implementar navegação para configurações se existir
+                      // Navegar para configurações baseado no role
+                      if (user?.role === "EMPLOYEE") {
+                        router.push("/dashboard/employee/settings");
+                      } else if (user?.role === "CLIENT") {
+                        router.push("/dashboard/client/settings");
+                      } else if (
+                        user?.role === "ADMIN" ||
+                        user?.role === "SUPER_ADMIN"
+                      ) {
+                        router.push("/dashboard/admin/settings");
+                      }
                     }}
                     className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                   >

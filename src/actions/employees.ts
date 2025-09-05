@@ -255,10 +255,20 @@ export async function getEmployeesWithMeta(): Promise<{
   }
 }
 
-export async function getEmployeeById(id: string): Promise<Employee | null> {
+export async function getEmployeeById(
+  id: string,
+  forceRefresh: boolean = false
+): Promise<Employee | null> {
   try {
-    console.log("🔍 Buscando funcionário com ID:", id);
+    console.log(
+      "🔍 Buscando funcionário com ID:",
+      id,
+      forceRefresh ? "(force refresh)" : ""
+    );
 
+    const url = forceRefresh
+      ? `/employees/${id}?t=${Date.now()}`
+      : `/employees/${id}`;
     const response = await serverGet<{
       success: boolean;
       data: {
@@ -267,7 +277,7 @@ export async function getEmployeeById(id: string): Promise<Employee | null> {
         message: string;
       };
       message: string;
-    }>(`/employees/${id}`);
+    }>(url);
 
     console.log("📦 Resposta completa da API:", response);
     console.log("📦 response.data:", response.data);
@@ -364,6 +374,236 @@ export async function toggleEmployeeStatus(
     return response.data || null;
   } catch (error) {
     console.error("Erro ao alterar status do funcionário:", error);
+    throw error;
+  }
+}
+
+// ===== FUNÇÕES PARA GERENCIAR HORÁRIOS =====
+
+export interface TimeSlot {
+  id: string;
+  dayOfWeek: number; // 0 = Domingo, 1 = Segunda, etc.
+  startTime: string;
+  endTime: string;
+  isRecurring: boolean;
+  isActive: boolean;
+  specificDate?: string; // Data específica para horários não recorrentes (formato YYYY-MM-DD)
+}
+
+export interface TimeOff {
+  id: string;
+  startDate: string;
+  endDate: string;
+  reason: string;
+  isActive: boolean;
+}
+
+export interface WorkingHoursData {
+  timeSlots: TimeSlot[];
+  timeOffs: TimeOff[];
+}
+
+// Obter horários de trabalho de um funcionário
+export async function getEmployeeWorkingHours(
+  employeeId: string,
+  forceRefresh: boolean = false
+): Promise<WorkingHoursData> {
+  try {
+    console.log("🕐 Buscando horários do funcionário:", employeeId);
+
+    const employee = await getEmployeeById(employeeId);
+
+    if (!employee) {
+      console.log("🔍 [getEmployeeWorkingHours] Employee não encontrado");
+      return {
+        timeSlots: [],
+        timeOffs: [],
+      };
+    }
+
+    if (!employee.workingHours) {
+      console.log("🔍 [getEmployeeWorkingHours] Employee não tem workingHours");
+      return {
+        timeSlots: [],
+        timeOffs: [],
+      };
+    }
+
+    // Parse do JSON workingHours
+    console.log(
+      "🔍 [getEmployeeWorkingHours] employee.workingHours raw:",
+      employee.workingHours
+    );
+    console.log(
+      "🔍 [getEmployeeWorkingHours] typeof:",
+      typeof employee.workingHours
+    );
+
+    const workingHours =
+      typeof employee.workingHours === "string"
+        ? JSON.parse(employee.workingHours)
+        : employee.workingHours;
+
+    console.log(
+      "🔍 [getEmployeeWorkingHours] workingHours parsed:",
+      workingHours
+    );
+    console.log(
+      "🔍 [getEmployeeWorkingHours] timeSlots:",
+      workingHours.timeSlots
+    );
+    console.log(
+      "🔍 [getEmployeeWorkingHours] timeOffs:",
+      workingHours.timeOffs
+    );
+
+    return {
+      timeSlots: workingHours.timeSlots || [],
+      timeOffs: workingHours.timeOffs || [],
+    };
+  } catch (error) {
+    console.error("Erro ao buscar horários do funcionário:", error);
+    return {
+      timeSlots: [],
+      timeOffs: [],
+    };
+  }
+}
+
+// Atualizar horários de trabalho de um funcionário
+export async function updateEmployeeWorkingHours(
+  employeeId: string,
+  workingHours: WorkingHoursData
+): Promise<Employee | null> {
+  try {
+    console.log(
+      "🕐 Atualizando horários do funcionário:",
+      employeeId,
+      workingHours
+    );
+    console.log(
+      "🔍 [updateEmployeeWorkingHours] workingHours structure:",
+      JSON.stringify(workingHours, null, 2)
+    );
+
+    const response = await serverPatch<{
+      success: boolean;
+      data: Employee;
+      message: string;
+    }>(`/employees/${employeeId}`, {
+      workingHours: workingHours,
+    });
+
+    // ✅ Invalidar cache após atualização
+    await cacheUtils.invalidateByType("employees");
+    await cacheUtils.invalidatePattern(`employee:${employeeId}`);
+    console.log("🗑️ [Employees] Cache invalidado após atualização de horários");
+
+    console.log("✅ Horários atualizados:", response.data);
+    return response.data?.data || null;
+  } catch (error) {
+    console.error("❌ Erro ao atualizar horários do funcionário:", error);
+    throw error;
+  }
+}
+
+// Adicionar horário específico
+export async function addEmployeeTimeSlot(
+  employeeId: string,
+  timeSlot: Omit<TimeSlot, "id">,
+  specificDate?: string
+): Promise<Employee | null> {
+  try {
+    const currentHours = await getEmployeeWorkingHours(employeeId);
+
+    const newTimeSlot: TimeSlot = {
+      id: Date.now().toString(),
+      ...timeSlot,
+      isActive: true,
+      specificDate: timeSlot.isRecurring ? undefined : specificDate,
+    };
+
+    const updatedHours: WorkingHoursData = {
+      timeSlots: [...currentHours.timeSlots, newTimeSlot],
+      timeOffs: currentHours.timeOffs,
+    };
+
+    return await updateEmployeeWorkingHours(employeeId, updatedHours);
+  } catch (error) {
+    console.error("Erro ao adicionar horário:", error);
+    throw error;
+  }
+}
+
+// Remover horário específico
+export async function removeEmployeeTimeSlot(
+  employeeId: string,
+  timeSlotId: string
+): Promise<Employee | null> {
+  try {
+    const currentHours = await getEmployeeWorkingHours(employeeId);
+
+    const updatedHours: WorkingHoursData = {
+      timeSlots: currentHours.timeSlots.filter(
+        (slot) => slot.id !== timeSlotId
+      ),
+      timeOffs: currentHours.timeOffs,
+    };
+
+    return await updateEmployeeWorkingHours(employeeId, updatedHours);
+  } catch (error) {
+    console.error("Erro ao remover horário:", error);
+    throw error;
+  }
+}
+
+// Toggle status de horário - REMOVIDO
+// Agora apenas deletar e recriar se necessário para simplificar a interface
+
+// Adicionar período de folga
+export async function addEmployeeTimeOff(
+  employeeId: string,
+  timeOff: Omit<TimeOff, "id">
+): Promise<Employee | null> {
+  try {
+    const currentHours = await getEmployeeWorkingHours(employeeId);
+
+    const newTimeOff: TimeOff = {
+      id: Date.now().toString(),
+      ...timeOff,
+      isActive: true,
+    };
+
+    const updatedHours: WorkingHoursData = {
+      timeSlots: currentHours.timeSlots,
+      timeOffs: [...currentHours.timeOffs, newTimeOff],
+    };
+
+    return await updateEmployeeWorkingHours(employeeId, updatedHours);
+  } catch (error) {
+    console.error("Erro ao adicionar período de folga:", error);
+    throw error;
+  }
+}
+
+// Remover período de folga
+export async function removeEmployeeTimeOff(
+  employeeId: string,
+  timeOffId: string
+): Promise<Employee | null> {
+  try {
+    const currentHours = await getEmployeeWorkingHours(employeeId);
+
+    const updatedHours: WorkingHoursData = {
+      timeSlots: currentHours.timeSlots,
+      timeOffs: currentHours.timeOffs.filter(
+        (timeOff) => timeOff.id !== timeOffId
+      ),
+    };
+
+    return await updateEmployeeWorkingHours(employeeId, updatedHours);
+  } catch (error) {
+    console.error("Erro ao remover período de folga:", error);
     throw error;
   }
 }

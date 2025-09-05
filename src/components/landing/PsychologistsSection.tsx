@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import PsychologistCard from "./PsychologistCard";
@@ -89,6 +89,7 @@ export default function PsychologistsSection() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loadingCardId, setLoadingCardId] = useState<string | null>(null);
+  const [randomOrder, setRandomOrder] = useState<number[]>([]);
   const router = useRouter();
   const { trackViewContent } = useFacebookPixel();
 
@@ -105,6 +106,19 @@ export default function PsychologistsSection() {
         };
       });
       setPsychologists(processedData);
+
+      // Gerar ordem aleatória apenas uma vez quando os dados são carregados
+      const generateRandomOrder = (length: number): number[] => {
+        const order = Array.from({ length }, (_, i) => i);
+        // Algoritmo de Fisher-Yates para embaralhar
+        for (let i = order.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [order[i], order[j]] = [order[j], order[i]];
+        }
+        return order;
+      };
+
+      setRandomOrder(generateRandomOrder(processedData.length));
     });
   }, []);
 
@@ -135,8 +149,37 @@ export default function PsychologistsSection() {
     setCurrentPage((prev) => (prev > totalPages ? totalPages : 1));
   }, [search, isMobile, totalPages]);
 
+  // Aplicar a ordem aleatória persistente aos psicólogos filtrados
+  const shuffledPsychologists = useMemo(() => {
+    if (randomOrder.length === 0 || filteredPsychologists.length === 0) {
+      return filteredPsychologists;
+    }
+
+    // Criar um mapa dos índices originais para os psicólogos filtrados
+    const originalToFiltered = new Map<number, Psychologist>();
+    filteredPsychologists.forEach((psychologist, index) => {
+      const originalIndex = psychologists.findIndex(
+        (p) => p.id === psychologist.id
+      );
+      if (originalIndex !== -1) {
+        originalToFiltered.set(originalIndex, psychologist);
+      }
+    });
+
+    // Aplicar a ordem aleatória aos psicólogos filtrados
+    const orderedPsychologists: Psychologist[] = [];
+    randomOrder.forEach((originalIndex) => {
+      const psychologist = originalToFiltered.get(originalIndex);
+      if (psychologist) {
+        orderedPsychologists.push(psychologist);
+      }
+    });
+
+    return orderedPsychologists;
+  }, [filteredPsychologists, randomOrder, psychologists]);
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedPsychologists = filteredPsychologists.slice(
+  const paginatedPsychologists = shuffledPsychologists.slice(
     startIndex,
     startIndex + itemsPerPage
   );

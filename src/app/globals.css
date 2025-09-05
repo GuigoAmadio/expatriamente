@@ -228,15 +228,17 @@ body {
 
 /* Cards com melhor hierarquia */
 .card-elevated {
-  background: #fffff4;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
+  background: #fdfaf0;
   border-radius: 1rem;
 }
 
 .card-elevated:hover {
+  background: #fffff6;
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .card-subtle {
