@@ -58,38 +58,63 @@ const ScheduleContext = createContext<ScheduleContextType | undefined>(
 
 interface ScheduleProviderProps {
   children: ReactNode;
+  employeeId?: string; // Adicionado para passar o employeeId
 }
 
-export function ScheduleProvider({ children }: ScheduleProviderProps) {
+export function ScheduleProvider({
+  children,
+  employeeId,
+}: ScheduleProviderProps) {
+  const [mounted, setMounted] = useState(false);
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const [timeOffs, setTimeOffs] = useState<TimeOff[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [processingSlots, setProcessingSlots] = useState<Set<string>>(
     new Set()
   );
 
+  // ✅ Log de montagem
+  useEffect(() => {
+    console.log("🔧 [ScheduleContext] Componente montado");
+    console.log("🔧 [ScheduleContext] EmployeeId:", employeeId);
+    setMounted(true);
+  }, []);
+
+  // ✅ Log de mudança de employeeId
+  useEffect(() => {
+    console.log("🔧 [ScheduleContext] EmployeeId mudou:", employeeId);
+    if (mounted && employeeId) {
+      console.log("🔧 [ScheduleContext] Iniciando loadWorkingHours...");
+      loadWorkingHours(employeeId);
+    }
+  }, [employeeId, mounted]);
+
   // Carregar horários do backend
   const loadWorkingHours = useCallback(async (employeeId: string) => {
     try {
+      console.log("🔄 [ScheduleContext] === INÍCIO loadWorkingHours ===");
+      console.log("🔄 [ScheduleContext] EmployeeId:", employeeId);
+
       setLoading(true);
       setError(null);
 
-      console.log("🔄 [ScheduleContext] Carregando horários para:", employeeId);
-      const workingHours = await getEmployeeWorkingHours(employeeId);
+      const workingHours = await getEmployeeWorkingHours(employeeId, true);
+
+      console.log("✅ [ScheduleContext] === DADOS RECEBIDOS ===");
+      console.log("✅ [ScheduleContext] WorkingHours:", workingHours);
 
       setTimeSlots(workingHours.timeSlots);
       setTimeOffs(workingHours.timeOffs);
 
-      console.log("✅ [ScheduleContext] Horários carregados:", {
-        timeSlots: workingHours.timeSlots.length,
-        timeOffs: workingHours.timeOffs.length,
-      });
+      console.log("✅ [ScheduleContext] === ESTADO ATUALIZADO ===");
     } catch (err) {
-      console.error("❌ [ScheduleContext] Erro ao carregar horários:", err);
+      console.error("❌ [ScheduleContext] === ERRO ===");
+      console.error("❌ [ScheduleContext] Erro:", err);
       setError("Erro ao carregar horários");
     } finally {
       setLoading(false);
+      console.log("🔧 [ScheduleContext] === FIM loadWorkingHours ===");
     }
   }, []);
 

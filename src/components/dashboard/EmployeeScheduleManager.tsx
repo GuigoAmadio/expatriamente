@@ -128,6 +128,7 @@ export function EmployeeScheduleManager({
   // Carregar dados do backend
   useEffect(() => {
     if (employeeId) {
+      console.log("Loading working hours for employee", employeeId);
       loadWorkingHours(employeeId);
     }
   }, [employeeId, loadWorkingHours]);

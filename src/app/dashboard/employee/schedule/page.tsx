@@ -17,6 +17,14 @@ export default function EmployeeSchedulePage() {
     const fetchUser = async () => {
       try {
         const currentUser = await getAuthUser();
+        console.log(" [SchedulePage] Usuário completo:", currentUser);
+        console.log("🔧 [SchedulePage] Role:", currentUser?.role);
+        console.log("🔧 [SchedulePage] EmployeeId:", currentUser?.employeeId);
+        console.log(
+          "🔧 [SchedulePage] EmployeeId type:",
+          typeof currentUser?.employeeId
+        );
+
         if (currentUser && currentUser.role === "EMPLOYEE") {
           setUser(currentUser);
         } else {
@@ -44,7 +52,7 @@ export default function EmployeeSchedulePage() {
     );
   }
 
-  if (!user) {
+  if (!user || user === undefined) {
     return (
       <div className="p-6">
         <div className="text-center">
@@ -59,6 +67,7 @@ export default function EmployeeSchedulePage() {
     );
   }
 
+  console.log("🔧 [EmployeeSchedulePage] User:", user);
   return (
     <div className="p-6">
       <div className="max-w-7xl mx-auto">
@@ -77,7 +86,7 @@ export default function EmployeeSchedulePage() {
         </div>
 
         <ScheduleProvider>
-          <EmployeeScheduleManager employeeId={user.employeeId || ""} />
+          <EmployeeScheduleManager employeeId={user?.employeeId || ""} />
         </ScheduleProvider>
       </div>
     </div>

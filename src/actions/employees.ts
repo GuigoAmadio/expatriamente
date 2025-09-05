@@ -409,51 +409,39 @@ export async function getEmployeeWorkingHours(
   forceRefresh: boolean = false
 ): Promise<WorkingHoursData> {
   try {
-    console.log("🕐 Buscando horários do funcionário:", employeeId);
+    console.log("🕐 [getEmployeeWorkingHours] === INÍCIO ===");
+    console.log("🕐 [getEmployeeWorkingHours] EmployeeId:", employeeId);
+    console.log("🕐 [getEmployeeWorkingHours] ForceRefresh:", forceRefresh);
 
-    const employee = await getEmployeeById(employeeId);
+    const employee = await getEmployeeById(employeeId, forceRefresh);
+
+    console.log(
+      "🕐 [getEmployeeWorkingHours] Employee encontrado:",
+      !!employee
+    );
 
     if (!employee) {
       console.log("🔍 [getEmployeeWorkingHours] Employee não encontrado");
-      return {
-        timeSlots: [],
-        timeOffs: [],
-      };
+      return { timeSlots: [], timeOffs: [] };
     }
 
     if (!employee.workingHours) {
       console.log("🔍 [getEmployeeWorkingHours] Employee não tem workingHours");
-      return {
-        timeSlots: [],
-        timeOffs: [],
-      };
+      return { timeSlots: [], timeOffs: [] };
     }
-
-    // Parse do JSON workingHours
-    console.log(
-      "🔍 [getEmployeeWorkingHours] employee.workingHours raw:",
-      employee.workingHours
-    );
-    console.log(
-      "🔍 [getEmployeeWorkingHours] typeof:",
-      typeof employee.workingHours
-    );
 
     const workingHours =
       typeof employee.workingHours === "string"
         ? JSON.parse(employee.workingHours)
         : employee.workingHours;
 
+    console.log("✅ [getEmployeeWorkingHours] === SUCESSO ===");
     console.log(
-      "🔍 [getEmployeeWorkingHours] workingHours parsed:",
-      workingHours
-    );
-    console.log(
-      "🔍 [getEmployeeWorkingHours] timeSlots:",
+      "✅ [getEmployeeWorkingHours] TimeSlots:",
       workingHours.timeSlots
     );
     console.log(
-      "🔍 [getEmployeeWorkingHours] timeOffs:",
+      "✅ [getEmployeeWorkingHours] TimeOffs:",
       workingHours.timeOffs
     );
 
@@ -462,11 +450,9 @@ export async function getEmployeeWorkingHours(
       timeOffs: workingHours.timeOffs || [],
     };
   } catch (error) {
-    console.error("Erro ao buscar horários do funcionário:", error);
-    return {
-      timeSlots: [],
-      timeOffs: [],
-    };
+    console.error("❌ [getEmployeeWorkingHours] === ERRO ===");
+    console.error("❌ [getEmployeeWorkingHours] Erro:", error);
+    return { timeSlots: [], timeOffs: [] };
   }
 }
 

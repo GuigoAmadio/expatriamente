@@ -353,6 +353,7 @@ export async function loginAction(data: LoginInput) {
       console.log("💾 [Auth] Salvando dados do usuário no cache...");
       const userForCache = {
         id: (responseData as any).user.id,
+        employeeId: (responseData as any).user.employeeId,
         name: (responseData as any).user.name,
         email: (responseData as any).user.email,
         role: (responseData as any).user.role,
@@ -499,6 +500,7 @@ export async function registerAction(data: {
       console.log("💾 [Auth] Salvando dados do usuário registrado no cache...");
       const userForCache = {
         id: (responseData as any).user.id,
+        employeeId: (responseData as any).user.employeeId,
         name: (responseData as any).user.name,
         email: (responseData as any).user.email,
         role: (responseData as any).user.role,
@@ -632,6 +634,7 @@ export async function getAuthUser(): Promise<User | null> {
         };
 
         // NÃO cachear tokens ou dados sensíveis
+        console.log("🔧 [getAuthUser] User:", user);
         const userForCache = {
           id: user.id,
           clientId: user.clientId,
