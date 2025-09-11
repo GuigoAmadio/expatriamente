@@ -10,6 +10,7 @@ import {
   UserCircle2,
   House,
   LogOut,
+  Clock,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback } from "react";
@@ -64,7 +65,7 @@ export function MobileNav() {
           label: "Agendamentos",
         },
         { href: base, icon: House, label: "Painel", isPrimary: true },
-        { href: `${base}/settings`, icon: Settings, label: "Config" },
+        { href: `${base}/schedule`, icon: Clock, label: "Horarios" },
       ];
     }
     if (user?.role === "CLIENT") {

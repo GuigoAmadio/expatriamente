@@ -2,15 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useTheme } from "@/context/ThemeContext";
-import { useLanguage } from "@/context/LanguageContext";
 import { useNavigation } from "@/context/NavigationContext";
-import {
-  LanguageSelector,
-  ThemeToggle,
-  ThemeSelector,
-  CompactThemeSelector,
-} from "@/components/ui";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -29,7 +21,6 @@ export default function Header({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
   const [isLoginLoading, setIsLoginLoading] = useState(false);
-  const { t } = useLanguage();
   const { currentSection, setCurrentSection } = useNavigation();
   const router = useRouter();
   const pathname = usePathname();

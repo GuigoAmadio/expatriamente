@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
-import { LanguageProvider } from "@/context/LanguageContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { NavigationProvider } from "@/context/NavigationContext";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -102,13 +100,9 @@ export default function RootLayout({
         className={`antialiased ${playfair.variable} ${montserrat.variable} ${bebas.variable}`}
       >
         <AuthProvider>
-          <ThemeProvider>
-            <LanguageProvider>
-              <NavigationProvider>
-                <ToastProvider>{children}</ToastProvider>
-              </NavigationProvider>
-            </LanguageProvider>
-          </ThemeProvider>
+          <NavigationProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </NavigationProvider>
         </AuthProvider>
       </body>
     </html>

@@ -12,8 +12,6 @@ import {
   FiEye,
   FiEyeOff,
 } from "react-icons/fi";
-import { useTheme } from "@/context/ThemeContext";
-import { useLanguage } from "@/context/LanguageContext";
 
 interface SettingsCardProps {
   title: string;
@@ -21,9 +19,6 @@ interface SettingsCardProps {
 }
 
 export function SettingsCard({ title, onSave }: SettingsCardProps) {
-  const { darkMode, toggleDarkMode } = useTheme();
-  const { language, setLanguage } = useLanguage();
-
   const [settings, setSettings] = useState({
     notifications: {
       email: true,
@@ -67,62 +62,6 @@ export function SettingsCard({ title, onSave }: SettingsCardProps) {
       </h2>
 
       <div className="space-y-8">
-        {/* Configurações de Aparência */}
-        <div>
-          <h3 className="text-lg font-semibold text-[#453706] mb-4 flex items-center gap-2">
-            {darkMode ? (
-              <FiSun className="w-5 h-5" />
-            ) : (
-              <FiMoon className="w-5 h-5" />
-            )}
-            Aparência
-          </h3>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <label className="text-sm font-medium text-stone-700">
-                  Modo Escuro
-                </label>
-                <p className="text-xs text-stone-500">
-                  Alternar entre tema claro e escuro
-                </p>
-              </div>
-              <button
-                onClick={toggleDarkMode}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  darkMode ? "bg-blue-600" : "bg-stone-200"
-                }`}
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    darkMode ? "translate-x-6" : "translate-x-1"
-                  }`}
-                />
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <label className="text-sm font-medium text-stone-700">
-                  Idioma
-                </label>
-                <p className="text-xs text-stone-500">Idioma da interface</p>
-              </div>
-              <select
-                value={language}
-                onChange={(e) =>
-                  setLanguage(e.target.value as "pt" | "en" | "es")
-                }
-                className="px-3 py-1 border border-stone-300 rounded-lg text-sm"
-              >
-                <option value="pt">Português</option>
-                <option value="en">English</option>
-                <option value="es">Español</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
         {/* Configurações de Notificações */}
         <div>
           <h3 className="text-lg font-semibold text-[#453706] mb-4 flex items-center gap-2">

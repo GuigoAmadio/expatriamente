@@ -1,38 +1,29 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
 
 export default function MetricsSection() {
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
-
   const metrics = [
     {
       number: "2.000+",
-      label: t("clientsServed", "metrics"),
+      label: "Clientes Atendidos",
     },
     {
       number: "4.9/5",
-      label: t("averageRating", "metrics"),
+      label: "Avaliação Média",
     },
     {
       number: "24h",
-      label: t("savedPerWeek", "metrics"),
+      label: "Economizados por Semana",
     },
     {
       number: "30min",
-      label: t("responseTime", "metrics"),
+      label: "Tempo de Resposta",
     },
   ];
 
   return (
-    <section
-      className={`py-16 transition-colors duration-300 bg-background-secondary text-primary ${
-        darkMode === "dark" ? "dark" : ""
-      }`}
-    >
+    <section className="py-16 transition-colors duration-300 bg-[#e4ded2] text-[#495443]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Título da seção */}
         <motion.div
@@ -43,7 +34,7 @@ export default function MetricsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-heading">
-            {t("title", "metrics")}
+            Nossos Números
           </h2>
         </motion.div>
 
@@ -79,15 +70,11 @@ export default function MetricsSection() {
         >
           <h2
             className="text-3xl md:text-4xl font-bold mb-6"
-            dangerouslySetInnerHTML={{ __html: t("servicesTitle", "metrics") }}
+            dangerouslySetInnerHTML={{ __html: "Serviços Residenciais" }}
           />
-          <div
-            className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
-              darkMode === "dark" ? "bg-accent/20" : "bg-primary/10"
-            }`}
-          >
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 bg-[#987b6b]/10">
             <svg
-              className="w-10 h-10 text-accent"
+              className="w-10 h-10 text-[#987b6b]"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -99,7 +86,9 @@ export default function MetricsSection() {
             </svg>
           </div>
 
-          <p className="text-lg w-1/2">{t("servicesDescription", "metrics")}</p>
+          <p className="text-lg w-1/2">
+            Cuidado personalizado no conforto da sua casa
+          </p>
 
           {/* Ícone de cuidado/coração */}
         </motion.div>

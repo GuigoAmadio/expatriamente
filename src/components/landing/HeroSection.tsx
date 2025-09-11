@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useTheme } from "@/context/ThemeContext";
-import { useLanguage } from "@/context/LanguageContext";
 import { useNavigation } from "@/context/NavigationContext";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -18,9 +16,6 @@ import MissionVisionValues from "@/components/about/MissionVisionValues";
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
   const { currentSection } = useNavigation();
-
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
 
   useEffect(() => {
     setMounted(true);

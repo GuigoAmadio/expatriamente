@@ -1,15 +1,11 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
 import { useNavigation } from "@/context/NavigationContext";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function StoriesSection() {
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
   const { currentSection } = useNavigation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [page, setPage] = useState(0);

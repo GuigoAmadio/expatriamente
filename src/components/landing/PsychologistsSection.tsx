@@ -2,8 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
 import PsychologistCard from "./PsychologistCard";
 import { useRouter } from "next/navigation";
 import { getPsicanalistas } from "@/actions/psicanalistas";
@@ -82,8 +80,6 @@ function splitBio(observacoes: string): { shortBio: string; fullBio: string } {
 }
 
 export default function PsychologistsSection() {
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
   const [search, setSearch] = useState("");
   const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);

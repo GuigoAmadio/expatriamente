@@ -7,15 +7,11 @@ import {
   FaInstagram,
 } from "react-icons/fa6";
 import { FaYoutube, FaLinkedin } from "react-icons/fa";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function FooterSection() {
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const [mounted, setMounted] = useState(false);
 

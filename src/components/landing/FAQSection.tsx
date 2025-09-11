@@ -11,8 +11,6 @@ import {
   CalendarDaysIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
 import {
   FaFacebook,
   FaInstagram,
@@ -22,9 +20,6 @@ import {
 } from "react-icons/fa";
 
 export default function FAQSection() {
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
-
   // Perguntas e respostas da imagem de referência
   const faqs = [
     {

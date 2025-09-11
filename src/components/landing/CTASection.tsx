@@ -1,8 +1,6 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
 import { useState, useEffect } from "react";
 import {
   ArrowRightIcon,
@@ -14,8 +12,6 @@ import {
 export default function CTASection() {
   const [mounted, setMounted] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { t } = useLanguage();
-  const { darkMode } = useTheme();
 
   useEffect(() => {
     setMounted(true);
