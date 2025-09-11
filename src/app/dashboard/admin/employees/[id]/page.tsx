@@ -5,6 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import { useToasts, Toast } from "@/components/ui/Toast";
 import { Employee } from "@/types/backend";
 import { getEmployeeById, deleteEmployee } from "@/actions/employees";
+import { EmployeeScheduleManager } from "@/components/dashboard/EmployeeScheduleManager";
+import { ScheduleProvider } from "@/context/ScheduleContext";
 import {
   FiEdit,
   FiTrash2,
@@ -14,6 +16,7 @@ import {
   FiMapPin,
   FiCalendar,
   FiUser,
+  FiClock,
 } from "react-icons/fi";
 
 export default function EmployeeDetailsPage() {
@@ -297,6 +300,29 @@ export default function EmployeeDetailsPage() {
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Card de Edição de Horários */}
+      <div className="mt-8">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-sm border border-blue-100 p-6">
+          <div className="flex items-center mb-6">
+            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+              <FiClock className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Gerenciar Horários de Trabalho
+              </h2>
+              <p className="text-gray-600 text-sm mt-1">
+                Configure os horários de disponibilidade do funcionário
+              </p>
+            </div>
+          </div>
+
+          <ScheduleProvider>
+            <EmployeeScheduleManager employeeId={employee.id} />
+          </ScheduleProvider>
         </div>
       </div>
 
