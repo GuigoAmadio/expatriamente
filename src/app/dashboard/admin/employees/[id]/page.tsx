@@ -30,10 +30,8 @@ export default function EmployeeDetailsPage() {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        console.log("aaaaaaaaaaaaaaa");
         const employeeId = params.id as string;
         const employeeData = await getEmployeeById(employeeId);
-        console.log("employeeData", employeeData);
 
         if (employeeData) {
           setEmployee(employeeData);
@@ -137,7 +135,7 @@ export default function EmployeeDetailsPage() {
 
   return (
     <div className="p-6">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div className="flex items-center gap-3">
@@ -285,7 +283,9 @@ export default function EmployeeDetailsPage() {
                         {Array.isArray(hours) && hours.length > 0 ? (
                           hours.map((hour, index) => (
                             <div key={index} className="text-sm text-gray-600">
-                              {hour}
+                              {typeof hour === "string"
+                                ? hour
+                                : `${hour.startTime} - ${hour.endTime}`}
                             </div>
                           ))
                         ) : (
