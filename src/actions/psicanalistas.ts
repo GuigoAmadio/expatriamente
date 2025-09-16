@@ -82,9 +82,96 @@ export async function getPsicanalistaById(id: string) {
   }
 }
 
+// Função para gerar horários baseados nos workingHours do employee
+function generateAvailableSlotsFromWorkingHours(
+  workingHours: any,
+  days: number = 30
+): AgendamentoPsicanalista[] {
+  if (
+    !workingHours ||
+    !workingHours.timeSlots ||
+    !Array.isArray(workingHours.timeSlots)
+  ) {
+    return [];
+  }
+
+  const agendamentos: AgendamentoPsicanalista[] = [];
+  const hoje = new Date();
+
+  for (let i = 0; i < days; i++) {
+    const data = new Date(hoje);
+    data.setDate(hoje.getDate() + i);
+    const diaSemana = data.getDay(); // 0 = domingo, 1 = segunda, etc.
+
+    // Filtrar timeSlots para o dia da semana (apenas dias úteis: 1-5)
+    const slotsDoDia = workingHours.timeSlots.filter((slot: any) => {
+      // Converter dayOfWeek para dia da semana (0=domingo, 1=segunda, etc.)
+      const slotDayOfWeek = slot.dayOfWeek;
+      return slotDayOfWeek === diaSemana && slot.isActive;
+    });
+
+    if (slotsDoDia.length > 0) {
+      const horarios = slotsDoDia.map((slot: any) => slot.startTime);
+      const dataStr = data.toISOString().split("T")[0];
+
+      agendamentos.push({
+        data: dataStr,
+        horarios: horarios,
+      });
+    }
+  }
+
+  return agendamentos;
+}
+
 export async function getAgendamentosByPsicanalista(employeeId: string) {
   // Busca real dos agendamentos do backend
   try {
+    // Primeiro, buscar dados do employee para obter workingHours
+    const employeeResponse = await get<any>(`/employees/${employeeId}`);
+    if (employeeResponse.success && employeeResponse.data?.data?.workingHours) {
+      const workingHours = employeeResponse.data.data.workingHours;
+
+      // Gerar slots disponíveis baseados nos workingHours
+      const availableSlots =
+        generateAvailableSlotsFromWorkingHours(workingHours);
+
+      // Buscar appointments existentes para marcar como ocupados
+      const appointmentsResponse = await get<{ data: Appointment[] }>(
+        `/appointments?employeeId=${employeeId}`
+      );
+
+      if (appointmentsResponse.success && appointmentsResponse.data?.data) {
+        // Agrupar appointments por data
+        const appointmentsPorData: Record<string, string[]> = {};
+        appointmentsResponse.data.data.forEach((apt) => {
+          const dateObj = new Date(apt.startTime);
+          const data = dateObj.toISOString().split("T")[0];
+          const hora =
+            dateObj.getUTCHours().toString().padStart(2, "0") +
+            ":" +
+            dateObj.getUTCMinutes().toString().padStart(2, "0");
+          if (!appointmentsPorData[data]) appointmentsPorData[data] = [];
+          appointmentsPorData[data].push(hora);
+        });
+
+        // Filtrar horários ocupados dos slots disponíveis
+        const resultado = availableSlots
+          .map((slot) => ({
+            data: slot.data,
+            horarios: slot.horarios.filter(
+              (hora) => !appointmentsPorData[slot.data]?.includes(hora)
+            ),
+          }))
+          .filter((slot) => slot.horarios.length > 0);
+
+        return resultado;
+      }
+
+      return availableSlots;
+    }
+
+    // Fallback: buscar apenas appointments existentes
     const response = await get<{ data: Appointment[] }>(
       `/appointments?employeeId=${employeeId}`
     );

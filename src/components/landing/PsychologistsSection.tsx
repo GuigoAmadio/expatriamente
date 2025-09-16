@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
-import PsychologistCard from "./PsychologistCard";
 import { useRouter } from "next/navigation";
 import { getPsicanalistas } from "@/actions/psicanalistas";
 import { useFacebookPixel } from "@/hooks/useFacebookPixel";
@@ -205,11 +204,6 @@ export default function PsychologistsSection() {
   ) => {
     e.stopPropagation();
     setLoadingCardId(psychologist.id);
-
-    console.log(
-      `🔵 [Psicanalistas] Botão "Ver horários" clicado:`,
-      psychologist.name
-    );
 
     trackViewContent({
       content_name: `${psychologist.name} - Ver Horários`,

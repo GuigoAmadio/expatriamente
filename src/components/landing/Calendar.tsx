@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Appointment {
@@ -6,17 +6,17 @@ interface Appointment {
   horarios: string[];
 }
 
+// Apenas dias úteis (segunda a sexta)
 const DIAS = [
-  "Domingo",
   "Segunda-feira",
   "Terça-feira",
   "Quarta-feira",
   "Quinta-feira",
   "Sexta-feira",
-  "Sabado",
 ];
 
-const HORAS = [
+// Horários de trabalho no Brasil (9h às 18h)
+const BRASIL_HORAS = [
   "09:00",
   "10:00",
   "11:00",
@@ -33,6 +33,49 @@ function getDiaSemana(dateStr: string) {
   return new Date(dateStr).getDay();
 }
 
+// Função para converter horário do Brasil para o fuso horário do usuário
+function convertBrasilTimeToUserTimezone(
+  brasilTime: string,
+  userTimezone: string
+): string {
+  try {
+    // Criar data no fuso horário do Brasil (UTC-3)
+    const [hours, minutes] = brasilTime.split(":").map(Number);
+    const brasilDate = new Date();
+    brasilDate.setUTCHours(hours + 3, minutes, 0, 0); // UTC-3 = +3 para UTC
+
+    // Converter para o fuso horário do usuário
+    const userDate = new Date(
+      brasilDate.toLocaleString("en-US", { timeZone: userTimezone })
+    );
+
+    return `${userDate.getHours().toString().padStart(2, "0")}:${userDate
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+  } catch (error) {
+    console.warn("Erro na conversão de fuso horário:", error);
+    return brasilTime; // Fallback para horário original
+  }
+}
+
+// Função para obter horários dinâmicos baseados no fuso horário do usuário
+function getDynamicHours(userTimezone: string): string[] {
+  return BRASIL_HORAS.map((time) =>
+    convertBrasilTimeToUserTimezone(time, userTimezone)
+  );
+}
+
+// Função para obter o fuso horário do usuário
+function getUserTimezone(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (error) {
+    console.warn("Erro ao obter fuso horário:", error);
+    return "America/Sao_Paulo"; // Fallback para fuso do Brasil
+  }
+}
+
 export default function Calendar({
   appointments,
   onSelect,
@@ -40,14 +83,30 @@ export default function Calendar({
   appointments: Appointment[];
   onSelect?: (dia: number, hora: string) => void;
 }) {
+  // Estado para fuso horário e horários dinâmicos
+  const [userTimezone, setUserTimezone] = useState<string>("America/Sao_Paulo");
+  const [dynamicHours, setDynamicHours] = useState<string[]>(BRASIL_HORAS);
+
+  // Inicializar fuso horário e horários dinâmicos
+  useEffect(() => {
+    const timezone = getUserTimezone();
+    setUserTimezone(timezone);
+    setDynamicHours(getDynamicHours(timezone));
+  }, []);
+
   const agendados = useMemo(() => {
     const map: Record<number, Record<string, boolean>> = {};
     appointments.forEach((a) => {
       const dia = getDiaSemana(a.data);
-      if (!map[dia]) map[dia] = {};
-      a.horarios.forEach((h) => {
-        map[dia][h] = true;
-      });
+      // Mapear domingo (0) para 0, segunda (1) para 0, etc. (apenas dias úteis)
+      const diaUtil = dia === 0 ? 6 : dia - 1; // Domingo vira 6, segunda vira 0
+      if (diaUtil >= 0 && diaUtil < 5) {
+        // Apenas dias úteis (0-4)
+        if (!map[diaUtil]) map[diaUtil] = {};
+        a.horarios.forEach((h) => {
+          map[diaUtil][h] = true;
+        });
+      }
     });
     return map;
   }, [appointments]);
@@ -60,7 +119,7 @@ export default function Calendar({
   // Estado para controlar a semana atual
   const [currentWeek, setCurrentWeek] = useState(new Date());
 
-  // Função para obter o início da semana (a partir do dia atual)
+  // Função para obter o início da semana (apenas dias úteis)
   const getWeekStart = (date: Date) => {
     const today = new Date();
     const start = new Date(date);
@@ -68,10 +127,12 @@ export default function Calendar({
     // Se a data for anterior ao dia atual, começar do dia atual
     if (start < today) {
       start.setTime(today.getTime());
-    } else {
-      // Se não, começar do domingo da semana selecionada
-      start.setDate(date.getDate() - date.getDay());
     }
+
+    // Ajustar para começar na segunda-feira (dia 1)
+    const dayOfWeek = start.getDay();
+    const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Domingo = 6 dias atrás, outros = dia-1
+    start.setDate(start.getDate() - daysToMonday);
 
     return start;
   };
@@ -112,8 +173,8 @@ export default function Calendar({
 
     // Obter horários disponíveis para o dia selecionado
     const getAvailableHours = (dia: number) => {
-      if (!agendados[dia]) return HORAS;
-      return HORAS.filter((hora) => !agendados[dia][hora]);
+      if (!agendados[dia]) return dynamicHours;
+      return dynamicHours.filter((hora) => !agendados[dia][hora]);
     };
 
     const availableHours = selecionado
@@ -181,16 +242,15 @@ export default function Calendar({
           </button>
         </div>
 
-        {/* Grid de dias da semana - 2 linhas (4+3) */}
-        <div className="flex flex-wrap gap-2">
-          {/* Primeira linha - 4 dias */}
-          {Array.from({ length: 4 }, (_, i) => {
+        {/* Grid de dias úteis - 5 dias em linha única */}
+        <div className="flex flex-wrap gap-2 justify-center">
+          {Array.from({ length: 5 }, (_, i) => {
             const day = new Date(currentWeekStart);
             day.setDate(currentWeekStart.getDate() + i);
             const today = new Date();
             const isToday = day.toDateString() === today.toDateString();
             const isSelected = selecionado?.dia === i;
-            const dayNames = ["DOM", "SEG", "TER", "QUA"];
+            const dayNames = ["SEG", "TER", "QUA", "QUI", "SEX"];
 
             // Só mostrar se o dia não for passado
             if (day < today && !isToday) {
@@ -206,43 +266,6 @@ export default function Calendar({
                 className={`aspect-square w-16 flex flex-col items-center justify-center rounded-xl shadow-md transition-all duration-200 border-1 ${
                   isSelected
                     ? "bg-[#81ba95] text-white border-[#81ba95]"
-                    : "bg-white text-[#5b7470] border-[#5b7470] hover:border-[#9ca995]"
-                }`}
-              >
-                <span className="text-xs font-akzidens font-medium mb-1">
-                  {dayNames[i]}
-                </span>
-                <span className="text-lg font-akzidens font-bold">
-                  {day.getDate()}
-                </span>
-              </motion.button>
-            );
-          })}
-
-          {/* Segunda linha - 3 dias */}
-          {Array.from({ length: 3 }, (_, i) => {
-            const dayIndex = i + 4; // 4, 5, 6
-            const day = new Date(currentWeekStart);
-            day.setDate(currentWeekStart.getDate() + dayIndex);
-            const today = new Date();
-            const isToday = day.toDateString() === today.toDateString();
-            const isSelected = selecionado?.dia === dayIndex;
-            const dayNames = ["QUI", "SEX", "SÁB"];
-
-            // Só mostrar se o dia não for passado
-            if (day < today && !isToday) {
-              return null;
-            }
-
-            return (
-              <motion.button
-                key={dayIndex}
-                onClick={() => handleDaySelect(dayIndex)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`aspect-square w-16 flex flex-col items-center justify-center rounded-xl shadow-md transition-all duration-200 border-1 ${
-                  isSelected
-                    ? "bg-[#587861] text-white border-[#587861]"
                     : "bg-white text-[#5b7470] border-[#5b7470] hover:border-[#9ca995]"
                 }`}
               >
@@ -398,7 +421,7 @@ export default function Calendar({
               </tr>
             </thead>
             <tbody>
-              {HORAS.map((hora, horaIdx) => (
+              {dynamicHours.map((hora, horaIdx) => (
                 <motion.tr
                   key={hora}
                   initial={{ opacity: 0, x: -20 }}
@@ -490,8 +513,11 @@ export default function Calendar({
         <h3 className="text-lg sm:text-xl font-bold text-[#5b7470] mb-2 font-akzidens">
           Selecione seu horário
         </h3>
-        <p className="text-xs sm:text-sm text-[#6B3F1D]">
+        <p className="text-xs sm:text-sm text-[#6B3F1D] mb-1">
           Clique em um horário disponível para agendar sua sessão
+        </p>
+        <p className="text-xs text-[#9ca995]">
+          Horários exibidos no seu fuso local ({userTimezone})
         </p>
       </motion.div>
 
@@ -519,7 +545,8 @@ export default function Calendar({
             </span>
           </p>
           <p className="text-[#987b6b] text-xs sm:text-sm mt-1">
-            Preencha os dados abaixo para finalizar o agendamento
+            Horário local ({userTimezone}) • Preencha os dados abaixo para
+            finalizar o agendamento
           </p>
         </motion.div>
       )}
