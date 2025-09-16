@@ -74,6 +74,7 @@ export default async function PsicanalistaPage({
             </div>
             <PsicAppointmentClient
               appointments={appointmentsFormatted}
+              workingHours={psicanalista.workingHours}
               employeeId={id}
               serviceId="3feb580a-6f3c-4960-b53a-bacacbd0f880"
               psychologist={{

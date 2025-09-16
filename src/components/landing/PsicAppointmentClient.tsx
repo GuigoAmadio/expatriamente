@@ -21,6 +21,7 @@ interface Psychologist {
 
 interface PsicAppointmentClientProps {
   appointments: Appointment[];
+  workingHours: any; // workingHours do psicanalista
   employeeId: string;
   serviceId: string;
   psychologist?: Psychologist;
@@ -28,6 +29,7 @@ interface PsicAppointmentClientProps {
 
 export default function PsicAppointmentClient({
   appointments,
+  workingHours,
   employeeId,
   serviceId,
   psychologist,
@@ -187,7 +189,11 @@ export default function PsicAppointmentClient({
 
   return (
     <div className="space-y-8 mt-10">
-      <Calendar appointments={appointments} onSelect={handleSelect} />
+      <Calendar
+        appointments={appointments}
+        workingHours={workingHours}
+        onSelect={handleSelect}
+      />
 
       {/* Formulário de Agendamento */}
       <AnimatePresence>

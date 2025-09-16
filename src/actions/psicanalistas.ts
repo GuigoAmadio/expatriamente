@@ -40,6 +40,7 @@ function mapMockupToPsychologist(mockupData: any) {
     availability: mockupData.horarios
       ? mockupData.horarios.join(", ")
       : "Horários não disponíveis",
+    workingHours: null, // Mockup não tem workingHours estruturados
     image: mockupData.foto || "/user-placeholder.svg",
     observacoes: mockupData.observacoes || "", // Manter observações originais
     notas: formacaoInfo?.notas || "", // Adicionar notas de formação
@@ -66,7 +67,7 @@ export async function getPsicanalistaById(id: string) {
       bio: emp.description || "",
       education: "",
       approach: "",
-      availability: emp.workingHours ? JSON.stringify(emp.workingHours) : "",
+      workingHours: emp.workingHours || null,
       image: emp.avatar || "",
     };
     return result;
@@ -125,78 +126,44 @@ function generateAvailableSlotsFromWorkingHours(
 }
 
 export async function getAgendamentosByPsicanalista(employeeId: string) {
-  // Busca real dos agendamentos do backend
+  // NOVA LÓGICA: Retornar apenas appointments REALMENTE AGENDADOS
   try {
-    // Primeiro, buscar dados do employee para obter workingHours
-    const employeeResponse = await get<any>(`/employees/${employeeId}`);
-    if (employeeResponse.success && employeeResponse.data?.data?.workingHours) {
-      const workingHours = employeeResponse.data.data.workingHours;
-
-      // Gerar slots disponíveis baseados nos workingHours
-      const availableSlots =
-        generateAvailableSlotsFromWorkingHours(workingHours);
-
-      // Buscar appointments existentes para marcar como ocupados
-      const appointmentsResponse = await get<{ data: Appointment[] }>(
-        `/appointments?employeeId=${employeeId}`
-      );
-
-      if (appointmentsResponse.success && appointmentsResponse.data?.data) {
-        // Agrupar appointments por data
-        const appointmentsPorData: Record<string, string[]> = {};
-        appointmentsResponse.data.data.forEach((apt) => {
-          const dateObj = new Date(apt.startTime);
-          const data = dateObj.toISOString().split("T")[0];
-          const hora =
-            dateObj.getUTCHours().toString().padStart(2, "0") +
-            ":" +
-            dateObj.getUTCMinutes().toString().padStart(2, "0");
-          if (!appointmentsPorData[data]) appointmentsPorData[data] = [];
-          appointmentsPorData[data].push(hora);
-        });
-
-        // Filtrar horários ocupados dos slots disponíveis
-        const resultado = availableSlots
-          .map((slot) => ({
-            data: slot.data,
-            horarios: slot.horarios.filter(
-              (hora) => !appointmentsPorData[slot.data]?.includes(hora)
-            ),
-          }))
-          .filter((slot) => slot.horarios.length > 0);
-
-        return resultado;
-      }
-
-      return availableSlots;
-    }
-
-    // Fallback: buscar apenas appointments existentes
-    const response = await get<{ data: Appointment[] }>(
+    // Buscar appointments existentes (realmente agendados)
+    const appointmentsResponse = await get<{ data: Appointment[] }>(
       `/appointments?employeeId=${employeeId}`
     );
-    if (
-      !response.success ||
-      !response.data ||
-      !Array.isArray(response.data.data)
-    )
-      return [];
-    // Agrupar agendamentos por data
-    const agendamentosPorData: Record<string, string[]> = {};
-    response.data.data.forEach((apt) => {
-      const dateObj = new Date(apt.startTime);
-      const data = dateObj.toISOString().split("T")[0];
-      const hora =
-        dateObj.getUTCHours().toString().padStart(2, "0") +
-        ":" +
-        dateObj.getUTCMinutes().toString().padStart(2, "0");
-      if (!agendamentosPorData[data]) agendamentosPorData[data] = [];
-      agendamentosPorData[data].push(hora);
-    });
-    const resultado = Object.entries(agendamentosPorData).map(
-      ([data, horarios]) => ({ data, horarios })
+
+    if (appointmentsResponse.success && appointmentsResponse.data?.data) {
+      // Agrupar appointments REAIS por data
+      const appointmentsPorData: Record<string, string[]> = {};
+      appointmentsResponse.data.data.forEach((apt) => {
+        const dateObj = new Date(apt.startTime);
+        const data = dateObj.toISOString().split("T")[0];
+        const hora =
+          dateObj.getUTCHours().toString().padStart(2, "0") +
+          ":" +
+          dateObj.getUTCMinutes().toString().padStart(2, "0");
+        if (!appointmentsPorData[data]) appointmentsPorData[data] = [];
+        appointmentsPorData[data].push(hora);
+      });
+
+      // Retornar apenas appointments reais (ocupados)
+      const resultado = Object.entries(appointmentsPorData).map(
+        ([data, horarios]) => ({ data, horarios })
+      );
+
+      console.log(
+        `[getAgendamentosByPsicanalista] Appointments REAIS encontrados:`,
+        resultado
+      );
+      return resultado;
+    }
+
+    // Se não há appointments reais, retornar array vazio
+    console.log(
+      `[getAgendamentosByPsicanalista] Nenhum appointment real encontrado`
     );
-    return resultado;
+    return [];
   } catch (e) {
     // Fallback para horários mockup
     console.warn(

@@ -100,7 +100,11 @@ export default function PsicAppointmentClient({
 
   return (
     <>
-      <Calendar appointments={appointments} onSelect={handleSelect} />
+      <Calendar
+        appointments={appointments}
+        workingHours={null}
+        onSelect={handleSelect}
+      />
       <AnimatePresence>
         {selecionado && (
           <motion.div

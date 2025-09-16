@@ -78,38 +78,132 @@ function getUserTimezone(): string {
 
 export default function Calendar({
   appointments,
+  workingHours,
   onSelect,
 }: {
   appointments: Appointment[];
+  workingHours: any; // workingHours do psicanalista
   onSelect?: (dia: number, hora: string) => void;
 }) {
   // Estado para fuso horário e horários dinâmicos
   const [userTimezone, setUserTimezone] = useState<string>("America/Sao_Paulo");
-  const [dynamicHours, setDynamicHours] = useState<string[]>(BRASIL_HORAS);
+
+  // Extrair horários reais dos workingHours (horários disponíveis do psicanalista)
+  const realHours = useMemo(() => {
+    if (
+      !workingHours ||
+      !workingHours.timeSlots ||
+      !Array.isArray(workingHours.timeSlots)
+    ) {
+      return [];
+    }
+
+    const hoursSet = new Set<string>();
+    workingHours.timeSlots.forEach((slot: any) => {
+      if (slot.isActive) {
+        hoursSet.add(slot.startTime);
+      }
+    });
+
+    return Array.from(hoursSet).sort();
+  }, [workingHours]);
+
+  // Usar todos os horários padrão (9h-18h) convertidos para fuso do usuário
+  const [dynamicHours, setDynamicHours] = useState<string[]>([]);
 
   // Inicializar fuso horário e horários dinâmicos
   useEffect(() => {
     const timezone = getUserTimezone();
     setUserTimezone(timezone);
-    setDynamicHours(getDynamicHours(timezone));
+
+    // Sempre usar horários padrão (9h-18h) convertidos para fuso do usuário
+    const hours = getDynamicHours(timezone);
+    console.log(`[Calendar] Inicializando horários dinâmicos:`, hours);
+    setDynamicHours(hours);
   }, []);
 
+  // Mapear horários ocupados por dia da semana
+  // NOVA LÓGICA: Todos os horários são ocupados POR PADRÃO, exceto os workingHours disponíveis
   const agendados = useMemo(() => {
     const map: Record<number, Record<string, boolean>> = {};
-    appointments.forEach((a) => {
-      const dia = getDiaSemana(a.data);
-      // Mapear domingo (0) para 0, segunda (1) para 0, etc. (apenas dias úteis)
-      const diaUtil = dia === 0 ? 6 : dia - 1; // Domingo vira 6, segunda vira 0
-      if (diaUtil >= 0 && diaUtil < 5) {
-        // Apenas dias úteis (0-4)
-        if (!map[diaUtil]) map[diaUtil] = {};
-        a.horarios.forEach((h) => {
-          map[diaUtil][h] = true;
+
+    // Para cada dia da semana (0=Segunda, 1=Terça, 2=Quarta, 3=Quinta, 4=Sexta)
+    for (let diaCalendario = 0; diaCalendario < 5; diaCalendario++) {
+      map[diaCalendario] = {};
+
+      // Marcar TODOS os horários como ocupados por padrão
+      const horariosParaUsar =
+        dynamicHours.length > 0 ? dynamicHours : getDynamicHours(userTimezone);
+      horariosParaUsar.forEach((hora) => {
+        map[diaCalendario][hora] = true;
+      });
+
+      console.log(
+        `[Calendar] Dia ${diaCalendario} (${DIAS[diaCalendario]}) - Total horários: ${horariosParaUsar.length}`
+      );
+
+      // Desmarcar horários que estão nos workingHours (torná-los disponíveis)
+      if (workingHours && workingHours.timeSlots) {
+        const realDayOfWeek = diaCalendario + 1; // 0→1, 1→2, 2→3, 3→4, 4→5
+
+        workingHours.timeSlots.forEach((slot: any) => {
+          console.log(
+            `[Calendar] Verificando slot: dayOfWeek=${slot.dayOfWeek}, realDayOfWeek=${realDayOfWeek}, isActive=${slot.isActive}, startTime=${slot.startTime}`
+          );
+
+          if (slot.dayOfWeek === realDayOfWeek && slot.isActive) {
+            const horaConvertida = convertBrasilTimeToUserTimezone(
+              slot.startTime,
+              userTimezone
+            );
+            console.log(
+              `[Calendar] ✅ DISPONÍVEL: Dia ${diaCalendario} (${DIAS[diaCalendario]}) - ${slot.startTime} → ${horaConvertida}`
+            );
+
+            // Verificar se a hora convertida existe no array de horários
+            if (horariosParaUsar.includes(horaConvertida)) {
+              map[diaCalendario][horaConvertida] = false; // Disponível
+              console.log(
+                `[Calendar] ✅ Marcado como disponível: ${horaConvertida} para dia ${diaCalendario}`
+              );
+            } else {
+              console.log(
+                `[Calendar] ❌ Hora convertida ${horaConvertida} não existe nos horários disponíveis:`,
+                horariosParaUsar
+              );
+            }
+          }
         });
       }
-    });
+
+      // Marcar appointments confirmados como ocupados novamente
+      appointments.forEach((apt) => {
+        const dia = getDiaSemana(apt.data);
+        if (dia >= 1 && dia <= 5) {
+          const diaUtil = dia - 1;
+          if (diaUtil === diaCalendario) {
+            console.log(
+              `[Calendar] 🔴 APPOINTMENT encontrado para dia ${diaCalendario} (${DIAS[diaCalendario]}) - data: ${apt.data}, horarios:`,
+              apt.horarios
+            );
+            apt.horarios.forEach((hora) => {
+              const horaConvertida = convertBrasilTimeToUserTimezone(
+                hora,
+                userTimezone
+              );
+              console.log(
+                `[Calendar] 🔴 OCUPANDO: Dia ${diaCalendario} - ${hora} → ${horaConvertida}`
+              );
+              map[diaCalendario][horaConvertida] = true; // Ocupado
+            });
+          }
+        }
+      });
+    }
+
+    console.log(`[Calendar] Mapa final de agendados:`, map);
     return map;
-  }, [appointments]);
+  }, [appointments, userTimezone, workingHours, dynamicHours]);
 
   const [selecionado, setSelecionado] = useState<{
     dia: number;
@@ -173,8 +267,21 @@ export default function Calendar({
 
     // Obter horários disponíveis para o dia selecionado
     const getAvailableHours = (dia: number) => {
-      if (!agendados[dia]) return dynamicHours;
-      return dynamicHours.filter((hora) => !agendados[dia][hora]);
+      // Usar os mesmos horários que foram usados no cálculo do `agendados`
+      const horariosParaUsar =
+        dynamicHours.length > 0 ? dynamicHours : getDynamicHours(userTimezone);
+
+      // Retornar apenas horários que NÃO estão marcados como ocupados
+      const disponiveisParaDia = horariosParaUsar.filter(
+        (hora) => !agendados[dia]?.[hora]
+      );
+
+      console.log(
+        `[Calendar] getAvailableHours - Dia ${dia} (${DIAS[dia]}) - Disponíveis: ${disponiveisParaDia.length}/${horariosParaUsar.length}`,
+        disponiveisParaDia
+      );
+
+      return disponiveisParaDia;
     };
 
     const availableHours = selecionado
@@ -295,7 +402,7 @@ export default function Calendar({
             {/* Lista horizontal de horários */}
             <div className="flex flex-wrap gap-2 justify-center">
               {availableHours.length > 0 ? (
-                availableHours.map((hora) => {
+                availableHours.map((hora: string) => {
                   const isSelected = selecionado.hora === hora;
                   return (
                     <motion.button
@@ -421,7 +528,10 @@ export default function Calendar({
               </tr>
             </thead>
             <tbody>
-              {dynamicHours.map((hora, horaIdx) => (
+              {(dynamicHours.length > 0
+                ? dynamicHours
+                : getDynamicHours(userTimezone)
+              ).map((hora, horaIdx) => (
                 <motion.tr
                   key={hora}
                   initial={{ opacity: 0, x: -20 }}

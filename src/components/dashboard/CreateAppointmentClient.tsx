@@ -241,7 +241,11 @@ export default function CreateAppointmentClient({
         <h3 className="text-lg font-semibold text-gray-900">
           Escolha o Horário
         </h3>
-        <Calendar appointments={availableSlots} onSelect={handleSlotSelect} />
+        <Calendar
+          appointments={availableSlots}
+          workingHours={null}
+          onSelect={handleSlotSelect}
+        />
       </div>
 
       {/* Resumo e Confirmação */}
